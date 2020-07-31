@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Nestle\Purina\Api\CustomerGetAllAddressInterface" type="Nestle\Purina\Model\CustomerAddressList"/>
+    <preference for="Nestle\Purina\Api\CustomerGetInformationInterface" type="Nestle\Purina\Model\CustomerInformationList"/>
+    <preference for="Nestle\Purina\Api\CustomerGetPointInterface" type="Nestle\Purina\Model\CustomerRewardBalancePoint"/>
+    <preference for="Nestle\Purina\Api\PaygentCardInfoInterface" type="Nestle\Purina\Model\PaygentCardInfo"/>
+    <preference for="Nestle\Purina\Api\CustomerInfoInterface" type="Nestle\Purina\Model\CustomerInformation"/>
+    <preference for="Nestle\Purina\Api\ProductInfoInterface" type="Nestle\Purina\Model\ProductInfoCheck"/>
+    <preference for="Nestle\Purina\Api\DeliveryDateInterface" type="Nestle\Purina\Model\DeliveryDateManagement" />
+    <preference for="Nestle\Purina\Api\Data\DeliverytimeDataInterface" type="Nestle\Purina\Model\Api\Data\DeliveryDate" />
+    <preference for="Nestle\Purina\Api\Data\TimeslotDataInterface" type="Nestle\Purina\Model\Api\Data\Timeslot" />
+    <preference for="Nestle\Purina\Api\ShippingInformationManagementInterface" type="Nestle\Purina\Model\ShippingInformationManagement" />
+    <preference for="Nestle\Purina\Api\PaymentInformationManagementInterface" type="Nestle\Purina\Model\PaymentInformationManagement" />
+</config>

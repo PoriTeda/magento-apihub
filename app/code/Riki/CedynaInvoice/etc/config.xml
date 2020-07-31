@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <cedyna_invoice>
+            <setting>
+                <enable>0</enable>
+            </setting>
+            <import>
+                <enable_logger>1</enable_logger>
+                <remote_path>/import/cedyna</remote_path>
+                <filename_pattern>XNRSD1802_</filename_pattern>
+                <cron_expression>40 17 * * *</cron_expression>
+            </import>
+        </cedyna_invoice>
+    </default>
+</config>

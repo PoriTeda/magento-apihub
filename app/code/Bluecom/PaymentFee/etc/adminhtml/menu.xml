@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Bluecom_PaymentFee::index" title="Payment Fee"
+             module="Bluecom_PaymentFee" sortOrder="150" parent="Magento_Backend::stores_settings"
+             action="paymentfee/payment" resource="Bluecom_PaymentFee::index"/>
+    </menu>
+</config>

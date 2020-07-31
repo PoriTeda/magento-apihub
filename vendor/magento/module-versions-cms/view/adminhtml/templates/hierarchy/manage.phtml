@@ -1,0 +1,160 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var \Magento\VersionsCms\Block\Adminhtml\Cms\Hierarchy\Manage $block */
+?>
+<div id="cms-hierarchy-manage-container" class="cms-popup" style="display:none;">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-edit-form fieldset-legend"></h4>
+        </div>
+        <div class="content">
+            <div class="cms-popup-description"></div>
+            <div class="fieldset">
+                <div class="cms-hierarchy manage-form">
+                    <?= $block->getFormHtml() ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons-set">
+            <div class="f-right">
+                <button class="scalable cancel_button" type="button" id="cms_popup_cancel" onclick="hideHierarchyDialog()"><span><?= $block->escapeHtml(__('Cancel')) ?></span></button>
+                <button type="button" id="cms_popup_ok"><span></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="popup-window-mask" style="display:none;"></div>
+
+<script>
+    require([
+        "Magento_Ui/js/modal/confirm",
+        "Magento_Ui/js/modal/alert",
+        'prototype'
+    ], function(confirm, alert){
+
+//<![CDATA[
+        function countSelectedScopes()
+        {
+            var selectedScopes = 0;
+
+            for (var i = 0, len = $('scopes').length; i < len; i++) {
+                if ($('scopes').options[i].selected) {
+                    selectedScopes++;
+                }
+            }
+
+            return selectedScopes;
+        }
+
+        function submitCopy(containerObj)
+        {
+            if (!countSelectedScopes()) {
+                alert({
+                    content: <?= /* @noEscape */ json_encode(__("Please select a website or store view.")) ?>
+                });
+
+                return;
+            }
+
+            confirm({
+                content: <?= /* @noEscape */ json_encode(__("Are you sure you want to copy the current hierarchy to the selected destinations?")) ?>,
+                actions: {
+                    confirm: function () {
+                        var form = $$('#cms-hierarchy-manage-container form')[0];
+                        form.action = '<?= $block->escapeUrl($block->getCopyHierarchyUrl()) ?>';
+                        form.submit();
+                        containerObj.hide();
+                    }
+                }
+            });
+        }
+
+        function submitDelete(containerObj)
+        {
+            if (!countSelectedScopes()) {
+                alert({
+                    content: <?= /* @noEscape */ json_encode(__("Please select a website or store view.")) ?>
+                });
+
+                return;
+            }
+
+            confirm({
+                content: <?= /* @noEscape */ json_encode(__("Are you sure you want to delete the selected hierarchies?")) ?>,
+                actions: {
+                    confirm: function () {
+                        var form = $$('#cms-hierarchy-manage-container form')[0];
+                        form.action = '<?= $block->escapeUrl($block->getDeleteHierarchiesUrl()) ?>';
+                        form.submit();
+                        containerObj.hide();
+                    }
+                }
+            });
+        }
+
+        function openHierarchyDialog(action)
+        {
+            var title = '';
+            var buttonText = '';
+            var buttonClass = '';
+            var buttonAction = null;
+            var descriptionText = '';
+            if (action == 'delete') {
+                title = '<?= $block->escapeJs($this->helper('Magento\VersionsCms\Helper\Data')->getDeleteMultipleHierarchiesText()) ?>';
+                buttonText = <?= /* @noEscape */ json_encode(__('Delete')) ?>;
+                buttonClass = 'scalable ok_button delete';
+                buttonAction = submitDelete;
+                descriptionText = <?= /* @noEscape */ json_encode(__('Please select one or more hierarchies to delete.')) ?>;
+            } else if (action == 'copy') {
+                <?php $copyText = json_encode(__('Copy')); ?>
+                title = <?= /* @noEscape */ $copyText ?>;
+                buttonText = <?= /* @noEscape */ $copyText ?>;
+                buttonClass = 'scalable ok_button add';
+                buttonAction = submitCopy;
+                descriptionText = <?= /* @noEscape */ json_encode(__('Please assign the current hierarchy to one or more destinations.')) ?>;
+            } else {
+                return;
+            }
+
+            var popupContainer = $('cms-hierarchy-manage-container');
+            popupContainer.select('.entry-edit-head h4')[0].innerHTML = title;
+            popupContainer.select('.content .cms-popup-description')[0].innerHTML = descriptionText;
+            var popupOkButton = $('cms_popup_ok');
+            popupOkButton.select('span')[0].innerHTML = buttonText;
+            popupOkButton.setAttribute('class', buttonClass);
+            popupOkButton.onclick = function () {
+                buttonAction(popupContainer);
+            };
+
+            popupContainer.show().setStyle({
+                'marginTop': -popupContainer.getDimensions().height / 2 + 'px'
+            });
+            $('popup-window-mask').setStyle({
+                height: $('html-body').getHeight() + 'px'
+            }).show();
+        }
+
+        function hideHierarchyDialog() {
+            for (var i = 0, len = $('scopes').length; i < len; i++) {
+                $('scopes').options[i].selected = false;
+            }
+            $$('.cms-popup').each(Element.hide);
+            $('popup-window-mask').hide();
+        }
+
+        window.hideHierarchyDialog = hideHierarchyDialog;
+        window.openHierarchyDialog = openHierarchyDialog;
+        window.submitDelete = submitDelete;
+        window.submitCopy = submitCopy;
+        window.countSelectedScopes = countSelectedScopes;
+//]]>
+
+    });
+</script>

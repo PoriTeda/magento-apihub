@@ -1,0 +1,32 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * @var \Magento\Sales\Model\Order $_order
+ */
+?>
+<?php $_order = $block->getOrder() ?>
+<?php if ($_order): ?>
+    <?php $_items = $_order->getAllItems(); ?>
+    <?php foreach ($_items as $_item): ?>
+        <?php
+        if ($_item->getParentItem()) {
+            continue;
+        }
+        ?>
+        商品名：<?= $block->escapeHtml($_item->getName()) ?><br>
+        商品価格：<?= /* @escapeNotVerified */  $_order->formatPrice($_item->getPrice()); ?>　<br>
+        有料サービス： <?= /* @escapeNotVerified */  $_order->formatPrice($_item->getGwPrice() * $_item->getQtyOrdered()); ?><br>
+        有料サービス価格：<?= /* @escapeNotVerified */  $_order->formatPrice($_item->getGwTaxAmount() * $_item->getQtyOrdered()); ?><br>
+        数量：<?= /* @escapeNotVerified */  $_item->getQtyOrdered() * 1 ?><br>
+        </br>
+        </br>
+    <?php endforeach; ?>
+<?php endif; ?>

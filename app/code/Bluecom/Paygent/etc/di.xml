@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Bluecom\Paygent\Api\PaygentManagementInterface" type="Bluecom\Paygent\Model\PaygentManagement" />
+
+    <type name="Bluecom\Paygent\Model\ResourceModel\Reauthorize">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Bluecom\Paygent\Model\ResourceModel\PaygentHistory">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Bluecom\Paygent\Model\ResourceModel\Error">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Bluecom\Paygent\Model\ResourceModel\PaygentOption">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\ScalableOms\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="riki_authorization_timing" xsi:type="string">riki_authorization_timing</item>
+                <item name="riki_paygent_history" xsi:type="string">riki_paygent_history</item>
+                <item name="riki_paygent_error_handling" xsi:type="string">riki_paygent_error_handling</item>
+                <item name="riki_paygent_option" xsi:type="string">riki_paygent_option</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Bluecom\Paygent\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Bluecom\Paygent\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">paygentLogger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Bluecom\Paygent\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Payment Method Facade configuration -->
+    <virtualType name="PaygentFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">\Bluecom\Paygent\Model\ConfigProvider::PAYGENT_CODE</argument>
+            <argument name="infoBlockType" xsi:type="string">Bluecom\Paygent\Block\Info</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Configuration reader -->
+    <virtualType name="PaygentConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">\Bluecom\Paygent\Model\ConfigProvider::PAYGENT_CODE</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Bluecom\Paygent\Block\Info">
+        <arguments>
+            <argument name="config" xsi:type="object">PaygentConfig</argument>
+        </arguments>
+    </type>
+
+    <!-- Plugin before excute checkout success page -->
+    <type name="Magento\Checkout\Controller\Onepage\Success">
+        <plugin name="paygent-before-success" type="Bluecom\Paygent\Plugin\Success" sortOrder="10"/>
+    </type>
+
+    <!-- recurring order product faild -->
+    <virtualType name="paygentorderfaildGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Magento\Sales\Model\ResourceModel\Order\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">paygentorderfaildGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="paygent_order_fail_listing_data_source" xsi:type="string">Bluecom\Paygent\Model\ResourceModel\OrderFailed\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Bluecom\Paygent\Model\ResourceModel\OrderFailed\Grid\Collection" type="Bluecom\Paygent\Ui\Component\DataProvider\SearchResult\Items">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">sales_order</argument>
+            <argument name="resourceModel" xsi:type="string">Magento\Sales\Model\ResourceModel\Order</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- paygent error handling -->
+    <virtualType name="paygenterrorGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Bluecom\Paygent\Model\ResourceModel\Error\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">paygenterrorGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Bluecom\Paygent\Model\ResourceModel\Error\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">riki_paygent_error_handling</argument>
+            <argument name="resourceModel" xsi:type="string">Bluecom\Paygent\Model\ResourceModel\Error</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="paygent_error_listing_data_source" xsi:type="string">Bluecom\Paygent\Model\ResourceModel\Error\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Developer\Model\TemplateEngine\Plugin\DebugHints">
+        <arguments>
+            <argument name="debugHintsPath" xsi:type="string">dev/debug/template_hints_admin</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Sales\Model\Order\Payment\Transaction\Repository">
+        <plugin name="paygent_around_transaction_get_list" type="Bluecom\Paygent\Plugin\Transaction\AddSortOrder"/>
+    </type>
+    <type name="Riki\SapIntegration\Helper\Data">
+        <plugin name="paygent_before_get_payment_agent_from_history" type="Bluecom\Paygent\Plugin\GetPaymentAgent"/>
+    </type>
+
+    <type name="Bluecom\Paygent\Logger\IvrLogger">
+        <arguments>
+            <argument name="name" xsi:type="string">PaygentIvrLogger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Bluecom\Paygent\Logger\IvrHandler</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Bluecom\Paygent\Model\Paygent">
+        <arguments>
+            <argument name="paygentHelper" xsi:type="object">Bluecom\Paygent\Helper\Data\Proxy</argument>
+        </arguments>
+    </type>
+</config>

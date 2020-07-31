@@ -1,0 +1,58 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var \Riki\Customer\Block\Account\Info $block */
+$websiteAvailable = $block->getWebsiteList();
+$hasProfile = $block->customerHaveSubscriptionNotHanpukaiAvailable();
+
+?>
+<div class="menu-quicklink">
+    <ul class="quicklink__block">
+        <li><a class="quicklink__block--item" href="<?= $block->getUrl('sales/order/history')?>"><?php echo __('ご注文内容の確認'); ?></a></li>
+        <li class="desktop"><a data-quicklink=1 class="<?php echo !$hasProfile ? "no_order" : "has_order" ?> quicklink__block--item line_two quicklink_subprofile" href="<?= $block->getUrl('subscriptions/profile')?>"><?php echo __('定期お届け便の'); ?><br><?php echo __('ご注文内容の確認'); ?></a></li>
+        <li><a class="quicklink__block--item" href="<?= $block->getUrl('loyalty/reward/')?>"><?php echo __('ショッピングポイントの履歴'); ?></a></li>
+        <li class="mobile" ><a data-quicklink=1 class="<?php echo !$hasProfile ? "no_order" : "has_order" ?> quicklink__block--item line_two quicklink_subprofile" href="<?= $block->getUrl('subscriptions/profile')?>"><?php echo __('定期お届け便の'); ?><br><?php echo __('ご注文内容の確認'); ?></a></li>
+        <li><a id="quicklink-nav" class="quicklink__block--item line_two item--arrow" href="<?= $block->getUrl('menu')?>"><?php echo __('お客様情報の'); ?><br><?php echo __('確認/変更'); ?></a></li>
+    </ul>
+    <div class="menu-quicklink__screen"></div>
+    <div class="menu-quicklink__content">
+        <div class="mob-content--inner">
+            <h2 class="item--arrow">
+                <?php echo __('お客様情報の'); ?><br>
+                <?php echo __('確認/変更'); ?>
+            </h2>
+            <ul>
+                <?php if(!$websiteAvailable) :?>
+                    <?php if(!$block->checkMembership('cc')) :?>
+                        <li><a class="mob-content__menu" href="<?php echo $block->getUrl('customer/account/changeinformation'); ?>"><?php  /* @escapeNotVerified */ echo __("お客様情報を確認・変更する")?></a></li>
+                    <?php endif ?>
+
+                    <?php if( $block->checkMembership('amb')) :?>
+                        <?php if($block->checkMembership('cc')) :?>
+                            <li><a class="mob-content__menu" href="<?php echo $block->getUrl('customer/account/changeinformation'); ?>"><?php  /* @escapeNotVerified */ echo __("お客様情報を確認・変更する")?></a></li>
+                        <?php endif ?>
+                        <li><a class="mob-content__menu" href="<?php echo $block->getSystemConfig('customerksslink/kss_link_edit_customer/kss_company_edit').$block->getCurrentAccountUrl() ?>"><?php  /* @escapeNotVerified */ echo __("会社情報を確認・変更する")?></a></li>
+                    <?php endif ?>
+                <?php endif ?>
+                <li><a class="mob-content__menu" href="<?php echo $block->getSystemConfig('customerksslink/kss_link_edit_customer/kss_customer_change_password') ?>"><?php  /* @escapeNotVerified */ echo __("パスワードを変更する")?></a></li>
+                <li><a class="mob-content__menu" href="<?= $block->getUrl('customer/address/')?>"><?php echo __('お届け先の情報を追加・変更する'); ?></a></li>
+                <li><a class="mob-content__menu" href="<?php echo $block->getSystemConfig('customerksslink/kss_link_edit_customer/kss_machine_register'); ?>"><?php echo __('お持ちのマシンを登録する'); ?></a></li>
+                <li class="mob-content__menu menu-quicklink__close"><?php echo __('閉じる'); ?></li>
+            </ul>
+        </div>
+    </div>
+    <div class="menu-quicklink__backtop"><a title="" href="<?= $block->getUrl('customer/account/')?>"><?php echo __('マイページＴＯＰ'); ?></a></div>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        ".menu-quicklink": {
+            "Magento_Customer/js/quicklink": {}
+        }
+    }
+</script>

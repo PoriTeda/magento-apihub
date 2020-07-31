@@ -1,0 +1,30 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Create account form template
+/* @var $block \Magento\Rma\Block\Form\Renderer\Select */
+?>
+<div class="field <?= $block->getHtmlId() ?><%- data._index_ %><?php if ($block->isRequired()) { echo ' required'; }?>">
+    <label for="items:<?= $block->getHtmlId() ?><%- data._index_ %>" class="label"><span><?= /* @escapeNotVerified */ $block->getLabel() ?></span></label>
+    <div class="control">
+        <select id="items:<?= $block->getHtmlId() ?><%- data._index_ %>" name="items[<%- data._index_ %>][<?= /* @escapeNotVerified */ $block->getFieldName() ?>]"<?php if ($block->getFieldName() == 'reason'): ?> data-args='{"index":<%- data._index_ %>}' <?php endif;?>>
+            <?php foreach ($block->getOptions() as $option):?>
+                <option value="<?= /* @escapeNotVerified */ $option['value'] ?>"<?php if ($option['value'] == $block->getValue()):?> selected="selected"<?php endif;?>><?= $block->escapeHtml($option['label']) ?></option>
+            <?php endforeach;?>
+            <?php if ($block->getFieldName() == 'reason'): ?>
+                <?php $attribute = $block->getAttribute('reason_other'); ?>
+                <?php if ($attribute): ?>
+                    <option value="other"<?php if ($option['value'] == 'other'):?> selected="selected"<?php endif;?>><?= $block->escapeHtml($attribute->getStoreLabel()) ?></option>
+                <?php endif; ?>
+            <?php endif; ?>
+        </select>
+    </div>
+</div>

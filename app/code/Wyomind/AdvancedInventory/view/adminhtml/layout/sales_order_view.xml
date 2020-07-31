@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+ * Copyright © 2016 Wyomind. All rights reserved.
+ * See LICENSE.txt for license details.
+-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link src="Wyomind_AdvancedInventory::js/sales/index.js"/>
+        <link src="Wyomind_AdvancedInventory::css/sales/index.css"/>
+    </head>
+    <body>
+        <referenceBlock name="order_tab_info">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Wyomind_AdvancedInventory::sales/order/view/tab/info.phtml</argument>
+            </action>
+            <block template="Wyomind_AdvancedInventory::assignation/view.phtml" class="Wyomind\AdvancedInventory\Block\Adminhtml\Assignation\View" name="assignation_view"/>
+        </referenceBlock>
+    </body>
+</page>

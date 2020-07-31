@@ -1,0 +1,9 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <loggersetting>
+            <quote_logger>
+                <logger_quote_delete_enable_status>1</logger_quote_delete_enable_status>
+            </quote_logger>
+        </loggersetting>
+    </default>
+</config>

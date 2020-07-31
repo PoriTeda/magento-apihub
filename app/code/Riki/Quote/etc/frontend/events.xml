@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="load_customer_quote_before">
+        <observer name="riki_quote_merge_quote_before" instance="Riki\Quote\Observer\EmptyCart" />
+    </event>
+    <event name="riki_customer_customer_authenticated">
+        <observer name="riki_customer_set_quote_keep_items_flag" instance="Riki\Quote\Observer\SetKeepItemsFlagForQuote" />
+    </event>
+</config>

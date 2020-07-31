@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="paygent">
+        <job name="delay_payment_cancel_authorize" instance="Riki\DelayPayment\Cron\CancelAuthorize" method="execute">
+            <config_path>paygent_config/delay_payment/cron_exp</config_path>
+        </job>
+    </group>
+</config>

@@ -1,0 +1,83 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php $_item = $block->getItem()?>
+<tr>
+    <td class="col product" data-th="<?= $block->escapeHtml(__('Product Name')) ?>">
+    <?php if ($block->hasProductUrl()): ?>
+        <a href="<?= /* @escapeNotVerified */ $block->getProductUrl() ?>" class="product photo product-item-photo" title="<?= $block->escapeHtml($block->getProductName()) ?>">
+    <?php else: ?>
+        <span class="product photo product-item-photo">
+    <?php endif; ?>
+        <?= $block->getImage($block->getProductForThumbnail(), 'cart_page_product_thumbnail')->toHtml() ?>
+    <?php if ($block->hasProductUrl()): ?>
+        </a>
+    <?php else: ?>
+        </span>
+    <?php endif; ?>
+        <div class="product details product-item-details">
+            <strong class="product name product-item-name">
+                <?php if ($block->hasProductUrl()):?>
+                    <a href="<?= /* @escapeNotVerified */ $block->getProductUrl() ?>"><?= $block->escapeHtml($block->getProductName()) ?></a>
+                <?php else: ?>
+                    <?= $block->escapeHtml($block->getProductName()) ?>
+                <?php endif; ?>
+            </strong>
+        <?php if ($_options = $block->getOptionList()):?>
+            <dl class="item-options">
+                <?php foreach ($_options as $_option) : ?>
+                    <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+                    <dt><?= $block->escapeHtml($_option['label']) ?></dt>
+                    <dd<?php if (isset($_formatedOptionValue['full_view'])): ?> class="tooltip wrapper"<?php endif; ?>>
+                        <?= /* @escapeNotVerified */ $_formatedOptionValue['value'] ?>
+                        <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                            <div class="tooltip content">
+                                <dl class="item options">
+                                    <dt><?= $block->escapeHtml($_option['label']) ?></dt>
+                                    <dd><?= $block->escapeHtml($_formatedOptionValue['full_view']) ?></dd>
+                                </dl>
+                            </div>
+                        <?php endif; ?>
+                    </dd>
+                <?php endforeach; ?>
+            </dl>
+        <?php endif;?>
+        </div>
+
+        <?php if ($messages = $block->getMessages()): ?>
+        <?php foreach ($messages as $message): ?>
+            <p class="item message <?= /* @escapeNotVerified */ $message['type'] ?>"><?= /* @escapeNotVerified */ $message['text'] ?></p>
+        <?php endforeach; ?>
+        <?php endif; ?>
+    </td>
+    <td class="col registered" data-th="<?= $block->escapeHtml(__('Requested')) ?>">
+        <?= /* @escapeNotVerified */ $_item->getQty()*1 ?>
+    </td>
+    <td class="col fulfilled" data-th="<?= $block->escapeHtml(__('Fulfilled')) ?>">
+        <?= /* @escapeNotVerified */ $_item->getQtyFulfilled()*1 ?>
+    </td>
+    <td class="col remaining" data-th="<?= $block->escapeHtml(__('Remaining')) ?>">
+        <?= /* @escapeNotVerified */ ($_item->getRemainingQty())*1 ?>
+    </td>
+    <td class="col price" data-th="<?= $block->escapeHtml(__('Unit Price')) ?>">
+        <?= $block->getProductPriceHtml($_item->getProduct()) ?>
+    </td>
+    <td class="col qty" data-th="<?= $block->escapeHtml(__('Qty')) ?>">
+        <?php if ($_item->getRemainingQty() < 1):?>
+            <?= /* @escapeNotVerified */ __('Fulfilled') ?>
+        <?php else:?>
+            <input type="number"
+                   name="items[<?= /* @escapeNotVerified */ $_item->getItemId() ?>][qty]"
+                   value="0"
+                   size="4"
+                   title="<?= /* @escapeNotVerified */ __('Qty') ?>"
+                   class="input-text qty">
+        <?php endif;?>
+    </td>
+</tr>

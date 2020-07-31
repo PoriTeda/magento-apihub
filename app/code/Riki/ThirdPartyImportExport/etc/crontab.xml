@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="riki_bi_export">
+        <job name="export_cvs_order_payment" instance="Riki\ThirdPartyImportExport\Cron\CvsOrderPayment\Export"
+             method="execute">
+            <config_path>csv_order_payment_setup/cvs_order_cron_location/setting_crontab</config_path>
+        </job>
+        <job name="riki_thirdpartyimportexport_order_import" instance="Riki\ThirdPartyImportExport\Cron\Order\Import1"
+             method="execute">
+            <config_path>order_import/scheduler/import</config_path>
+        </job>
+        <job name="exportshipmentdeliverycomplete" instance="Riki\ThirdPartyImportExport\Cron\Shipment\Export"
+             method="execute">
+            <config_path>shipping_delivery_complete/thirdpartyimportex_location/setting_crontab</config_path>
+        </job>
+        <job name="bi_export_product" instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\Product" method="execute">
+            <config_path>di_data_export_setup/data_cron_product/setting_crontab_product</config_path>
+        </job>
+        <job name="bi_export_order" instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\Order" method="execute">
+            <config_path>di_data_export_setup/data_cron_order/setting_crontab</config_path>
+        </job>
+        <job name="bi_export_order_promotion" instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\OrderPromotion"
+             method="execute">
+            <config_path>di_data_export_setup/data_cron_order_promotion/setting_crontab</config_path>
+        </job>
+        <job name="bi_export_gift_wrapping" instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\GiftWrapping"
+             method="execute">
+            <config_path>di_data_export_setup/data_cron_gift_wrapping/setting_crontab</config_path>
+        </job>
+        <job name="bi_export_enquiry" instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\Inquiry" method="execute">
+            <config_path>di_data_export_setup/data_cron_enquiry/setting_crontab</config_path>
+        </job>
+        <job name="bi_export_enquete" instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\Enquete" method="execute">
+            <config_path>di_data_export_setup/data_cron_enquete/setting_crontab</config_path>
+        </job>
+        <job name="bi_export_promotion" instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\Promotion"
+             method="execute">
+            <config_path>di_data_export_setup/data_cron_promotion/setting_crontab</config_path>
+        </job>
+        <job name="bi_export_shipment" instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\Shipment" method="execute">
+            <config_path>di_data_export_setup/data_cron_shipment/setting_crontab</config_path>
+        </job>
+        <job name="bi_export_stock" instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\Stock" method="execute">
+            <config_path>di_data_export_setup/data_cron_stock/setting_crontab</config_path>
+        </job>
+        <job name="bi_export_points" instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\RewardPoint"
+             method="execute">
+            <config_path>di_data_export_setup/data_cron_reward_point/setting_crontab</config_path>
+        </job>
+        <job name="bi_export_fair_seasonal_gift" instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\FairSeasonalGift"
+             method="execute">
+            <config_path>di_data_export_setup/data_cron_fair_seasonal_gift/setting_crontab</config_path>
+        </job>
+        <job name="bi_export_rma_invoice" instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\RmaInvoice"
+             method="execute">
+            <config_path>di_data_export_setup/data_cron_rma_invoice/setting_crontab</config_path>
+        </job>
+        <job name="bi_export_shosha" instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\Shosha" method="execute">
+            <config_path>di_data_export_setup/data_cron_shosha/setting_crontab</config_path>
+        </job>
+        <job name="bi_export_invoice_sale_shipment"
+             instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\InvoiceSaleShipment" method="execute">
+            <config_path>di_data_export_setup/data_cron_invoice_sale_shipment/setting_crontab</config_path>
+        </job>
+        <job name="mm_sales_report1" instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\MmSalesReport"
+             method="execute">
+            <config_path>di_data_export_setup/data_cron_sales_report/setting_crontab1</config_path>
+        </job>
+    </group>
+    <group id="riki_bi_export">
+        <job name="mm_sales_report2" instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\MmSalesReport"
+             method="execute">
+            <config_path>di_data_export_setup/data_cron_sales_report/setting_crontab2</config_path>
+        </job>
+    </group>
+    <group id="riki_bi_export">
+        <job name="mm_sales_report3" instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\MmSalesReport"
+             method="execute">
+            <config_path>di_data_export_setup/data_cron_sales_report/setting_crontab3</config_path>
+        </job>
+    </group>
+    <group id="riki_bi_export_subscription_profile">
+        <job name="bi_export_push_bi_exported_file"
+             instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\PushBiExportedFile" method="execute">
+            <config_path>di_data_export_setup/data_cron_subscription_next_delivery/setting_crontab_file_exported
+            </config_path>
+        </job>
+        <!--<job name="bi_export_subscription_manage_cron" instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\ManageCronBiSubscription" method="execute">
+            <config_path>di_data_export_setup/data_cron_subscription_next_delivery/setting_crontab_consumer</config_path>
+        </job>
+        <job name="bi_export_publish_message_profile" instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\PublishMessageProfile" method="execute">
+            <config_path>di_data_export_setup/data_cron_subscription_next_delivery/setting_crontab</config_path>
+        </job>-->
+        <job name="reconciliation_report" instance="Riki\ThirdPartyImportExport\Cron\Reconciliation\Reconciliation"
+             method="execute">
+            <config_path>reconciliation/data_cron_reconciliation/setting_crontab_reconciliation</config_path>
+        </job>
+    </group>
+    <group id="riki_amuse_export">
+        <job name="product_amuse_export" instance="Riki\ThirdPartyImportExport\Cron\Amuse\Product" method="execute">
+            <config_path>amuse_data_export_setup/product_amuse_export/setting_crontab</config_path>
+        </job>
+    </group>
+    <group id="riki_bi_export_rma">
+        <job name="bi_export_rma" instance="Riki\ThirdPartyImportExport\Cron\ExportToBi\Rma" method="execute">
+            <config_path>di_data_export_setup/data_cron_rma/setting_crontab</config_path>
+        </job>
+    </group>
+</config>

@@ -1,0 +1,257 @@
+<?php
+$arrProduct             = $block->getData("arrProduct");
+$isAllowChangeProduct   = $block->getData("isAllowChangeProduct");
+$allAddress             = $block->getData("allAddress");
+$addressId              = $block->getData("addressId");
+$parentBlock            = $block->getData("parentBlock");
+$isAllowChangeAddress   = $block->getData("isAllowChangeAddress");
+$isAllowChangeQty       = $block->getData("isAllowChangeQty");
+$addressOrder           = $block->getData('addressOrder');
+$deliveryType           = $block->getData("deliveryType");
+$isBtnUpdateAllChangesPressed = $block->getData('isBtnUpdateAllChangesPressed');
+$isHanpukaiSubscription = $block->getData('isHanpukaiSubscription');
+
+?>
+<table class="list-product">
+    <thead>
+    <th class="product-image"><?php echo __("Product image")  ?></th>
+    <th class="product-name"><?php echo __("Product name")  ?></th>
+    <th class="price"><?php echo __("Price")  ?></th>
+    <th class="address" style="display: none"><?php echo __("Address")  ?></th>
+    <th class="qty"><?php echo __("Qty")  ?></th>
+    <th class="qty"><?php echo __("Unit")  ?></th>
+    <th class="action"><?php echo __("Action")  ?></th>
+    </thead>
+
+    <tbody>
+    <?php
+
+    $giftAvailable = $parentBlock->getGiftConfig();
+    $messageAvailable = $parentBlock->getMessageConfig();
+
+    foreach($arrProduct as $arrP):
+        $arrAttribute = null;
+        if($arrP['instance']->getData('gift_wrapping') != null){
+            $arrAttribute = $parentBlock->getAttributeArray($arrP['instance']->getData('gift_wrapping'));
+        }
+
+        if (isset($arrP['gift_message_id']) && $arrP['gift_message_id'] != null){
+            $message = $parentBlock->getMessage($arrP['gift_message_id']);
+        }
+        $productCatId = $arrP['productcat_id'];
+        ?>
+
+        <tr class="tr-product" data-id="<?php echo $arrP['instance']->getId() ?>">
+            <td class = "img-thumbnail-wrapper product-image" data-th="<?php echo __("Product image")  ?>">
+                <span><img class="img-thumbnail" src="<?php echo $parentBlock->getProductImagesProfile($arrP['instance']) ?>" alt="" /></span>
+            </td>
+            <td class="product-name cart table-wrapper" data-th="<?php echo __("Product name")  ?>">
+                <span><?php echo $arrP['name']  ?></span>
+
+                <?php if (!$isBtnUpdateAllChangesPressed && !$isHanpukaiSubscription) : ?>
+                    <?php if(($messageAvailable || $giftAvailable) && ($messageAvailable || isset($arrAttribute))) :?>
+
+                        <a href="#" class="action action-gift <?php if ( (isset($arrP['gw_id']) && $arrP['gw_id'] != 0) || (isset($message) && $message->getData('message')) ) echo '_active' ?>" id="a-action-gift-<?php echo $productCatId; ?>">
+                            <span><?php echo __('Gift options'); ?></span>
+                        </a>
+                        <div class="gift-content <?php if ( (isset($arrP['gw_id']) && $arrP['gw_id'] != 0) || (isset($message) && $message->getData('message')) ) echo '_active' ?>">
+                            <?php if(isset($message) && $message->getData('message')) : ?>
+                                <div class="message-content">
+                                    <span><?php echo __('Message:') . ' ' . $message->getData('message') ?></span>
+                                    <span class="edit-message"></span>
+                                </div>
+                            <?php endif; ?>
+                            <?php if (isset($arrAttribute) && $giftAvailable) : ?>
+                                <div class="gift-wrapping <?php if(isset($message) && $message->getData('message')) echo 'has-message'; ?>">
+                                    <div class="gift-options-title" ><?php echo __('Pick a paper of your choice (optional)'); ?></div>
+                                    <div class="gift-options-content">
+                                        <div class="gift-wrap-img-thumb">
+                                            <input type="radio" id="no-gift-<?php echo $productCatId; ?>" name="gift[<?php echo $addressId  ?>][<?php echo $productCatId; ?>]" value=""/>
+                                            <?php foreach($arrAttribute->getData() as $gift) :  ?>
+                                                <input type="radio" id="gift-<?php echo $productCatId; ?>-<?php echo $gift['wrapping_id']; ?>" name="gift[<?php echo $addressId  ?>][<?php echo $productCatId; ?>]" <?php if (isset($arrP['gw_id']) && $arrP['gw_id'] == $gift['wrapping_id']) echo 'checked' ?> value="<?php echo $gift['wrapping_id']; ?>"/>
+                                                <label class="<?php if (isset($arrP['gw_id']) && $arrP['gw_id'] == $gift['wrapping_id']) echo '_active' ?>" data-show-desc="desc-img-<?php echo $productCatId; ?>-<?php echo $gift['wrapping_id']; ?>" for="gift-<?php echo $productCatId; ?>-<?php echo $gift['wrapping_id']; ?>">
+                                                    <?php if ($gift['image'] != '') : ?>
+                                                        <img
+                                                            src="<?php echo $parentBlock->getMediaBaseUrl() . 'wrapping/' . $gift['image'] ?>"
+                                                            alt="<?php echo $gift['gift_name'] ?>"
+                                                            title="<?php echo $gift['gift_name'] ?>">
+                                                    <?php else : ?>
+                                                        <span class="no-image"></span>
+                                                    <?php endif; ?>
+                                                </label>
+                                            <?php endforeach; ?>
+                                        </div>
+                                        <ul class="gift-wrapping-list">
+                                            <?php foreach($arrAttribute->getData() as $gift) : ?>
+                                                <li id="desc-img-<?php echo $productCatId; ?>-<?php echo $gift['wrapping_id']; ?>" class="gift-wrapping-item <?php if (isset($arrP['gw_id']) && $arrP['gw_id'] == $gift['wrapping_id']) echo '_active' ?>">
+                                                    <div class="gift-wrapping-preview">
+                                                    <span>
+                                                        <?php if ($gift['image'] != '') : ?>
+                                                            <img
+                                                                src="<?php echo $parentBlock->getMediaBaseUrl() . 'wrapping/' . $gift['image'] ?>"
+                                                                alt="<?php echo $gift['gift_name'] ?>"
+                                                                title="<?php echo $gift['gift_name'] ?>">
+                                                        <?php else : ?>
+                                                            <span class="preview-no-image"></span>
+                                                        <?php endif; ?>
+                                                    </span>
+                                                    </div>
+                                                    <div class="gift-wrapping-title">
+                                                        <span class="gift-wrapping-name" ><?php echo $gift['gift_name'] ?></span>
+                                                    <span class="regular-price" data-label="<?php echo __("Price") ?>">
+                                                        <span class="price" ><?php echo $parentBlock->formatCurrency($parentBlock->calTax($gift['base_price'])) ?></span>
+                                                    </span>
+                                                        <button data-remove-gift-wrap="desc-img-<?php echo $productCatId; ?>-<?php echo $gift['wrapping_id']; ?>" data-no-gift="no-gift-<?php echo $productCatId; ?>" type="button" class="action action-remove">
+                                                            <span><?php echo __("Remove") ?></span>
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                            <?php if($messageAvailable) :?>
+                                <div class="gift-message <?php if(isset($message) && $message->getData('message')) echo 'has-message'; ?>">
+                                    <div class="gift-options-title">
+                                        <?php echo __("Gift Message (optional)") ?>
+                                    </div>
+                                    <div class="gift-options-content">
+                                        <fieldset class="fieldset">
+                                            <div class="field">
+                                                <label for="" class="label">
+                                                    <span><?php echo __("To:") ?></span>
+                                                </label>
+                                                <div class="control">
+                                                    <input value="<?php if(isset($message)) echo $message->getData('recipient') ?>" name="giftmessage[<?php echo $addressId  ?>][<?php echo $productCatId; ?>][]"  type="text"  class="input-text">
+                                                </div>
+                                            </div>
+
+                                            <div class="field">
+                                                <label for="" class="label">
+                                                    <span><?php echo __("From:") ?></span>
+                                                </label>
+                                                <div class="control">
+                                                    <input value="<?php if(isset($message)) echo $message->getData('sender') ?>" name="giftmessage[<?php echo $addressId  ?>][<?php echo $productCatId; ?>][]" type="text" id="" class="input-text">
+                                                </div>
+                                            </div>
+                                            <div class="field text">
+                                                <label for="gift-message-whole-message" class="label">
+                                                    <span><?php echo __("Message:") ?></span>
+                                                </label>
+                                                <div class="control">
+                                                    <textarea  name="giftmessage[<?php echo $addressId  ?>][<?php echo $productCatId; ?>][]" id="" class="input-text" rows="5" cols="10" ><?php if(isset($message)) echo $message->getData('message') ?></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="field message-action">
+                                                <a class="cancel-message" href="#"><?php echo __('Cancel'); ?></a>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                <?php else : ?>
+                    <input type="hidden" name="giftmessageid[<?php echo $addressId  ?>][<?php echo $productCatId; ?>]" value="<?php  if (isset($arrP['gift_message_id']) && $arrP['gift_message_id'] != null) echo $arrP['gift_message_id'] ?>">
+                    <br/>
+                    <?php
+                    if (isset($arrP['gw_id']) && $arrP['gw_id'] != null) {
+                        $nameSw = $parentBlock->getAttributeName($arrP['gw_id']);
+                        echo $nameSw;
+                    }
+                    ?>
+                <?php endif; ?>
+                <?php if ($isHanpukaiSubscription && !$isBtnUpdateAllChangesPressed) { ?>
+                    <input type="hidden"  name="gift[<?php echo $addressId  ?>][<?php echo $productCatId  ?>]" value="<?php echo $arrP['gw_id']?>"/>
+                <?php } ?>
+            </td>
+            <td class="price" data-th="<?php echo __("Price")  ?>">
+                <span><?php echo $parentBlock->formatCurrency($arrP['amount']);  ?></span>
+            </td>
+            <td class="address" data-th="<?php echo __("Address")  ?>" style="display: none">
+                <?php if(!$isBtnUpdateAllChangesPressed){ ?>
+                    <select name="address_productcat[<?php echo $productCatId  ?>]" data-val="<?php echo $addressId  ?>" class="can-create-new-address" <?php echo $isAllowChangeAddress ? '' : 'disabled'  ?>>
+                        <?php foreach($allAddress as $_key =>  $_name):  ?>
+                            <option value="<?php echo $_key  ?>" <?php echo $_key === $addressId ? 'selected' : ''  ?>><?php echo $_name['address']  ?></option>
+                        <?php endforeach;
+                        ?>
+                        <?php if($parentBlock->getAppState()->getAreaCode() === "frontend") : ?>
+                            <option value="0" class="add-new-address"><?php echo __("New Address");  ?></option>
+                        <?php endif; ?>
+                    </select>
+                <?php } else { ?>
+                    <?php echo $parentBlock->getCustomerAddressByText($addressId); ?>
+                <?php } ?>
+                <?php /*if ($isHanpukaiSubscription && !$isBtnUpdateAllChangesPressed) { */?><!--
+                    <input type="hidden"  name="address_productcat[<?php /*echo $productCatId  */?>]" value="<?php /*echo $addressId */?>"/>
+                --><?php /*} */?>
+            </td>
+            <td class="qty" data-th="<?php echo __("Qty")  ?>">
+                <!-- This attribute is center -->
+                <input type="hidden" name="productcat_id[<?php echo $addressId  ?>][<?php echo $deliveryType ?>][]" value="<?php echo $productCatId  ?>">
+
+                <?php if('CS' == $arrP['unit_case']) { ?>
+
+                    <!--show qty case-->
+                    <?php if(!$isBtnUpdateAllChangesPressed && !$isHanpukaiSubscription) { ?>
+                        <input type="text" class="qty_case" id="product_cart_id_case_<?php echo $productCatId  ?>" productcartid=<?php echo $productCatId; ?> unitqty="<?php echo $arrP['unit_qty'];?>" name="product_qty_case[<?php echo $productCatId  ?>]" value="<?php echo $arrP['qty'] / $arrP['unit_qty'] ?>" <?php echo $isAllowChangeQty ? '' : 'disabled';  ?>
+                               data-validate="{'validate-item-quantity': {'minAllowed': 1}}"
+                            />
+                    <?php } else { ?>
+                        <?php echo $arrP['qty'] / $arrP['unit_qty']; ?>
+                    <?php } ?>
+
+                    <!--hide real qty-->
+                    <?php if(!$isBtnUpdateAllChangesPressed && !$isHanpukaiSubscription) { ?>
+                        <input style="display: none" id="product_cart_id_<?php echo $productCatId  ?>" type="text" name="product_qty[<?php echo $productCatId  ?>]" value="<?php echo $arrP['qty']  ?>" <?php echo $isAllowChangeQty ? '' : 'disabled';  ?>
+                               data-validate="{'validate-item-quantity': {'minAllowed': 1}}"
+                            />
+                    <?php } else { ?>
+                        <span style="display: none" ><?php echo $arrP['qty']; ?></span>
+                    <?php } ?>
+
+
+                <?php } else { ?>
+
+                    <?php if(!$isBtnUpdateAllChangesPressed && !$isHanpukaiSubscription) { ?>
+                        <input type="text" name="product_qty[<?php echo $productCatId  ?>]" value="<?php echo $arrP['qty']  ?>" <?php echo $isAllowChangeQty ? '' : 'disabled';  ?>
+                               data-validate="{'validate-item-quantity': {'minAllowed': 1}}"
+                            />
+                    <?php } else { ?>
+                        <?php echo $arrP['qty']; ?>
+                    <?php } ?>
+
+                <?php } ?>
+
+                <!-- stock display - 2.3.2 -->
+                <p><?php echo $parentBlock->getStockStatus($arrP['instance']); ?></p>
+            </td>
+            <?php if('CS' == $arrP['unit_case']){ ?>
+                <td data-th="<?php echo __("Unit")  ?>"><?php echo __($arrP['unit_case']); ?>(<?php echo $arrP['unit_qty'].' '.__('EA'); ?>)</td>
+            <?php } else {?>
+                <td data-th="<?php echo __("Unit")  ?>"><?php echo __($arrP['unit_case']); ?></td>
+            <?php }?>
+            <td class="action" data-th="<?php echo __("Action")  ?>">
+                <?php if( $isAllowChangeProduct && !$isBtnUpdateAllChangesPressed && !$isHanpukaiSubscription):  ?>
+                    <a class="delete_btn" href="javascript:void(0);" onclick="deleteProductCart('<?php echo $arrP['productcat_id'] ?>')" ><?php echo __("Delete")  ?></a>
+                <?php endif;  ?>
+            </td>
+        </tr>
+    <?php endforeach;  ?>
+    </tbody>
+</table>
+<script type="text/javascript">
+    require([
+        'jquery',
+        'mage/mage'
+    ], function ($) {
+        'use strict';
+        // check for change
+        $('.qty_case').on('change',function(){productcartid
+            var productcartid = $(this).attr('productcartid');
+            var unitqty = $('#product_cart_id_case_'+productcartid).attr('unitqty');
+            $('#product_cart_id_'+productcartid).val($('#product_cart_id_case_'+productcartid).val() * unitqty);
+        });
+    });
+</script>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Bluecom_Paygent::cron_cancellation" title="Paygent Cancellation Orders" sortOrder="82" />
+                        </resource>
+                    </resource>
+                </resource>
+                <resource id="Magento_Sales::sales">
+                    <resource id="Bluecom_Paygent::orderfailed" title="Recurring order failed" sortOrder="83" />
+                    <resource id="Bluecom_Paygent::paygenterrorhandling" title="Paygent Error Handling" sortOrder="84" />
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

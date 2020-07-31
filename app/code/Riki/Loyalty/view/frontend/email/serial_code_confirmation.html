@@ -1,0 +1,36 @@
+<!--@subject 【ネスレ通販】　シリアルコード登録完了のお知らせ @-->
+{{template config_path="design/email/header_template"}}
+<table>
+    <tr class="email-content">
+            <td>
+            ＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋<br/>
+            ネスレ通販<br/>
+            オンラインショップからのお知らせです。<br/>
+            ＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋<br/>
+            ※このメールは配信停止希望のお客様にもお送りしています。<br/><br/>
+
+            {{var customerName}}<br/><br/>
+
+            シリアルコードの登録が完了いたしました。<br/>
+            【{{var serialCode}}】<br/>
+            ご利用ありがとうございます。<br/>
+            {{var pointIssued}}ポイントを獲得しました。<br/>
+            こちらからご希望の商品をお選びください。<br/><br/>
+
+            パソコンからのご利用はこちら<br/>
+            <a target="_blank" href="https://stagingec.nestle.jp/front/contents/giftcard/spend/3k">https://stagingec.nestle.jp/front/contents/giftcard/spend/3k</a><br/>
+            携帯電話からのご利用はこちら<br/>
+            <a target="_blank" href="https://stagingec.nestle.jp/m/app/catalog/list/search/gca">https://stagingec.nestle.jp/m/app/catalog/list/search/gca</a><br/><br/>
+
+            今後ともネスレ通販 オンラインショップを<br/>
+            よろしくお願いいたします。<br/><br/>
+
+            ※このメールは自動配信メールです。<br/>
+            このメール送信元にご返信いただいてもご対応しかねますのでご了承ください。<br/>
+            このメールにお心当たりのない方、その他ご不明な点がございましたら、<br/>
+            大変お手数ですが、下記のお問い合わせ先までご連絡ください。<br/>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}} <!--footer of template-->

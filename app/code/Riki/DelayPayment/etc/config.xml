@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <paygent_config>
+            <delay_payment>
+                <active>1</active>
+                <enable_logger>1</enable_logger>
+                <cron_exp>*/5 * * * *</cron_exp>
+            </delay_payment>
+        </paygent_config>
+    </default>
+</config>

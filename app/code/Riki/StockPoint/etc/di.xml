@@ -1,0 +1,93 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<preference for="Riki\StockPoint\Api\StockPointRepositoryInterface" type="Riki\StockPoint\Model\StockPointRepository"/>
+	<preference for="Riki\StockPoint\Api\StockPointDeliveryBucketRepositoryInterface" type="Riki\StockPoint\Model\StockPointDeliveryBucketRepository"/>
+	<preference for="Riki\StockPoint\Api\StockPointProfileBucketRepositoryInterface" type="Riki\StockPoint\Model\StockPointProfileBucketRepository"/>
+	<preference for="Riki\StockPoint\Api\Data\StockPointInterface" type="Riki\StockPoint\Model\StockPoint"/>
+	<preference for="Riki\StockPoint\Api\Data\StockPointSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<preference for="Riki\StockPoint\Api\BuildStockPointPostDataInterface" type="Riki\StockPoint\Model\Api\BuildStockPointPostData"/>
+
+	<preference for="Riki\StockPoint\Api\Data\StockPointDeliveryBucketInterface" type="Riki\StockPoint\Model\StockPointDeliveryBucket"/>
+	<preference for="Riki\StockPoint\Api\Data\StockPointDeliveryBucketSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<!-- Stock point profile update data model -->
+	<preference for="Riki\StockPoint\Api\Data\StockPointProfileUpdateInputDataInterface" type="Riki\StockPoint\Model\Api\Data\StockPointProfileUpdateInputData"/>
+	<preference for="Riki\StockPoint\Api\Data\ProfileUpdate\StockpointInputDataInterface" type="Riki\StockPoint\Model\Api\Data\ProfileUpdate\StockpointInputData"/>
+	<type name="Riki\StockPoint\Model\ResourceModel\StockPoint">
+		<arguments>
+			<argument name="connectionName" xsi:type="string">sales</argument>
+		</arguments>
+	</type>
+	<type name="Riki\StockPoint\Model\ResourceModel\StockPointProfileBucket">
+		<arguments>
+			<argument name="connectionName" xsi:type="string">sales</argument>
+		</arguments>
+	</type>
+	<type name="Riki\StockPoint\Model\ResourceModel\StockPointDeliveryBucket">
+		<arguments>
+			<argument name="connectionName" xsi:type="string">sales</argument>
+		</arguments>
+	</type>
+
+	<type name="Magento\ScalableOms\Console\Command\SplitSales">
+		<arguments>
+			<argument name="tables" xsi:type="array">
+				<item name="stock_point" xsi:type="string">stock_point</item>
+				<item name="stock_point_delivery_bucket" xsi:type="string">stock_point_delivery_bucket</item>
+				<item name="stock_point_profile_bucket" xsi:type="string">stock_point_profile_bucket</item>
+			</argument>
+		</arguments>
+	</type>
+    <type name="Magento\Quote\Model\Quote\Item\AbstractItem">
+        <plugin name="rikiStockPointInitDataQuoteItem" type="Riki\StockPoint\Plugin\Quote\Item\AbstractItem\InitStockPointData" />
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="rikiStockPointCopyStockPointDataToOrderItem" type="Riki\StockPoint\Plugin\Quote\Model\Quote\Item\ToOrderItem\CopyStockPointDataToOrderItem"/>
+    </type>
+	<type name="Magento\Bundle\Model\Product\Price">
+		<plugin name="rikiStockPointInitDataBundleItem" type="Riki\StockPoint\Plugin\Bundle\Model\Product\Price\InitStockPointDataBundleItem"/>
+	</type>
+	<type name="Magento\Quote\Model\Quote">
+		<plugin name="rikiStockPointResetStockPointData" type="Riki\StockPoint\Plugin\Quote\Model\Quote\ResetStockPointData"/>
+	</type>
+
+	<!-- log for stock point -->
+	<type name="Riki\StockPoint\Logger\HandlerStockPoint">
+		<arguments>
+			<argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+		</arguments>
+	</type>
+	<type name="Riki\StockPoint\Logger\StockPointLogger">
+		<arguments>
+			<argument name="name" xsi:type="string">StockPointLogger_API</argument>
+			<argument name="handlers"  xsi:type="array">
+				<item name="system" xsi:type="object">Riki\StockPoint\Logger\HandlerStockPoint</item>
+			</argument>
+		</arguments>
+	</type>
+	<!-- end log for stock point -->
+
+	<!-- log for auto-assign stock point -->
+	<type name="Riki\StockPoint\Logger\HandlerAutoAssignStockPoint">
+		<arguments>
+			<argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+		</arguments>
+	</type>
+	<type name="Riki\StockPoint\Logger\AutoAssignStockPointLogger">
+		<arguments>
+			<argument name="name" xsi:type="string">AutoAssignStockPointLogger</argument>
+			<argument name="handlers" xsi:type="array">
+				<item name="system" xsi:type="object">Riki\StockPoint\Logger\HandlerAutoAssignStockPoint</item>
+			</argument>
+		</arguments>
+	</type>
+	<!-- end log for auto-assign stock point -->
+    <preference for="Riki\StockPoint\Api\Data\BucketOrderInterface" type="Riki\StockPoint\Model\Api\Data\BucketOrder"/>
+    <preference for="Riki\StockPoint\Api\Data\BucketOrderProductInterface" type="Riki\StockPoint\Model\Api\Data\BucketOrderProduct"/>
+
+    <preference for="Riki\StockPoint\Api\Data\BucketOrdersInterface" type="Riki\StockPoint\Model\Api\Data\BucketOrders"/>
+    <preference for="Riki\StockPoint\Api\StockPointManagementInterface" type="Riki\StockPoint\Model\Api\StockPointManagement"/>
+
+    <preference for="Riki\StockPoint\Api\Data\DeactivateStockPointResponseInterface" type="\Riki\StockPoint\Model\Api\Data\DeactivateStockPointResponse"/>
+	<preference for="Riki\StockPoint\Api\Data\StopStockPointResponseInterface" type="\Riki\StockPoint\Model\Api\Data\StopStockPointResponse"/>
+
+</config>

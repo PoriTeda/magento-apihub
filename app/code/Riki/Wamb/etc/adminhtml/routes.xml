@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+	<router id="admin">
+		<route frontName="wamb" id="wamb">
+			<module before="Magento_Backend" name="Riki_Wamb"/>
+		</route>
+		<route frontName="riki_wamb" id="riki_wamb">
+			<module before="Magento_Backend" name="Riki_Wamb"/>
+		</route>
+	</router>
+</config>

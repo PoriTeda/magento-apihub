@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <riki_config_back_to_top>
+            <back_to_top_cart>
+                <membership_online>https://shop.nestle.jp/front/contents/top/</membership_online>
+                <membership_online_ambassador>https://shop.nestle.jp/front/contents/ambassador/amb/ec/</membership_online_ambassador>
+                <membership_online_wellness_ambassador>https://shop.nestle.jp/front/contents/top/</membership_online_wellness_ambassador>
+                <membership_online_wellness_ambassador_ambassador>https://shop.nestle.jp/front/contents/top/</membership_online_wellness_ambassador_ambassador>
+            </back_to_top_cart>
+        </riki_config_back_to_top>
+    </default>
+</config>

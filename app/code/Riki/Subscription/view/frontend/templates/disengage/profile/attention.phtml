@@ -1,0 +1,143 @@
+<?php
+/**
+ * @var Riki\Subscription\Block\Disengage\Profile\Attention $block
+ */
+$profile = $block->getProfileDisengagementItem();
+$checkedAttentions = $block->getCheckedAttentions();
+?>
+<div class="fieldset-wrapper customer-subscription-profile">
+    <!-- disengagement header form -->
+    <div class="disengage-header-information">
+        <?php echo $block->getChildHtml('disengagement_navigation');?>
+        <div class="disengage-form-title">
+            <span><?php echo __('Regular flights to cancel');?></span>
+        </div>
+    </div>
+    <div class="customer-subscription-profile">
+        <table class="data table-list-profile">
+            <thead>
+            <tr>
+                <th class="course-name"><?php echo __('Subscription course name');?></th>
+                <th class="course-code"><?php echo __('Subscription course code');?></th>
+                <th class="deliver-to"><?php echo __('Profile final delivery');?></th>
+                <th class="next-delivery-date"><?php echo __('Current disengagement date');?></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr class="selected">
+                    <td class="course-name" data-th="<?php echo __('Subscription course name');?>">
+                        <div class="data">
+                            <?php echo $profile->getCourseName();?>
+                        </div>
+                    </td>
+                    <td class="course-code" data-th="<?php echo __('Subscription course code');?>">
+                        <div class="data">
+                            <?php echo $profile->getCourseCode();?>
+                        </div>
+                    </td>
+                    <td class="deliver-to" data-th="<?php echo __('Profile final delivery');?>">
+                        <div class="data">
+                            <p><?php echo $profile->getData('last_shipment_date');?></p>
+                        </div>
+                    </td>
+                    <td class="next-delivery-date" data-th="<?php echo __('Current disengagement date');?>">
+                        <div class="data">
+                            <p><?php echo $block->getCurrentDisengagementDate();?></p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="precautions">
+            <span><?php echo __('Precautions');?></span>
+        </div>
+    </div>
+    <form action="<?php echo $block->getAttentionValidationUrl();?>"
+          id="form-validate"
+          data-mage-init='{"validation":{}}'
+          method="post" >
+        <div class="disengage-choice-options">
+            <div class="option-title">
+                <span><?php echo __('Please confirm the following precautions and press Next');?></span>
+            </div>
+            <div class="field-element">
+                <input type="checkbox" name="disengagement_agree" id="disengagement_agree" class="required text-field attention-require-option" <?php if($checkedAttentions):?> checked="checked"<?php endif;?>/>
+                <label for="disengagement_agree"><span><?php echo __('I agree to all of the following');?></span></label>
+            </div>
+            <div class="field-element">
+                <input type="checkbox" name="disengagement_contact_info" id="disengagement_contact_info" class="required text-field attention-require-option" <?php if($checkedAttentions):?> checked="checked"<?php endif;?>/>
+                <label for="disengagement_contact_info"><span><?php echo __('For cancellation notification, please contact the person who made the order.');?></span></label>
+            </div>
+            <div class="field-element">
+                <input type="checkbox" name="disengagement_machine" id="disengagement_machine" class="required text-field attention-require-option" <?php if($checkedAttentions):?> checked="checked"<?php endif;?>/>
+                <label for="disengagement_machine" class="red-stright"><span><?php echo __('Customers are responsible for returning coffee machines and tools that need to be returned.');?></span></label>
+            </div>
+            <div class="field-element">
+                <input type="checkbox" name="disengagement_schedule" id="disengagement_schedule" class="required text-field attention-require-option" <?php if($checkedAttentions):?> checked="checked"<?php endif;?>/>
+                <label for="disengagement_schedule"><span><?php echo __('If you subscribe to the scheduled delivery service, the free repair period of the machine is up to 5 years from the date of purchase of the machine, but this will be done when the scheduled delivery service is cancelled. Please note that the warranty extension will expire.');?></span></label>
+            </div>
+        </div>
+        <?php echo $block->getBlockHtml('formkey');?>
+        <div class="actions-toolbar-disengagement">
+            <button type="button" id="back_to_list" title="<?php echo __('Previous Step') ?>">
+                <span><?php echo __('Previous Step') ?></span>
+            </button>
+            <button type="submit" id="submit_to_questionnaire" class="action submit primary" title="<?php echo __('Next Step') ?>" <?php if(!$checkedAttentions):?> disabled="disabled"<?php endif;?>>
+                <span><?php echo __('Next Step') ?></span>
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+    var dataLayer = dataLayer || [];
+    dataLayer.push({
+        'event' : 'UAEvent',
+        'EventCategory' : 'Cancellation',
+        'EventAction' : 'Cancellation - Step2',
+        'EventLabel' : '<?php echo $block->getConsumerDbId();?>',
+        'profileID'  : '<?php echo $block->getProfileDisengagement();?>'
+    });
+</script>
+<script>
+    require([
+        "jquery",
+        'mage/translate',
+        "mage/validation"
+    ], function($)
+    {
+        $('#back_to_list').click(function(){
+            window.location.href = '<?php echo $block->getProfileListUrl();?>';
+        });
+        $('#disengagement_agree').click(function(){
+            if($(this).is(":checked")) {
+                $('#disengagement_contact_info').prop( "checked", true );
+                $('#disengagement_machine').prop( "checked", true );
+                $('#disengagement_schedule').prop( "checked", true );
+            } else {
+                $('#disengagement_contact_info').prop( "checked", false );
+                $('#disengagement_machine').prop( "checked", false );
+                $('#disengagement_schedule').prop( "checked", false );
+            }
+        });
+        $('.attention-require-option').click(function(){
+            if(isCheckAll()) {
+                $('#submit_to_questionnaire').removeAttr('disabled');
+            } else {
+                $('#submit_to_questionnaire').attr("disabled", true);
+            }
+        });
+        function isCheckAll() {
+            var counter = 0;
+            $('.attention-require-option').each(function(){
+                if($(this).is(":checked")) {
+                    counter++
+                }
+            });
+            if(counter == $('.attention-require-option').length) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    });
+</script>

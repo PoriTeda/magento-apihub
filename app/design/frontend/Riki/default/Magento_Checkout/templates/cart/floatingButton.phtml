@@ -1,0 +1,13 @@
+<div class="actions-toolbar-floating">
+    <div class="secondary first">
+        <a data-title="<?php echo __('前に戻る | Go Back to Previous Page') ?>" href="#" class="tracking_floating_button action back" title="<?php echo __("Go back") ?>">
+            <span><?php echo __("Go back") ?></span>
+        </a>
+    </div>
+    <div class="secondary last">
+        <a data-title="<?php echo __('クーポンを利用する | Use Coupon') ?>" href="#" title="<?php echo __("Enter Coupon") ?>" class="tracking_floating_button_coupon action enter-coupon">
+            <span><?php echo __("Enter Coupon") ?></span>
+        </a>
+    </div>
+    <?php echo $this->getChildHtml('checkout.cart.methods.bottom') ?>
+</div>

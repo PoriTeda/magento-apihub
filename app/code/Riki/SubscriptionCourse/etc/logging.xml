@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<logging xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Logging:etc/logging.xsd">
+    <groups>
+        <group name="riki_subscriptioncourse">
+            <label translate="true">Subscription Course</label>
+            <expected_models>
+                <expected_model class="Riki\SubscriptionCourse\Model\Course" />
+            </expected_models>
+            <events>
+                <event controller_action="subscription_course_save" action_alias="save" />
+            </events>
+        </group>
+    </groups>
+</logging>

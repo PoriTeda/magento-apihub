@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Communication/etc/communication.xsd">
+    <topic name="profile.edited.order" request="Riki\Subscription\Api\GenerateOrder\ProfileEmailBuilderInterface">
+        <handler name="profile.edited.order.handler" type="Riki\Subscription\Model\Profile\WebApi\SendMail" method="execute" />
+    </topic>
+
+    <topic name="profile.generate.order" request="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface">
+        <handler name="profile.generate.order.handler" type="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" />
+    </topic>
+    <topic name="a.profile.generate.order" request="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface">
+        <handler name="a.profile.generate.order.handler" type="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" />
+    </topic>
+    <topic name="b.profile.generate.order" request="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface">
+        <handler name="b.profile.generate.order.handler" type="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" />
+    </topic>
+    <topic name="c.profile.generate.order" request="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface">
+        <handler name="c.profile.generate.order.handler" type="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" />
+    </topic>
+    <topic name="d.profile.generate.order" request="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface">
+        <handler name="d.profile.generate.order.handler" type="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" />
+    </topic>
+    <topic name="e.profile.generate.order" request="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface">
+        <handler name="e.profile.generate.order.handler" type="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" />
+    </topic>
+    <topic name="f.profile.generate.order" request="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface">
+        <handler name="f.profile.generate.order.handler" type="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" />
+    </topic>
+    <topic name="g.profile.generate.order" request="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface">
+        <handler name="g.profile.generate.order.handler" type="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" />
+    </topic>
+    <topic name="h.profile.generate.order" request="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface">
+        <handler name="h.profile.generate.order.handler" type="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" />
+    </topic>
+    <topic name="i.profile.generate.order" request="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface">
+        <handler name="i.profile.generate.order.handler" type="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" />
+    </topic>
+    <topic name="j.profile.generate.order" request="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface">
+        <handler name="j.profile.generate.order.handler" type="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" />
+    </topic>
+
+    <topic name="profile.indexer" request="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface">
+        <handler name="profile.indexer.handler" type="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex" method="reindexProfile" />
+    </topic>
+</config>

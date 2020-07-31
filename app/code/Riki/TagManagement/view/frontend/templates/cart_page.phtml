@@ -1,0 +1,26 @@
+<?php
+/**
+ * @var \Riki\TagManagement\Block\CartIndex $block
+ */
+$getItemsCount = $block->getQuote()->getItemsCount();
+$memberShipId = $block->getMemberShipId();
+?>
+<?php if($getItemsCount) : ?>
+    <!--Start google dataLayer tag -->
+    <script type="text/javascript">
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            'event': 'checkout',
+            'membershipID': '<?php echo $memberShipId; ?>',
+            'currencyCode': 'JPY',
+            'checkoutStepName': 'Cart|カート',
+            'ecommerce': {
+                'checkout': {
+                    'actionField': {'step': 1},
+                    'products': [<?php echo $block->getListProductInQuote(); ?>]
+                }
+            }
+        });
+    </script>
+    <!--End google dataLayer tag -->
+<?php endif; ?>

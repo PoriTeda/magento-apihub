@@ -1,0 +1,3 @@
+<?php foreach ($block->getOutOfStocks() as $outOfStock): ?>
+    <?php echo $outOfStock->getData('product_sku') ?>-<?php echo $outOfStock->getData('qty') ?>
+<?php endforeach; ?>

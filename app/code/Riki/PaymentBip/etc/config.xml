@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <invoicedbasedpayment>
+                <active>1</active>
+                <title>InvoicedBasedPayment</title>
+                <order_status>pending_payment</order_status>
+                <instructions></instructions>
+                <payment_action>true</payment_action>
+                <model>Riki\PaymentBip\Model\InvoicedBasedPayment</model>
+                <group>offline</group>
+            </invoicedbasedpayment>
+        </payment>
+    </default>
+</config>

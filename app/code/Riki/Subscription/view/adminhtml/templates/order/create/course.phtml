@@ -1,0 +1,20 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<div class="admin__page-section-title">
+    <span class="title"><?php /* @escapeNotVerified */ echo $block->getHeaderText() ?></span>
+    <?php if($block->getButtonsHtml()): ?>
+        <div class="actions"><?php echo $block->getButtonsHtml() ?></div>
+    <?php endif; ?>
+    <input type="hidden" name="course_id" id="course_id" value="">
+    <input type="hidden" name="frequency_id" id="frequency_id" value="">
+    <input type="hidden" name="product_course_url" id="product_course_url" value="<?php echo $block->getProductCourseUrl() ?>">
+</div>
+<?php echo $block->getChildHtml('', true) ?>

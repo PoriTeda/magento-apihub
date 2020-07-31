@@ -1,0 +1,358 @@
+<?php
+/** @var \Riki\Subscription\Block\Frontend\Profile\Payment\Method\Edit $block */
+$addressId = $block->getAddressIdInProfile();
+$arrProductByAddress = $block->getProductIdOfProfile();
+
+$maxDate = $block->getProfileMaxDeliveryDate();
+$profileData = $block->getProfile();
+$frequencyUnit = $profileData->getFrequencyUnit();
+$nextDeliveryDateCalculationOption = $block->getNextDeliveryDateCalculationOption($profileData->getCourseId());
+/* @var \Riki\StockPoint\Helper\ValidateStockPointProduct $stockPointHelper */
+$stockPointHelper = $this->helper('Riki\StockPoint\Helper\ValidateStockPointProduct');
+$isShowStockPoint = false;
+if ($stockPointHelper->checkProfileExistStockPoint($profileData) && $profileId) {
+    $isShowStockPoint = true;
+}
+
+// Get Calendar Config
+$_checkCalendar = $block->getCalculateDeliveryDate()->getCalendar($addressId, $arrProductByAddress, null, null);
+$allTimeSlot = $block->getAllTimeSlot();
+
+?>
+<div class="admin__scope-old">
+    <div class="admin__fieldset-wrapper opened">
+        <div class="admin__fieldset-wrapper-title">
+            <strong class="title">
+                <?php echo $block->getCourseName() . ' (' . $block->getFrequencyText() . ')' ?>
+            </strong>
+        </div>
+        <div class="admin__fieldset-wrapper-content">
+            <form id="form-submit-profile"
+                  action="<?php echo $block->getSubmitUrl() ?>"
+                  method="post" class="form form-giftregistry-edit validation">
+                <?php echo $block->getBlockHtml('formkey') ?>
+                <input type="hidden" name="id" value="<?php echo $block->getProfileId() ?>">
+                <input type="hidden" name="selected_payment_method"
+                       value="<?php echo $block->getSelectedPaymentMethod() ?>" />
+                <!-- List Payment Method -->
+                <ul class="field profile-edit-payment-method required">
+                    <?php foreach ($block->getAvailablePaymentMethods() as $paymentMethod) : ?>
+                        <li class="control">
+                        <?php if ($paymentMethod['value'] == 'paygent') :?>
+                            <label for="payment_paygent">
+                                <span><?php echo __('Credit Card With Paygent') ?></span><br/>
+                                <?php if (isset($paymentMethod['params']['price'])) : ?>
+                                <div>
+                                    <span><?php echo __('Payment Fee (Tax included)') ?></span>:
+                                    <?php echo $block->formatCurrency($paymentMethod['params']['price']) ?>
+                                </div>
+                                <?php endif; ?>
+                            </label>
+                            <div id="paygent-suboption">
+                                <p class="credit-method">
+                                    <input
+                                        type="radio"
+                                        class="radio"
+                                        data-validate-one-required-by-name="true"
+                                        name="payment_method"
+                                        id="payment_<?php echo $paymentMethod['value'] ?>"
+                                        value="<?php echo $paymentMethod['value'] ?>"
+                                        <?php
+                                            echo $block->getProfilePaymentMethod() == $paymentMethod['value']
+                                                ? 'checked disabled'
+                                                : '';
+                                        ?>
+                                        <?php
+                                            echo $block->getSelectedPaymentMethod() == $paymentMethod['value']
+                                                ? 'checked'
+                                                : '';
+                                        ?>
+                                        <?php echo $block->getProfilePaymentMethod() ? 'disabled' : '' ?>
+                                    />
+                                    <label for="payment_<?php echo $paymentMethod['value'] ?>">
+                                        <?php echo __('Use new credit card (Trigger IVR)') ?>
+                                    </label>
+                                    <button type="submit"
+                                            onclick="return submitForm(this,'form-submit-profile')"
+                                            name="ivr"
+                                            class="action primary save"
+                                            style="display: none"
+                                            id="ivr_now" value="ivr_now"
+                                            title="<?php echo __('IVR Now') ?>">
+                                        <?php echo __('IVR Now') ?>
+                                    </button>
+                                </p>
+                                <p>
+                                    <img alt="cvs-payment-form"
+                                        src="<?php echo $block->getViewFileUrl('images/credit_card_method.png'); ?>"
+                                        alt="<?php echo __('Credit Card With Paygent') ?>" />
+                                </p>
+                            </div>
+                        <?php else : ?>
+                            <input
+                                type="radio"
+                                class="radio"
+                                data-validate-one-required-by-name="true"
+                                name="payment_method"
+                                id="payment_<?php echo $paymentMethod['value'] ?>"
+                                value="<?php echo $paymentMethod['value'] ?>"
+                                <?php
+                                    echo $block->getProfilePaymentMethod() == $paymentMethod['value']
+                                        ? 'checked disabled'
+                                        : '';
+                                ?>
+                                <?php
+                                    echo $block->getSelectedPaymentMethod() == $paymentMethod['value'] ? 'checked' : '';
+                                ?>
+                                <?php
+                                    echo $block->getProfilePaymentMethod() ? 'disabled' : '';
+                                ?>
+                            />
+                            <label for="<?php echo 'payment_'.$paymentMethod['value'] ?>">
+                                <span><?php echo __($paymentMethod['label']); ?></span><br/>
+                                <?php if (isset($paymentMethod['params']['price'])) : ?>
+                                <div>
+                                    <span>
+                                        <?php echo __('Payment Fee (Tax included)') ?>
+                                    </span>:<?php echo $block->formatCurrency($paymentMethod['params']['price']) ?>
+                                </div>
+                                <?php endif; ?>
+                            </label>
+                        <?php endif; ?>
+                        </li>
+                    <?php endforeach; ?> <!-- end foreach payment method -->
+                    <li>
+                        <label for="payment_method"
+                               generated="true"
+                               class="error no-display"
+                               id="payment_method-error">
+
+                        </label>
+                    </li>
+                    <li class="control fields_delivery_date">
+                        <div class="label"><?php echo __('Delivery Date') ?></div>
+                        <div>
+                            <div class="admin__field field field_delivery_date">
+                                <div class="admin__field-control control">
+                                    <input class="admin__control-text required-entry"
+                                           type="text"
+                                           id="delivery_date_new"
+                                           name="delivery_date_new" readonly="readonly">
+                                </div>
+                                <label for="delivery_date_new"
+                                       generated="true"
+                                       class="error no-display"
+                                       id="delivery_date_new-error">
+                                </label>
+                                <div class="admin__field-control control">
+                                    <select class="admin__control-select" name="delivery_timeslot_new">
+                                        <?php foreach ($allTimeSlot as $strTime) :  ?>
+                                            <option value="<?php echo $strTime['value']  ?>" >
+                                                <?php echo $strTime['label']  ?>
+                                            </option>
+                                        <?php endforeach;  ?>
+                                    </select>
+
+                                    <span class="delivery-message"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <?php if (!$block->getProfilePaymentMethod()) : ?>
+                <div class="actions-toolbar" id="payment-method-edit-toolbar">
+                    <div class="action-right">
+                        <button type="submit"
+                            onclick="return submitForm(this,'form-submit-profile')"
+                            value="update" class="action-scalable primary">
+                            <span><?php echo __('Change Method') ?></span>
+                        </button>
+                    </div>
+                </div>
+                <?php endif; ?>
+                
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    require(['jquery', 'mage/translate', 'mage/calendar'], function($, $t) {
+        $(document).ready(function() {
+            $('input[name="payment_method"]').on('change', function() {
+                var selVal = $('input[name="payment_method"]:checked').val();
+                if(selVal == "paygent") {
+                    $('button#ivr_now').show();
+                    $('#payment-method-edit-toolbar').hide();
+                }else {
+                    $('button#ivr_now').hide();
+                    $('#payment-method-edit-toolbar').show();
+                }
+            });
+        });
+        var restrictArray = <?php echo json_encode($_checkCalendar); ?>;
+        var minDate = 0;
+        var maxDate = "<?php echo $maxDate ?>";
+
+        //Calculate min date range
+        var dates = restrictArray.map(function(item) {
+            return new Date(item);
+        });
+
+        var latest = new Date(Math.max.apply(null,dates));
+
+        var minDateRank = 0;
+        minDate = new Date();
+        var oneDay = 1000 * 60 * 60 * 24;
+        var currentDayTmp = new Date(minDate.getTime());
+        var firstDDTmp = new Date(latest.getTime());
+        var differenceMs = Math.abs(currentDayTmp - firstDDTmp);
+        minDateRank = Math.round(differenceMs/oneDay) + 1;
+        minDate.setDate(minDate.getDate() + minDateRank);
+        if( (new Date(minDate).getTime() > new Date(maxDate).getTime())) {
+            maxDate = new Date(minDate);
+            maxDate.setMonth(maxDate.getMonth()+1);
+        }
+
+        var isDayOfWeekAndIntervalUnitMonthAndNotStockPoint = function(unitFrequency, nextDeliveryDateCalculationOption, isStockPoint){
+            if (unitFrequency === 'month' && nextDeliveryDateCalculationOption === 'day_of_week' && !isStockPoint) {
+                return true;
+            }
+
+            return false;
+        };
+
+        var getDayOfWeek = function(date_string) {
+            var d = new Date(date_string);
+            var weekday = new Array(7);
+            weekday[0] = $t('Sunday');
+            weekday[1] = $t('Monday');
+            weekday[2] = $t('Tuesday');
+            weekday[3] = $t('Wednesday');
+            weekday[4] = $t('Thursday');
+            weekday[5] = $t('Friday');
+            weekday[6] = $t('Saturday');
+
+            return weekday[d.getDay()];
+        };
+
+        var calculateNthWeekdayOfMonth = function(date_string){
+            var nthweekdayOfMonth = new Array(5);
+            nthweekdayOfMonth[1] = $t('1st');
+            nthweekdayOfMonth[2] = $t('2nd');
+            nthweekdayOfMonth[3] = $t('3rd');
+            nthweekdayOfMonth[4] = $t('4th');
+            nthweekdayOfMonth[5] = $t('Last');
+
+            if (!isNaN(date_string)) {
+                return nthweekdayOfMonth[date_string];
+            } else {
+                var d = new Date(date_string);
+                return nthweekdayOfMonth[Math.ceil(d.getDate() / 7)];
+            }
+        };
+
+        var getDeliveryMessage = function(deliveryDate, profileNextDeliveryDate, profileDayOfWeek, profileNthWeekdayOfMonth){
+            var deliveryMessage = '',
+                nthWeekdayOfMonth = '',
+                dayOfWeek = '',
+                lang = $('html').attr('lang');
+            if (deliveryDate != '') {
+                if (deliveryDate == profileNextDeliveryDate
+                    && profileNthWeekdayOfMonth != ''
+                    && profileDayOfWeek != ''
+                ) {
+                    nthWeekdayOfMonth = calculateNthWeekdayOfMonth(profileNthWeekdayOfMonth);
+                    dayOfWeek = $t(profileDayOfWeek);
+                } else {
+                    nthWeekdayOfMonth = calculateNthWeekdayOfMonth(deliveryDate);
+                    dayOfWeek = getDayOfWeek(deliveryDate);
+                }
+
+                if (lang == 'ja-JP') {
+                    deliveryMessage = nthWeekdayOfMonth + dayOfWeek + $t('every');
+                } else {
+                    deliveryMessage = $t('every') + ' ' + nthWeekdayOfMonth + ' ' + dayOfWeek;
+                }
+            } else {
+                deliveryMessage += $t('');
+            }
+            return deliveryMessage;
+        };
+
+        var options = {
+            dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            dayNamesMin: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+            monthNames: [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"
+            ],
+            monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            firstDay: 1,
+            closeText: "Close",
+            currentText: "Go Today",
+            prevText: "Previous",
+            nextText: "Next",
+            weekHeader: "WK",
+            timeText: "Time",
+            hourText: "Hour",
+            minuteText: "Minute",
+            dateFormat: "yy-mm-dd",
+            showOn: 'button',
+            buttonText: "",
+            showAnim: "",
+            changeMonth: true,
+            changeYear: true,
+            buttonImageOnly: false,
+            buttonImage: null,
+            showButtonPanel: false,
+            showOtherMonths: true,
+            showWeek: false,
+            timeFormat: '',
+            showTime: false,
+            showHour: false,
+            showMinute: false,
+            minDate: minDate,
+            maxDate: maxDate,
+            onSelect: function(delivery_date){
+                // Show delivery message and next delivery date message
+                // If subscription course setup with Next Delivery Date Calculation Option = "day of the week"
+                // AND interval_unit="month" AND not stock point
+                if (isDayOfWeekAndIntervalUnitMonthAndNotStockPoint("<?php echo $frequencyUnit; ?>", "<?php echo $nextDeliveryDateCalculationOption; ?>", "<?php echo $isShowStockPoint; ?>")) {
+                    var message = getDeliveryMessage(
+                        delivery_date,
+                        "<?php echo $profileData->getData('next_delivery_date'); ?>",
+                        "<?php echo $profileData->getData('day_of_week'); ?>",
+                        "<?php echo $profileData->getData('nth_weekday_of_month'); ?>"
+                    );
+                    $("span.delivery-message").text(message);
+                }
+            }
+        };
+        if($('html').attr('lang') == 'ja-JP') {
+            options.closeText = "閉じる";
+            options.prevText = "&#x3C;前";
+            options.nextText = "次&#x3E;";
+            options.currentText = "今日";
+            options.monthNames = [ "1月","2月","3月","4月","5月","6月",
+                "7月","8月","9月","10月","11月","12月" ];
+            options.monthNamesShort = [ "1月","2月","3月","4月","5月","6月",
+                "7月","8月","9月","10月","11月","12月" ];
+            options.dayNames = [ "日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日" ];
+            options.dayNamesShort = [ "日","月","火","水","木","金","土" ];
+            options.dayNamesMin = [ "日","月","火","水","木","金","土" ];
+            options.weekHeader = "週";
+        }
+        $("#delivery_date_new").datepicker(options);
+        $('.ui-datepicker').addClass('notranslate');
+    })
+</script>

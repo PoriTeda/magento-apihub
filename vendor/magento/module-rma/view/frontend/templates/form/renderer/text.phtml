@@ -1,0 +1,23 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Create account form template
+ */
+/* @var $block \Magento\CustomAttributeManagement\Block\Form\Renderer\Text */
+$elementId = $block->getHtmlId() . '<%- data._index_ %>';
+?>
+<div id="<?= /* @escapeNotVerified */ $elementId ?>" class="field <?= $block->getHtmlId() ?>
+    <?= /* @escapeNotVerified */ $elementId ?><?php if ($block->isRequired()) { echo ' required'; }?>">
+    <label for="items:<?= $block->getHtmlId() ?><%- data._index_ %>" class="label"><span><?= /* @escapeNotVerified */ $block->getLabel() ?></span></label>
+    <div class="control">
+        <input type="text" id="items:<?= $block->getHtmlId() ?><%- data._index_ %>" name="items[<%- data._index_ %>][<?= /* @escapeNotVerified */ $block->getFieldName() ?>]" value="<?= /* @escapeNotVerified */ $block->getEscapedValue() ?>" class="input-text<?= $block->getHtmlClass();?><?= ($block->getFieldName() == 'qty_requested') ? ' check-count' : ''?>">
+    </div>
+</div>

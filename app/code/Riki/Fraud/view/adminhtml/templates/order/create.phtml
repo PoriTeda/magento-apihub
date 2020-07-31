@@ -1,0 +1,11 @@
+<?php
+//@codingStandardsIgnoreFile
+/** @var $block \Riki\Fraud\Block\Adminhtml\Order\Create\Cedyna */
+?>
+
+<script>
+    require(["Magento_Sales/order/create/form"], function(){
+        order.checkCedynaUrl = '<?php echo $block->getCedynaUrl();?>';
+        order.invoicedPayment = '<?php echo $block->getInvoicedPaymentCode();?>';
+    });
+</script>

@@ -1,0 +1,39 @@
+<?php /** @var \Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\Summary $block */ ?>
+<div class="admin__fieldset-wrapper-title">
+    <strong class="title">
+        <span><?php /* @escapeNotVerified */ echo __('Return Summary') ?></span>
+    </strong>
+</div>
+<div class="admin__fieldset-wrapper-content">
+    <fieldset class="admin__fieldset">
+        <div class="admin__field">
+            <label class="admin__field-label" for="refund_allowed">
+                <span><?php /* @escapeNotVerified */ echo __('Refund allowed') ?></span>
+            </label>
+            <div class="admin__field-label" style="width: auto">
+                <select name="refund_allowed" id="refund_allowed" class="required-entry select admin__control-select">
+                    <option value=""></option>
+                    <option value="1" <?php echo $block->getRefundAllowed() === '1' ? 'selected' : '' ?>><?php echo __('Yes') ?></option>
+                    <option value="0" <?php echo $block->getRefundAllowed() === '0' ? 'selected' : '' ?>><?php echo __('No') ?></option>
+                </select>
+            </div>
+        </div>
+        <?php if ($block->getRefundAllowed()): ?>
+            <div class="admin__field">
+                <label class="admin__field-label" for="refund_method">
+                    <span><?php /* @escapeNotVerified */ echo __('Refund method') ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <select name="refund_method" id="refund_method" class="<?php echo $block->getRefundMethods() ? 'required-entry' : ''?> select admin__control-select" <?php echo $block->isAllowedUpdateRefundMethod() ? '' : 'disabled' ?>>
+                        <?php foreach ($block->getRefundMethods() as $value => $label): ?>
+                            <option value="<?php /* @escapeNotVerified */ echo $value; ?>" <?php if ($block->getRma()->getData('refund_method') == $value): echo 'selected';  endif;?>><?php echo $label ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+        <?php endif; ?>
+    </fieldset>
+</div>
+<div class="admin__page-section-item-title">
+    <span class="title <?php echo($block->getParentBlock()->getHeaderCssClass()) ? $block->getParentBlock()->getHeaderCssClass() . ' icon-head' : '' ?>"><?php /* @escapeNotVerified */ echo $block->getParentBlock()->getHeaderText() ?></span>
+</div>

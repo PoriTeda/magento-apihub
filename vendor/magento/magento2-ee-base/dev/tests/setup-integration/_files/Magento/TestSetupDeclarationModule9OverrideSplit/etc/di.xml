@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Required to override split db command configurations with empty table iterators for case when no Magento modules are installed -->
+    <virtualType name="EmptyOmsTableNameArrayIterator" type="Magento\Framework\ForeignKey\Migration\TableNameArrayIterator">
+        <arguments>
+            <argument name="tableNames" xsi:type="array">
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\ScalableOms\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tableIterators" xsi:type="array">
+                <item name="sequenceTableIterator" xsi:type="object">EmptyOmsTableNameArrayIterator</item>
+                <item name="arrayTableNameIterator" xsi:type="object">EmptyOmsTableNameArrayIterator</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\ScalableCheckout\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tableIterators" xsi:type="array">
+                <item name="sequenceTableIterator" xsi:type="object">EmptyOmsTableNameArrayIterator</item>
+                <item name="arrayTableNameIterator" xsi:type="object">EmptyOmsTableNameArrayIterator</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

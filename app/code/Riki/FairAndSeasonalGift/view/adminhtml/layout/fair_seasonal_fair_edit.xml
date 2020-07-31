@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link src="legacy-build.min.js"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Riki\FairAndSeasonalGift\Block\Adminhtml\Fair\Edit" name="fair_seasonal_fair_edit" />
+        </referenceContainer>
+        <referenceContainer name="left">
+            <block class="Riki\FairAndSeasonalGift\Block\Adminhtml\Fair\Edit\Tabs" name="fair_seasonal_tabs">
+                <block class="Riki\FairAndSeasonalGift\Block\Adminhtml\Fair\Edit\Tab\Main" name="fair_seasonal_edit_tab_main"/>
+                <block class="Riki\FairAndSeasonalGift\Block\Adminhtml\Fair\Edit\Tab\Related\Tab" name="fair_seasonal_edit_tab_related" template="Riki_FairAndSeasonalGift::fair/related/tab.phtml">
+                    <block class="Riki\FairAndSeasonalGift\Block\Adminhtml\Fair\Edit\Tab\Related" name="fair_seasonal_edit_tab_related_detail"/>
+                </block>
+                <block class="Riki\FairAndSeasonalGift\Block\Adminhtml\Fair\Edit\Tab\Items\Tab" name="fair_seasonal_edit_tab_item" template="Riki_FairAndSeasonalGift::fair/items/tab.phtml">
+                    <block class="Riki\FairAndSeasonalGift\Block\Adminhtml\Fair\Edit\Tab\Items" name="fair_seasonal_edit_tab_item_detail"/>
+                </block>
+                <block class="Riki\FairAndSeasonalGift\Block\Adminhtml\Fair\Edit\Tab\Recommend\Tab" name="fair_seasonal_edit_tab_recommend" template="Riki_FairAndSeasonalGift::fair/recommend/tab.phtml">
+                    <block class="Riki\FairAndSeasonalGift\Block\Adminhtml\Fair\Edit\Tab\Recommend" name="fair_seasonal_edit_tab_recommend_detail"/>
+                </block>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">main_section</argument>
+                    <argument name="block" xsi:type="string">fair_seasonal_edit_tab_main</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">related_section</argument>
+                    <argument name="block" xsi:type="string">fair_seasonal_edit_tab_related</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">item_section</argument>
+                    <argument name="block" xsi:type="string">fair_seasonal_edit_tab_item</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">recommended_section</argument>
+                    <argument name="block" xsi:type="string">fair_seasonal_edit_tab_recommend</argument>
+                </action>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

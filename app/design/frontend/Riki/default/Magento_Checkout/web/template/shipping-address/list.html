@@ -1,0 +1,78 @@
+<div class="shipping-container block-select-shipping">
+    <div class="shipping-block-title"><span data-bind="i18n: 'Shipping address'"></span></div>
+    <div class="shipping-block-content">
+        <div class="current-address">
+
+            <!-- ko if: (!!addressSelected()) -->
+            <div class="address-name">
+                <div class="info-left">
+                    <span data-bind="i18n: 'Name'"></span>
+                </div>
+                <div class="info-right">
+                    <span data-bind="text: addressSelected().lastname + ' ' + addressSelected().firstname + $t('Mr')"></span>
+                </div>
+            </div>
+            <div class="address-address">
+                <div class="info-left">
+                    <span data-bind="i18n: 'Address'"></span>
+                </div>
+                <div class="info-right">
+                    <span data-bind="text: '〒' + addressSelected().postcode + addressSelected().region +addressSelected().street + (addressSelected().apartment) "></span>
+                </div>
+            </div>
+            <div class="address-telephone">
+                <div class="info-left">
+                    <span data-bind="i18n: 'Phone number'"></span>
+                </div>
+                <div class="info-right">
+                    <span data-bind="text: addressSelected().telephone"></span>
+                </div>
+            </div>
+            <!-- /ko -->
+
+            <!-- ko ifnot: (!!addressSelected()) -->
+            <div data-bind="text: $t('Not define') "></div>
+            <!-- /ko -->
+        </div>
+        <div class="main-actions">
+            <!-- ko if: (visibleEditAddressButton()) -->
+            <button class="action edit-address btn-blue" data-bind="click: function() { editSelectedShippingAddress('edit') }"><span data-bind="i18n: 'Edit address'"></span></button>
+            <!-- /ko -->
+            <button class="action btn-blue" data-bind="click: showSelectShippingAddressPopUp"><span data-bind="i18n: 'Change address'"></span></button>
+            <button class="action action-show-popup action-select-shipping-item btn-blue" data-bind="click: addNewAddress, afterRender: afterRenderAddresses">
+                <span data-bind="i18n: 'Create new address'"></span>
+            </button>
+        </div>
+
+        <div id="opc-select-shipping-address" data-bind="visible: isSelectShippingAddressVisible()">
+            <div>
+                <!-- ko if: (visible)-->
+                <h3 class="title" data-bind="i18n: 'Setting the address'"></h3>
+                <div>
+                    <div class="note" data-bind="i18n: 'Easy Gift As addressee information newly registered / changed at the time of ordering by delivery flight is not displayed in the addressee settings, please register as soon as possible.'"></div>
+                    <label data-bind="i18n: 'The receiver address'"></label>
+                    <div class="field addresses">
+                        <div class="control select-wrapper">
+                            <select name="select-address-from-popup" class="shipping-address-items input-new select-box">
+                                <!-- ko foreach: { data: elems, as: 'element' } -->
+                                <!-- ko template: element.getTemplate() --><!-- /ko -->
+                                <!-- /ko -->
+                            </select>
+                        </div>
+                        <span data-bind="i18n: 'Ship to here'"></span>
+                    </div>
+                </div>
+                <!-- /ko -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+

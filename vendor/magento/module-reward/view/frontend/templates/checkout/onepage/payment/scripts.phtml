@@ -1,0 +1,13 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/* @var $block \Magento\Reward\Block\Checkout\Payment\Additional */
+?>
+<?php if ($block->getCanUseRewardPoints()): ?>
+quoteBaseGrandTotal = <?= (float)$block->getQuote()->getBaseGrandTotal() ?>;
+<?php endif; ?>

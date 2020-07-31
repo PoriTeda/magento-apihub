@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="importstock_email_template"
+              label="Stock importing notifications email"
+              file="import-stock-inv1-notification.txt"
+              type="text"
+              module="Riki_AdvancedInventory"
+              area="frontend"/>
+    <template id="importstock_email_template_stock"
+              label="Stock import email"
+              file="import-stock.txt"
+              type="text"
+              module="Riki_AdvancedInventory"
+              area="frontend"/>
+    <template id="advancedinventory_outofstock_free_gift_email_template" label="Out Of Stock Notification - Free Gift" file="outofstock_free_gift_email_template.txt" type="text" module="Riki_AdvancedInventory" area="frontend" />
+    <template id="advancedinventory_outofstock_authorize_failure_email_template" label="Authorize Out Of Stock Order Failure Notification" file="outofstock_authorize_failure.txt" type="text" module="Riki_AdvancedInventory" area="frontend" />
+</config>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/Event/etc/events.xsd">
+    <event name="order_cancel_after">
+        <observer name="after_cancel_order" instance="Riki\AutomaticallyShipment\Observer\OrderCancelAfter" />
+    </event>
+</config>

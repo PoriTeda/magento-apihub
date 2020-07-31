@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_layout.xsd">
+    <!--
+        Workaround for issues relate to sidebar.main & sidebar.additional
+        Ex: Broken reference: the 'catalog.compare.sidebar' element cannot be added as child to 'sidebar.additional', because the latter doesn't exist
+    -->
+    <container name="sidebar.main" label="Sidebar Main" htmlTag="div"/>
+    <container name="sidebar.additional" label="Sidebar Additional" htmlTag="div"/>
+    <referenceContainer name="sidebar.main" remove="true"/>
+    <referenceContainer name="sidebar.additional" remove="true"/>
+</layout>

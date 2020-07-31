@@ -1,0 +1,63 @@
+<?php /** @var \Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\PointReturn $block */ ?>
+<div class="admin__fieldset-wrapper" data-bind="scope: 'returnPointExpr'">
+    <div class="admin__fieldset-wrapper-title">
+        <strong class="title">
+            <span><?php /* @escapeNotVerified */  echo __('Points to return') ?></span>
+        </strong>
+    </div>
+    <div class="admin__fieldset-wrapper-content">
+        <fieldset class="admin__fieldset">
+            <div class="admin__field" data-bind="scope: 'remainNotRetractablePointExpr'">
+                <label class="admin__field-label">
+                    <span><?php /* @escapeNotVerified */  echo __('Remain of not retractable points') ?></span>
+                </label>
+                <div class="admin__field-label" style="width: auto">
+                    <span data-bind="text: result"></span>
+                </div>
+            </div>
+            <div class="admin__field" data-bind="scope: 'returnPointExpr'">
+                <label class="admin__field-label">
+                    <span><?php /* @escapeNotVerified */  echo __('Points to return before adjustment') ?></span>
+                </label>
+                <div class="admin__field-label" style="width: auto">
+                    <span data-bind="text: z"></span>
+                    <input type="hidden" name="total_return_point" id="total_return_point" data-bind="value: z" />
+                </div>
+            </div>
+            <div class="admin__field">
+                <label class="admin__field-label" for="total_return_point_adj">
+                    <span><?php /* @escapeNotVerified */  echo __('Points to return Adjustment') ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <input class="admin__control-text validate-number" type="text" name="total_return_point_adj" id="total_return_point_adj" data-bind="textInput: y">
+                </div>
+            </div>
+            <div class="admin__field">
+                <label class="admin__field-label">
+                    <span><?php /* @escapeNotVerified */  echo __('Final points to return') ?></span>
+                </label>
+                <div class="admin__field-label" style="width: auto">
+                    <span data-bind="text: result"></span>
+                    <input type="hidden" name="total_return_point_adjusted" id="total_return_point_adjusted"  data-bind="value: result" />
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "remainNotRetractablePointExpr": {
+                        "component": "Riki_Rma/js/view/rma/remain-not-retractable-point-expr"
+                    },
+                    "returnPointExpr": {
+                        "component": "Riki_Rma/js/view/rma/return-point-expr",
+                        "_y": "<?php echo $block->getTotalReturnPointAdj() ?>"
+                    }
+                }
+            }
+        }
+    }
+</script>

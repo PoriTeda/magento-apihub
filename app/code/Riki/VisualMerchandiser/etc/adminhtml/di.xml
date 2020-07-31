@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<preference for="Magento\VisualMerchandiser\Controller\Adminhtml\Category\AddProduct" type="Riki\VisualMerchandiser\Controller\Adminhtml\Category\AddProduct" />
+	<preference for="Magento\VisualMerchandiser\Controller\Adminhtml\Products\MassAssign" type="Riki\VisualMerchandiser\Controller\Adminhtml\Products\MassAssign" />
+	<preference for="Magento\VisualMerchandiser\Controller\Adminhtml\Position\Save" type="Riki\VisualMerchandiser\Controller\Adminhtml\Position\Save" />
+	<preference for="Magento\VisualMerchandiser\Controller\Adminhtml\Position\Get" type="Riki\VisualMerchandiser\Controller\Adminhtml\Position\Get" />
+</config>

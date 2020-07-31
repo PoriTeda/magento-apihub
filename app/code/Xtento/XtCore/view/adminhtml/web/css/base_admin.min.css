@@ -1,0 +1,20 @@
+.admin__menu .parent[data-ui-id^="menu-xtento-"] > a span:before,
+.admin__menu .parent[data-ui-id^="menu-xtento-"] > strong span:before {
+    display: inline-block;
+    background: url(../images/logo-small.png) no-repeat;
+    vertical-align: bottom;
+    width: 16px;
+    height: 21px;
+    margin-right: 8px;
+    content: '';
+}
+
+body[class^="xtento-"] header h1.page-title:before {
+    display: inline-block;
+    background: url(../images/logo-medium.png) no-repeat;
+    vertical-align: top;
+    width: 25px;
+    height: 34px;
+    margin-right: 10px;
+    content: '';
+}

@@ -1,0 +1,39 @@
+<?php
+// @codingStandardsIgnoreFile
+/**  @var $block \Riki\Sales\Block\Order\Info\Buttons*/
+$_order = $block->getOrder();
+$template = $block->getSelectionTemplate($_order);
+$receiptCounter = $_order->getData('receipt_counter');
+?>
+<?php if($template):?>
+<div class="receipt_warning">
+    <span><?php echo __('Issuance of the receipt is valid only once. Please note that it will not be possible to issue again if preview is displayed even once');?></span>
+</div>
+<div data-bind="scope: 'printOrder'">
+    <div class="actions">
+        <a class="action print" id="opener"  data-trigger="authentication" data-bind="click: function(){ printPopup() }">
+            <span><?php /* @escapeNotVerified */ echo __('Print Order') ?></span>
+        </a>
+        <?php //echo $block->getChildHtml(); ?>
+    </div>
+    <!-- ko template: getTemplate() --><!-- /ko -->
+</div>
+<script type="text/x-magento-init">
+        {
+            "*": {
+                "Magento_Ui/js/core/app": {
+                    "components": {
+                        "printOrder": {
+                            "component": "Magento_Sales/js/<?php echo $template;?>",
+                            "template" : "Magento_Sales/<?php echo $template;?>",
+                            "printName" : <?php /* @escapeNotVerified */ echo json_encode($block->getReceiptNamePrint());?>,
+                            "url":"<?php /* @escapeNotVerified */ echo $block->getPrintUrl($_order) ?>"
+                        }
+                    }
+                }
+            }
+        }
+</script>
+<?php else:?>
+    <div data-bind="scope: 'printOrder'"></div>
+<?php endif;?>

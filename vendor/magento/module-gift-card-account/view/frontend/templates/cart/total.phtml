@@ -1,0 +1,46 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+namespace Magento\GiftCardAccount\view\frontend\templates\cart;
+
+use \Magento\GiftCardAccount\Model\Giftcardaccount;
+// @codingStandardsIgnoreFile
+/**
+ * @var \Magento\GiftCardAccount\Block\Checkout\Cart\Total $block
+ */
+$cards = $block->getTotal()->getGiftCards();
+if (!$cards) {
+    $cards = $block->getQuoteGiftCards();
+}
+$title = $block->escapeHtml(__('Remove'));
+?>
+<?php if ($block->getTotal()->getValue()): ?>
+    <?php foreach ($cards as $c): ?>
+        <tr class="totals giftcard">
+            <th colspan="<?= $block->escapeHtml($block->getColspan()) ?>"
+                style="<?= $block->escapeHtml($block->getTotal()->getStyle()) ?>"
+                class="mark" scope="row">
+                <?php $url = $block->escapeUrl($block->getUrl(
+                    'magento_giftcardaccount/cart/remove',
+                    ['code' => $c[Giftcardaccount::CODE]]
+                )); ?>
+                <a href="<?= /* @noEscape */ $url ?>"
+                   title="<?= /* @noEscape */ $title ?>"
+                   class="action delete">
+                    <span><?= /* @noEscape */ $title ?></span>
+                </a>
+                <?= $block->escapeHtml(__('Gift Card (%1)', $c[Giftcardaccount::CODE])) ?>
+            </th>
+            <td style="<?= $block->escapeHtml($block->getTotal()->getStyle()) ?>"
+                class="amount"
+                data-th="<?= $block->escapeHtml(__('Gift Card (%1)', $c[Giftcardaccount::CODE])) ?>">
+            <span class="discount">
+                &#45;<?php /* @noEscape */ echo $this->helper('Magento\Checkout\Helper\Data')
+                    ->formatPrice($c[Giftcardaccount::AMOUNT]); ?>
+            </span>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+<?php endif; ?>

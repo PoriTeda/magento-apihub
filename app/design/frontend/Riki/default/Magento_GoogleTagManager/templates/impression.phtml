@@ -1,0 +1,45 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+?>
+<?php
+/** @var \Magento\GoogleTagManager\Block\ListJson $block */
+$productCollection = $block->getLoadedProductCollection();
+$block->checkCartItems();
+?>
+
+<?php if ($productCollection && count($productCollection) > 0) { ?>
+    <?php
+    $listPosition = 0;
+    if (is_object($productCollection) && $productCollection->getCurPage() > 0) {
+        $position = ($productCollection->getCurPage() - 1) * $productCollection->getPageSize() + 1;
+    } else {
+        $position = 1;
+    }
+    ?>
+    <script>
+        var staticImpressions = staticImpressions || {};
+        staticImpressions['<?php /* @escapeNotVerified */ echo $block->getBlockName() ?>'] = [
+    <?php
+    foreach ($productCollection as $product) {
+        ?>
+            {
+                "id": "<?php /* @escapeNotVerified */ echo $block->escapeJsQuote($product->getSku()) ?>",
+                "type": "<?php /* @escapeNotVerified */ echo $product->getTypeId() ?>",
+                "name": "<?php /* @escapeNotVerified */ echo $block->escapeQuote($product->getName(),true); ?>",
+                "category": "<?php /* @escapeNotVerified */ echo $block->escapeQuote($block->getCurrentCategoryName(),true) ?>",
+                "list": "<?php /* @escapeNotVerified */ echo $block->escapeQuote($block->getCurrentListName(),true) ?>",
+                "position": "<?php /* @escapeNotVerified */ echo $position++ ?>",
+                "listPosition": "<?php /* @escapeNotVerified */ echo $listPosition++ ?>"
+            },
+    <?php
+    }
+    ?>
+        ];
+    </script>
+    <?php
+}

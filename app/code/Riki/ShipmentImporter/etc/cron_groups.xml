@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/cron_groups.xsd">
+    <group id="shipmentimporter1501">
+        <schedule_generate_every>15</schedule_generate_every>
+        <schedule_ahead_for>20</schedule_ahead_for>
+        <schedule_lifetime>15</schedule_lifetime>
+        <history_cleanup_every>10</history_cleanup_every>
+        <history_success_lifetime>60</history_success_lifetime>
+        <history_failure_lifetime>600</history_failure_lifetime>
+        <use_separate_process>1</use_separate_process>
+    </group>
+    <group id="shipmentimporter1601">
+        <schedule_generate_every>15</schedule_generate_every>
+        <schedule_ahead_for>20</schedule_ahead_for>
+        <schedule_lifetime>15</schedule_lifetime>
+        <history_cleanup_every>10</history_cleanup_every>
+        <history_success_lifetime>60</history_success_lifetime>
+        <history_failure_lifetime>600</history_failure_lifetime>
+        <use_separate_process>1</use_separate_process>
+    </group>
+    <group id="shipmentimporter1701">
+        <schedule_generate_every>15</schedule_generate_every>
+        <schedule_ahead_for>20</schedule_ahead_for>
+        <schedule_lifetime>15</schedule_lifetime>
+        <history_cleanup_every>10</history_cleanup_every>
+        <history_success_lifetime>60</history_success_lifetime>
+        <history_failure_lifetime>600</history_failure_lifetime>
+        <use_separate_process>1</use_separate_process>
+    </group>
+    <group id="shipmentimporter1801">
+        <schedule_generate_every>15</schedule_generate_every>
+        <schedule_ahead_for>20</schedule_ahead_for>
+        <schedule_lifetime>15</schedule_lifetime>
+        <history_cleanup_every>10</history_cleanup_every>
+        <history_success_lifetime>60</history_success_lifetime>
+        <history_failure_lifetime>600</history_failure_lifetime>
+        <use_separate_process>1</use_separate_process>
+    </group>
+    <group id="shipmentimporter1901">
+        <schedule_generate_every>15</schedule_generate_every>
+        <schedule_ahead_for>20</schedule_ahead_for>
+        <schedule_lifetime>15</schedule_lifetime>
+        <history_cleanup_every>10</history_cleanup_every>
+        <history_success_lifetime>60</history_success_lifetime>
+        <history_failure_lifetime>600</history_failure_lifetime>
+        <use_separate_process>1</use_separate_process>
+    </group>
+
+    <group id="shipmentimporter1502">
+        <schedule_generate_every>15</schedule_generate_every>
+        <schedule_ahead_for>20</schedule_ahead_for>
+        <schedule_lifetime>15</schedule_lifetime>
+        <history_cleanup_every>10</history_cleanup_every>
+        <history_success_lifetime>60</history_success_lifetime>
+        <history_failure_lifetime>600</history_failure_lifetime>
+        <use_separate_process>1</use_separate_process>
+    </group>
+    <group id="shipmentimporter1602">
+        <schedule_generate_every>15</schedule_generate_every>
+        <schedule_ahead_for>20</schedule_ahead_for>
+        <schedule_lifetime>15</schedule_lifetime>
+        <history_cleanup_every>10</history_cleanup_every>
+        <history_success_lifetime>60</history_success_lifetime>
+        <history_failure_lifetime>600</history_failure_lifetime>
+        <use_separate_process>1</use_separate_process>
+    </group>
+    <group id="shipmentimporter1702">
+        <schedule_generate_every>15</schedule_generate_every>
+        <schedule_ahead_for>20</schedule_ahead_for>
+        <schedule_lifetime>15</schedule_lifetime>
+        <history_cleanup_every>10</history_cleanup_every>
+        <history_success_lifetime>60</history_success_lifetime>
+        <history_failure_lifetime>600</history_failure_lifetime>
+        <use_separate_process>1</use_separate_process>
+    </group>
+    <group id="shipmentimporter1802">
+        <schedule_generate_every>15</schedule_generate_every>
+        <schedule_ahead_for>20</schedule_ahead_for>
+        <schedule_lifetime>15</schedule_lifetime>
+        <history_cleanup_every>10</history_cleanup_every>
+        <history_success_lifetime>60</history_success_lifetime>
+        <history_failure_lifetime>600</history_failure_lifetime>
+        <use_separate_process>1</use_separate_process>
+    </group>
+    <group id="shipmentimporter1902">
+        <schedule_generate_every>15</schedule_generate_every>
+        <schedule_ahead_for>20</schedule_ahead_for>
+        <schedule_lifetime>15</schedule_lifetime>
+        <history_cleanup_every>10</history_cleanup_every>
+        <history_success_lifetime>60</history_success_lifetime>
+        <history_failure_lifetime>600</history_failure_lifetime>
+        <use_separate_process>1</use_separate_process>
+    </group>
+
+    <group id="shipmentimporter1504">
+        <schedule_generate_every>15</schedule_generate_every>
+        <schedule_ahead_for>20</schedule_ahead_for>
+        <schedule_lifetime>15</schedule_lifetime>
+        <history_cleanup_every>10</history_cleanup_every>
+        <history_success_lifetime>60</history_success_lifetime>
+        <history_failure_lifetime>600</history_failure_lifetime>
+        <use_separate_process>1</use_separate_process>
+    </group>
+    <group id="shipmentimporter1604">
+        <schedule_generate_every>15</schedule_generate_every>
+        <schedule_ahead_for>20</schedule_ahead_for>
+        <schedule_lifetime>15</schedule_lifetime>
+        <history_cleanup_every>10</history_cleanup_every>
+        <history_success_lifetime>60</history_success_lifetime>
+        <history_failure_lifetime>600</history_failure_lifetime>
+        <use_separate_process>1</use_separate_process>
+    </group>
+    <group id="shipmentimporter1704">
+        <schedule_generate_every>15</schedule_generate_every>
+        <schedule_ahead_for>20</schedule_ahead_for>
+        <schedule_lifetime>15</schedule_lifetime>
+        <history_cleanup_every>10</history_cleanup_every>
+        <history_success_lifetime>60</history_success_lifetime>
+        <history_failure_lifetime>600</history_failure_lifetime>
+        <use_separate_process>1</use_separate_process>
+    </group>
+    <group id="shipmentimporter1804">
+        <schedule_generate_every>15</schedule_generate_every>
+        <schedule_ahead_for>20</schedule_ahead_for>
+        <schedule_lifetime>15</schedule_lifetime>
+        <history_cleanup_every>10</history_cleanup_every>
+        <history_success_lifetime>60</history_success_lifetime>
+        <history_failure_lifetime>600</history_failure_lifetime>
+        <use_separate_process>1</use_separate_process>
+    </group>
+    <group id="shipmentimporter1904">
+        <schedule_generate_every>15</schedule_generate_every>
+        <schedule_ahead_for>20</schedule_ahead_for>
+        <schedule_lifetime>15</schedule_lifetime>
+        <history_cleanup_every>10</history_cleanup_every>
+        <history_success_lifetime>60</history_success_lifetime>
+        <history_failure_lifetime>600</history_failure_lifetime>
+        <use_separate_process>1</use_separate_process>
+    </group>
+
+    <group id="shipmentimporter1507">
+        <schedule_generate_every>15</schedule_generate_every>
+        <schedule_ahead_for>20</schedule_ahead_for>
+        <schedule_lifetime>15</schedule_lifetime>
+        <history_cleanup_every>10</history_cleanup_every>
+        <history_success_lifetime>60</history_success_lifetime>
+        <history_failure_lifetime>600</history_failure_lifetime>
+        <use_separate_process>1</use_separate_process>
+    </group>
+</config>

@@ -1,0 +1,82 @@
+
+<?php
+/** @var \Riki\Sales\Block\Adminhtml\Order\Info\Buttons\Cancel  $block */
+$reasons = $block->getReason();
+?>
+
+<div id="popup-reason-cancel" class="no-display">
+    <form id="frm-reason-cancel" action="" method="POST">
+        <div class="admin__field field">
+            <label class="admin__field-label">
+                <span><?php echo __('Reason for cancellation') ?></span>
+            </label>
+            <div class="admin__field-control control">
+                <?php if (!empty($reasons)): ?>
+                <select class="admin__control-text required" type="text" name="reasoncancel">
+                    <option value=""><?php echo __('Please select a reason to cancel') ?></option>
+                    <?php foreach ($reasons as $reason):?>
+                        <option value="<?php echo $reason ?>"><?php echo $reason ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <?php endif; ?>
+            </div>
+            <?php if (!$block->isOfflineCustomer()): ?>
+            <div class="admin__field field">
+                <label class="admin__field-label">
+                    <span></span>
+                </label>
+                <div class="admin__field-control control">
+                    <input id="allow_send_cancel_order_email" type="checkbox" value="1" name="allow_send_cancel_order_email" class="admin__control-checkbox">
+                    <label for="allow_send_cancel_order_email" class="admin__field-label">
+                        <span><?php echo __('Notify customer by email checkbox') ?></span>
+                    </label>
+                </div>
+            </div>
+            <?php endif; ?>
+        </div>
+    </form>
+</div>
+
+<script>
+    require([
+            'jquery',
+            'Magento_Ui/js/modal/modal',
+            'mage/translate',
+            'mage/backend/validation'
+        ],
+        function ($, modal) {
+            'use strict';
+            var reasonCancelForm = $('#frm-reason-cancel');
+
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                title: '<?php echo __('Reason Cancel Order') ?>',
+                buttons: [{
+                    text: '<?php echo __('Confirm') ?>',
+                    class: 'confirm-reason-cancel',
+                    click: function () {
+                        if (!reasonCancelForm.valid()) {
+                            return;
+                        }
+
+                        reasonCancelForm.attr('action', $('#order-view-cancel-button').data('url'));
+                        reasonCancelForm.append($('<input>', {
+                            'name': 'form_key',
+                            'value': window.FORM_KEY,
+                            'type': 'hidden'
+                        }));
+                        reasonCancelForm.submit();
+                    }
+                }]
+            };
+
+            var popup = modal(options, $('#popup-reason-cancel'));
+
+            $(document).ready(function () {
+                reasonCancelForm.mage('validation');
+            });
+
+        });
+</script>

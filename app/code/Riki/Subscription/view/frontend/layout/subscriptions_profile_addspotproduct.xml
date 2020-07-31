@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" layout="1column">
+    <body>
+        <referenceContainer name="main.content">
+
+            <referenceBlock name="page.main.title">
+                <action method="setPageTitle">
+                    <argument translate="true" name="title" xsi:type="string">Regular bundled shipping item search</argument>
+                </action>
+            </referenceBlock>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Riki\Subscription\Block\Frontend\Profile\AddSpotProduct" name="subscription_add_spot_product" template="subscription-profile-add-spot-product.phtml">
+                <block class="Magento\Framework\View\Element\Template" name="searchform" as="searchform" template="Riki_Subscription::profile/form.search.phtml" />
+                <block class="Magento\Catalog\Block\Product\ProductList\Toolbar" name="spot_product_list_toolbar" template="Magento_Catalog::product/list/toolbar.phtml">
+                    <block class="Magento\Theme\Block\Html\Pager" name="product_list_toolbar_pager" template="Riki_Subscription::html/pager.phtml"/>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <attribute name="class" value="sales-order-view"/>
+        <referenceContainer name="content">
+            <container htmlTag="div" htmlClass="order-detail-info">
+                <block class="Riki\ThirdPartyImportExport\Block\Order\Info" as="info" name="thirdpartyimportexport.order.info" template="order/info.phtml">
+                    <block class="Riki\ThirdPartyImportExport\Block\Order\Totals" name="order_totals" template="order/payment_total.phtml">
+                        <arguments>
+                            <argument name="label_properties" xsi:type="string">colspan="4" class="mark"</argument>
+                            <argument name="value_properties" xsi:type="string">class="amount"</argument>
+                        </arguments>
+                    </block>
+                </block>
+                <block class="Riki\ThirdPartyImportExport\Block\Order\View" name="thirdpartyimportexport.order.view" cacheable="false">
+                    <block class="Riki\ThirdPartyImportExport\Block\Order\Items" name="order_items" template="order/items.phtml">
+                        <block class="Magento\Framework\View\Element\RendererList" name="thirdpartyimportexport.order.items.renderers" as="renderer.list"/>
+                    </block>
+                </block>
+            </container>
+        </referenceContainer>
+    </body>
+ </page>

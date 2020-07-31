@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_item_collection_load_after">
+        <observer name="riki_sales_order_item_collection_unserialize_fields" instance="Riki\Sales\Model\Observer\OrderItemCollectionUnserializeFields" disabled="true"/>
+    </event>
+    <event name="sales_order_shipment_load_after">
+        <observer name="riki_sales_shipment_unserialize_fields" instance="Riki\Sales\Model\Observer\ShipmentUnserializeFields"/>
+    </event>
+    <event name="sales_model_service_quote_submit_before">
+        <observer name="riki_sales_order_quote_submit_before" instance="Riki\Sales\Observer\QuoteServiceSubmitBefore" />
+        <observer name="riki_sales_validate_shipping_address" instance="Riki\Sales\Observer\ValidateShippingAddressBeforeCreateOrder" />
+    </event>
+    <event name="order_cancel_after">
+        <observer name="riki_ordercancel" instance="Riki\Sales\Observer\AdminOrderCancelAfter" />
+    </event>
+    <event name="sales_quote_product_add_after">
+        <observer name="riki_quote_add_product" instance="Riki\Sales\Observer\QuoteAddedProduct" />
+    </event>
+    <event name="sales_quote_add_item">
+        <observer name="riki_quote_add_item" instance="Riki\Sales\Observer\QuoteAddedItem" />
+    </event>
+    <event name="sales_order_place_before">
+        <observer name="credit_card_only" instance="Riki\Sales\Observer\CheckCreditCardOnly"/>
+        <observer name="riki_sales_order_place_before_block_invoice_order" instance="Riki\Sales\Observer\BlockInvoiceOrder"/>
+    </event>
+    <event name="sales_order_payment_place_end">
+        <observer name="riki_sales_set_default_order_status" instance="Riki\Sales\Observer\SetDefaultOrderStatus"/>
+    </event>
+    <event name="sales_quote_item_set_product">
+        <observer name="riki_sales_sales_quote_item_set_product" instance="Riki\Sales\Observer\SalesQuoteItemSetCustomAttribute"/>
+    </event>
+    <event name="controller_action_predispatch_sales_guest_form">
+        <observer name="riki_sales_controller_action_predispatch_sales_guest_form" instance="Riki\Sales\Observer\SalesGuestFormPreDispatch"/>
+    </event>
+    <event name="sales_order_place_after">
+        <observer name="riki_sales_sales_order_place_after" instance="Riki\Sales\Observer\AddCreatedHistory"/>
+    </event>
+    <event name="riki_rma_process_data_after">
+        <observer name="riki_sales_calculate_return_commission" instance="Riki\Sales\Observer\RikiSalesCalculateReturnCommission"/>
+    </event>
+    <event name="sales_order_item_save_before">
+        <observer name="riki_sales_validate_qty_returned" instance="Riki\Sales\Observer\ValidateOrderItemQtyReturned" />
+    </event>
+</config>

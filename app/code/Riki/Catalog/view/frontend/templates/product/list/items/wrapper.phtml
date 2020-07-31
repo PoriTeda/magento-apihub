@@ -1,0 +1,8 @@
+<?php
+    $upsellContent = $block->getBlockHtml('product.info.upsell');
+    if (trim($upsellContent)) {
+        echo $upsellContent;
+    } else {
+        echo $block->getBlockHtml('product.info.crosssell');
+    }
+?>

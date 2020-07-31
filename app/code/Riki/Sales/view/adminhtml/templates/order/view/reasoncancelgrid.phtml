@@ -1,0 +1,88 @@
+<?php
+    $blockButtonCancel= $block->getLayout()->createBlock('Riki\Sales\Block\Adminhtml\Order\Info\Buttons\Cancel');
+    $listReason = $blockButtonCancel->getReason();
+?>
+<div id="popup-reason-cancel-in-grid" class="no-display">
+    <form id="frm-reason-cancel-in-grid" action="" method="POST">
+        <div class="admin__field field">
+            <label class="admin__field-label">
+                <span>Reason</span>
+            </label>
+            <div class="admin__field-control control">
+                <?php if($listReason):?>
+                    <select class="admin__control-text" data-validate="{required:true}" type="text" name="reasoncancel">
+                        <option value=""><?php echo __('Select '); ?></option>
+                        <?php foreach ($listReason as $reason):?>
+                            <option value="<?php echo $reason ?>"><?php echo $reason ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                <?php endif ?>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    require([
+            'jquery',
+            'Magento_Ui/js/modal/modal',
+            'uiRegistry',
+            'mage/translate',
+            'mage/backend/validation'
+        ],
+        function ($, modal, registry) {
+            'use strict';
+            var reasonCancelForm = $('#frm-reason-cancel-in-grid');
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                title: $.mage.__('Reason Cancel Order'),
+                buttons: [{
+                    text: $.mage.__('Confirm'),
+                    class: 'confirm-reason-cancel',
+                    click: function () {
+                        if (!reasonCancelForm.valid()) {
+                            return;
+                        }
+                        reasonCancelForm.append($('<input>', {
+                            'name': 'form_key',
+                            'value': window.FORM_KEY,
+                            'type': 'hidden'
+                        }));
+                        reasonCancelForm.append($('<input>', {
+                            'name': 'namespace',
+                            'value': 'sales_order_grid',
+                            'type': 'hidden'
+                        }));
+
+                        $.each(registry.get('sales_order_grid.sales_order_grid.sales_order_columns.ids').getSelections().selected, function (index, value) {
+                            reasonCancelForm.append($('<input>', {
+                                'name': 'selected['+index+']',
+                                'value': value,
+                                'type': 'hidden'
+                            }));
+                        });
+
+                        reasonCancelForm.submit();
+                    }
+                }]
+            };
+            var popup = modal(options, $('#popup-reason-cancel-in-grid'));
+
+            $(document).ready(function () {
+                $('body').on('change','.selectActionItem',function(){
+                    var optionValue = $(this).val();
+                    if(optionValue !='cancel'){
+                        window.location.href=optionValue;
+                    }else{
+                        var url    = $('option:selected', this).attr('data-url');
+                        reasonCancelForm.attr('action', url);
+                        reasonCancelForm.mage('validation');
+                        $('#popup-reason-cancel-in-grid').modal('openModal');
+                    }
+                    $(this).prop('selectedIndex',0);
+                })
+            });
+        });
+</script>

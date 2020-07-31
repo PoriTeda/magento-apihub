@@ -1,0 +1,23 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var $block \Magento\Checkout\Block\Cart\Shipping */ ?>
+
+<script>
+    window.checkoutConfig = <?php /* @escapeNotVerified */ echo \Zend_Json::encode($block->getCheckoutConfig()); ?>;
+    window.customerData = window.checkoutConfig.customerData;
+    window.isCustomerLoggedIn = window.checkoutConfig.isCustomerLoggedIn;
+    require([
+        'mage/url',
+        'Magento_Ui/js/block-loader'
+    ], function(url, blockLoader) {
+        blockLoader("<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('images/loader-1.gif'); ?>");
+        return url.setBaseUrl('<?php /* @escapeNotVerified */ echo $block->getBaseUrl();?>');
+    })
+</script>

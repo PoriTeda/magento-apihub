@@ -1,0 +1,88 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/**
+ * Catalog Event category page
+ *
+ * @see \Magento\CatalogEvent\Block\Event\Lister
+ */
+?>
+<div id="<?= $block->getHtmlId() ?>" data-mage-init='{"carousel":{"pageSize": <?= /* @escapeNotVerified */ $block->getPageSize() ?>,scrollSize: <?= /* @escapeNotVerified */ $block->getScrollSize() ?> }}'
+     class="events-slider"<?php if ($block->hasWidth()): ?> style="width:<?= (int)$block->getWidth() ?>px !important;" <?php endif;?>>
+    <div data-slide-button="slide-button" class="slide-button backward">&laquo;</div>
+    <div data-slider-panel="slider-panel"
+         class="slider-panel"<?php if ($block->hasWidth()): ?> style="width:<?= (int)$block->getWidth() ?>px !important;" <?php endif;?>>
+        <ul data-slider="slider" class="slider">
+            <?php foreach ($block->getEvents() as $_event): ?>
+                <?php $_category = $_event->getCategory(); ?>
+                <li data-slider-item="slider-item" class="slider-item">
+                    <div class="event <?= /* @escapeNotVerified */ $_event->getStatus() ?>">
+                        <strong class="status">
+                            <?= /* @escapeNotVerified */ $block->getStatusText($_event) ?>
+                        </strong>
+                        <?php switch ($_event->getStatus()):
+                            case \Magento\CatalogEvent\Model\Event::STATUS_UPCOMING: ?>
+                                <div class="event-dates">
+                                    <p class="start">
+                                        <strong class="date-part"><?= /* @escapeNotVerified */ $block->getEventDate('start', $_event) ?></strong>
+                                        <span class="time-part"><?= /* @escapeNotVerified */ $block->getEventTime('start', $_event, 'hh a zzz') ?></span>
+                                    </p>
+                                    <p class="end">
+                                        <span class="delimiter-part">-</span>
+                                        <strong class="date-part"><?= /* @escapeNotVerified */ $block->getEventDate('end', $_event) ?></strong>
+                                        <span class="time-part"><?= /* @escapeNotVerified */ $block->getEventTime('end', $_event, 'hh a zzz') ?></span>
+                                    </p>
+                                </div>
+                                <a class="event-button button" href="<?= /* @escapeNotVerified */ $block->getCategoryUrl($_category) ?>"><span><?= /* @escapeNotVerified */ __('Preview Sale') ?></span></a>
+
+
+                                <?php break;
+                            case \Magento\CatalogEvent\Model\Event::STATUS_OPEN: ?>
+                                <div class="event-ticker" id="<?= $block->getHtmlId() ?>-event-ticker-<?= /* @escapeNotVerified */ $_event->getId() ?>" data-mage-init='{"ticker":{"secondsToClose": <?= /* @escapeNotVerified */ $block->getSecondsToClose($_event) ?>, "eventEndTimeUTC": <?= /* @noEscape */ $block->getEndTimeUTC($_event) ?>}}'>
+                                    <div class="container">
+                                        <span data-container="days" class="days">00</span><span data-container="delimiter" class="delimiter">:</span><span data-container="hour" class="hour">00</span><span data-container="delimiter" class="delimiter">:</span><span data-container="minute" class="minute">00</span><span data-container="delimiter" class="delimiter">:</span><span data-container="second" class="second">00</span>
+                                    </div>
+                                </div>
+                                <a class="event-button button" href="<?= /* @escapeNotVerified */ $block->getCategoryUrl($_category) ?>"><span><?= /* @escapeNotVerified */ __('Go To Sale') ?></span></a>
+
+
+                                <?php break;
+                            case \Magento\CatalogEvent\Model\Event::STATUS_CLOSED: ?>
+                                <div class="event-dates">
+                                    <p class="start">
+                                        <strong class="date-part"><?= /* @escapeNotVerified */ $block->getEventDate('start', $_event) ?></strong>
+                                        <span class="time-part"><?= /* @escapeNotVerified */ $block->getEventTime('start', $_event, 'hh a zzz') ?></span>
+                                    </p>
+                                    <p class="end">
+                                        <span class="delimiter-part">-</span>
+                                        <strong class="date-part"><?= /* @escapeNotVerified */ $block->getEventDate('end', $_event) ?></strong>
+                                        <span class="time-part"><?= /* @escapeNotVerified */ $block->getEventTime('end', $_event, 'hh a zzz') ?></span>
+                                    </p>
+                                </div>
+                                <a class="event-button" href="<?= /* @escapeNotVerified */ $block->getCategoryUrl($_category) ?>"><span><?= /* @escapeNotVerified */ __('View Sale') ?></span></a>
+
+
+                                <?php break; ?>
+                            <?php endswitch; ?>
+                        <div class="event-bottom"></div>
+                    </div>
+                    <div class="category-info">
+                        <a class="category-show" href="<?= /* @escapeNotVerified */ $block->getCategoryUrl($_category) ?>" title="<?= $block->escapeHtml($_category->getName()) ?>">
+                            <?php if ($block->getEventImageUrl($_event)): ?>
+                                <img src="<?= /* @escapeNotVerified */ $block->getEventImageUrl($_event) ?>" title="<?= $block->escapeHtml($_category->getName()) ?>" alt="<?= $block->escapeHtml($_category->getName()) ?>" />
+                            <?php else: ?>
+                                <span class="category-name"><?= $block->escapeHtml($_category->getName()) ?></span>
+                            <?php endif; ?>
+                        </a>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+    <div data-slide-button="slide-button" class="slide-button inactive forward">&raquo;</div>
+</div>

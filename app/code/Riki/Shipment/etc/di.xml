@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="ShipmentFixerCommand" xsi:type="object">Riki\Shipment\Command\ShipmentFixer</item>
+                <item name="OrderFixerCommand" xsi:type="object">Riki\Shipment\Command\OrderFixer</item>
+                <item name="OrderUpdateCommand" xsi:type="object">Riki\Shipment\Command\OrderUpdate</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="ShipmentGridAggregator" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="joins" xsi:type="array">
+                <item name="subscription_profile" xsi:type="array">
+                    <item name="table" xsi:type="string">subscription_profile</item>
+                    <item name="origin_column" xsi:type="string">subscription_profile_id</item>
+                    <item name="target_column" xsi:type="string">course_id</item>
+                </item>
+                <item name="shipment_sap_flag" xsi:type="array">
+                    <item name="table" xsi:type="string">riki_shipment_sap_exported</item>
+                    <item name="origin_column" xsi:type="string">entity_id</item>
+                    <item name="target_column" xsi:type="string">shipment_entity_id</item>
+                </item>
+            </argument>
+            <argument name="columns" xsi:type="array">
+                <!--additional fields-->
+                <item name="shipment_date" xsi:type="string">sales_shipment.shipment_date</item>
+                <item name="payment_status" xsi:type="string">sales_shipment.payment_status</item>
+                <item name="payment_date" xsi:type="string">sales_shipment.payment_date</item>
+                <item name="export_date" xsi:type="string">sales_shipment.export_date</item>
+                <item name="delivery_date" xsi:type="string">sales_shipment.delivery_date</item>
+                <item name="is_exported_sap" xsi:type="string">shipment_sap_flag.is_exported_sap</item>
+                <item name="export_sap_date" xsi:type="string">shipment_sap_flag.export_sap_date</item>
+                <item name="amount_total" xsi:type="string">sales_shipment.amount_total</item>
+                <item name="amount_collected" xsi:type="string">sales_shipment.amount_collected</item>
+                <item name="customer_membership" xsi:type="string">sales_order.customer_membership</item>
+                <item name="created_by" xsi:type="string">sales_order.created_by</item>
+                <item name="shosha_business_code" xsi:type="string">sales_order.shosha_business_code</item>
+                <item name="mm_order_id" xsi:type="string">sales_order.mm_order_id</item>
+                <item name="free_of_charge" xsi:type="string">sales_order.free_of_charge</item>
+                <item name="payment_agent" xsi:type="string">sales_order.payment_agent</item>
+                <item name="warehouse" xsi:type="string">sales_shipment.warehouse</item>
+                <item name="payment_transaction_id" xsi:type="string">sales_order_payment.cc_trans_id</item>
+                <item name="subscription_course_id" xsi:type="string">subscription_profile.course_id</item>
+                <item name="subscription_course_name" xsi:type="string">subscription_profile.course_name</item>
+                <item name="shipped_out_date" xsi:type="string">sales_shipment.shipped_out_date</item>
+                <item name="shipping_name_kana" xsi:type="object">ShippingNameKanaAggregator</item>
+                <item name="delivery_complete_date" xsi:type="string">sales_shipment.delivery_complete_date</item>
+                <item name="delivery_type" xsi:type="string">sales_shipment.delivery_type</item>
+                <item name="grand_total" xsi:type="string">sales_shipment.grand_total</item>
+                <item name="billing_address" xsi:type="object">RikiBillingAddressAggregator</item>
+                <item name="shipping_address" xsi:type="object">RikiShippingAddressAggregator</item>
+                <item name="shipping_name" xsi:type="string">sales_shipment.shipping_address_name</item>
+                <item name="shipment_fee" xsi:type="string">sales_shipment.shipment_fee</item>
+                <item name="total_case_qty" xsi:type="string">sales_shipment.total_case_qty</item>
+                <item name="stock_point_delivery_bucket_id" xsi:type="string">sales_shipment.stock_point_delivery_bucket_id</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Sales\Model\Order\Shipment">
+        <plugin name="rikiShipmentAfterLoad" type="Riki\Shipment\Model\Plugin\AfterLoadShipment"/>
+    </type>
+    <type name="Riki\Shipment\Model\ResourceModel\ShipmentGrid">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Sales\Model\Order\Shipment\Item">
+        <plugin name="riki_shipment_model_shipment_item" type="Riki\Shipment\Plugin\Shipment\Model\Item" sortOrder="10" />
+    </type>
+    <type name="Magento\Sales\Model\Order">
+        <plugin name="riki_shipment_model_order_correct_status" type="Riki\Shipment\Plugin\Sales\Model\Order" />
+    </type>
+    <virtualType name="ShippingNameKanaAggregator" type="Magento\Framework\DB\Sql\ConcatExpression">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="lastnamekana" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_shipping_address</item>
+                    <item name="columnName" xsi:type="string">lastnamekana</item>
+                </item>
+                <item name="firstnamekana" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_shipping_address</item>
+                    <item name="columnName" xsi:type="string">firstnamekana</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+
+    <preference for="Magento\Shipping\Model\Order\Track"
+                type="Riki\Shipment\Model\Order\Track"/>
+
+    <preference for="Magento\Shipping\Controller\Adminhtml\Order\Shipment\Email"
+                type="Riki\Shipment\Controller\Adminhtml\Order\Shipment\Email"/>
+
+    <virtualType name="RikiBillingAddressAggregator" type="Magento\Framework\DB\Sql\ConcatExpression">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="street" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_billing_address</item>
+                    <item name="columnName" xsi:type="string">street</item>
+                </item>
+                <item name="region" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_billing_address</item>
+                    <item name="columnName" xsi:type="string">region</item>
+                </item>
+                <item name="postcode" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_billing_address</item>
+                    <item name="columnName" xsi:type="string">postcode</item>
+                </item>
+            </argument>
+            <argument name="separator" xsi:type="string">, </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="RikiShippingAddressAggregator" type="Magento\Framework\DB\Sql\ConcatExpression">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="street" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_shipping_address</item>
+                    <item name="columnName" xsi:type="string">street</item>
+                </item>
+                <item name="region" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_shipping_address</item>
+                    <item name="columnName" xsi:type="string">region</item>
+                </item>
+                <item name="postcode" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_shipping_address</item>
+                    <item name="columnName" xsi:type="string">postcode</item>
+                </item>
+            </argument>
+            <argument name="separator" xsi:type="string">, </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\MessageQueue\MergerFactory">
+        <arguments>
+            <argument name="mergers" xsi:type="array">
+                <item name="generateOrderShipments" xsi:type="string">\Riki\Shipment\Model\Order\Merger</item>
+            </argument>
+        </arguments>
+    </type>
+    <preference for="Riki\Shipment\Api\ShipmentBuilder\ProfileBuilderInterface" type="Riki\Shipment\Model\Order\ShipmentBuilder\ProfileBuilder" />
+    <preference for="Riki\Shipment\Api\ShipmentBuilder\ProfileOrderInterface" type="Riki\Shipment\Model\Order\ShipmentBuilder\ProfileOrder" />
+
+    <type name="Riki\Shipment\Logger\LoggerPublishMessage">
+        <arguments>
+            <argument name="name" xsi:type="string">Riki Shipment Publish Message</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Shipment\Logger\HandlerShipmentPublishMessage</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\Shipment\Logger\Update">
+        <arguments>
+            <argument name="name" xsi:type="string">Riki Shipment Update</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Shipment\Logger\Handler\Update</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

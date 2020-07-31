@@ -1,0 +1,53 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div id="sidebar-cc">
+    <div class="opc-single-sub">
+        <div id="opc-sidebar">
+
+            <div class="opc-sub-title" data-bind="i18n: 'ご注文金額'"></div>
+
+
+            <!-- ko foreach: getRegion('summary') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+
+            <div class="opc-block-shipping-information">
+                <!-- ko foreach: getRegion('shipping-information') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+                <!--/ko-->
+            </div>
+
+            <div class="opc-discount">
+                <div class="opc-block-summary opc-block-summary-plus">
+                    <table class="data table table-totals">
+                        <tbody>
+                        <tr class="grand totals incl">
+                            <th class="mark" scope="row"><strong data-bind="i18n: 'Total (Tax included)'"></strong></th>
+                            <td class="amount" data-bind="text: getValueGrandTotal()"></td>
+                        </tr>
+                        <tr class="point-earn totals incl">
+                            <th class="mark" scope="row"><strong data-bind="i18n: 'Points to be earned'"></strong></th>
+                            <td class="amount"><span data-bind="text: getValueEarnPoint()"></span><span data-bind="i18n: 'point'"></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="opc-sub-title" data-bind="i18n: 'Coupon/Promotion'" data-role="title"></div>
+                <div class="coupon-code-detail">
+                    <!-- ko if : getPromotionDetail() != '' -->
+                    <span data-bind="html: getPromotionDetail()"></span>
+                    <!-- /ko -->
+
+                    <!-- ko if: getPromotionDetail() == '' -->
+                    <span data-bind="i18n: 'None'"></span>
+                    <!-- /ko -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+?>
+<?php $redirectUrl = $block->getUrl('worldpay/resultcontroller?type=' . $block->getRedirectType()); ?>
+<html>
+<meta http-equiv="refresh"
+      content="<?= $block->escapeHtml($block->getDelayTime()) ?>; URL=<?= $block->escapeUrl($redirectUrl) ?>">
+<body>
+<div class="page-head">
+    <h3><?= $block->escapeHtml(__($block->getRedirectMessage())) ?></h3>
+</div>
+<p>
+    <?= $block->escapeHtml(__('Please click ')) ?>
+    <a href="<?= $block->escapeUrl($redirectUrl) ?>">
+        <?= $block->escapeHtml(__('here')) ?>
+    </a>
+    <?= $block->escapeHtml(__(' if you are not redirected automatically.')) ?>
+</p>
+</body>
+</html>

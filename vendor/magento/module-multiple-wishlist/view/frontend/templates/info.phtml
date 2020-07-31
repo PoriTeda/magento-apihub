@@ -1,0 +1,67 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<?php
+    $wishlistItems = $block->getWishlistItems();
+?>
+
+<div class="block block-wishlist-info">
+    <div class="actions">
+        <?= ($block->getChildHtml('wishlist.rss.link')) ?>
+    </div>
+    <div class="block-content">
+        <dl class="items">
+            <dt class="item-title">
+                <?= /* @escapeNotVerified */ __('Owner') ?>
+            </dt>
+            <dd class="item-content">
+                <?= $block->escapeHtml($block->getWishlistOwner()->getName()) ?>
+            </dd>
+            <dt class="item-title">
+                <?= /* @escapeNotVerified */ __('Name') ?>
+            </dt>
+            <dd class="item-content">
+                <?= $block->escapeHtml($block->getWishlistInstance()->getName()) ?>
+            </dd>
+            <dt class="item-title">
+                <?= /* @escapeNotVerified */ __('Updated') ?>
+            </dt>
+            <dd class="item-content">
+                <?= /* @escapeNotVerified */ $block->formatDate($block->getWishlistInstance()->getUpdatedAt(), \IntlDateFormatter::MEDIUM) ?>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="block block-wishlist-info-items">
+    <div class="block-title">
+        <strong><?= /* @escapeNotVerified */ __('Wish List Items') ?></strong>
+    </div>
+    <div class="block-content">
+        <form method="post" action="<?= /* @escapeNotVerified */ $block->getToCartUrl() ?>" id="wishlist-info-form"
+              data-mage-init='{"wishlist":{
+          "infoList":true,
+          "checkBoxValidationMessage":"<?= /* @escapeNotVerified */ __('You must select items to add to the cart.') ?>"}
+          }' class="form wishlist">
+            <?php $block->getChildBlock('items')->setItems($block->getWishlistItems()); ?>
+            <?= $block->getChildHtml('items') ?>
+            <?php if (count($wishlistItems) && $block->isSaleable()): ?>
+                <div class="actions-toolbar">
+                    <div class="primary">
+                        <button type="submit" title="<?= /* @escapeNotVerified */ __('Add to Cart') ?>" class="action tocart"><span><?= /* @escapeNotVerified */ __('Add to Cart') ?></span></button>
+                    </div>
+                    <div class="secondary">
+                        <a href="<?= /* @escapeNotVerified */ $block->getBackUrl() ?>" class="action back"><span><?= /* @escapeNotVerified */ __('Back') ?></span></a>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+# Copyright © Magento, Inc. All rights reserved.
+# See COPYING.txt for license details.
+
+type GiftCardProduct implements ProductInterface, PhysicalProductInterface, CustomizableProductInterface @doc(description: "GiftCardProduct defines properties of a gift card, including the minimum and maximum values and an array that contains the current and past values on the specific gift card") {
+    giftcard_amounts: [GiftCardAmounts] @doc(description: "An array that contains information about the values and ID of a gift card.")
+    allow_open_amount: Boolean @doc(description: "Indicates whether customers have the ability to set the value of the gift card.")
+    open_amount_min: Float @doc(description: "The minimum acceptable value of an open amount gift card.")
+    open_amount_max: Float @doc(description: "The minimum acceptable value of an open amount gift card.")
+    giftcard_type: GiftCardTypeEnum @doc(description: "Either VIRTUAL, PHYSICAL, or COMBINED.") @resolver(class: "Magento\\GiftCardGraphQl\\Model\\Resolver\\Product\\GiftCard")
+    is_redeemable: Boolean @doc(description: "Indicates whether the customer can redeem the value on the card for cash.") @resolver(class: "Magento\\GiftCardGraphQl\\Model\\Resolver\\Product\\ConfigAttributes")
+    lifetime: Int @doc(description: "The number of days after purchase until the gift card expires. A null value means there is no limit.") @resolver(class: "Magento\\GiftCardGraphQl\\Model\\Resolver\\Product\\ConfigAttributes")
+    allow_message: Boolean @doc(description: "Indicates whether the customer can provide a message to accompany the gift card.") @resolver(class: "Magento\\GiftCardGraphQl\\Model\\Resolver\\Product\\ConfigAttributes")
+    message_max_length: Int @doc(description: "Indicates whether the customer can provide a message to accompany the gift card.") @resolver(class: "Magento\\GiftCardGraphQl\\Model\\Resolver\\Product\\MessageMaxLength")
+}
+
+type GiftCardAmounts @doc(description: "GiftCardAmounts contains the value of a gift card, the website that generated the card, and related information") {
+    value_id: Int @doc(description: "An ID that is assigned to each unique gift card amount.")
+    website_id: Int @doc(description: "ID of the website that generated the gift card")
+    value: Float @doc(description: "The value of the gift card")
+    attribute_id: Int @doc(description: "An internal attribute ID.")
+    website_value: Float @doc(description: "The value of the gift card")
+}
+
+enum GiftCardTypeEnum @doc(description: "This enumeration defines the types of gift cards") {
+     VIRTUAL
+     PHYSICAL
+     COMBINED
+}

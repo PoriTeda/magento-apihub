@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Wyomind. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    
+    <preference for="Wyomind\AdvancedInventory\Api\StockRepositeryInterface" type="Wyomind\AdvancedInventory\Model\StockRepositery" />
+    
+    <type name="Magento\Framework\App\Rss\RssManagerInterface">
+        <arguments>
+            <argument name="dataProviders" xsi:type="array">
+                <item name="ai_rss_feed" xsi:type="string">Wyomind\AdvancedInventory\Block\Rss\Feed</item>
+            </argument>
+        </arguments>
+    </type>
+    
+    <type name="Magento\CatalogInventory\Model\StockStateProvider">
+        <plugin name="Wyomind_AdvancedInventory_Model_CatalogInventory_StockStateProvider" type="Wyomind\AdvancedInventory\Model\CatalogInventory\StockStateProvider" sortOrder="1"/>
+    </type>
+
+    <type name="Wyomind\AdvancedInventory\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Wyomind\AdvancedInventory\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">AI</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="notice" xsi:type="object">Wyomind\AdvancedInventory\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+    
+    <!--<preference for="Magento\Paypal\Model\Ipn" type="Wyomind\AdvancedInventory\Model\Ipn" />-->
+    
+</config>

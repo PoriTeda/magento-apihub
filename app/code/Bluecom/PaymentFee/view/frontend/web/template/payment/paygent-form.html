@@ -1,0 +1,119 @@
+<!-- ko if: isAvailable() -->
+
+<!-- ko if: window.checkoutConfig.cc_used_date -->
+<div class="payment-method" data-bind="css: {'_active': (getCode() == isChecked() && paygentOption() == 0), 'payment-available': isAvailable()}">
+    <div class="payment-method-title field choice">
+        <input type="radio"
+               name="paygent_option"
+               id="paygent_use_previous_card"
+               class="radio"
+               data-bind="attr: {checked: paygentOption() == 0}, value: '0', click: selectPaygentOption" />
+        <label class="label" for="paygent_use_previous_card">
+            <span data-bind="text: getTitle()"></span><span data-bind="i18n: '(used before)'"></span>
+        </label>
+    </div>
+
+    <div class="payment-method-content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <div class="card-method-image">
+            <div data-bind="i18n: 'Choose Credit card which is used before.'"></div>
+            <div><span data-bind="i18n: 'Used date:'"></span>&nbsp;
+                <!-- ko if: window.checkoutConfig.cc_used_date !== true-->
+                <span data-bind="text: window.checkoutConfig.cc_used_date"></span>
+                <!--/ko-->
+            </div>
+        </div>
+
+        <div data-bind="visible: (getPaymentFee(getCode() == isChecked()) && paygentOption() == 0)" class="payment-fee">
+            <!-- ko i18n: 'Surcharge Fee:' --><!-- /ko -->
+            <span data-bind="text: getFixedAmount(getCode())"></span>
+        </div>
+    </div>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button class="action primary checkout"
+                    type="submit"
+                    data-bind="
+                        click: placeOrder,
+                        enable: (getCode() == isChecked()),
+                        css: {disabled: !isPlaceOrderActionAllowed() || !$parent.isPlaceOrderActionAllowedFromSelectAddress()}
+                        ">
+                <span data-bind="i18n: 'Ok'"></span>
+            </button>
+        </div>
+    </div>
+</div>
+<!-- /ko -->
+
+<div class="payment-method" data-bind="css: {'_active': (getCode() == isChecked() && paygentOption() == 1), 'payment-available': isAvailable()}, visible: isAvailable()">
+    <div class="payment-method-title field choice">
+        <input type="radio"
+               name="paygent_option"
+               id="paygent_redirect"
+               class="radio"
+               data-bind="attr: {checked: paygentOption() == 1}, value: '1', click: selectPaygentOption" />
+        <label class="label" for="paygent_redirect">
+            <span data-bind="text: getTitle()"></span>
+        </label>
+    </div>
+
+    <div class="payment-method-content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <input type="radio"
+               name="payment[method]"
+               class="radio no-display"
+               data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()" />
+        <div class="card-method-image">
+            <p class="method-notice" data-bind="i18n: 'Please enter card information from the Go to Enter Card Information on the next page'"></p>
+            <div data-bind="i18n: 'We accepts following credit cards.'"></div>
+            <img alt="Card Method Image" data-bind="attr:{src: window.cardMethodImage}"/>
+            <div data-bind="i18n: 'Points to remember about credit card with debit function'"></div>
+            <div>
+                <span data-bind="i18n: 'Credit card with'"></span>
+                <u data-bind="i18n:'debit function will be withdrawn'"></u>
+                <span data-bind="i18n: 'when card information is entered.~'"></span>
+            </div>
+            <div class="no-display">
+                <span data-bind="i18n: 'Credit card with'"></span>
+                <u data-bind="i18n:'debit function will be withdrawn'"></u>
+                <span data-bind="i18n: 'when card information is entered.~'"></span>
+            </div>
+        </div>
+
+        <div data-bind="visible: (getPaymentFee(getCode() == isChecked()) && paygentOption() == 1)" class="payment-fee">
+            <!-- ko i18n: 'Surcharge Fee:' --><!-- /ko -->
+            <span data-bind="text: getFixedAmount(getCode())"></span>
+        </div>
+        <fieldset class="fieldset" data-bind='attr: {id: "payment_form_" + getCode()}'>
+            <div class="payment-method-billing-address">
+                <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+                <!--/ko-->
+            </div>
+        </fieldset>
+        <div class="checkout-agreements-block">
+            <!-- ko foreach: $parent.getRegion('before-place-order') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+    </div>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button class="action primary checkout"
+                    type="submit"
+                    data-bind="
+                        click: placeOrder,
+                        enable: (getCode() == isChecked()),
+                        css: {disabled: !isPlaceOrderActionAllowed() || !$parent.isPlaceOrderActionAllowedFromSelectAddress()}
+                        ">
+                <span data-bind="i18n: 'Ok'"></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- /ko -->

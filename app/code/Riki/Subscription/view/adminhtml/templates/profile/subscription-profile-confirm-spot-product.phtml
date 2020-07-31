@@ -1,0 +1,374 @@
+<?php
+/** @var $block Riki\Subscription\Block\Adminhtml\Profile\ConfirmSpotProduct */
+$profileModelData = $block->loadProfileModel();
+$arrProductCartStandardValue = $block->getProductCartStandardValue();
+$timeSlotObj = $block->getSlotObject($arrProductCartStandardValue['delivery_time_slot']);
+$arrListProductByAddressIdAndDeliveryType = $block->getListProductByAddressIdAndDeliveryType();
+$objectDataSimulate = $block->makeObjectDataForSimulate($block->getProfileId(), $block->getNewProductData());
+$productCartData = $objectDataSimulate->getData('product_cart');
+$newProductCartProfileData = $block->getListProductAddSport($productCartData);
+$newProductObj   = null;
+
+/** @var $orderSimulate \Magento\Sales\Model\Order */
+$orderSimulate = $block->simulator($objectDataSimulate);
+$paidServices = 0;
+$totalAmount = 0;
+$shippingFee = 0;
+$wrappingFee = 0;
+$paymentFee = 0;
+$discountAmount = 0;
+$tentativePoints = 0;
+$paymentMethodTitle = '';
+if ($orderSimulate !== null && $orderSimulate !== false) {
+    $tentativePoints = $orderSimulate->getData('bonus_point_amount');
+    $wrappingFee = $orderSimulate->getData('gw_items_base_price_incl_tax');
+    $totalAmount = $orderSimulate->getGrandTotal();
+    $shippingFee = $block->getShippingFeeIncludeTax($orderSimulate->getShippingInclTax());
+    $paidServices = $orderSimulate->getData('gw_price_incl_tax');
+    $paymentFee = $orderSimulate->getFee();
+    $paymentMethodTitle = $orderSimulate->getPayment()->getMethodInstance()->getTitle();
+    $discountAmount = $orderSimulate->getData('discount_amount');
+}
+?>
+<div class="page-title-wrapper">
+    <h1 class="page-title">
+        <span class="base" data-ui-id="page-title-wrapper">
+            <?php echo __(sprintf('%s %s th delivery order confirm',$profileModelData->getData('course_name'), ($profileModelData->getData('order_times')+1))) ?>
+        </span>
+    </h1>
+</div>
+
+<form
+    action="<?php /* @escapeNotVerified */ echo $block->getUrl('*/*/saveSpotProduct'); ?>"
+    method="post"
+    id="form-submit-spot-product"
+    class="form form-giftregistry-edit validation"
+    data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>"
+    data-mage-init='{"validation":{}}'>
+    <?php echo $block->getBlockHtml('formkey')?>
+
+    <div class="admin__scope-old">
+        <div class="fieldset-wrapper customer-information"> <!-- Header Info -->
+            <h2 class="page-title">
+                <span class="title"><?php echo __('Subscription Course Name') ?> : <?php echo $profileModelData->getData('course_name').
+                        ' ('.__($profileModelData->getData("frequency_interval")). __($profileModelData->getData("frequency_unit")).')'; ?></span>
+            </h2>
+            <!-- loop through shipping_address_id and delivery type -->
+            <?php if (count($arrListProductByAddressIdAndDeliveryType) > 0){ ?>
+                <?php foreach ($arrListProductByAddressIdAndDeliveryType as $shippingAddressId => $arrDeliveryTypeKeyArrProductValue) {
+                    $arrAddressDetail = $block->getAddressDetail($shippingAddressId);
+                    ?>
+                    <?php foreach ($arrDeliveryTypeKeyArrProductValue as $deliveryType => $arrProduct) { ?>
+                        <?php $sizeSkipProduct = 0; ?>
+                        <?php foreach ($arrProduct as $arrInfo): ?>
+                            <?php
+                            $product = $arrInfo['details'];
+                            $allowSkipSeasonalProduct = $product->getData('allow_seasonal_skip');
+                            $seasonalSkipOptional = $product->getData('seasonal_skip_optional');
+                            $productCartModel = $arrInfo['profile'];
+                            $isSkipSeasonal = $productCartModel->getData('is_skip_seasonal');
+                            $deliveryDate = $productCartModel->getData('delivery_date');
+                            if($allowSkipSeasonalProduct){
+                                if($seasonalSkipOptional){
+                                    if($isSkipSeasonal){
+                                        if(strtotime($productCartModel->getData('skip_from')) <= strtotime($deliveryDate) and strtotime($deliveryDate) <= strtotime($productCartModel->getData('skip_to'))){
+                                            $sizeSkipProduct++;
+                                        }
+                                    }
+                                }
+                                else{
+                                    if(($allowSkipSeasonalProduct  and $isSkipSeasonal === null and strtotime($product->getData('allow_skip_from')) <= strtotime($deliveryDate) and strtotime($deliveryDate) <= strtotime($product->getData('allow_skip_to')))){
+                                        $sizeSkipProduct++;
+                                    }
+                                }
+                            }
+                            ?>
+                        <?php
+                        endforeach;
+                        if($sizeSkipProduct == sizeof($arrProduct)){
+                            continue;
+                        }
+                        ?>
+            <div class="fieldset-wrapper-title">
+                <span class="title"><?php echo __('Address') ?></span>
+            </div>
+            <div class="current-shipping-address">
+                <strong><?php echo __('Name') ?></strong>: <?php echo $arrAddressDetail['lastname'].$arrAddressDetail['firstname']; ?> <br>
+                <strong><?php echo __('Address') ?></strong>: <?php echo $block->getCustomerAddressByText($shippingAddressId); ?> <br>
+                <strong><?php echo __('Phone number') ?></strong>: <?php echo $arrAddressDetail['telephone']; ?> <br>
+            </div>
+
+            <div class="fieldset-wrapper-title">
+                <span class="title"><?php echo __('Delivery schedule date and time') ?></span>
+            </div>
+            <div class="current-shipping-address">
+                <div class="wrapper"><span><?php echo $profileModelData->getData('next_delivery_date').' ('. __($block->getDay($profileModelData->getData('next_delivery_date'))).')'; ?></span>
+                    <span><?php echo $timeSlotObj ? $timeSlotObj->getSlotName() : '' ; ?></span></div>
+            </div>
+
+            <div class="fieldset-wrapper-title">
+                <span class="title"><?php echo __('Products already in Subscription Course') ?></span>
+            </div>
+            <div class="table block">
+                <table class="data-grid">
+                    <thead>
+                    <tr>
+                        <th class="data-grid-th product-image"><span><?php echo __("Product Image") ?></span></th>
+                        <th class="data-grid-th product-name"><span><?php echo __("Product Name") ?></span></th>
+                        <th class="data-grid-th price-sub"><span><?php echo __("Product Price") ?></span></th>
+                        <th class="data-grid-th action"><span><?php echo __("Product Type") ?></span></th>
+                        <th class="data-grid-th qty"><span><?php echo __("Qty") ?></span></th>
+                        <th class="data-grid-th price"><span><?php echo __("Subtotal") ?></span></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php if (count($arrProduct) > 0): $i = 0; ?>
+                        <?php foreach ($arrProduct as $arrInfo): ?>
+                            <?php
+                            $product = $arrInfo['details'];
+                            $allowSkipSeasonalProduct = $product->getData('allow_seasonal_skip');
+                            $seasonalSkipOptional = $product->getData('seasonal_skip_optional');
+                            $productCartModel = $arrInfo['profile'];
+                            $isSkipSeasonal = $productCartModel->getData('is_skip_seasonal');
+                            $deliveryDate = $productCartModel->getData('delivery_date');
+                            $priceInfo = $block->getProductPriceInfo($arrInfo['details'], $arrInfo['profile']->getData('qty'));
+                            if($allowSkipSeasonalProduct){
+                                if($seasonalSkipOptional){
+                                    if($isSkipSeasonal){
+                                        if(strtotime($productCartModel->getData('skip_from')) <= strtotime($deliveryDate) and strtotime($deliveryDate) <= strtotime($productCartModel->getData('skip_to'))){
+                                            continue;
+                                        }
+                                    }
+                                }
+                                else{
+                                    if(($allowSkipSeasonalProduct  and $isSkipSeasonal === null and strtotime($product->getData('allow_skip_from')) <= strtotime($deliveryDate) and strtotime($deliveryDate) <= strtotime($product->getData('allow_skip_to')))){
+                                        continue;
+                                    }
+                                }
+                            }
+                            ?>
+                        <tr class="tr-product <?php if($i % 2 == 0) { echo 'event'; } else {echo 'odd';} ?>">
+                            <td class="img-thumbnail-wrapper product-image" data-th="<?php echo __("Product Image") ?>">
+                                <img class="product-image-photo image-resize-plus"
+                                     src="<?php echo $block->getImageUrl($arrInfo['details'])->getUrl(); ?>" alt="">
+                            </td>
+                            <td class=" product-name text-left"><span><?php echo $arrInfo['details']->getName(); ?></span></td>
+                            <td class="price-sub" data-th="<?php echo __("Product Price") ?>">
+                                <span><span class="price"><?php echo $block->formatCurrency($priceInfo['price']); ?></span></span>
+                            </td>
+                            <td class="product_type">
+                                <?php if ($productCartModel->getData('is_spot')): ?>
+                                    <span class="tag_spot"><span><?php echo __('Spot tag') ?></span></span>
+                                <?php endif; ?>
+                            </td>
+                            <td class="qty" data-th="<?php echo __("Qty") ?>">
+                                <?php if('CS' == $arrInfo['profile']->getData('unit_case')) { ?>
+                                    <!--show qty case-->
+                                    <?php echo $arrInfo['profile']->getData('qty') / $arrInfo['profile']->getData('unit_qty'); ?>
+                                    <div class="unit-label"><?php echo __('CS') ?></div>
+                                <?php } else { ?>
+                                    <?php echo $arrInfo['profile']->getData('qty'); ?>
+                                    <div class="unit-label"><?php echo __('EA') ?></div>
+                                <?php } ?>
+
+                            </td>
+                            <td class="subtotal text-right" data-th="<?php echo __("Subtotal") ?>"><span><span class="price">
+                                        <?php echo $block->formatCurrency($priceInfo['total']); ?>
+                                    </span>
+                                </span>
+                            </td>
+                        </tr>
+                            <?php endforeach; ?>
+                    <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+                        <?php } ?>
+                    <?php } ?>
+            <?php } ?>
+            <!-- end loop -->
+            <div class="fieldset-wrapper-title">
+                <span class="title"><?php echo __('Products added') ?></span>
+            </div>
+            <div class="table block">
+                <table class="data-grid">
+                    <thead>
+                    <tr>
+                        <th class="data-grid-th product-image"><span><?php echo __("Product Image") ?></span></th>
+                        <th class="data-grid-th product-name"><span><?php echo __("Product Name") ?></span></th>
+                        <th class="data-grid-th price-sub"><span><?php echo __("Product Price") ?></span></th>
+                        <th class="data-grid-th action"><span><?php echo __("Product Type") ?></span></th>
+                        <th class="data-grid-th qty"><span><?php echo __("Qty") ?></span></th>
+                        <th class="data-grid-th price"><span><?php echo __("Subtotal") ?></span></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+
+                    <!-- Loop product  -->
+                    <?php if (is_array($newProductCartProfileData) && count ($newProductCartProfileData)>0):?>
+                        <?php foreach($newProductCartProfileData as $newProductItems): ?>
+                            <?php
+                                /* @var $newProductObj \Magento\Catalog\Model\Product */
+                                $newProductObj = $block->loadNewAddedProduct($newProductItems->getData('product_id'));
+                                $priceInfo = $block->getProductPriceInfo($newProductObj, $newProductItems->getData('qty'));
+                            ?>
+                            <tr class="tr-product even">
+                                <td class="img-thumbnail-wrapper product-image" data-th="<?php echo __("Product Image") ?>">
+                                    <img class="product-image-photo image-resize-plus" src="<?php echo $block->getImageUrl($newProductObj)->getUrl(); ?>" alt="">
+                                </td>
+                                <td class=" product-name text-left">
+                                    <span><?php echo $newProductObj->getName(); ?></span>
+
+                                    <?php if ($newProductObj->getData('gw_id')){ ?>
+                                        <span class="gw">
+                                <?php echo $block->getWrappingTitle($newProductObj->getData('gw_id'),
+                                    $profileModelData->getData('store_id'), $newProductObj->getData('qty')) ?>
+                            </span>
+                                    <?php } ?>
+                                </td>
+                                <td class="price-sub" data-th="<?php echo __("Product Price") ?>">
+                                    <span><span class="price"><?php echo $block->formatCurrency($priceInfo['price']); ?></span></span>
+                                </td>
+                                <td class="product_type">
+                                    <span class="tag_spot"><span><?php echo __('Spot tag') ?></span></span>
+                                </td>
+                                <td class="qty" data-th="<?php echo __("Qty") ?>">
+                                    <?php if('CS' == $newProductItems->getData('unit_case')) { ?>
+                                        <!--show qty case-->
+                                        <?php echo $newProductItems->getData('qty') / $newProductItems->getData('unit_qty'); ?>
+                                        <div class="unit-label"><?php echo __('CS') ?></div>
+                                    <?php } else { ?>
+                                        <?php echo $newProductItems->getData('qty'); ?>
+                                        <div class="unit-label"><?php echo __('EA') ?></div>
+                                    <?php } ?>
+
+                                </td>
+                                <td class="subtotal text-right" data-th="<?php echo __("Subtotal") ?>">
+                            <span><span class="price">
+                                     <?php echo $block->formatCurrency($priceInfo['total']); ?>
+                                </span></span>
+                                </td>
+                            </tr>
+
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+
+                </tbody>
+                </table>
+                <table class="admin__table-secondary table-summary">
+                    <tbody>
+                    <tr class="shipment">
+                        <td class="text-left shipment-name">
+                            <?php if(!empty($newProductObj)): ?>
+                                <?php echo __('Shipment Fee').' '.__($newProductObj->getDeliveryType()); ?>
+                            <?php else: ?>
+                                <?php echo __('Shipment Fee'); ?>
+                            <?php endif; ?>
+                        </td>
+                        <td class="text-right shipping-price">
+                            <span class="price">
+                                <?php echo $block->formatCurrency($shippingFee); ?>
+                                <?php
+                                if ($shippingFee == 0) {
+                                    echo __('(free)');
+                                }
+                                ?>
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr class="paid-services">
+                        <td class="text-left"><?php echo __('Wrapping Fee (Tax included)') ?></td>
+                        <td colspan="4" class="text-right price">
+                            <?php echo $block->formatCurrency($wrappingFee); ?>
+                        </td>
+                    </tr>
+                    <tr class="payable">
+                        <td class="text-left payable-name"><?php echo __('Payment Fee'); ?></td>
+                        <td colspan="5" class="payable-total text-right">
+                            <?php echo $block->formatCurrency($paymentFee); ?>
+                        </td>
+                    </tr>
+                    <?php if ($discountAmount != 0): ?>
+                        <tr class="payable">
+                            <td class="text-left payable-name"><?php echo __('Discount'); ?></td>
+                            <td colspan="5" class="payable-total text-right">
+                                <?php echo $block->formatCurrency($discountAmount); ?>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                    <tr class="payment-amount">
+                        <td class="text-left"><?php echo __('Total Payable Amount') ?></td>
+                        <td colspan="4" class="text-right">
+                            <span class="price">
+                                <?php echo $block->formatCurrency($totalAmount); ?>
+                            </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="fieldset-wrapper-title clear-both">
+                <span class="title"><?php echo __('Payment Method') ?></span>
+            </div>
+            <div class="current-shipping-address">
+                <div class="wrapper">
+                    <?php echo __($paymentMethodTitle);  ?>
+                </div>
+            </div>
+
+            <div class="fieldset-wrapper-title">
+                <span class="title"><?php echo __('Apply Changes') ?></span>
+            </div>
+            <div class="current-shipping-address">
+                <div>
+                    <?php echo __('Only update changed information into Next Subscription Delivery') ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="message-notice error message" data-ui-id="message-notice">
+        <div><?php echo __('In above subscription order, the products with type (SPOT (コース外)) is added only for next delivery. These products are not delivered after next delivery.') ?></div>
+    </div>
+
+     <!-- data post -->
+    <input type="hidden" name="profile_id" value="<?php echo $block->getProfileId(); ?>" />
+    <?php if($newProductCartProfileData): ?>
+        <?php foreach($newProductCartProfileData as $newProductItems): ?>
+            <input type="hidden" name="addSpotProduct[<?php echo $newProductItems->getData('product_id') ?>][product_id]" value="<?php echo $newProductItems->getData('product_id') ?>" />
+            <input type="hidden" name="addSpotProduct[<?php echo $newProductItems->getData('product_id') ?>][qty]" value="<?php echo $newProductItems->getData('qty'); ?>"/>
+            <input type="hidden" name="addSpotProduct[<?php echo $newProductItems->getData('product_id') ?>][product_options]" value="<?php echo $newProductItems->getData('product_options'); ?>"/>
+            <input type="hidden" name="addSpotProduct[<?php echo $newProductItems->getData('product_id') ?>][unit_case]" value="<?php echo $newProductItems->getData('unit_case'); ?>"/>
+            <input type="hidden" name="addSpotProduct[<?php echo $newProductItems->getData('product_id') ?>][unit_qty]" value="<?php echo $newProductItems->getData('unit_qty'); ?>"/>
+            <input type="hidden" name="addSpotProduct[<?php echo $newProductItems->getData('product_id') ?>][gw_id]" value="<?php echo $newProductItems->getData('gw_id'); ?>"/>
+            <input type="hidden" name="addSpotProduct[<?php echo $newProductItems->getData('product_id') ?>][gift_message_id]" value="<?php echo $newProductItems->getData('gift_message_id'); ?>"/>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</form>
+<!-- end data post -->
+<div class="actions-toolbar">
+    <div class="f-right">
+        <button onclick="return submitForm(this,'form-submit-spot-product')"  class="flat-button yellow-subs"><span><?php echo __('Proceed to the next') ?></span></button>
+    </div>
+    <div class="f-left">
+        <button class="flat-button yellow-subs" onclick="window.history.go(-1)"><span><?php echo __('Go back') ?></span></button>
+    </div>
+</div>
+<style>
+    .image-resize-plus{
+        width: 110px; height: 110px;
+    }
+</style>
+<script type='text/javascript'>
+    require([
+        'jquery'
+    ], function ($) {
+        'use strict';
+
+        //reset data check
+        localStorage.removeItem('dataCheckSpot');
+    })
+</script>

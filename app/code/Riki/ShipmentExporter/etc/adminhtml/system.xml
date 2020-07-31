@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/system.xsd">
+    <system>
+        <section id="shipmentexporter" translate="label" type="text" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Shipment Exporting</label>
+            <tab>bluecom_cronjob</tab>
+            <!-- resource tag name which we have to defined in the acl.xml -->
+            <resource>Riki_ShipmentExporter::config_shipmentexporter</resource>
+            <group id="secommon" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Common Settings</label>
+                <field id="shipmentexport_enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable Shipment Export</comment>
+                </field>
+                <field id="shipmentexport_logger_enable" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled Logger</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable Shipment Exporting Logger</comment>
+                </field>
+            </group>
+            <group id="selocation" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Location Export File</label>
+
+                <field id="shipmentexport_shipment_folder" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0" >
+                    <label>sFTP Shipment Folder</label>
+                    <comment>sFTP folder where Shipment files copy to</comment>
+                </field>
+                <field id="shipmentexport_shipment_backup" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Shipment Backup Folder</label>
+                    <comment>sFTP backup folder where Shipment files copy to</comment>
+                </field>
+                <field id="shipmentexport_local_sap_folder" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local 3PLWH Folder</label>
+                    <comment>Magento local folder where file is exported to</comment>
+                </field>
+                <field id="shipmentexport_local_sap_copy_folder" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local 3PLWH Copy Folder</label>
+                    <comment>Magento local folder where file is copied as a backup</comment>
+                </field>
+            </group>
+            <group id="seexp" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Scheduler Settings</label>
+                <field id="shipmentexport_cron_expression1" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Shipping Order 1st Scheduler expression</label>
+                    <comment>The first time cron schedule</comment>
+                </field>
+                <field id="shipmentexport_cron_exp1_limit" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>1st Shipment limitation</label>
+                    <comment>Shipment limitation of first schedule</comment>
+                </field>
+                <field id="shipmentexport_cron_expression2" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Shipping Order 2nd Scheduler expression</label>
+                    <comment>The second time cron schedule</comment>
+                </field>
+                <field id="shipmentexport_cron_exp2_limit" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>2nd Shipment limitation</label>
+                    <comment>Shipment limitation of second schedule</comment>
+                </field>
+                <field id="shipmentexport_cron_expression3" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Shipping Order 3rd Scheduler expression</label>
+                    <comment>The third time cron schedule</comment>
+                </field>
+                <field id="shipmentexport_cron_exp3_limit" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>3rd Shipment limitation</label>
+                    <comment>Shipment limitation of third schedule</comment>
+                </field>
+                <field id="shipmentexport_cron_shipcreatorbyqueue" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Shipment Creator by Queue</label>
+                    <comment>The cron job to create shipment by queue</comment>
+                </field>
+            </group>
+            <group id="zsim" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>ZSIM Settings</label>
+                <field id="shipmentexport_material" translate="label comment" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Material Type</label>
+                    <comment>Multiple options. Please press Ctrl + click to select options</comment>
+                    <source_model>Riki\CreateProductAttributes\Model\Product\Material</source_model>
+                </field>
+
+                <field id="shipmentexport_phcode" translate="label comment" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Ph Code</label>
+                    <comment>Multiple options. Please press Ctrl + click to select options</comment>
+                    <source_model>Riki\ShipmentExporter\Model\Config\Phcode</source_model>
+                </field>
+            </group>
+            <group id="b2b" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Words list</label>
+                <field id="prefecturelist" translate="label" type="textarea"  sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <comment>Each word should be separated by comma (,)</comment>
+                </field>
+            </group>
+            <group id="shipmentqueue" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Shipment Queue Settings</label>
+                <field id="setting_crontab_consumer" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Scheduler for start Queue Shipment Creator</label>
+                </field>
+                <!--<field id="number_message_per_consumer" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Number message handled by Consumer</label>
+                </field>-->
+            </group>
+            <group id="seemail" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Email Settings</label>
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable email sending</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable email sending</comment>
+                </field>
+                <field id="shipmentexport_email_alert" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Alert</label>
+                    <comment>Email address which will receive the email updates. Each Email separated by a semicolon ";"</comment>
+                </field>
+                <field id="shipmentexport_email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_Subscription::replace_product" title="Discontinued products"
+             module="Riki_Subscription" sortOrder="35"
+             parent="Riki_SubscriptionFrequency::subscription"
+             action="subscription/replace"
+             resource="Riki_Subscription::replace_product"/>
+        <add id="Riki_Subscription::multiple_category_campaign"
+             title="Manage Multiple Categories"
+             module="Riki_Subscription"
+             sortOrder="101"
+             action="subscription/multiple_category_campaign"
+             parent="Riki_SubscriptionFrequency::subscription"
+             resource="Riki_Subscription::multiple_category_campaign"/>
+        <add id="Riki_Subscription::landing_page_management"
+             title="Landing Page Management"
+             module="Riki_Subscription"
+             sortOrder="101"
+             action="subscription/landing_page/index"
+             parent="Riki_SubscriptionFrequency::subscription"
+             resource="Riki_Subscription::landing_page_management"/>
+    </menu>
+</config>

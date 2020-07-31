@@ -1,0 +1,359 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Customer\Block\Address\Edit" type="Riki\Customer\Block\Address\Edit"/>
+    <preference for="Magento\Customer\Model\Customer" type="Riki\Customer\Model\Customer"/>
+    <preference for="Magento\Customer\Model\Address" type="Riki\Customer\Model\Address"/>
+    <type name="Magento\Customer\Model\ResourceModel\Customer\Relation">
+        <plugin name="riki_customer_relation" type="Riki\Customer\Model\ResourceModel\Customer\Relation" disabled="false" />
+    </type>
+    <type name="Magento\Customer\Model\ResourceModel\Address\Relation">
+        <plugin name="riki_customer_address_relation" type="\Riki\Customer\Model\ResourceModel\Address\Relation" disabled="false"  />
+    </type>
+    <preference for="Magento\Customer\Model\Data\Customer" type="Riki\Customer\Model\Data\Customer" />
+    <type name="Magento\Quote\Model\Quote\Address\ToOrderAddress">
+        <plugin name="rikiCustomerConvertQuoteAddressToOrderAddress" type="Riki\Customer\Plugin\Model\ConvertQuoteAddressToOrderAddress"/>
+    </type>
+
+    <!--logger bi export shosha-->
+    <type name="Riki\Customer\Logger\Shosha\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportShosha</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Customer\Logger\Shosha\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!--logger import customer hold-->
+    <type name="Riki\Customer\Logger\CustomerHold\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">ImportCustomerHold</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Customer\Logger\CustomerHold\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!--Consumer Api Log-->
+    <type name="Riki\Customer\Logger\ConsumerLog\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">ConsumerApiLog</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Customer\Logger\ConsumerLog\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="consumerlogGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="consumerlogGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\Customer\Model\ResourceModel\ConsumerLog\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">consumerlogGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Riki\Customer\Model\ResourceModel\ConsumerLog\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">consumer_api_log</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\Customer\Model\ResourceModel\ConsumerLog</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="consumerlog_listing_data_source" xsi:type="string">Riki\Customer\Model\ResourceModel\ConsumerLog\Grid\Collection</item>
+                <!-- Type for enquiry_category_category_listing_data_source -->
+                <item name="enquiry_category_category_listing_data_source" xsi:type="string">Riki\Customer\Model\ResourceModel\Grid\CategoryEnquiry\Collection</item>
+                <!-- Type for enquiryheader_listing_data_source -->
+                <item name="enquiryheader_listing_data_source" xsi:type="string">Riki\Customer\Model\Resource\Grid\EnquiryHeader\Collection</item>
+                <!-- Type for consumerdb_listing_data_source -->
+                <item name="consumerdb_listing_data_source" xsi:type="string">Riki\Customer\Model\ResourceModel\ConsumerDB\Collection</item>
+                <!-- Type for shosha_listing_data_source -->
+                <item name="shosha_listing_data_source" xsi:type="string">Riki\Customer\Model\Resource\Grid\Shosha\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!--config category enquiry -->
+    <!-- Create our type CategoryGridDataProvider -->
+    <virtualType name="CategoryGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\Customer\Model\Resource\CategoryEnquiry\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">CategoryGridFilterPool</argument> <!-- Define new object for filters -->
+        </arguments>
+    </virtualType>
+
+    <!-- Create our type CategoryGridFilterPool -->
+    <virtualType name="CategoryGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Simulate our class Riki\Customer\Model\ResourceModel\Grid\Category\Collection -->
+    <virtualType name="Riki\Customer\Model\ResourceModel\Grid\CategoryEnquiry\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">enquiry_category</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\Customer\Model\ResourceModel\CategoryEnquiry</argument>
+        </arguments>
+    </virtualType>
+    <preference for="Magento\Customer\Api\AccountManagementInterface" type="Magento\Customer\Model\AccountManagement"/>
+    <!--config enquiry header-->
+    <!-- Create our type EnquiryHeaderGridDataProvider -->
+    <virtualType name="EnquiryHeaderGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\Customer\Model\Resource\EnquiryHeader\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">EnquiryHeaderGridFilterPool</argument> <!-- Define new object for filters -->
+        </arguments>
+    </virtualType>
+
+    <!-- Create our type EnquiryHeaderGridFilterPool -->
+    <virtualType name="EnquiryHeaderGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Simulate our class Riki\Customer\Model\Resource\Grid\EnquiryHeader\Collection -->
+    <virtualType name="Riki\Customer\Model\Resource\Grid\EnquiryHeader\Collection" type="Riki\Customer\Ui\Component\DataProvider\SearchResult\Items">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">riki_customer_enquiry_header</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\Customer\Model\ResourceModel\EnquiryHeader</argument>
+        </arguments>
+    </virtualType>
+    <!--config for browse consumerDB-->
+
+    <!-- Create our type ConsumerDBGridDataProvider -->
+    <virtualType name="ConsumerDBGridDataProvider" type="Riki\Customer\Ui\Component\ConsumerDB\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\Customer\Model\Resource\ConsumerDB\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">ConsumerDBGridFilterPool</argument> <!-- Define new object for filters -->
+            <argument name="reporting" xsi:type="object" shared="false">Riki\Customer\Ui\Component\ConsumerDB\DataProvider\Reporting</argument> <!-- Define new object for filters -->
+        </arguments>
+    </virtualType>
+
+    <!-- Create our type ConsumerDBGridReporting -->
+    <virtualType name="ConsumerDBGridReporting" type="Magento\Framework\View\Element\UiComponent\DataProvider\Reporting">
+        <arguments>
+            <argument name="filterPool" xsi:type="object" shared="false">Riki\Customer\Ui\Component\ConsumerDB\DataProvider\FilterPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Create our type ConsumerDBGridFilterPool -->
+    <type name="Riki\Customer\Ui\Component\ConsumerDB\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Riki\Customer\Ui\Component\ConsumerDB\DataProvider\FilterPool\RegularFilter</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!--override resoure model customer-->
+    <preference for="Magento\Customer\Model\ResourceModel\Customer" type="Riki\Customer\Model\ResourceModel\Customer"/>
+    <preference for="Magento\Customer\Controller\Account\Index" type="Riki\Customer\Controller\Account\Index"/>
+
+    <type name="Magento\Framework\View\Layout\Pool">
+        <arguments>
+            <argument name="types" xsi:type="array">
+                <item name="riki_customer_tabs" xsi:type="array">
+                    <item name="class" xsi:type="string">Riki\Customer\Ui\Component\Layout\Tabs</item>
+                    <item name="template" xsi:type="string">templates/layout/tabs</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!--Rewrite Magento\Customer\Model\Customer\DataProvider-->
+    <preference for="\Magento\Customer\Model\Customer\DataProvider" type="Riki\Customer\Model\Customer\DataProvider"/>
+    <type name="\Magento\Ui\Component\Form">
+        <plugin name="riki_ui_form" type="Riki\Customer\Ui\Component\Form"/>
+    </type>
+
+    <type name="Magento\Checkout\Observer\LoadCustomerQuoteObserver">
+        <arguments>
+            <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+
+    <preference for="Magento\Customer\Block\Account\AuthorizationLink" type="Riki\Customer\Block\Account\AuthorizationLink"/>
+
+    <type name="Magento\Wishlist\Controller\WishlistProvider">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="\Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter">
+        <plugin name="riki-customer-plugin-uicomponent-searchnamekanaregularfilter" type="\Riki\Customer\Plugin\UiComponent\SearchNameKanaRegularFilter"/>
+    </type>
+
+    <type name="Magento\Customer\CustomerData\Customer">
+        <plugin name="riki_set_email_plugin" type="Riki\Customer\Plugin\Customer\Data" sortOrder="10" disabled="false"/>
+    </type>
+
+    <preference for="Magento\Customer\Block\Address\Book" type="Riki\Customer\Block\Address\Book"/>
+
+    <!--config shosha customer-->
+    <!-- Create our type ShoshaGridDataProvider -->
+    <virtualType name="ShoshaGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\Customer\Model\Resource\Shosha\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">ShoshaGridFilterPool</argument> <!-- Define new object for filters -->
+        </arguments>
+    </virtualType>
+
+    <!-- Create our type ShoshaGridFilterPool -->
+    <virtualType name="ShoshaGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Simulate our class Riki\Customer\Model\Resource\Grid\Shosha\Collection -->
+    <virtualType name="Riki\Customer\Model\Resource\Grid\Shosha\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">riki_shosha_business_code</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\Customer\Model\ResourceModel\Shosha</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Customer\Helper\View">
+        <plugin name="riki-customer-modify-name" type="Riki\Customer\Plugin\Helper\ViewModifyData"/>
+    </type>
+
+    <type name="Magento\Customer\Model\ResourceModel\Customer\Collection">
+        <plugin name="riki-customer-modify-name-for-collection" type="Riki\Customer\Plugin\Model\ModifyNameForCollection"/>
+    </type>
+
+    <preference for="CustomerNameHandler" type="jpCustomerNameHandler"/>
+    <preference for="CustomerNameAggregator" type="jpCustomerNameAggregator"/>
+    <preference for="ShippingNameAggregator" type="jpShippingNameAggregator"/>
+    <preference for="BillingNameAggregator" type="jpBillingNameAggregator"/>
+    <virtualType name="jpCustomerNameHandler" type="Magento\Framework\Indexer\Handler\ConcatHandler">
+        <arguments>
+            <argument name="concatExpression" xsi:type="object">jpCustomerNameExpression</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="jpCustomerNameExpression" type="Magento\Framework\DB\Sql\ConcatExpression">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="prefix" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">e</item>
+                    <item name="columnName" xsi:type="string">prefix</item>
+                </item>
+                <item name="lastname" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">e</item>
+                    <item name="columnName" xsi:type="string">lastname</item>
+                </item>
+                <item name="middlename" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">e</item>
+                    <item name="columnName" xsi:type="string">middlename</item>
+                </item>
+                <item name="firstname" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">e</item>
+                    <item name="columnName" xsi:type="string">firstname</item>
+                </item>
+                <item name="suffix" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">e</item>
+                    <item name="columnName" xsi:type="string">suffix</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="jpCustomerNameAggregator" type="Magento\Framework\DB\Sql\ConcatExpression">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="customer_lastname" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_order</item>
+                    <item name="columnName" xsi:type="string">customer_lastname</item>
+                </item>
+                <item name="customer_firstname" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_order</item>
+                    <item name="columnName" xsi:type="string">customer_firstname</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="jpShippingNameAggregator" type="Magento\Framework\DB\Sql\ConcatExpression">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="lastname" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_shipping_address</item>
+                    <item name="columnName" xsi:type="string">lastname</item>
+                </item>
+                <item name="firstname" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_shipping_address</item>
+                    <item name="columnName" xsi:type="string">firstname</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="jpBillingNameAggregator" type="Magento\Framework\DB\Sql\ConcatExpression">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="lastname" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_billing_address</item>
+                    <item name="columnName" xsi:type="string">lastname</item>
+                </item>
+                <item name="firstname" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_billing_address</item>
+                    <item name="columnName" xsi:type="string">firstname</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <preference for="Magento\Customer\Model\AccountManagement" type="Riki\Customer\Plugin\Customer\AccountManagement"/>
+    <preference for="Magento\Customer\Controller\Address\FormPost" type="Riki\Customer\Controller\Address\FormPost"/>
+    <preference for="Riki\Customer\Api\Data\ShoshaInterface" type="Riki\Customer\Model\Shosha"/>
+    <preference for="Riki\Customer\Api\ShoshaRepositoryInterface" type="Riki\Customer\Model\Repository\ShoshaRepository"/>
+    <type name="Magento\ImportExport\Model\Import">
+        <plugin name="execute_sql_to_work_around_magento_bug" type="Riki\Customer\Plugin\Model\Import"/>
+    </type>
+    <type name="\Magento\Customer\Model\ResourceModel\AddressRepository">
+        <plugin name="riki_customer_save_address_before" type="\Riki\Customer\Plugin\Address\AddressRepository" sortOrder="1000"/>
+        <plugin name="validate_data_address_before_save" type="\Riki\Customer\Plugin\Address\ValidateAddressBeforeSave" sortOrder="1000"/>
+    </type>
+    <type name="\Magento\Customer\Model\Data\AttributeMetadata">
+        <plugin name="riki_customer_validate_address_before" type="\Riki\Customer\Plugin\Address\BeforeValidateAddress" sortOrder="1000"/>
+    </type>
+    <preference for="\Magento\Customer\Model\ResourceModel\CustomerRepository" type="\Riki\Customer\Model\MagentoCustomerRepository"/>
+    <preference for="\Magento\Eav\Model\Attribute\Data\Text" type="\Riki\Customer\Model\Validate\EmailAddress"/>
+    <preference for="Riki\Customer\Api\GridIndexer\ItemInterface" type="Riki\Customer\Model\GridIndexer\Item"/>
+    <preference for="Riki\Customer\Api\GridIndexer\ItemsInterface" type="Riki\Customer\Model\GridIndexer\Items"/>
+    <preference for="Magento\CustomerSegment\Observer\ProcessCustomerEventObserver" type="Riki\Customer\Observer\CustomProcessCustomerEventObserver" />
+    <preference for="Riki\Customer\Model\Queue\SaveAfterCustomerQueueSchemaInterface" type="Riki\Customer\Model\Queue\Schema\SaveAfterCustomerQueueSchema" />
+
+    <type name="Magento\Framework\MessageQueue\MergerFactory">
+        <arguments>
+            <argument name="mergers" xsi:type="array">
+                <item name="customerGridIndexer" xsi:type="string">Riki\Customer\Model\GridIndexer\Merger</item>
+                <item name="startUpdateModelSegment" xsi:type="string">Riki\Customer\Model\CustomerSegment\Merger</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <preference for="Riki\Customer\Api\CustomerSegment\CustomerEventInterface" type="Riki\Customer\Model\CustomerSegment\CustomerEvent"/>
+    <preference for="\Riki\Customer\Api\CustomerSegment\CustomerEventListInterface" type="Riki\Customer\Model\CustomerSegment\CustomerEventList"/>
+    <preference for="Magento\Customer\Block\Adminhtml\Edit\Tab\View\PersonalInfo" type="Riki\Customer\Block\Adminhtml\Edit\Tab\View\PersonalInfo"/>
+</config>

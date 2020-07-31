@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_SubscriptionFrequency::subscription"
+             title="Subscription"
+             module="Riki_SubscriptionFrequency"
+             sortOrder="45"
+             parent="Magento_Sales::sales"
+             resource="Magento_Sales::sales"
+        />
+        <add id="Riki_SubscriptionFrequency::frequency"
+             title="Subscription Frequency"
+             module="Riki_SubscriptionFrequency"
+             sortOrder="10"
+             action="frequency/index"
+             parent="Riki_SubscriptionFrequency::subscription"
+             resource="Riki_SubscriptionFrequency::frequency"/>
+    </menu>
+</config>

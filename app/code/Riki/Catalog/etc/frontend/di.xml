@@ -1,0 +1,13 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+   <type name="Magento\Catalog\Block\Product\View\Gallery">
+       <plugin name="riki-catalog-modify-image-options" type="Riki\Catalog\Plugin\ModifyImageOptions" />
+   </type>
+    <type name="Magento\Catalog\Controller\Product\View">
+        <plugin name="riki-catalog-product-view-set-customer" type="Riki\Catalog\Plugin\SetCustomerData" />
+    </type>
+    <!--<preference for="Magento\Catalog\Block\Product\View\Type\Simple"-->
+                <!--type="Riki\Catalog\Block\Product\View\Type\Simple" />-->
+    <type name="Riki\Catalog\Model\Product\Bundle\Type">
+        <plugin name="riki-catalog-get-defaut-pos" type="Riki\Catalog\Plugin\AfterGetAllPlaceId" />
+    </type>
+</config>

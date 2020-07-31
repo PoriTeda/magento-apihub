@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:DataObject/etc/fieldset.xsd">
+    <scope id="global">
+        <fieldset id="quote_convert_item">
+            <field name="gift_wrapping">
+                <aspect name="to_order_item" />
+            </field>
+            <field name="gift_code">
+                <aspect name="to_order_item" />
+            </field>
+            <field name="sap_code">
+                <aspect name="to_order_item" />
+            </field>
+        </fieldset>
+
+        <fieldset id="sales_convert_quote">
+            <field name="gift_wrapping">
+                <aspect name="to_order" />
+            </field>
+            <field name="gift_code">
+                <aspect name="to_order" />
+            </field>
+            <field name="sap_code">
+                <aspect name="to_order" />
+            </field>
+        </fieldset>
+
+        <fieldset id="sales_convert_quote_address">
+            <field name="gift_wrapping">
+                <aspect name="to_order" />
+            </field>
+            <field name="gift_code">
+                <aspect name="to_order" />
+            </field>
+            <field name="sap_code">
+                <aspect name="to_order" />
+            </field>
+        </fieldset>
+    </scope>
+</config>

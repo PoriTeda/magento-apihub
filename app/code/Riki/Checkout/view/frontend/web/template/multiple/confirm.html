@@ -1,0 +1,530 @@
+<li id="multiple_order_confirm" data-bind="fadeVisible: isVisible">
+    <div class="step-title" data-bind="i18n: 'After confirm your order, please click on the Place Order'" data-role="title"></div>
+
+    <!-- ko if: typeof addressDdateInfoConfirm() != "undefined" -->
+    <!-- ko foreach: addressDdateInfoConfirm().addressDdateInfo -->
+    <!-- ko foreach: ddate_info -->
+    <div class="opc-single-sub">
+        <div id="checkout-step-confirm-shipping-info" class="step-content" data-role="content">
+            <div class="block-content">
+                <div class="box box-left box-shipping-address">
+                    <div class="opc-sub-title has-action">
+                        <span>
+                            <span data-bind="i18n: 'Destination:'"></span> <span data-bind="text: $parent.addressData.lastname"></span> <span data-bind="text: $parent.addressData.firstname"></span>(<span data-bind="i18n: name"></span>)
+                        </span>
+                        <a class="action edit" data-bind="i18n: 'Change shipping address', click: function() { $parents[1].goTo('shipping') }"></a>
+                        <a class="action edit payment show-desktop" data-bind="i18n: 'Change payment', click: function() { $parents[1].goTo('shipping') }"></a>
+                        <a class="action edit payment show-mobile" data-bind="i18n: 'Modify the above address', click: function() { $parents[1].goTo('shipping') }"></a>
+                    </div>
+                    <div class="box-content">
+                        <div class="address">
+                            <div class="name">
+                                <div class="title" data-bind="i18n: 'Name'"></div>
+                                <div class="content">
+                                    <div><!-- ko text: $parent.addressData.lastname --><!-- /ko --> <!-- ko text: $parent.addressData.firstname --><!-- /ko --> <span data-bind="i18n: 'Mr'"></span></div>
+                                </div>
+                            </div>
+                            <div class="street">
+                                <div class="title" data-bind="i18n: 'Street address'"></div>
+                                <div class="content">
+                                    <span data-bind="i18n: 'PostCode'"></span> <!-- ko text: $parent.addressData.postcode --><!-- /ko -->
+                                    <!-- ko text: $parent.addressData.region --><!-- /ko -->
+                                    <!-- ko text: $parent.addressData.street[0] --><!-- /ko -->
+                                    <!-- ko if: $parent.addressData.apartment != '' -->
+                                        <!-- ko text: $parent.addressData.apartment --><!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                            </div>
+                            <div class="phone">
+                                <div class="title" data-bind="i18n: 'Telephone'"></div>
+                                <div class="content">
+                                    <!-- ko text: $parent.addressData.telephone --><!-- /ko -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box box-right box-shipping-method">
+                        <div class="opc-sub-title">
+                            <span data-bind="i18n: 'Delivery schedule date and time'"></span>
+                        </div>
+                        <div class="box-content">
+                            <div class="has-note">
+                                <div class="delivery-date">
+                                    <span data-bind="html: $parents[1].getDeliveryInfo($parent.address_id, code)"></span>
+                                </div>
+                            </div>
+                            <div class="color-red">
+                                <p data-bind="i18n: 'Regarding various campaigns of periodic delivery flights, you can not specify the desired delivery date.'"></p>
+                                <p data-bind="i18n: 'Even if you specify delivery date, it will be invalid. Please note.'"></p>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <div class="items-ordered">
+                <div class="opc-sub-title" data-role="title">
+                    <span data-bind="i18n: 'Spot Items'"></span>
+                </div>
+                <div class="cart table-wrapper">
+                    <table class="cart items data table cart-items-orders">
+                        <thead>
+                        <tr>
+                            <th class="col item" scope="col">
+                                <span data-bind="i18n: 'Spot Item'"></span>
+                            </th>
+                            <th class="col price" scope="col">
+                                <span  data-bind="i18n: 'ItemPrice'"></span>
+                            </th>
+                            <th class="col gift-wrapping-col" scope="col">
+                                <span data-bind="i18n: 'GiftWrapping'"></span>
+                            </th>
+                            <th class="col qty" scope="col">
+                                <span data-bind="i18n: 'Quantity'"></span>
+                            </th>
+                            <th class="col subtotal" scope="col">
+                                <span data-bind="i18n: 'Subtotal'"></span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <!-- ko foreach: cartItems -->
+                        <!-- ko if: (typeof not_show == 'undefined') -->
+                        <tbody class="cart item">
+                        <tr class="item-info">
+                            <td class="col item" data-bind="attr: {'data-th': $t('Spot Item')}">
+                                <span class="item-photo">
+                                    <img data-bind="attr: {
+                                        src: $parents[2].itemImages[item_id],
+                                        alt: name
+                                    }" class="product-image-photo" />
+                                </span>
+                                <div class="item-details">
+                                    <span class="item-name" data-bind="text: name"></span>
+                                    <div class="notification-qty" data-bind="attr: {class: product_stock_class + ' notification-qty'}"><span data-bind="i18n: 'Stock:'"></span> <span data-bind="text: product_stock_message"></span></div>
+                                </div>
+                            </td>
+                            <td class="col price" data-bind="attr: {'data-th': $t('Price')}">
+                            <span class="price-including-tax">
+                                <span class="cart-price">
+                                    <!-- ko if: (unit_case == 'CS') -->
+                                    <span class="price" data-bind="text: $parents[2].formatPrice(price_incl_tax*unit_qty)"></span>
+                                    <!-- /ko -->
+                                    <!-- ko if: (unit_case != 'CS') -->
+                                    <span class="price" data-bind="text: $parents[2].formatPrice(price_incl_tax)"></span>
+                                    <!-- /ko -->
+                                </span>
+                            </span>
+                            </td>
+                            <td class="col gift-wrapping-col" scope="col" data-bind="attr: {'data-th': $t('GiftWrapping')}">
+                                <div class="gift-wrapping-title">
+                                    <!-- ko if: ($parents[2].gift_wrapping_available && gift_wrapping) -->
+                                    <span class="gift-wrapping-name" data-bind="text: $parents[2].showGiftWrappingName(gw_id)"></span>
+                                    <span class="regular-price">
+                                            <span class="price" data-bind="text: $parents[2].showGiftWrappingPrice(gw_id)"></span>
+                                        </span>
+                                    <!-- /ko -->
+                                    <!-- ko if: !$parents[2].gift_wrapping_available || (gw_id == null) -->
+                                    <span data-bind="i18n: 'None'"></span>
+                                    <!-- /ko -->
+                                </div>
+                            </td>
+                            <td class="col qty" data-bind="attr: {'data-th': $t('Qty')}">
+                                <!-- ko if: (unit_case == 'EA') -->
+                                <span class="control-qty" data-bind="text: qty"></span>
+                                <span class="unit-label" data-bind="i18n: unit_case"></span>
+                                <!-- /ko -->
+                                <!-- ko if: (unit_case == 'N/A') -->
+                                <span class="control-qty" data-bind="text: qty"></span>
+                                <span class="unit-label" data-bind="i18n: 'EA'"></span>
+                                <!-- /ko -->
+                                <!-- ko if: (unit_case == 'CS') -->
+                                <span class="control-qty" data-bind="text: qty_case"></span>
+                                <span class="unit-label" data-bind="i18n: unit_case_ea"></span>
+                                <!-- /ko -->
+                            </td>
+                            <td class="col subtotal" data-bind="attr: {'data-th': $t('Subtotal (tax incl)')}">
+                            <span class="price-including-tax">
+                                <span class="cart-price">
+                                    <span class="price" data-bind="text: $parents[2].formatPrice(price_incl_tax*qty)"></span>
+                                </span>
+                            </span>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <!-- /ko -->
+                        <!-- /ko -->
+                        <tfoot class="shipping-fee-to-address">
+                        <tr>
+                            <td class="title">
+                                <span data-bind="i18n: 'Shipment fee'"></span>
+                                <span data-bind="i18n: name"></span>
+                            </td>
+                            <td colspan="4" class="a-right price">
+                                <!-- ko if: (typeof total_shipping_fee != 'undefined') -->
+                                <span data-bind="text: $parents[1].formatPrice(total_shipping_fee)"></span>
+                                <!-- /ko -->
+                                <!-- ko if: (typeof total_shipping_fee == 'undefined') -->
+                                <span data-bind="text: $parents[1].formatPrice(0)"></span>
+                                <!-- /ko -->
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+
+    <!-- ko if: typeof addressDdateInfoConfirm() != "undefined" -->
+    <!-- ko if: typeof addressDdateInfoConfirm().nonAddressDdateInfo != 'undefined' -->
+    <div class="opc-single-sub">
+        <div id="checkout-step-confirm-shipping-info" class="step-content" data-role="content">
+            <div class="block-content">
+                <div class="box box-left box-shipping-address">
+                    <div class="opc-sub-title has-action">
+                        <span>
+                            <span data-bind="i18n: 'Destination:'"></span> <span data-bind="text: $parent.addressData.lastname"></span> <span data-bind="text: $parent.addressData.firstname"></span>(<span data-bind="i18n: name"></span>)
+                        </span>
+                        <a class="action edit" data-bind="i18n: 'Change shipping address', click: function() { $parents[1].goTo('shipping') }"></a>
+                        <a class="action edit payment show-desktop" data-bind="i18n: 'Change payment', click: function() { $parents[1].goTo('shipping') }"></a>
+                        <a class="action edit payment show-mobile" data-bind="i18n: 'Modify the above address', click: function() { $parents[1].goTo('shipping') }"></a>
+                    </div>
+                    <div class="box-content">
+                        <div class="address">
+                            <!-- ko i18n: 'Non address info' --><!-- /ko -->
+                        </div>
+                    </div>
+                </div>
+                <div class="box box-right box-shipping-method">
+                    <div class="opc-sub-title">
+                        <span data-bind="i18n: 'Delivery schedule date and time'"></span>
+                    </div>
+                    <div class="box-content">
+                        <div class="has-note">
+                            <div class="delivery-date" data-bind="html: $parents[1].getDeliveryInfo($parent.address_id, code)"></div>
+                        </div>
+                        <div class="color-red">
+                            <p data-bind="i18n: 'Regarding various campaigns of periodic delivery flights, you can not specify the desired delivery date.'"></p>
+                            <p data-bind="i18n: 'Even if you specify delivery date, it will be invalid. Please note.'"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="items-ordered">
+                <div class="opc-sub-title" data-role="title">
+                    <span data-bind="i18n: 'Spot Items'"></span>
+                </div>
+                <div class="cart table-wrapper">
+                    <table class="cart items data table cart-items-orders">
+                        <thead>
+                        <tr>
+                            <th class="col item" scope="col">
+                                <span data-bind="i18n: 'Spot Item'"></span>
+                            </th>
+                            <th class="col price" scope="col">
+                                <span  data-bind="i18n: 'ItemPrice'"></span>
+                            </th>
+                            <th class="col gift-wrapping-col" scope="col">
+                                <span data-bind="i18n: 'GiftWrapping'"></span>
+                            </th>
+                            <th class="col qty" scope="col">
+                                <span data-bind="i18n: 'Quantity'"></span>
+                            </th>
+                            <th class="col subtotal" scope="col">
+                                <span data-bind="i18n: 'Subtotal'"></span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <!-- ko foreach: addressDdateInfoConfirm().nonAddressDdateInfo.cartItems -->
+                        <!-- ko if: (typeof not_show == 'undefined') -->
+                        <tbody class="cart item">
+                        <tr class="item-info">
+                            <td class="col item" data-bind="attr: {'data-th': $t('Spot Item')}">
+                                <span class="item-photo">
+                                    <img data-bind="attr: {
+                                        src: $parents[2].itemImages[item_id],
+                                        alt: name
+                                    }" class="product-image-photo" />
+                                </span>
+                                <div class="item-details">
+                                    <span class="item-name" data-bind="text: name"></span>
+                                    <div class="notification-qty" data-bind="attr: {class: product_stock_class + ' notification-qty'}"><span data-bind="i18n: 'Stock:'"></span> <span data-bind="text: product_stock_message"></span></div>
+                                </div>
+                            </td>
+                            <td class="col price" data-bind="attr: {'data-th': $t('Price')}">
+                            <span class="price-including-tax">
+                                <span class="cart-price">
+                                    <span class="price" data-bind="text: $parents[2].formatPrice(price_incl_tax)"></span>
+                                </span>
+                            </span>
+                            </td>
+                            <td class="col gift-wrapping-col" scope="col" data-bind="attr: {'data-th': $t('GiftWrapping')}">
+                                <div class="gift-wrapping-title">
+                                    <!-- ko if: ($parents[2].gift_wrapping_available && gift_wrapping) -->
+                                    <span class="gift-wrapping-name" data-bind="text: $parents[2].showGiftWrappingName(gw_id)"></span>
+                                    <span class="regular-price">
+                                            <span class="price" data-bind="text: $parents[2].showGiftWrappingPrice(gw_id)"></span>
+                                        </span>
+                                    <!-- /ko -->
+                                    <!-- ko if: !$parents[2].gift_wrapping_available || (gw_id == null) -->
+                                    <span data-bind="i18n: 'None'"></span>
+                                    <!-- /ko -->
+                                </div>
+                            </td>
+                            <td class="col qty" data-bind="attr: {'data-th': $t('Qty')}">
+                                <!-- ko if: (unit_case == 'EA') -->
+                                <span class="control-qty" data-bind="text: qty"></span>
+                                <span class="unit-label" data-bind="i18n: unit_case"></span>
+                                <!-- /ko -->
+                                <!-- ko if: (unit_case == 'N/A') -->
+                                <span class="control-qty" data-bind="text: qty"></span>
+                                <span class="unit-label" data-bind="i18n: 'EA'"></span>
+                                <!-- /ko -->
+                                <!-- ko if: (unit_case == 'CS') -->
+                                <span class="control-qty" data-bind="text: qty_case"></span>
+                                <span class="unit-label" data-bind="i18n: unit_case_ea"></span>
+                                <!-- /ko -->
+                            </td>
+                            <td class="col subtotal" data-bind="attr: {'data-th': $t('Subtotal (tax incl)')}">
+                            <span class="price-including-tax">
+                                <span class="cart-price">
+                                    <span class="price" data-bind="text: $parents[2].formatPrice(price_incl_tax)"></span>
+                                </span>
+                            </span>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <!-- /ko -->
+                        <!-- /ko -->
+                        <tfoot class="shipping-fee-to-address">
+                        <tr>
+                            <td class="title">
+                                <span data-bind="i18n: 'Shipment fee'"></span>
+                                <span data-bind="i18n: name"></span>
+                            </td>
+                            <td colspan="4" class="a-right price">
+                                <!-- ko if: (typeof total_shipping_fee != 'undefined') -->
+                                <span data-bind="text: $parents[1].formatPrice(total_shipping_fee)"></span>
+                                <!-- /ko -->
+                                <!-- ko if: (typeof total_shipping_fee == 'undefined') -->
+                                <span data-bind="text: $parents[1].formatPrice(0)"></span>
+                                <!-- /ko -->
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+
+    <div class="opc-single-sub">
+        <div class="opc-sub-title" data-bind="i18n: 'Payment information'" data-role="title"></div>
+        <div id="checkout-step-confirm" class="step-content" data-role="content">
+            <div class="block-content">
+                <div class="opc-block-summary">
+                    <table class="data table table-totals">
+                        <tbody>
+                        <tr class="totals no-padding-bottom show-dk">
+                            <th class="mark"><strong data-bind="i18n: 'Method Name'"></strong></th>
+                            <td class="amount payment-method">
+                                <span data-bind="text: paymentMethodName"></span>
+                                <a class="action edit" data-bind="i18n: 'ChangePayment', click: function() { goTo('shipping') }"></a>
+                            </td>
+                        </tr>
+                        <tr class="totals no-padding-bottom show-mb">
+                            <td class="amount payment-method" colspan="2">
+                                <div class="mark"><strong data-bind="i18n: 'Method Name'"></strong></div>
+                                <span data-bind="text: paymentMethodName"></span>
+                                <a class="action edit" data-bind="i18n: 'ChangePayment', click: function() { goTo('shipping') }"></a>
+                            </td>
+                        </tr>
+                        <tr class="totals">
+                            <th class="mark"><strong data-bind="i18n: 'Items total (Tax included)'"></strong> </th>
+                            <td class="amount" data-bind="text: formattedSubTotal"></td>
+                        </tr>
+                        <tr class="totals">
+                            <th class="mark" data-bind="i18n: 'Wrapping Fee (Tax included)'"></th>
+                            <td class="amount" data-bind="text: formattedGiftWrappingFee"></td>
+                        </tr>
+                        <tr class="totals excl">
+                            <th class="mark" data-bind="i18n: 'Shipping cost (Tax included)'">
+                            </th>
+                            <td class="amount" data-bind="text: formattedShippingFee">
+                            </td>
+                        </tr>
+                        <tr class="totals cod-fee">
+                            <th class="mark" data-bind="i18n: 'Transaction Fee (Tax included)'"></th>
+                            <td class="amount" data-bind="text: formattedSurchargeFee">
+                            </td>
+                        </tr>
+                        <!-- ko if: (isDisplayDiscount) -->
+                        <tr class="totals discount">
+                            <th class="mark" data-bind="i18n: 'Discount (Tax included)'"></th>
+                            <td class="amount" data-bind="text: discountValue"></td>
+                        </tr>
+                        <!-- /ko -->
+                        <tr class="totals total_not_apply_point">
+                            <th class="mark" data-bind="i18n: 'Total amount of payment (Tax included)'"></th>
+                            <td class="amount" data-bind="text: formattedGrandTotalNotApplyPoint">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="opc-block-summary">
+                    <table class="data table table-totals">
+                        <tbody>
+                        <tr class="totals">
+                            <th class="mark" data-bind="i18n: 'Point balance'"></th>
+                            <td class="amount" data-bind="text: formattedPointBalance()"></td>
+                        </tr>
+                        <tr class="totals">
+                            <th class="mark" data-bind="i18n: 'Point Using'"></th>
+                            <td class="amount" data-bind="text: formattedPointUsed()"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="opc-discount">
+                    <div class="opc-sub-title" data-bind="i18n: 'Coupon/Promotion'" data-role="title"></div>
+                    <div class="coupon-code-detail">
+                        <!-- ko if: (couponCode() != null) -->
+                        <span data-bind="html: couponCode()"></span>
+                        <!-- /ko -->
+                        <!-- ko if: (couponCode() == null) -->
+                        <span data-bind="i18n: 'None'"></span>
+                        <!-- /ko -->
+                    </div>
+                </div>
+                <div class="opc-block-summary opc-block-summary-plus">
+                    <table class="data table table-totals">
+                        <tbody>
+                        <tr class="totals grand">
+                            <th class="mark" data-bind="i18n: 'Total (Tax included)'"></th>
+                            <td class="amount" data-bind="text: formattedGrandTotal"></td>
+                        </tr>
+                        <tr class="totals">
+                            <th class="mark" data-bind="i18n: 'Earned reward point'"></th>
+                            <td class="amount"><span data-bind="text: getValueEarnPoint()"></span> <span data-bind="i18n: 'point'"></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ko if: questionnairesArray.getLength() > 0 -->
+    <div class="opc-single-sub get-survey-block" data-bind="afterRender: setAllowSubmitButton">
+        <div class="opc-sub-title" data-bind="i18n: 'Sorry to trouble you, please answer the following questionnaire before submitting complete your order.'" data-role="title"></div>
+        <form name="questionnaire-form" id="questionnaire-form">
+            <div class="required-note" data-bind="i18n: '* is a mandatory field'"></div>
+            <!-- ko foreach: questionnairesArray -->
+            <input type="hidden" data-bind="attr: { name: 'questionnaire['+ enquete_id +'][\'enquete_id\']', value: enquete_id }" />
+            <div class="questionnaire-wrapper">
+                <!-- ko foreach: optionQuestions -->
+                <div class="question-item" data-bind="css: is_required">
+                    <span class="no-display data-type" data-bind="attr: { rel: type }"></span>
+                    <div class="question-container">
+                        <!-- ko if: (type == 0) -->
+                        <h3 class="question-title"><strong data-bind="text: index"></strong> <!-- ko text: title --><!-- /ko --></h3>
+                        <!-- ko foreach: optionChoices -->
+                        <div class="wrapper">
+                            <div class="level1">
+                                <input type="radio" data-bind="checked: $parent.selectedOption, css: {has_children: optionChoicesSecond.getLength() > 0}, attr: { name: 'questionnaire['+ $parents[1].enquete_id +'][\'questions\']['+ $parent.question_id +'][\'choice_id\']', id: 'checkbox_' + choice_id, value: choice_id }" />
+                                <label data-bind="text: label, attr: { for: 'checkbox_'  + choice_id }"></label><br />
+                            </div>
+                            <div class="level2">
+                                <!-- ko if: (optionChoicesSecond.getLength() > 0) -->
+                                <div class="arrow drop-down">⇒</div>
+                                <div class="level2-content">
+                                    <div class="select-wrapper">
+                                        <select class="input-new select-box" data-bind="
+                                       options: optionChoicesSecond,
+                                       optionsText: 'label',
+                                       optionsValue: 'choice_id',
+                                       optionsCaption: $t('Please select the answer'),
+                                       enable: $parent.selectedOption() == choice_id,
+                                       value: ($parent.selectedOption() != choice_id) ? '' : '',
+                                       attr: { name: 'questionnaire['+ $parents[1].enquete_id +'][\'questions\']['+ $parent.question_id +'][\'choice_id\'][\'sub\']['+ choice_id +']' }"></select>
+                                    </div>
+                                </div>
+                                <!-- /ko -->
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                        <!-- /ko -->
+
+                        <!-- ko if: (type == 1) -->
+                        <h3 class="question-title"><strong data-bind="text: index"></strong> <!-- ko text: title --><!-- /ko --></h3>
+                        <div class="wrapper">
+                            <div class="level1 middle">
+                                <div class="select-wrapper">
+                                    <select class="input-new select-box" data-bind="
+                                   options: optionChoices,
+                                   optionsText: 'label',
+                                   optionsValue: 'choice_id',
+                                   optionsCaption: $t('Please select the answer'),
+                                   value: selectedOption,
+                                   attr: { name: 'questionnaire['+ $parent.enquete_id +'][\'questions\']['+ question_id +'][\'choice_id\']' }"></select>
+                                </div>
+                            </div>
+                            <div class="level2">
+                                <!-- ko with: selectedOption -->
+                                <!-- ko foreach: $parent.optionChoices -->
+                                <!-- ko if: (choice_id == $parents[1].selectedOption()) -->
+                                <!-- ko if: (optionChoicesSecond.getLength() > 0) -->
+                                <div class="arrow drop-down">⇒</div>
+                                <div class="level2-content">
+                                    <div class="select-wrapper">
+                                        <select class="input-new select-box" data-bind="
+                                       options: optionChoicesSecond,
+                                       optionsText: 'label',
+                                       optionsValue: 'choice_id',
+                                       optionsCaption: $t('Please select the answer'),
+                                       attr: { name: 'questionnaire['+ $parents[2].enquete_id +'][\'questions\']['+ $parents[1].question_id +'][\'choice_id\'][\'sub\']' }"></select>
+                                    </div>
+                                </div>
+                                <!-- /ko -->
+                                <!-- /ko -->
+                                <!-- /ko -->
+                                <!-- /ko -->
+                            </div>
+                        </div>
+                        <!-- /ko -->
+
+                        <!-- ko if: (type == 2) -->
+                        <div class="wrapper">
+                            <div class="level1">
+                                <label class="label question-title" data-bind="attr: { for: 'content_' + question_id }"><strong data-bind="text: index"></strong> <!-- ko text: title --><!-- /ko --></label>
+                                <input type="text" data-bind="attr: { name: 'questionnaire['+ $parent.enquete_id +'][\'questions\']['+ question_id +'][\'content\']', id: 'content_' + question_id }"  class="input-text" />
+                            </div>
+                            <div class="level2"></div>
+                        </div>
+                        <!-- /ko -->
+
+                    </div>
+                </div>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+        </form>
+    </div>
+    <!-- /ko -->
+
+    <div class="actions-toolbar" id="multiple-order-confirm-buttons-container">
+        <div class="primary">
+            <button type="submit" class="action primary checkout" data-bind="enable: allowSubmitButton, click: placeOrderAfterConfirm">
+                <span data-bind="text: titleConfirmButton"></span>
+            </button>
+        </div>
+        <div class="secondary">
+            <a class="action back" data-bind="click: function() { goBack() }"><span><!-- ko i18n: 'Back to previous'--><!-- /ko --></span></a>
+        </div>
+    </div>
+</li>

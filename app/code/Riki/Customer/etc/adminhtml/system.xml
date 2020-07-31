@@ -1,0 +1,357 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="sso_login_setting" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>SSO Login Setting</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_Customer::sso_login_setting</resource>
+            <group id="sso_group" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>SSO Login Setting</label>
+                <field id="use_sso_login" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Use SSO Login</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or Disable call to KSS to login</comment>
+                </field>
+
+                <field id="url_login_sso" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>URL SSO Login</label>
+                    <comment>URL redirect to KSS Login</comment>
+                </field>
+                <field id="url_logout_sso" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>URL SSO Logout</label>
+                    <comment>URL redirect to KSS Logout</comment>
+                </field>
+
+                <field id="url_register_sso" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>URL SSO Register</label>
+                    <comment>URL redirect to KSS Register</comment>
+                </field>
+            </group>
+            <group id="restrict_website_group" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Restrict Website Setting</label>
+                <field id="restrict_website" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Restrict Access Websites</label>
+                    <source_model>Riki\Customer\Model\Config\Source\MultipleWebsite</source_model>
+                    <comment>Select list of websites need to have right permission to access</comment>
+                </field>
+                <field id="urls_not_restrict" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Urls NOT check restrict</label>
+                    <comment>Select list Urls NOT check restrict. Use for external request to site, separate by comma(;)</comment>
+                </field>
+            </group>
+            <group id="reindex_queue_customer" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Reindex Queue Customer Cron</label>
+                <field id="queue_enabled" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Reindex Queue Customer</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or Disable Reindex Queue Customer</comment>
+                </field>
+                <field id="queue_cron" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Reindex Queue Customer Cron</label>
+                    <comment>Set up cron to reindex queue customer cron.</comment>
+                </field>
+            </group>
+            <group id="update_segment_queue_customer" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Segment update Queue Customer Cron</label>
+                <field id="queue_cron" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Segment update Queue Customer Cron</label>
+                    <comment>Set up cron to Segment update Queue Customer Cron.</comment>
+                </field>
+                <!--<field id="max_message_queue" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Max message consume</label>
+                    <comment>Set up Max message consume to Segment update Queue Customer</comment>
+                </field>-->
+                <field id="use_queue_to_update_segment" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Use queue to update segment</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable updated customer segment by queue, if disabled is chosen, Magento default flow will be active.</comment>
+                </field>
+            </group>
+        </section>
+        <section id="mypage_subscriber_block" translate="label" type="text" sortOrder="301" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>My Page</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_Customer::mypage_subscriber_block</resource>
+                <group id="subscriber_block" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>My Page</label>
+                    <field id="x_day" translate="label" type="text" sortOrder="3" showInStore="0" showInDefault="1" showInWebsite="1">
+                        <label>Subscriber xxx days</label>
+                        <validate>validate-number validate-zero-or-greater</validate>
+                    </field>
+                    <field id="y_day" translate="label" type="text" sortOrder="3" showInStore="0" showInDefault="1" showInWebsite="1">
+                        <label>Subscriber yyy days</label>
+                        <validate>validate-number validate-zero-or-greater</validate>
+                    </field>
+                </group>
+        </section>
+        <section id="mypage_app_config_block" translate="label" type="text" sortOrder="301" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>My Page Renewal</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_Customer::mypage_subscriber_block</resource>
+            <group id="app_config_block" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>My Page Renewal Config</label>
+                <field id="url_my_page_app" translate="label" type="text" sortOrder="3" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Redirect to my page renewal</label>
+                </field>
+                <field id="use_my_page_app" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Yes use my page renewal</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or Disable use APP</comment>
+                </field>
+            </group>
+        </section>
+        <section id="cedyna_customer_hold" translate="label" type="text" sortOrder="301" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Cedyna Customer Hold</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_Customer::cedyna_customer_hold</resource>
+            <group id="sftp" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>sFTP Settings</label>
+                <field id="host" translate="label comment" type="text" sortOrder="1" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>sFTP Host</label>
+                    <comment>Domain name/ Ip address of sFTP server. Example: 192.168.10.90</comment>
+                </field>
+                <field id="port" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>sFTP Port</label>
+                    <comment>sFTP port number. Example: 22</comment>
+                    <validate>number validate-zero-or-greater</validate>
+                </field>
+                <field id="username" translate="label" type="text" sortOrder="3" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>sFTP Username</label>
+                </field>
+                <field id="password" translate="label" type="obscure" sortOrder="4" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>sFTP Password</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+            </group>
+            <group id="file_setting" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>File Settings</label>
+                <field id="file_path" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Import Path</label>
+                </field>
+                <field id="file_import" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Import File</label>
+                </field>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+            </group>
+            <group id="email_setting" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Email Settings</label>
+                <field id="email_alert" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Alert</label>
+                </field>
+                <field id="email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="email_template_error" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template Error</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+        </section>
+        <section id="export_shosha" translate="label" type="text" sortOrder="301" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Shosha Exporting</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_Customer::shosha_export</resource>
+            <group id="folder_setting" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>File Settings Shosha Business Code</label>
+                <field id="folder_local" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <validate>required-entry</validate>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="folder_ftp" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="cron_last_time_run" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Lastime to run cron job</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+            <group id="folder_setting_shipment" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>File Settings Sales</label>
+                <field id="folder_local" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <validate>required-entry</validate>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="folder_ftp" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="cron_last_time_run" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Lastime to run cron job</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+            <group id="folder_setting_return" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>File Settings Return</label>
+                <field id="folder_local" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <validate>required-entry</validate>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="folder_ftp" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="cron_last_time_run" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Lastime to run cron job</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+        </section>
+        <section id="consumer_db_api_url" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Consumer DB API Config Setting</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_Customer::consumer_db_api_url</resource>
+            <group id="setting_base_url" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Setting API base URL</label>
+                <field id="setCustomer_domain" translate="label comment" type="text" sortOrder="1" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>API base URL</label>
+                </field>
+            </group>
+            <group id="customer" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Customer</label>
+                <field id="param1" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Param 1</label>
+                </field>
+                <field id="param2" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Param 2</label>
+                </field>
+                <field id="param3" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Param 3</label>
+                </field>
+                <field id="param4" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Param 4</label>
+                </field>
+
+            </group>
+
+            <group id="customer_sub" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Customer Sub-profile</label>
+                <field id="param1" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Param 1</label>
+                </field>
+                <field id="param2" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Param 2</label>
+                </field>
+                <field id="param3" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Param 3</label>
+                </field>
+                <field id="param4" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Param 4</label>
+                </field>
+            </group>
+            <group id="ambassador" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Customer Ambassador</label>
+                <field id="param1" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Param 1</label>
+                </field>
+                <field id="param2" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Param 2</label>
+                </field>
+                <field id="param3" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Param 3</label>
+                </field>
+                <field id="param4" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Param 4</label>
+                </field>
+            </group>
+            <!-- Customer Machine -->
+            <group id="customer_machine" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Customer Machine</label>
+                <field id="param1" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Param 1</label>
+                </field>
+                <field id="param2" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Param 2</label>
+                </field>
+                <field id="param3" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Param 3</label>
+                </field>
+                <field id="param4" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Param 4</label>
+                </field>
+            </group>
+            <!-- END Customer Machine -->
+            <!-- check duplicate -->
+            <group id="customer_check_duplicate" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Customer Check Duplicate</label>
+                <field id="param1" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Param 1</label>
+                </field>
+                <field id="param2" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Param 2</label>
+                </field>
+            </group>
+            <!-- END check duplicate -->
+
+            <!-- Machine Owned-->
+            <group id="customer_machine_owned" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Machine Owned</label>
+                <field id="getMachine" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Get Machine Owned</label>
+                </field>
+                <field id="param1" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Param 1</label>
+                </field>
+                <field id="param2" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Param 2</label>
+                </field>
+            </group>
+            <!-- END Machine Owned -->
+
+            <!-- Logging call API-->
+            <group id="logging_kss_api" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Enable Logging API</label>
+                <field id="enableLoggingApiCall" translate="label comment" type="select" sortOrder="0" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Enable Logging API</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable logging data transport when call KSS API (Enabled by default, Disable for better performance)</comment>
+                </field>
+            </group>
+            <!-- END Logging call API -->
+
+            <group id="setting_url_get_mid_info" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Setting API Consumer DB - getMidInfo URL</label>
+                <field id="api_url" translate="label comment" type="text" sortOrder="1" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>API base URL</label>
+                </field>
+            </group>
+
+        </section>
+        <section id="loggersetting">
+            <group id="customer_logger" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Customer</label>
+                <field id="logger_customer_address_enable_status" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable logger info when create new address or region be set to empty</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>File name: Customer_Address/yyyy/mm/dd/address.log</comment>
+                </field>
+            </group>
+        </section>
+        <section id="customer">
+            <group id="crontab" translate="label" type="text" sortOrder="1000" showInDefault="1" showInStore="0" showInWebsite="0">
+                <label>Crontab Configuration</label>
+                <field id="clean_duplicate_consumer_db" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Clean Duplicate ConsumerDB Id Customer</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

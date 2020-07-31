@@ -1,0 +1,123 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var \Riki\Customer\Block\Account\Info $block */
+$subProfileNotHanpukai = $block->customerHaveSubscriptionNotHanpukaiAvailable();
+$websiteAvailable = $block->getWebsiteList();
+$subProfileHanpukai = $block->customerHaveSubscriptionHanpukaiAvailable();
+//$companyName = $block->getCompanyName();
+$isHaveSubscription = $block->customerHaveSubscription();
+?>
+
+<div class="block-dashboard-info">
+    <div class="block block-left">
+        <div class="section order-infomation riki-tracking-dashboard" data-title="<?php echo __("Order information")?>" >
+            <h3 class="title"><?php echo __("Order information")?></h3>
+            <div class="item">
+                <?php echo $block->getChildHtml('dash_history'); ?>
+            </div>
+            <div class="item">
+                <div class="title"><?php  /* @escapeNotVerified */ echo __("View or Edit Subscription Profile")?></div>
+                <ul>
+                    <li>
+                        <?php if($subProfileNotHanpukai) :?>
+                            <a href="<?php  echo $block->getUrl('subscriptions/profile')  ?>">
+                                <span class="link"><?php  /* @escapeNotVerified */ echo __("Change next delivery details of subscription profile")?></span>
+                            </a>
+                        <?php else : ?>
+                            <span class="link"><?php  /* @escapeNotVerified */ echo __("Change next delivery details of subscription profile")?></span>
+                        <?php endif ?>
+                        <div>（<?php  /* @escapeNotVerified */ echo __("Payment method / Card information · Addressee · Delivery date · Delivery item")?>）</div>
+                    </li>
+                    <li>
+                        <?php if ($isHaveSubscription): ?>
+                        <span class="link"><a href="<?php echo $block->getConfig('subscriptioncourse/subscription_page_link/sub_page_select_additional_machine') ?>"><?php echo __('Select Additional Machine'); ?></a></span>
+                        <?php else : ?>
+                            <span class="link"><?php echo __('Select Additional Machine'); ?></span>
+                        <?php endif; ?>
+                    </li>
+                    <?php if ($block->isAmbassador()): ?>
+                    <li>
+                        <?php if ($isHaveSubscription): ?>
+                        <a class="action back" href="<?php echo $block->getConfig('subscriptioncourse/subscription_page_link/sub_page_select_additional_machine_for_office') ?>">
+                            <span class="link"><?php echo __('Select Additional Machine for Office'); ?> </span>
+                        </a>
+                        <?php else : ?>
+                            <span class="link"><?php echo __('Select Additional Machine for Office'); ?></span>
+                        <?php endif; ?>
+                    </li>
+                    <?php endif; ?>
+                </ul>
+            </div>
+            <div class="item last">
+                <div class="title"><?php  /* @escapeNotVerified */ echo __("View Hanpukai")?></div>
+                <ul>
+                    <li>
+                        <?php if($subProfileHanpukai) :?>
+                            <a href="<?php  echo $block->getUrl('subscriptions/profile/hanpukai')  ?>">
+                                <span class="link"><?php  /* @escapeNotVerified */ echo __("Change next delivery details of Hanpukai")?></span>
+                            </a>
+                        <?php else : ?>
+                            <span class="link"><?php  /* @escapeNotVerified */ echo __("Change next delivery details of Hanpukai")?></span>
+                        <?php endif ?>
+                        <div>（<?php  /* @escapeNotVerified */ echo __("Payment method / Card information")?>）</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="section member-infomation riki-tracking-dashboard" data-title="<?php echo __("View or Edit Nestle Membership Information")?>" >
+            <h3 class="title"><?php echo __("View or Edit Nestle Membership Information")?></h3>
+            <div class="item last">
+                <div class="title"><?php  /* @escapeNotVerified */ echo __("View or Edit Member Information")?></div>
+                <ul>
+                    <?php if(!$websiteAvailable) :?>
+                        <?php if(!$block->checkMembership('cc')) :?>
+                            <li><a href="<?php echo $block->getUrl('customer/account/changeinformation'); ?>"><span class="link"><?php  /* @escapeNotVerified */ echo __("お客様情報を確認・変更する")?></span></a></li>
+                        <?php endif ?>
+                        <?php if( $block->checkMembership('amb')) :?>
+                            <?php if($block->checkMembership('cc')) :?>
+                                <li><a href="<?php echo $block->getUrl('customer/account/changeinformation'); ?>"><span class="link"><?php  /* @escapeNotVerified */ echo __("お客様情報を確認・変更する")?></span></a></li>
+                            <?php endif ?>
+                            <li><a href="<?php echo $block->getUrl('customer/account/changeambassador'); ?>"><span class="link"><?php  /* @escapeNotVerified */ echo __("会社情報を確認・変更する")?></span></a></li>
+                        <?php endif ?>
+                    <?php endif ?>
+                    <li><a href="<?php echo $block->getSystemConfig('customerksslink/kss_link_edit_customer/kss_customer_change_password') ?>"><span class="link"><?php  /* @escapeNotVerified */ echo __("パスワードを変更する")?></span></a></li>
+                    <li class="last"><a href="<?php  echo $block->getUrl('customer/address/')  ?>"><span class="link"><?php  /* @escapeNotVerified */ echo __("お届け先一覧を編集する")?></span></a></li>
+                </ul>
+            </div>
+        </div>
+        <?php if(!$websiteAvailable) :?>
+        <div class="section riki-tracking-dashboard" data-title="<?php echo __("View or edit Shopping Point") ?>" >
+            <?php echo $block->getChildHtml('customer_dashboard_seasonalgift') ?>
+        </div>
+        <?php endif ?>
+        <div class="section riki-tracking-dashboard" data-title="<?php echo __('Serial code');?>" >
+            <?php echo $block->getChildHtml('serial_code') ?>
+        </div>
+    </div>
+    <div class="block block-right">
+        <?php echo $block->getChildHtml('loyalty_reward_setting_account') ?>
+        <div class="static-block">
+            <?php echo $block->getChildHtml('customer_dashboard_campaign')?>
+        </div>
+    </div>
+</div>
+
+<div class="block block-customer-sidebar">
+    <?php if(!$websiteAvailable) :?>
+    <div class="static-block">
+        <?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId($block->getSubscriberBlock())->toHtml();?>
+
+    </div>
+    <div class="block related">
+            <?php echo $block->getChildHtml('purchase_history')?>
+    </div>
+    <?php endif ?>
+</div>
+
+<?php echo $block->getChildHtml('machine_owned')?>

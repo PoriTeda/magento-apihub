@@ -1,0 +1,45 @@
+{
+    "sales_order_grid": {
+        "column": {
+            "is_preorder": true
+        }
+    },
+    "sales_order_additional_information": {
+        "column": {
+            "entity_id": true,
+            "order_id": true,
+            "monthly_fee_label": true
+        },
+        "index": {
+            "SALES_ORDER_ADDITIONAL_INFORMATION_ORDER_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "SALES_ORDER_ADDITIONAL_INFORMATION_ORDER_ID_SALES_ORDER_ENTT_ID": true
+        }
+    },
+    "riki_shipping_cause": {
+        "column": {
+            "id": true,
+            "is_active": true,
+            "description": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "riki_shipping_reason": {
+        "column": {
+            "id": true,
+            "is_active": true,
+            "description": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

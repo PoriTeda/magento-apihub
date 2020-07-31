@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:DataObject/etc/fieldset.xsd">
+    <scope id="global">
+        <fieldset id="customer_account">
+            <field name="membership">
+                <aspect name="to_quote" targetField="customer_membership"/>
+            </field>
+            <field name="lastnamekana">
+                <aspect name="to_quote" targetField="customer_lastnamekana"/>
+            </field>
+            <field name="firstnamekana">
+                <aspect name="to_quote" targetField="customer_firstnamekana"/>
+            </field>
+        </fieldset>
+        <fieldset id="sales_convert_quote">
+            <field name="customer_membership">
+                <aspect name="to_order"/>
+            </field>
+            <field name="customer_lastnamekana">
+                <aspect name="to_order"/>
+            </field>
+            <field name="customer_firstnamekana">
+                <aspect name="to_order"/>
+            </field>
+        </fieldset>
+        <fieldset id="quote_convert_item">
+            <field name="discount_amount_excl_tax">
+                <aspect name="to_order_item" />
+            </field>
+            <field name="commission_amount">
+                <aspect name="to_order_item" />
+            </field>
+            <field name="tax_riki">
+                <aspect name="to_order_item" />
+            </field>
+            <field name="booking_wbs">
+                <aspect name="to_order_item" />
+            </field>
+            <field name="booking_account">
+                <aspect name="to_order_item" />
+            </field>
+            <field name="booking_center">
+                <aspect name="to_order_item" />
+            </field>
+            <field name="free_of_charge">
+                <aspect name="to_order_item" />
+            </field>
+        </fieldset>
+        <fieldset id="sales_copy_order_billing_address">
+            <field name="firstnamekana">
+                <aspect name="to_order" />
+            </field>
+            <field name="lastnamekana">
+                <aspect name="to_order" />
+            </field>
+            <field name="riki_nickname">
+                <aspect name="to_order" />
+            </field>
+        </fieldset>
+        <fieldset id="sales_copy_order_shipping_address">
+            <field name="firstnamekana">
+                <aspect name="to_order" />
+            </field>
+            <field name="lastnamekana">
+                <aspect name="to_order" />
+            </field>
+            <field name="riki_nickname">
+                <aspect name="to_order" />
+            </field>
+            <field name="riki_type_address">
+                <aspect name="to_order" />
+            </field>
+        </fieldset>
+    </scope>
+</config>

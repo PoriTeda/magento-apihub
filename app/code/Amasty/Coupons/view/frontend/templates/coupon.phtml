@@ -1,0 +1,126 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @package Amasty_Coupons
+ */
+?>
+<?php
+/**
+ * Copyright © 2015 Amasty. All rights reserved.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<div class="block discount" id="block-discount">
+    <div class="content">
+
+        <form onsubmit="javascript:amCouponsSubmit(this);return false;" id="discount-coupon-form"
+              action="<?php echo $block->getUrl('checkout/cart/couponPost') ?>"
+              method="post"
+              data-mage-init='{"discountCode":{"couponCodeSelector": "#coupon_code_fake",
+                                               "removeCouponSelector": "#remove-coupon",
+                                               "applyButton": "button.action.apply",
+                                               "cancelButton": "button.action.cancel"}}'>
+            <div class="fieldset coupon <?php echo ($block->getCouponsCode()?"hide":'')?>">
+                <div class="field">
+                    <label for="coupon_code" class="label"><span><?php echo __('Coupon use') ?></span></label>
+                    <div class="control">
+                        <input type="text" class="input-text" id="coupon_code_fake" name="coupon_code_fake"  placeholder="<?php echo $block->escapeHtml(__('Enter your code'));?>" />
+                        <input type="hidden" class="input-text" id="coupon_code" name="coupon_code"   />
+                        <input type="hidden" class="input-text" id="last_code" name="last_code"   />
+                        <input type="hidden" class="input-text" id="remove_coupon" name="remove_coupon"   />
+                    </div>
+                </div>
+                <div class="actions-toolbar">
+                        <div class="primary">
+                            <button class="action apply primary" type="button" value="<?php echo __('Apply Coupon') ?>">
+                                <span><?php echo __('Apply Coupon') ?></span>
+                            </button>
+                        </div>
+
+                </div>
+            </div>
+            <div class="applied-coupon">
+                <?php
+                $couponCodes = $block->getCouponsCode();
+                $couponString = '';
+                if ($couponCodes):
+                    $couponString = implode(',', $couponCodes);
+                    ?>
+                    <div class="title">
+                        <?php echo __('Coupon use')?>
+                    </div>
+                    <?php
+                    foreach ($couponCodes as $couponCode):
+                        ?>
+                        <div class="applied-coupon-item">
+                            <input type="hidden"  class="amCouponsCode" value="<?php echo $couponCode; ?>" />
+                            <span><?php echo $couponCode?></span>
+                            <a href="#" onclick="javascript: amCancelCoupon('<?php echo $couponCode; ?>'); return false;"><?php echo __('Cancel Coupon'); ?></a>
+                        </div>
+                <?php
+                    endforeach;
+                endif;
+                ?>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="application/javascript">
+    function amCouponsSubmit(form){
+        var elements = document.getElementsByClassName("amCouponsCode");
+        var names = [];
+        for(var i=0; i<elements.length; i++) {
+            names.push(elements[i].value);
+        }
+        var newCode = document.getElementById('coupon_code_fake').value;
+        if(typeof newCode == '') {
+            return false;
+        }
+        document.getElementById('last_code').value = document.getElementById('coupon_code_fake').value;
+        names.push(newCode);
+        names = amGetUnique(names, newCode);
+        document.getElementById('coupon_code').value = names.join(',');
+        form.submit();
+    }
+
+    function amGetUnique(arr){
+        var u = {}, a = [];
+        for(var i = 0, l = arr.length; i < l; ++i){
+            if(u.hasOwnProperty(arr[i])) {
+                continue;
+            }
+            a.push(arr[i]);
+            u[arr[i]] = 1;
+        }
+        return a;
+    };
+
+    function amRemove(arr) {
+        var what, a = arguments, L = a.length, ax;
+        while (L && arr.length) {
+            what = a[--L];
+            while ((ax = arr.indexOf(what)) !== -1) {
+                arr.splice(ax, 1);
+            }
+        }
+        return arr;
+    };
+
+
+    function amCancelCoupon(code){
+        var elements = document.getElementsByClassName("amCouponsCode");
+        var names = [];
+        for(var i=0; i<elements.length; i++) {
+            names.push(elements[i].value);
+        }
+        document.getElementById('last_code').value = code;
+        document.getElementById('remove_coupon').value = code;
+        names = amRemove(names, code);
+        document.getElementById('coupon_code').value = names.join(',');
+        document.getElementById('discount-coupon-form').submit();
+    }
+</script>

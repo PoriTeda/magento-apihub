@@ -1,0 +1,51 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php $_item = $block->getItem() ?>
+<tr>
+    <td class="col-product"><?php echo $block->getColumnHtml($_item, 'name') ?></td>
+    <td class="col-ordered-qty"><?php echo $block->getColumnHtml($_item, 'qty') ?></td>
+    <td class="col-qty <?php if ($block->isShipmentRegular()): ?>last<?php endif; ?>">
+        <?php if ($block->canShipPartiallyItem()): ?>
+            <?php if('CS' == $_item->getUnitCase()){?>
+                <input type="text"
+                       class="input-text admin__control-text qty-item qty_case"
+                       shipment_item_id="<?php echo $_item->getId();?>"
+                       unitqty="<?php echo ((null != $_item->getData('unit_qty'))?$_item->getData('unit_qty'):1);?>"
+                       value="<?php /* @escapeNotVerified */ echo $_item->getQty()*1/ ((null != $_item->getUnitQty())?$_item->getUnitQty():1) ?>" />
+                <input type="hidden"
+                       class="input-text admin__control-text qty-item"
+                       id="sales_order_shipment_item_<?php echo $_item->getId();?>"
+                       name="shipment[items][<?php /* @escapeNotVerified */ echo $_item->getOrderItemId() ?>]"
+                       value="<?php /* @escapeNotVerified */ echo $_item->getQty()*1 ?>" />
+            <?php } else {?>
+                <input type="text"
+                       class="input-text admin__control-text qty-item"
+                       name="shipment[items][<?php /* @escapeNotVerified */ echo $_item->getOrderItemId() ?>]"
+                       value="<?php /* @escapeNotVerified */ echo $_item->getQty()*1 ?>" />
+            <?php }?>
+        <?php else: ?>
+            <?php if('CS' == $_item->getUnitCase()){?>
+                <?php /* @escapeNotVerified */ echo $_item->getQty()*1/((null != $_item->getUnitQty())?$_item->getUnitQty():1) ?>
+            <?php } else {?>
+                <?php /* @escapeNotVerified */ echo $_item->getQty()*1 ?>
+            <?php }?>
+        <?php endif; ?>
+    </td>
+    <?php if (!$block->canShipPartiallyItem()): ?>
+    <td class="col-ship last">
+        <input type="hidden" name="shipment[items][<?php /* @escapeNotVerified */ echo $_item->getOrderItemId() ?>]" value="0" />
+        <?php if('CS' == $_item->getUnitCase()){?>
+            <input type="checkbox" name="shipment[items][<?php /* @escapeNotVerified */ echo $_item->getOrderItemId() ?>]" value="<?php /* @escapeNotVerified */ echo $_item->getQty()*1/((null != $_item->getUnitQty())?$_item->getUnitQty():1) ?>" checked />
+        <?php } else {?>
+            <input type="checkbox" name="shipment[items][<?php /* @escapeNotVerified */ echo $_item->getOrderItemId() ?>]" value="<?php /* @escapeNotVerified */ echo $_item->getQty()*1 ?>" checked />
+        <?php }?>
+    </td>
+    <?php endif; ?>
+</tr>

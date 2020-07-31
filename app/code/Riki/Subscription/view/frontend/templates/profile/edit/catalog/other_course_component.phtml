@@ -1,0 +1,47 @@
+<?php
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Riki\Subscription\ViewModel\OtherCourseComponent $viewModel
+ * @var \Riki\Subscription\Block\Frontend\Profile\Edit $parentBlock
+ */
+$parentBlock = $block->getParentBlock();
+$viewModel = $block->getData('viewModel');
+
+$arrCourse   = $viewModel->getCurrentProfile()->getCourseData();
+
+$frequencyUnit = $viewModel->getCurrentProfile()->getData('frequency_unit');
+$frequencyInterval = $viewModel->getCurrentProfile()->getData('frequency_interval');
+$frequencyId = $parentBlock->getFrequencyIdByUnitAndInterval($frequencyUnit, $frequencyInterval);
+?>
+<?php if (!$parentBlock->isDisableAll()): ?>
+    <input name="riki_course_id" id="riki_course_id" type="hidden" value="<?= isset($arrCourse['course_id']) ? $arrCourse['course_id'] : 0 ?>">
+    <input name="frequency" id="frequency" type="hidden" value="<?php echo $frequencyId; ?>">
+
+    <div id="add-another-course-component">
+        <div class="add-another-course action-right" data-bind="scope: 'addAnotherCourseComponent'">
+            <button class="flat-button" data-bind="click: showFormPopUp, visible: hasAdditionalCategoriesProducts" title="<?= __('We also add other regular courses') ?>" style="display: none"><?= __('We also add other regular courses') ?></button>
+        </div>
+        <div class="no-display">
+            <div id="add-another-course-popup" data-bind="scope: 'priceBox'">
+            </div>
+        </div>
+    </div>
+    <script type="text/x-magento-init">
+                {
+                    "#add-another-course-component": {
+                        "Magento_Ui/js/core/app": {
+                           "components": {
+                                "addAnotherCourseComponent": {
+                                    "component": "Riki_Subscription/js/view/adding-another-course",
+                                    "profile_id": "<?php echo $viewModel->getCurrentProfile()->getProfileId(); ?>",
+                                    "load_additional_categories_products_url": "<?php echo $block->getUrl('subscriptions/profile/loadAdditionalCategoriesProducts')?>"
+                                }
+                            }
+                        }
+                    }
+                }
+        </script>
+    <script>
+        window.subscriptionConfig = <?php /* @escapeNotVerified */ echo $parentBlock->getPriceFormat();?>;
+    </script>
+<?php endif; ?>

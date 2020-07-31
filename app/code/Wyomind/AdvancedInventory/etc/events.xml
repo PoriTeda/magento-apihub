@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+ * Copyright © 2016 Wyomind. All rights reserved.
+ * See LICENSE.txt for license details.
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="catalog_product_is_salable_after">
+        <observer name="wyomind_advancedinventory_catalog_product_is_salable_after" instance="Wyomind\AdvancedInventory\Observer\CatalogProductIsSalableAfter" />
+    </event>
+
+    <event name="checkout_submit_all_after">
+        <observer name="wyomind_advancedinventory_checkout_submit_all_after" instance="Wyomind\AdvancedInventory\Observer\CheckoutSubmitAllAfter" />
+    </event>  
+    <event name="paypal_express_place_order_success">
+        <observer name="wyomind_advancedinventory_checkout_submit_all_after" instance="Wyomind\AdvancedInventory\Observer\CheckoutSubmitAllAfter" />
+    </event>
+    
+    <event name="paypal_ipn_submit_all_after">
+        <observer name="wyomind_advancedinventory_paypal_ipn_submit_all_after" instance="Wyomind\AdvancedInventory\Observer\CheckoutSubmitAllAfter" />
+    </event>
+    
+    <event name="sales_order_payment_cancel">
+        <observer name="wyomind_advancedinventory_sales_order_payment_cancel" instance="Wyomind\AdvancedInventory\Observer\SalesOrderPaymentCancel" />
+    </event>
+    <event name="sales_order_creditmemo_refund">
+        <observer name="wyomind_advancedinventory_sales_order_payment_cancel" instance="Wyomind\AdvancedInventory\Observer\SalesOrderCreditmemoRefund" />
+    </event>  
+</config>

@@ -1,0 +1,100 @@
+<?php /** @var $block \Riki\FairAndSeasonalGift\Block\Adminhtml\Fair\Edit\Tab\Recommend */ ?>
+
+<div>
+    <?php
+        $relatedFair = $block->getRelatedFair();
+        $relatedOption = '';
+        if( !empty( $relatedFair ) ):
+    ?>
+        <div class="admin__control-table-wrapper" id="fair_seasonal_related_container">
+            <section class="admin__page-section">
+                <div class="admin__page-section-title">
+                    <span class="title"><?php /* @escapeNotVerified */ echo __('Related Fairs') ?></span>
+                </div>
+
+                <div class="admin__control-table-wrapper">
+                    <table class="data-table admin__control-table" id="payment_status_log_info">
+                        <thead>
+                        <tr class="headings">
+                            <th class="col-fair-year"><?php /* @escapeNotVerified */ echo __('Fair Year') ?></th>
+                            <th class="col-fair-name"><?php /* @escapeNotVerified */ echo __('Fair Name') ?></th>
+                            <th class="col-fair-code"><?php /* @escapeNotVerified */ echo __('Fair Code') ?></th>
+                            <th class="col-fair-type"><?php /* @escapeNotVerified */ echo __('Fair Type') ?></th>
+                            <th class="col-date last"><?php /* @escapeNotVerified */ echo __('Date') ?></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <?php
+                            foreach ( $relatedFair as $item ):
+                                $relatedOption .= '<option value="'.$item->getFairRelatedId().'">'.$item->getFairName().'</option>';
+                        ?>
+
+                            <tr>
+                                <td class="col-fair-year">
+                                    <?php echo $item->getFairYear();?>
+                                </td>
+                                <td class="col-fair-name">
+                                    <?php echo $item->getFairName();?>
+                                </td>
+                                <td class="col-fair-code">
+                                    <?php echo $item->getFairCode();?>
+                                </td>
+                                <td class="col-fair-type">
+                                    <?php echo $block->getFairType($item->getFairType());?>
+                                </td>
+                                <td class="col-date last">
+                                    <?php echo $item->getStartDate() . ' ~ '. $item->getEndDate() ;?>
+                                </td>
+                            </tr>
+                        <?php endforeach;?>
+
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="admin__page-section">
+                <div class="admin__field">
+                    <label class="admin__field-label">
+                        <?php echo __('Choose related fair');?>
+                    </label>
+                    <div class="admin__field-control">
+                        <select class="admin__control-select" name="recommend_product[recommended_fair_id]" id="load_related_fair_item">
+                            <option value=""><?php echo __("Select Fair");?></option>
+                            <?php echo $relatedOption;?>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <section class="admin__page-section" id="related_fair_item_container">
+            </section>
+        </div>
+
+    <?php endif;?>
+</div>
+
+<script>
+    require( ['jquery'], function($) {
+
+        $('#load_related_fair_item').change( function (){
+            var fairId = <?php echo $block->getCurrentFair()->getFairId();?>;
+            var relatedFairId = $(this).val();
+            var loadItemUrl = '<?php echo $block->getLoadFairItemUrl();?>';
+            $.ajax({
+                url: loadItemUrl,
+                data: {
+                    form_key: FORM_KEY,
+                    fair_id: fairId,
+                    relatedFairId: relatedFairId
+                },
+                dataType: 'html',
+                success: function(data) {
+                    $("#related_fair_item_container").html(data);
+                },
+                context: $('body'),
+                showLoader: true
+            });
+        });
+    });
+</script>

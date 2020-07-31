@@ -1,0 +1,9 @@
+<?php /** @var \Riki\Loyalty\Block\Adminhtml\Sales\Order\Create\Redeem $block */ ?>
+<div class="admin__page-section-title">
+    <span class="title"><?php /* @escapeNotVerified */ echo __('Please choose a usage point') ?></span>
+</div>
+<div class="admin__page-section-content">
+    <div class="available-point">
+        <?php echo __('Shopping Point Trial');?>: <?php echo $block->getShoppingPointTrial();?> <?php echo __('point');?>
+    </div>
+</div>

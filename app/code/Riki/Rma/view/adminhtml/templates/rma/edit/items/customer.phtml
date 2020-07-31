@@ -1,0 +1,19 @@
+<?php /** @var \Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\Customer $block */ ?>
+<div class="admin__fieldset-wrapper-title">
+    <strong class="title">
+        <span><?php /* @escapeNotVerified */ echo __('Customer Summary') ?></span>
+    </strong>
+</div>
+<div class="admin__fieldset-wrapper-content">
+    <fieldset class="admin__fieldset">
+        <div class="admin__field">
+            <label class="admin__field-label">
+                <span><?php /* @escapeNotVerified */ echo __('Point Balance') ?></span>
+            </label>
+            <div class="admin__field-label" style="width: auto">
+                <span><?php echo $block->getPointBalance() ?></span>
+                <input type="hidden" name="customer_point_balance" id="customer_point_balance" value="<?php echo $block->getPointBalance() ?>"/>
+            </div>
+        </div>
+    </fieldset>
+</div>

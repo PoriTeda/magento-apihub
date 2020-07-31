@@ -1,0 +1,346 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Eway\Block\Direct\Info">
+        <arguments>
+            <argument name="config" xsi:type="object">EwayConfig</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Eway\Model\Method\Adapter">
+        <arguments>
+            <argument name="config" xsi:type="object">EwayConfig</argument>
+        </arguments>
+    </type>
+    <virtualType name="EwayVoidGatewayCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">Magento\Eway\Gateway\Request\TransactionIdDataBuilder</argument>
+            <argument name="transferFactory" xsi:type="object">EwayVoidTransferFactory</argument>
+            <argument name="client" xsi:type="object">Magento\Eway\Gateway\Http\Client\Curl</argument>
+            <argument name="handler" xsi:type="object">Magento\Eway\Gateway\Response\TransactionVoidHandler</argument>
+            <argument name="validator" xsi:type="object">Magento\Eway\Gateway\Validator\PaymentActionsValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayVoidTransactionAction" type="Magento\Eway\Gateway\Helper\Request\Action">
+        <arguments>
+            <argument name="action" xsi:type="const">Magento\Eway\Gateway\Helper\Request\Action::CANCEL_AUTHORISATION</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayVoidTransferFactory" type="Magento\Eway\Gateway\Http\TransferFactory">
+        <arguments>
+            <argument name="action" xsi:type="object">EwayVoidTransactionAction</argument>
+            <argument name="logger" xsi:type="object">EwayLogger</argument>
+            <argument name="config" xsi:type="object">EwayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayDirectFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="string">eway</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Eway\Block\Direct\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">EwayValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">EwayValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">EwayDirectCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayDirectCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="authorize" xsi:type="string">EwayDirectGatewayCommand</item>
+                <item name="void" xsi:type="string">EwayVoidGatewayCommand</item>
+                <item name="capture" xsi:type="string">EwayDirectCaptureStrategyCommand</item>
+                <item name="sale" xsi:type="string">EwayDirectGatewayCommand</item>
+                <item name="pre_auth_capture" xsi:type="string">EwayPreAuthCaptureCommand</item>
+                <item name="refund" xsi:type="string">EwayRefundGatewayCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayDirectCaptureStrategyCommand" type="Magento\Eway\Gateway\Command\CaptureStrategyCommand">
+        <arguments>
+            <argument name="commandPool" xsi:type="object">EwayDirectCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayDirectGatewayCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">EwayDirectDataBuilder</argument>
+            <argument name="transferFactory" xsi:type="object">EwayDirectTransferFactory</argument>
+            <argument name="client" xsi:type="object">Magento\Eway\Gateway\Http\Client\Curl</argument>
+            <argument name="handler" xsi:type="object">EwayDirectResponseHandler</argument>
+            <argument name="validator" xsi:type="object">Magento\Eway\Gateway\Validator\Direct\ResponseValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayDirectDataBuilder" type="Magento\Eway\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="customer" xsi:type="string">Magento\Eway\Gateway\Request\CustomerDataBuilder</item>
+                <item name="card_details" xsi:type="string">Magento\Eway\Gateway\Request\CardDetailsDataBuilder</item>
+                <item name="shipping_address" xsi:type="string">Magento\Eway\Gateway\Request\ShippingAddressDataBuilder</item>
+                <item name="items" xsi:type="string">Magento\Eway\Gateway\Request\ItemsDataBuilder</item>
+                <item name="payment" xsi:type="string">Magento\Eway\Gateway\Request\PaymentDataBuilder</item>
+                <item name="base_request" xsi:type="string">Magento\Eway\Gateway\Request\RequestDataBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Eway\Gateway\Helper\Request\Action">
+        <arguments>
+            <argument name="config" xsi:type="object">EwayConfig</argument>
+        </arguments>
+    </type>
+    <virtualType name="EwayDirectTransactionAction" type="Magento\Eway\Gateway\Helper\Request\Action">
+        <arguments>
+            <argument name="action" xsi:type="const">Magento\Eway\Gateway\Helper\Request\Action::TRANSACTION_ACTION</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayDirectTransferFactory" type="Magento\Eway\Gateway\Http\TransferFactory">
+        <arguments>
+            <argument name="action" xsi:type="object">EwayDirectTransactionAction</argument>
+            <argument name="logger" xsi:type="object">EwayLogger</argument>
+            <argument name="config" xsi:type="object">EwayConfig</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Eway\Gateway\Http\Client\Curl">
+        <arguments>
+            <argument name="logger" xsi:type="object">EwayLogger</argument>
+            <argument name="converter" xsi:type="object">Magento\Eway\Gateway\Http\Converter\JsonToArray</argument>
+        </arguments>
+    </type>
+    <virtualType name="EwayDirectResponseHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="payment_details" xsi:type="string">Magento\Eway\Gateway\Response\PaymentDetailsHandler</item>
+                <item name="response_messages" xsi:type="string">Magento\Eway\Gateway\Response\ResponseMessagesHandler</item>
+                <item name="card_details" xsi:type="string">Magento\Eway\Gateway\Response\Direct\CardDetailsHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Eway\Gateway\Request\RequestDataBuilder">
+        <arguments>
+            <argument name="config" xsi:type="object">EwayConfig</argument>
+        </arguments>
+    </type>
+    <virtualType name="EwayConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="string">eway</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayDefaultValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">EwayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">EwayDefaultValueHandler</item>
+                <item name="can_initialize" xsi:type="string">Magento\Eway\Gateway\Config\CanInitializeHandler</item>
+                <item name="can_use_internal" xsi:type="string">Magento\Eway\Gateway\Config\CanUseInternalHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Eway\Gateway\Config\CanInitializeHandler">
+        <arguments>
+            <argument name="config" xsi:type="object">EwayConfig</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Eway\Gateway\Config\CanUseInternalHandler">
+        <arguments>
+            <argument name="config" xsi:type="object">EwayConfig</argument>
+        </arguments>
+    </type>
+    <virtualType name="EwayCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">EwayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">EwayCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayLogger" type="Magento\Payment\Model\Method\Logger">
+        <arguments>
+            <argument name="config" xsi:type="object">EwayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwaySharedFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="string">eway</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Eway\Block\Direct\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">EwayValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">EwayValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">EwaySharedCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwaySharedCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="initialize" xsi:type="string">Magento\Eway\Gateway\Command\Shared\InitializeCommand</item>
+                <item name="authorize" xsi:type="string">Magento\Payment\Gateway\Command\NullCommand</item>
+                <item name="capture" xsi:type="string">EwaySharedCaptureStrategyCommand</item>
+                <item name="sale" xsi:type="string">Magento\Payment\Gateway\Command\NullCommand</item>
+                <item name="pre_auth_capture" xsi:type="string">EwayPreAuthCaptureCommand</item>
+                <item name="complete" xsi:type="string">Magento\Eway\Gateway\Command\Shared\CompleteCommand</item>
+                <item name="get_access_code" xsi:type="string">Magento\Eway\Gateway\Command\Shared\GetAccessCodeCommand</item>
+                <item name="cancel_order" xsi:type="string">Magento\Eway\Gateway\Command\Shared\CancelOrderCommand</item>
+                <item name="void" xsi:type="string">EwayVoidGatewayCommand</item>
+                <item name="refund" xsi:type="string">EwayRefundGatewayCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwaySharedCaptureStrategyCommand" type="Magento\Eway\Gateway\Command\CaptureStrategyCommand">
+        <arguments>
+            <argument name="commandPool" xsi:type="object">EwaySharedCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Eway\Model\Api\TransactionService">
+        <arguments>
+            <argument name="commandPool" xsi:type="object">EwaySharedCommandPool</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Eway\Gateway\Command\Shared\GetAccessCodeCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">EwayGetAccessCodeDataBuilder</argument>
+            <argument name="transferFactory" xsi:type="object">EwaySharedTransferFactory</argument>
+            <argument name="client" xsi:type="object">Magento\Eway\Gateway\Http\Client\Curl</argument>
+            <argument name="validator" xsi:type="object">Magento\Eway\Gateway\Validator\Shared\AccessCodeValidator</argument>
+        </arguments>
+    </type>
+    <virtualType name="EwaySharedGetAccessCodeAction" type="Magento\Eway\Gateway\Helper\Request\Action">
+        <arguments>
+            <argument name="action" xsi:type="const">Magento\Eway\Gateway\Helper\Request\Action::ACCESS_CODES_SHARED</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwaySharedTransferFactory" type="Magento\Eway\Gateway\Http\TransferFactory">
+        <arguments>
+            <argument name="action" xsi:type="object">EwaySharedGetAccessCodeAction</argument>
+            <argument name="logger" xsi:type="object">EwayLogger</argument>
+            <argument name="config" xsi:type="object">EwayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayGetAccessCodeDataBuilder" type="Magento\Eway\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="customer" xsi:type="string">Magento\Eway\Gateway\Request\CustomerDataBuilder</item>
+                <item name="shipping_address" xsi:type="string">Magento\Eway\Gateway\Request\ShippingAddressDataBuilder</item>
+                <item name="items" xsi:type="string">Magento\Eway\Gateway\Request\ItemsDataBuilder</item>
+                <item name="payment" xsi:type="string">Magento\Eway\Gateway\Request\PaymentDataBuilder</item>
+                <item name="base_request" xsi:type="string">Magento\Eway\Gateway\Request\RequestDataBuilder</item>
+                <item name="shared_request" xsi:type="string">Magento\Eway\Gateway\Request\Shared\RequestDataBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Eway\Gateway\Command\Shared\UpdateDetailsCommand">
+        <arguments>
+            <argument name="transferFactory" xsi:type="object">Magento\Eway\Gateway\Http\UpdateDetailsTransferFactory</argument>
+            <argument name="client" xsi:type="object">Magento\Eway\Gateway\Http\Client\Curl</argument>
+            <argument name="config" xsi:type="object">EwayConfig</argument>
+            <argument name="handler" xsi:type="object">EwaySharedResponseHandler</argument>
+            <argument name="validator" xsi:type="object">Magento\Eway\Gateway\Validator\Shared\UpdateDetailsValidator</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Eway\Gateway\Command\Shared\UpdateOrderCommand">
+        <arguments>
+            <argument name="config" xsi:type="object">EwayConfig</argument>
+        </arguments>
+    </type>
+    <virtualType name="EwaySharedUpdateDetailsAction" type="Magento\Eway\Gateway\Helper\Request\Action">
+        <arguments>
+            <argument name="action" xsi:type="const">Magento\Eway\Gateway\Helper\Request\Action::ACCESS_CODE</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Eway\Gateway\Http\UpdateDetailsTransferFactory">
+        <arguments>
+            <argument name="action" xsi:type="object">EwaySharedUpdateDetailsAction</argument>
+            <argument name="config" xsi:type="object">EwayConfig</argument>
+        </arguments>
+    </type>
+    <virtualType name="EwaySharedResponseHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="payment_details" xsi:type="string">Magento\Eway\Gateway\Response\PaymentDetailsHandler</item>
+                <item name="response_messages" xsi:type="string">Magento\Eway\Gateway\Response\ResponseMessagesHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayPreAuthCaptureCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">EwayCaptureDataBuilder</argument>
+            <argument name="transferFactory" xsi:type="object">EwayCaptureTransferFactory</argument>
+            <argument name="client" xsi:type="object">Magento\Eway\Gateway\Http\Client\Curl</argument>
+            <argument name="handler" xsi:type="object">Magento\Eway\Gateway\Response\TransactionCaptureHandler</argument>
+            <argument name="validator" xsi:type="object">Magento\Eway\Gateway\Validator\PaymentActionsValidator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayCaptureDataBuilder" type="Magento\Eway\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="payment" xsi:type="string">Magento\Eway\Gateway\Request\PaymentDataBuilder</item>
+                <item name="transaction_id" xsi:type="string">Magento\Eway\Gateway\Request\TransactionIdDataBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayCaptureTransferFactory" type="Magento\Eway\Gateway\Http\TransferFactory">
+        <arguments>
+            <argument name="action" xsi:type="object">EwayCaptureTransactionAction</argument>
+            <argument name="config" xsi:type="object">EwayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayCaptureTransactionAction" type="Magento\Eway\Gateway\Helper\Request\Action">
+        <arguments>
+            <argument name="action" xsi:type="const">Magento\Eway\Gateway\Helper\Request\Action::CAPTURE_PAYMENT</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayRefundGatewayCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">EwayRefundDataBuilder</argument>
+            <argument name="transferFactory" xsi:type="object">EwayRefundTransferFactory</argument>
+            <argument name="client" xsi:type="object">Magento\Eway\Gateway\Http\Client\Curl</argument>
+            <argument name="validator" xsi:type="object">Magento\Eway\Gateway\Validator\RefundValidator</argument>
+            <argument name="handler" xsi:type="object">Magento\Eway\Gateway\Response\TransactionRefundHandler</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayRefundDataBuilder" type="Magento\Eway\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="customer" xsi:type="string">Magento\Eway\Gateway\Request\CustomerDataBuilder</item>
+                <item name="shipping_address" xsi:type="string">Magento\Eway\Gateway\Request\ShippingAddressDataBuilder</item>
+                <item name="items" xsi:type="string">Magento\Eway\Gateway\Request\ItemsDataBuilder</item>
+                <item name="refund" xsi:type="string">Magento\Eway\Gateway\Request\RefundDataBuilder</item>
+                <item name="transaction_id" xsi:type="string">Magento\Eway\Gateway\Request\TransactionIdDataBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayRefundTransferFactory" type="Magento\Eway\Gateway\Http\RefundTransferFactory">
+        <arguments>
+            <argument name="action" xsi:type="object">EwayRefundTransactionAction</argument>
+            <argument name="config" xsi:type="object">EwayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="EwayRefundTransactionAction" type="Magento\Eway\Gateway\Helper\Request\Action">
+        <arguments>
+            <argument name="action" xsi:type="const">Magento\Eway\Gateway\Helper\Request\Action::TRANSACTION_ACTION</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Config\Model\Config\TypePool">
+        <arguments>
+            <argument name="sensitive" xsi:type="array">
+                <item name="payment/eway/live_api_key" xsi:type="string">1</item>
+                <item name="payment/eway/live_api_password" xsi:type="string">1</item>
+                <item name="payment/eway/live_encryption_key" xsi:type="string">1</item>
+                <item name="payment/eway/sandbox_api_key" xsi:type="string">1</item>
+                <item name="payment/eway/sandbox_api_password" xsi:type="string">1</item>
+                <item name="payment/eway/sandbox_encryption_key" xsi:type="string">1</item>
+            </argument>
+            <argument name="environment" xsi:type="array">
+                <item name="payment/eway/sandbox_flag" xsi:type="string">1</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

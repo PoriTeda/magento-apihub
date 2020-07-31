@@ -1,0 +1,21 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+/* @var $block \Magento\VisualMerchandiser\Block\Adminhtml\Widget\Select */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php $options = $block->getSelectOptions() ?>
+<div class="admin__field">
+    <?php if ($block->getData('label')): ?>
+        <label for="<?= /* @escapeNotVerified */ $block->getData('name') ?>" class="admin__field-label"><span><?= /* @escapeNotVerified */ $block->getData('label') ?></span></label>
+    <?php endif; ?>
+    <select data-form-part="category_form" name="<?= /* @escapeNotVerified */ $block->getData('name') ?>" class="admin__control-select <?= /* @escapeNotVerified */ $block->getData('class') ?>">
+        <?php foreach($options as $key => $value): ?>
+            <option value="<?= $block->escapeHtml($key) ?>" <?= ($block->getSelectValue() == $key) ? 'selected="selected"' : '' ?>><?= $block->escapeHtml($value) ?></option>
+        <?php endforeach; ?>
+    </select>
+</div>

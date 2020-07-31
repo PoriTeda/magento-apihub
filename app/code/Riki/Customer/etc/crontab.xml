@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="cedyna_customer_hold_import" instance="Riki\Customer\Cron\CedynaCustomerImport" method="execute">
+            <config_path>cedyna_customer_hold/file_setting/setting_crontab</config_path>
+        </job>
+        <job name="cedyna_export_shosha" instance="Riki\Customer\Cron\Shosha" method="execute">
+            <config_path>export_shosha/folder_setting/setting_crontab</config_path>
+        </job>
+        <job name="cedyna_shosha_shipment_export" instance="Riki\Customer\Cron\Shipment" method="execute">
+            <config_path>export_shosha/folder_setting_shipment/setting_crontab</config_path>
+        </job>
+        <job name="cedyna_shosha_rma_export" instance="Riki\Customer\Cron\Rma" method="execute">
+            <config_path>export_shosha/folder_setting_return/setting_crontab</config_path>
+        </job>
+
+        <job name="fix_duplicate_customer_consumer_db_id" instance="Riki\Customer\Cron\FixDuplicateCustomerConsumerDb" method="execute">
+            <config_path>customer/crontab/clean_duplicate_consumer_db</config_path>
+        </job>
+    </group>
+    <group id="riki_customer_queue_message">
+        <job name="manage_queue_customer_reindex" instance="Riki\Customer\Cron\ReindexCustomer" method="execute">
+            <config_path>sso_login_setting/reindex_queue_customer/queue_cron</config_path>
+        </job>
+        <job name="manage_queue_customer_segment_update" instance="Riki\Customer\Cron\UpdateCustomerSegment" method="execute">
+            <config_path>sso_login_setting/update_segment_queue_customer/queue_cron</config_path>
+        </job>
+    </group>
+</config>

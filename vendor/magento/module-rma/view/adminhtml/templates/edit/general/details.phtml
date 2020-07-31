@@ -1,0 +1,55 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * @see \Magento\Rma\Block\Adminhtml\Rma\Edit\Tab\General\Details
+ */
+
+$customerLink = $block->getCustomerLink();
+?>
+<div class="admin__page-section-item rma-request-details">
+    <div class="admin__page-section-item-title">
+        <span class="title"><?= /* @escapeNotVerified */ __('Request Details') ?></span>
+    </div>
+    <div class="admin__page-section-item-content">
+        <table class="admin__table-secondary">
+            <tr>
+                <th><?= /* @escapeNotVerified */ __('ID') ?></th>
+                <td><?= /* @escapeNotVerified */ __('#') . $block->getRmaData('increment_id') ?></td>
+            </tr>
+            <tr>
+                <th><?= /* @escapeNotVerified */ __('Order ID') ?></th>
+                <td><a href="<?= /* @escapeNotVerified */ $block->getOrderLink() ?>"><?= /* @escapeNotVerified */ __('#') . $block->getOrderIncrementId() ?></a></td>
+            </tr>
+            <tr>
+                <th><?= /* @escapeNotVerified */ __('Customer Name') ?></th>
+                <td>
+                    <?php
+                    if ($customerLink) {
+                        /* @escapeNotVerified */ echo '<a href="' . $customerLink . '">';
+                    }
+                    /* @escapeNotVerified */ echo $block->getCustomerName();
+                    if ($customerLink) {
+                        echo '</a>';
+                    }
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <th><?= /* @escapeNotVerified */ __('Email Address') ?></th>
+                <td><a href="mailto:<?= /* @escapeNotVerified */ $block->getCustomerEmail() ?>"><?= /* @escapeNotVerified */ $block->getCustomerEmail() ?></a></td>
+            </tr>
+            <tr>
+                <th><?= /* @escapeNotVerified */ __('Contact Email Address') ?></th>
+                <td><?php if ($block->getCustomerContactEmail()): ?><a href="mailto:<?= /* @escapeNotVerified */ $block->getCustomerContactEmail() ?>"><?= /* @escapeNotVerified */ $block->getCustomerContactEmail() ?></a><?php endif; ?></td>
+            </tr>
+        </table>
+    </div>
+</div>

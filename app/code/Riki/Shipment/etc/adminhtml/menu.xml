@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_Shipment::rikiship_importcsv" title="Import CSV Shipments" sortOrder="30" module="Riki_Shipment" parent="Magento_Backend::system_convert" action="rikiship/shipment/importcsv" resource="Riki_Shipment::rikiship_importcsv"/>
+    </menu>
+</config>
+

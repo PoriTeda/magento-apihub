@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Sales\Block\Adminhtml\Order\View" type="Riki\CvsPayment\Block\Adminhtml\Order\View" />
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="sales_order_grid_data_source" xsi:type="string">Riki\CvsPayment\Model\ResourceModel\Order\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\OfflinePayments\Model\InstructionsConfigProvider">
+        <plugin name="riki_cvspayment_instruction_config_provider" type="Riki\CvsPayment\Plugin\OfflinePayments\Model\InstructionsConfigProvider" />
+    </type>
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <!--additional fields-->
+                <item name="csv_start_date" xsi:type="string">sales_order.csv_start_date</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Riki\CvsPayment\Logger\Handler\Order\Cancel" type="Riki\CvsPayment\Logger\Handler\Primary">
+        <arguments>
+            <argument name="logIdentifier" xsi:type="string">Cancel_Cvs_Order_Log</argument>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </virtualType>
+    <type name="Riki\CvsPayment\Logger\Order\Cancel">
+        <arguments>
+            <argument name="name" xsi:type="string">CancelOrderLogger</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Riki\CvsPayment\Logger\Handler\Order\Cancel</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

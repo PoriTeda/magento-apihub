@@ -1,0 +1,245 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Riki\AdvancedInventory\Api\StockRepositoryInterface" type="Riki\AdvancedInventory\Model\StockRepository"/>
+    <preference for="Riki\AdvancedInventory\Api\Data\StockInterface" type="Riki\AdvancedInventory\Model\Stock"/>
+    <preference for="Riki\AdvancedInventory\Api\StockManagementInterface" type="Riki\AdvancedInventory\Model\StockManagement"/>
+    <preference for="Riki\AdvancedInventory\Api\PosManagementInterface" type="Riki\AdvancedInventory\Model\PosManagement"/>
+    <preference for="Riki\AdvancedInventory\Api\ItemRepositoryInterface" type="Riki\AdvancedInventory\Model\ItemRepository"/>
+    <preference for="Wyomind\AdvancedInventory\Model\Assignation" type="Riki\AdvancedInventory\Model\Assignation"/>
+    <preference for="Wyomind\AdvancedInventory\Observer\CheckoutSubmitAllAfter" type="Riki\AdvancedInventory\Observer\CheckoutSubmitAllAfter"/>
+    <preference for="Wyomind\AdvancedInventory\Observer\CatalogProductIsSalableAfter" type="Riki\AdvancedInventory\Observer\CatalogProductIsSalableAfter"/>
+    <preference for="Wyomind\AdvancedInventory\Model\ResourceModel\Order\Item\Collection" type="Riki\AdvancedInventory\Model\ResourceModel\Order\Item\Collection"/>
+    <preference for="Wyomind\AdvancedInventory\Model\ResourceModel\Order\Collection" type="Riki\AdvancedInventory\Model\ResourceModel\Order\Collection"/>
+    <preference for="Wyomind\AdvancedInventory\Helper\Data" type="Riki\AdvancedInventory\Helper\AdvancedInventory\Data"/>
+    <preference for="Wyomind\AdvancedInventory\Block\Adminhtml\Assignation\Column" type="Riki\AdvancedInventory\Block\Adminhtml\Assignation\Column"/>
+    <preference for="Wyomind\AdvancedInventory\Model\Stock" type="Riki\AdvancedInventory\Model\Stock"/>
+    <preference for="Wyomind\AdvancedInventory\Model\ResourceModel\Product\Collection" type="Riki\AdvancedInventory\Model\ResourceModel\Product\Collection"/>
+    <preference for="Riki\AdvancedInventory\Api\Data\OutOfStockInterface" type="Riki\AdvancedInventory\Model\OutOfStock" />
+    <preference for="Riki\AdvancedInventory\Api\OutOfStockRepositoryInterface" type="Riki\AdvancedInventory\Model\OutOfStock\Repository" />
+    <preference for="Riki\AdvancedInventory\Api\OutOfStockManagementInterface" type="Riki\AdvancedInventory\Model\OutOfStockManagement" />
+    <preference for="Riki\ShippingProvider\Model\Carrier" type="Riki\AdvancedInventory\Model\ShippingProvider\Carrier" />
+    <preference for="Magento\Bundle\Model\Product\Price" type="Riki\AdvancedInventory\Model\Bundle\Product\Price"/>
+
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="assigned_to" xsi:type="string">sales_order.assigned_to</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Riki\AdvancedInventory\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Riki\AdvancedInventory\Logger\LoggerInv1">
+        <arguments>
+            <argument name="name" xsi:type="string">Import Stock Inv1 Logger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\AdvancedInventory\Logger\HandlerInv1</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\AdvancedInventory\Logger\LoggerInv2">
+        <arguments>
+            <argument name="name" xsi:type="string">Import Stock Inv2 for ASKUL Logger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\AdvancedInventory\Logger\HandlerInv2</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\AdvancedInventory\Logger\LoggerReAssign">
+        <arguments>
+            <argument name="name" xsi:type="string">Re-assign stock Logger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\AdvancedInventory\Logger\HandlerReAssign</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\AdvancedInventory\Model\ResourceModel\OutOfStock">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">default</argument>
+        </arguments>
+    </type>
+    <type name="Magento\CatalogInventory\Model\Stock\StockItemRepository">
+        <plugin name="riki_advanced-inventory_catalog-inventory_model_stock_stock-item-repository" type="Riki\AdvancedInventory\Plugin\CatalogInventory\Model\Stock\StockItemRepository" />
+    </type>
+    <type name="Magento\Quote\Model\QuoteManagement">
+        <plugin name="riki_advanced-inventory_quote_model_quote-management_out-of-stock-email" type="Riki\AdvancedInventory\Plugin\Quote\Model\QuoteManagement\OutOfStockEmail" sortOrder="110" />
+        <plugin name="riki_advanced-inventory_quote_model_quote-management_out-of-stock-order" type="Riki\AdvancedInventory\Plugin\Quote\Model\QuoteManagement\OutOfStockOrder" sortOrder="120" />
+    </type>
+    <type name="Riki\Sales\Block\Order\History">
+        <plugin name="riki_advanced-inventory_sales_block_order_history" type="Riki\AdvancedInventory\Plugin\Sales\Block\Order\History" />
+    </type>
+    <type name="Magento\Sales\Model\Order">
+        <plugin name="riki_advanced-inventory_sales_model_order_out-of-stock" type="Riki\AdvancedInventory\Plugin\Sales\Model\Order\OutOfStock" sortOrder="20" />
+    </type>
+    <type name="Riki\AdvancedInventory\Model\OutOfStock">
+        <plugin name="riki_advanced-inventory_model_out-of-stock_sales-rule" type="Riki\AdvancedInventory\Plugin\AdvancedInventory\Model\OutOfStock\SalesRule" sortOrder="10" />
+        <plugin name="riki_advanced-inventory_model_out-of-stock_generated-order" type="Riki\AdvancedInventory\Plugin\AdvancedInventory\Model\OutOfStock\GeneratedOrder" sortOrder="30" />
+    </type>
+    <type name="Magento\Checkout\Controller\Cart\Index">
+        <plugin name="Riki::product_qty_more_than_one_hundred" type="Riki\AdvancedInventory\Plugin\Checkout\Controller\Cart\Index" sortOrder="10"/>
+    </type>
+    <preference for="Riki\AdvancedInventory\Model\Queue\OosQueueSchemaInterface" type="Riki\AdvancedInventory\Model\Queue\Schema\OosQueueSchema" />
+    <type name="\Magento\Quote\Model\Quote">
+        <plugin name="riki_advanced-inventory_quote_model_quote_oos-collect-totals" type="Riki\AdvancedInventory\Plugin\Quote\Model\Quote\OosTotalsCollector" sortOrder="10" />
+    </type>
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="AdvancedInventoryReassignStockCommand" xsi:type="object">Riki\AdvancedInventory\Command\ReassignWareHouseCommand</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\AdvancedInventory\Helper\Assignation">
+        <plugin name="machine_api_get_place_for_re_assign" type="Riki\AdvancedInventory\Plugin\AdvancedInventory\Helper\Assignation"/>
+    </type>
+    <preference for="Wyomind\AdvancedInventory\Model\ResourceModel\Stock" type="Riki\AdvancedInventory\Model\ResourceModel\Stock" />
+    <type name="Riki\Loyalty\Observer\Reward\QuoteSubmitSuccess">
+        <plugin name="riki_advancedinventory_loyalty_reward_quote_submit" type="Riki\AdvancedInventory\Plugin\Loyalty\Observer\Reward\QuoteSubmitSuccess"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Address\Total\AbstractTotal">
+        <plugin name="rikiAdvancedInventoryInjectOutOfStockItems" type="\Riki\AdvancedInventory\Plugin\InjectOutOfStockItems" />
+    </type>
+    <type name="Riki\Promo\Helper\Data">
+        <plugin name="riki_advancedinventory_riki_promo_helper_data" type="Riki\AdvancedInventory\Plugin\Riki\Promo\Helper\Data"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\AbstractItem">
+        <plugin name="rikiAdvancedinventoryQuoteItemAbstract" type="Riki\AdvancedInventory\Plugin\Quote\Item\AbstractItem" />
+    </type>
+    <preference for="Wyomind\AdvancedInventory\Block\Adminhtml\PointOfSale\Manage\Edit\Tab\Inventory"
+                type="Riki\AdvancedInventory\Block\Adminhtml\PointOfSale\Manage\Edit\Tab\Inventory" />
+
+    <type name="Riki\AdvancedInventory\Logger\BaseLogger">
+        <arguments>
+            <argument name="name" xsi:type="string">Logger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\AdvancedInventory\Logger\BaseHandler</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Riki\AdvancedInventory\Logger\The1stWh" type="Riki\AdvancedInventory\Logger\BaseLogger">
+        <arguments>
+            <argument name="name" xsi:type="string">1st WH - Import Stock</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\AdvancedInventory\Logger\Handler1stWh</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Riki\AdvancedInventory\Logger\Handler1stWh" type="Riki\AdvancedInventory\Logger\BaseHandler">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/1stWh_import_stock.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Riki\AdvancedInventory\Logger\The2ndWh" type="Riki\AdvancedInventory\Logger\BaseLogger">
+        <arguments>
+            <argument name="name" xsi:type="string">2nd WH - Import Stock</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\AdvancedInventory\Logger\Handler2ndWh</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Riki\AdvancedInventory\Logger\Handler2ndWh" type="Riki\AdvancedInventory\Logger\BaseHandler">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/2ndWh_import_stock.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Riki\AdvancedInventory\Logger\The3rdWh" type="Riki\AdvancedInventory\Logger\BaseLogger">
+        <arguments>
+            <argument name="name" xsi:type="string">3rd WH - Import Stock</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\AdvancedInventory\Logger\Handler3rdWh</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Riki\AdvancedInventory\Logger\Handler3rdWh" type="Riki\AdvancedInventory\Logger\BaseHandler">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/3rdWh_import_stock.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Riki\AdvancedInventory\Logger\The4thWh" type="Riki\AdvancedInventory\Logger\BaseLogger">
+        <arguments>
+            <argument name="name" xsi:type="string">4th WH - Import Stock</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\AdvancedInventory\Logger\Handler4thWh</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Riki\AdvancedInventory\Logger\Handler4thWh" type="Riki\AdvancedInventory\Logger\BaseHandler">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/4thWh_import_stock.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Riki\AdvancedInventory\Logger\The5thWh" type="Riki\AdvancedInventory\Logger\BaseLogger">
+        <arguments>
+            <argument name="name" xsi:type="string">5th WH - Import Stock</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\AdvancedInventory\Logger\Handler5thWh</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Riki\AdvancedInventory\Logger\Handler5thWh" type="Riki\AdvancedInventory\Logger\BaseHandler">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/5thWh_import_stock.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="\Riki\AdvancedInventory\Cron\ImportStock\The1st" type="\Riki\AdvancedInventory\Cron\ImportStock">
+        <arguments>
+            <argument name="logger" xsi:type="object">Riki\AdvancedInventory\Logger\The1stWh</argument>
+            <argument name="warehouse" xsi:type="string">1st</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="\Riki\AdvancedInventory\Cron\ImportStock\The2nd" type="\Riki\AdvancedInventory\Cron\ImportStock">
+        <arguments>
+            <argument name="logger" xsi:type="object">Riki\AdvancedInventory\Logger\The2ndWh</argument>
+            <argument name="warehouse" xsi:type="string">2nd</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="\Riki\AdvancedInventory\Cron\ImportStock\The3rd" type="\Riki\AdvancedInventory\Cron\ImportStock">
+        <arguments>
+            <argument name="logger" xsi:type="object">Riki\AdvancedInventory\Logger\The3rdWh</argument>
+            <argument name="warehouse" xsi:type="string">3rd</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="\Riki\AdvancedInventory\Cron\ImportStock\The4th" type="\Riki\AdvancedInventory\Cron\ImportStock">
+        <arguments>
+            <argument name="logger" xsi:type="object">Riki\AdvancedInventory\Logger\The4thWh</argument>
+            <argument name="warehouse" xsi:type="string">4th</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="\Riki\AdvancedInventory\Cron\ImportStock\The5th" type="\Riki\AdvancedInventory\Cron\ImportStock">
+        <arguments>
+            <argument name="logger" xsi:type="object">Riki\AdvancedInventory\Logger\The5thWh</argument>
+            <argument name="warehouse" xsi:type="string">5th</argument>
+        </arguments>
+    </virtualType>
+    <type name="Wyomind\PointOfSale\Model\ResourceModel\PointOfSale\Collection">
+        <plugin name="riki_advancedinventory_pointofsale_filter" type="Riki\AdvancedInventory\Plugin\AdvancedInventory\Model\PointOfSale\RemoveFilterCustomerGroup" />
+    </type>
+    <type name="Magento\CatalogInventory\Model\Stock\StockItemRepository">
+        <plugin name="riki_force_default_website" type="Riki\AdvancedInventory\Plugin\CatalogInventory\Model\Stock\ForceWebsiteForStockItem" />
+    </type>
+    <type name="Magento\CatalogInventory\Model\Stock\StockItemRepository">
+        <plugin name="riki_force_manage_stock_for_stock_item" type="Riki\AdvancedInventory\Plugin\CatalogInventory\Model\Stock\ForceManageStockForStockItem" />
+    </type>
+    <!-- log for import product sap api -->
+    <type name="Riki\AdvancedInventory\Logger\HandlerImportProductSapApi">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Riki\AdvancedInventory\Logger\LoggerImportProductSapApi">
+        <arguments>
+            <argument name="name" xsi:type="string">Import Product Sap Api</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\AdvancedInventory\Logger\HandlerImportProductSapApi</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- end log for import product sap api -->
+    <type name="Magento\Quote\Model\Quote\Address\ToOrder">
+        <plugin name="oos_set_base_subtotal_incl_tax" type="Riki\AdvancedInventory\Plugin\Quote\Model\Quote\Address\SetBaseSubtotalInclTax" sortOrder="10" />
+    </type>
+</config>

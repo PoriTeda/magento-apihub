@@ -1,0 +1,55 @@
+<!--
+/**
+* Copyright © 2015 Amasty. All rights reserved.
+ */
+-->
+<div class="payment-option _collapsible opc-payment-additional discount-code no-display"
+     data-bind="mageInit: {'collapsible':{'openedState': '_active'}}">
+    <div class="payment-option-title field choice" data-role="title">
+        <span class="action action-toggle" id="block-discount-heading" role="heading" aria-level="2">
+            <!-- ko text: $t('Apply Promo Code')--><!-- /ko -->
+        </span>
+    </div>
+    <div class="payment-option-content" data-role="content">
+        <form class="form form-discount" id="discount-form" data-bind="blockLoader: isLoading">
+            <div class="payment-option-inner">
+                <div class="field">
+                    <label class="label" for="discount-code">
+                        <span data-bind="text: $t('Enter promo code')"></span>
+                    </label>
+                    <div class="control">
+                        <input class="input-text"
+                               type="text"
+                               id="discount-code-fake"
+                               name="discount_code_fake"
+                               data-validate="{'required-entry':true}"
+                               data-bind=" attr:{placeholder: $t('Enter promo code')} " />
+
+                        <input class="input-text"
+                               type="hidden"
+                               id="discount-code"
+                               name="discount_code"
+                               data-bind="value: couponCode, attr:{placeholder: $t('Enter promo code')} " />
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <button class="action action-apply" type="submit" data-bind="'value': $t('Apply'), click: apply">
+                        <span><!-- ko text: $t('Apply')--><!-- /ko --></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="coupon-code-detail">
+    <!-- ko if : getPromotionDetail() != '' -->
+    <span data-bind="html: getPromotionDetail()"></span>
+    <!-- /ko -->
+
+    <!-- ko if: getPromotionDetail() == '' -->
+    <span data-bind="i18n: 'None'"></span>
+    <!-- /ko -->
+</div>

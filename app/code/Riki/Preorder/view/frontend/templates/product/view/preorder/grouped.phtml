@@ -1,0 +1,14 @@
+<?php /* @var $block \Riki\Preorder\Block\Product\View\Preorder\ProductGrouped */?>
+
+<script type="text/javascript">
+    require(['jquery', 'Riki_Preorder/js/product/preorder_grouped'], function($) {
+        $widget = $.mage.rikiPreorderGrouped({
+            aviabilityElement: $(".stock").first(),
+            addToCartButton: $("#product-addtocart-button span"),
+            preOrderNote: '',
+            addToCartLabel: '',
+            map: <?=json_encode($block->getGroupPreorderMap());?>,
+            preorderNoteTemplate: '<div class="stock available"><span>{preorderNote}</span></div>'
+        });
+    });
+</script>

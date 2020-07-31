@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <!--[Add carrrier to global system "carriers" group]-->
+        <section id="carriers">
+            <!--[Create group of carrier's fields with identifier]-->
+            <group id="riki_shipping" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                <!--[Carrier's label on backend]-->
+                <label>Riki Shipping</label>
+                <!--[Carrier's activate field with yes/no source model for dropdown]-->
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled for Checkout</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <!--[Carrier's title field for storefront]-->
+                <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                </field>
+
+                <field id="methodname" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Method Name</label>
+                </field>
+
+                <field id="delivery_free_shipping_amount" translate="label" type="text" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Free shipping amount</label>
+                    <comment>Net Selling Price and Gift wrapping (incl.Tax) of summary</comment>
+                    <validate>validate-number validate-greater-than-zero</validate>
+                </field>
+                <field id="sallowspecific" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Ship to Applicable Countries</label>
+                    <frontend_class>shipping-applicable-country</frontend_class>
+                    <source_model>Magento\Shipping\Model\Config\Source\Allspecificcountries</source_model>
+                </field>
+                <field id="specificcountry" translate="label" type="multiselect" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Ship to Specific Countries</label>
+                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+
+                <!--[Carrier's displayed error message on storefront if unavailable]-->
+                <field id="specificerrmsg" translate="label" type="textarea" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Displayed Error Message</label>
+                </field>
+
+                <!--[Carrier's sort order]-->
+                <field id="sort_order" translate="label" type="text" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Sort Order</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

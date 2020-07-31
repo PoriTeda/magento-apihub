@@ -1,0 +1,53 @@
+<?php /** @var \Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\ShippingFee $block */ ?>
+<div class="admin__fieldset-wrapper" data-bind="scope: 'shippingFeeExpr'">
+    <div class="admin__fieldset-wrapper-title">
+        <strong class="title">
+            <span><?php /* @escapeNotVerified */ echo __('Shipping fee') ?></span>
+        </strong>
+    </div>
+    <div class="admin__fieldset-wrapper-content">
+        <fieldset class="admin__fieldset">
+            <div class="admin__field">
+                <label class="admin__field-label">
+                    <span><?php /* @escapeNotVerified */ echo __('Returned shipping fee') ?></span>
+                </label>
+                <div class="admin__field-label" style="width: auto">
+                    <span data-bind="text: x"></span>
+                    <input type="hidden" name="return_shipping_fee" id="return_shipping_fee" data-bind="value: x" />
+                </div>
+            </div>
+            <div class="admin__field">
+                <label class="admin__field-label" for="return_shipping_fee_adj">
+                    <span><?php /* @escapeNotVerified */ echo __('Shipping fee Adjustments') ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <input class="admin__control-text validate-number" type="text" name="return_shipping_fee_adj" id="return_shipping_fee_adj" data-bind="textInput: y">
+                </div>
+            </div>
+            <div class="admin__field">
+                <label class="admin__field-label">
+                    <span><?php /* @escapeNotVerified */ echo __('Final Returned shipping fee') ?></span>
+                </label>
+                <div class="admin__field-label" style="width: auto">
+                    <span data-bind="text: result"></span>
+                    <input type="hidden" name="return_shipping_fee_adjusted" id="return_shipping_fee_adjusted" data-bind="value: result">
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "shippingFeeExpr": {
+                        "component": "Riki_Rma/js/view/rma/lib/sum-expr",
+                        "_x": <?php echo $block->getReturnShippingFee() ?>,
+                        "_y": <?php echo $block->getReturnShippingFeeAdj() ?>
+                    }
+                }
+            }
+        }
+    }
+</script>

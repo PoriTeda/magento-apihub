@@ -1,0 +1,103 @@
+<?php
+
+/** @var $block \Riki\Sales\Block\Adminhtml\Order\View\AdditionalInfo */
+$_order = $block->getOrder();
+
+
+$orderAdditionalInformation = $block->getOrderAdditionalInformation();
+?>
+
+<tr>
+    <th><?php echo __('Order Channel') ?></th>
+    <td>
+        <?php echo $block->getChannelTitle(); ?>
+    </td>
+</tr>
+<tr>
+    <th><?php echo __('Order Charge Type') ?></th>
+    <td>
+        <?php echo $block->getOrderChargeTypeTitle(); ?>
+    </td>
+</tr>
+
+<tr>
+    <th><?php echo __('Order Type') ?></th>
+    <td>
+        <?php echo $block->getOrderTypeTitle(); ?>
+    </td>
+</tr>
+
+<?php if($block->isSubscriptionOrder()) :?>
+    <tr>
+        <th><?php echo __('Subscription Course') ?></th>
+        <td>
+            <?php echo $block->getSubscriptionOrderCourse(); ?>
+        </td>
+    </tr>
+<?php endif; ?>
+
+<?php if($orderAdditionalInformation->getData('monthly_fee_label')) :?>
+    <tr>
+        <th><?php echo __('Monthly Fee Label') ?></th>
+        <td>
+            <?= $orderAdditionalInformation->getData('monthly_fee_label') ?>
+        </td>
+    </tr>
+<?php endif; ?>
+
+<?php if($_order->getChargeType() == \Riki\Sales\Model\Config\Source\OrderType::ORDER_TYPE_REPLACEMENT): ?>
+    <tr>
+        <th><?php echo __('Original Id') ?></th>
+        <td>
+            <?php echo $_order->getOriginalOrderId(); ?>
+        </td>
+    </tr>
+
+    <tr>
+        <th><?php echo __('Replacement Reason') ?></th>
+        <td>
+            <?php echo $_order->getReplacementReason(); ?>
+        </td>
+    </tr>
+<?php elseif($_order->getChargeType() == \Riki\Sales\Model\Config\Source\OrderType::ORDER_TYPE_FREE_SAMPLE): ?>
+    <tr>
+        <th><?php echo __('WBS') ?></th>
+        <td>
+            <?php echo $_order->getFreeSamplesWbs(); ?>
+        </td>
+    </tr>
+    <?php if($orderAdditionalInformation->getData('shipping_reason')) :?>
+        <tr>
+            <th scope="row"><?php echo __('Shipping reason') ?></th>
+            <td>
+                <?= $orderAdditionalInformation->getData('shipping_reason') ?>
+            </td>
+        </tr>
+    <?php endif; ?>
+    <?php if($orderAdditionalInformation->getData('shipping_cause')) :?>
+        <tr>
+            <th scope="row"><?php echo __('Cause detail') ?></th>
+            <td>
+                <?= $orderAdditionalInformation->getData('shipping_cause') ?>
+            </td>
+        </tr>
+    <?php endif; ?>
+<?php endif; ?>
+<?php if ($_order->getCampaignId()): ?>
+    <tr>
+        <th><?php echo __('Campaign Id') ?></th>
+        <td><?php echo $_order->getCampaignId(); ?></td>
+    </tr>
+<?php endif; ?>
+<?php if ($_order->getMmOrderId()): ?>
+    <tr>
+        <th><?php echo __('Machine Maintenance Id') ?></th>
+        <td><?php echo $_order->getMmOrderId(); ?></td>
+    </tr>
+<?php endif; ?>
+<?php if ($_order->getOriginalUniqueId()): ?>
+<tr>
+    <th><?php echo __('Original Unique ID') ?></th>
+    <td><?php echo $_order->getOriginalUniqueId(); ?></td>
+</tr>
+<?php endif; ?>

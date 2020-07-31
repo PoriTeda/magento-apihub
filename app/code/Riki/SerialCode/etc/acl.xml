@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Sales::sales">
+                    <resource id="Magento_Sales::sales_operation">
+                        <resource id="Riki_SerialCode::serial_code" title="Serial Codes" sortOrder="90">
+                            <resource id="Riki_SerialCode::serial_code_action_save" title="Serial Codes Save" sortOrder="90" />
+                            <resource id="Riki_SerialCode::serial_code_action_delete" title="Serial Codes Delete" sortOrder="90" />
+                            <resource id="Riki_SerialCode::serial_code_import" title="Serial Codes Import" sortOrder="90" />
+                            <resource id="Riki_SerialCode::serial_code_export" title="Serial Codes Export" sortOrder="91" />
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

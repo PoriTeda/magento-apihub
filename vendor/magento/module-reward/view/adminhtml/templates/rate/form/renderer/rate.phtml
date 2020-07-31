@@ -1,0 +1,23 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<div class="field field-rate admin__field">
+    <label class="admin__field-label label" for="rate_value"><span><?= /* @escapeNotVerified */ $block->getElement()->getLabel() ?></span></label>
+    <div class="admin__field-control control">
+        <div class="boundary boundary-lower">
+            <input type="text" class="admin__control-text" id="rate_value" name="rate[value]" value="<?= /* @escapeNotVerified */ $block->getValue() ?>"/>
+        </div>
+
+        <div class="boundary boundary-upper">
+            <label class="admin__field-label label" for="rate_equal_value"><span><?= /* @escapeNotVerified */ __('upper boundary') ?></span></label>
+            <input type="text" class="admin__control-text" id="rate_equal_value" name="rate[equal_value]" value="<?= /* @escapeNotVerified */ $block->getEqualValue() ?>"/>
+        </div>
+    </div>
+</div>

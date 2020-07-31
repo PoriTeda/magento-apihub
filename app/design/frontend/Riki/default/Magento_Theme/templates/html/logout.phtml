@@ -1,0 +1,8 @@
+<div class="logout-button-footer"></div>
+<script type="text/javascript">
+    require(['jquery'], function($) {
+        if (typeof $('#header_btn_suvnavi .logout-btn') != 'undefined') {
+            $('#header_btn_suvnavi .logout-btn').clone().appendTo($('.page-footer .logout-button-footer'));
+        }
+    })
+</script>

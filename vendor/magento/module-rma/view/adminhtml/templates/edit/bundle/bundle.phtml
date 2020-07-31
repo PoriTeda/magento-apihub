@@ -1,0 +1,84 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var $block \Magento\Rma\Block\Adminhtml\Product\Bundle\Items */ ?>
+<?php $_items = $block->getItems(); ?>
+<?php $_bundle = ''; ?>
+<?php foreach ($_items as $_item): ?>
+    <?php if ($_item->getId() == $block->getParentId()): ?>
+        <?php $_bundle = $_item->getName() ?>
+        <?php break; ?>
+    <?php endif; ?>
+<?php endforeach; ?>
+<div id="bundle_div_<?= /* @escapeNotVerified */ $block->getParentId() ?>">
+    <div class="popup-window-wrapper">
+        <div class="popup-window-title">
+            <span class="title"><?= $block->escapeHtml($_bundle) ?></span>
+            <div class="form-buttons"></div>
+        </div>
+        <div class="popup-window-content">
+            <fieldset class="admin__fieldset">
+                <div class="admin__field admin__field-option">
+                    <input type="radio"
+                           name="items_selector"
+                           id="all_items_<?= /* @escapeNotVerified */ $block->getParentId() ?>"
+                           class="admin__control-radio"/>
+                    <label for="all_items_<?= /* @escapeNotVerified */ $block->getParentId() ?>"
+                           class="admin__field-label"><?= /* @escapeNotVerified */ __('All Items') ?></label>
+                </div>
+                <div class="admin__field admin__field-option">
+                    <input type="radio"
+                           name="items_selector"
+                           id="individual_items_<?= /* @escapeNotVerified */ $block->getParentId() ?>"
+                           class="admin__control-radio"/>
+                    <label for="individual_items_<?= /* @escapeNotVerified */ $block->getParentId() ?>"
+                           class="admin__field-label"><?= /* @escapeNotVerified */ __('Individual Items') ?></label>
+                </div>
+            <?php foreach ($_items as $_item): ?>
+                <?php if ($_item->getId() == $block->getParentId()): ?>
+                <?php continue; ?>
+                <?php endif; ?>
+                <div class="admin__field admin__field-option">
+                    <?php if (!$_item->getIsOrdered()): ?>
+                    <?php
+                    if ($_item->getIsQtyDecimal()) {
+                        $availableQty = sprintf("%01.4f", $_item->getAvailableQty());
+                    } else {
+                        $availableQty = intval($_item->getAvailableQty());
+                    }
+                    ?>
+                    <input id="checkbox_rma_bundle_item_name_<?= /* @escapeNotVerified */ $block->getParentId() ?>_<?= /* @escapeNotVerified */ $_item->getId() ?>" type="hidden" value="<?= $block->escapeHtml($_item->getName()) ?>"/>
+                    <input id="checkbox_rma_bundle_item_sku_<?= /* @escapeNotVerified */ $block->getParentId() ?>_<?= /* @escapeNotVerified */ $_item->getId() ?>" type="hidden" value="<?= $block->escapeHtml($_item->getSku()) ?>"/>
+                    <input id="checkbox_rma_bundle_item_qty_<?= /* @escapeNotVerified */ $block->getParentId() ?>_<?= /* @escapeNotVerified */ $_item->getId() ?>" type="hidden" value="<?= /* @escapeNotVerified */ $availableQty ?>"/>
+                    <input
+                        id="checkbox_rma_bundle_item_id_<?= /* @escapeNotVerified */ $block->getParentId() ?>_<?= /* @escapeNotVerified */ $_item->getId() ?>"
+                        type="checkbox" value="<?= /* @escapeNotVerified */ $_item->getId() ?>"
+                        class="admin__control-checkbox checkbox_rma_bundle_item_<?= /* @escapeNotVerified */ $block->getParentId() ?>"/>
+                    <?php else: ?>
+                    <input type="checkbox" class="admin__control-checkbox" disabled="disabled" />
+                    <?php endif; ?>
+                    <label
+                        for="checkbox_rma_bundle_item_id_<?= /* @escapeNotVerified */ $block->getParentId() ?>_<?= /* @escapeNotVerified */ $_item->getId() ?>" <?= ($_item->getIsOrdered()) ? 'style="color:#999999"' : '' ?>
+                        class="admin__field-label"><?= /* @escapeNotVerified */ $_item->getName() ?></label>
+                </div>
+            <?php endforeach; ?>
+            </fieldset>
+        </div>
+        <div class="popup-window-buttons-set">
+            <button id="rma_bundle_ok_button_<?= /* @escapeNotVerified */ $block->getParentId() ?>"
+                    onclick="rma.hidePopups()"
+                    class="action-save action-secondary"
+                    type="button"><span><?= /* @escapeNotVerified */ __('OK') ?></span></button>
+            <button id="rma_bundle_cancel_button_<?= /* @escapeNotVerified */ $block->getParentId() ?>"
+                    onclick="rma.hidePopups()"
+                    class="action-close"
+                    type="button"><span><?= /* @escapeNotVerified */ __('Cancel') ?></span></button>
+        </div>
+    </div>
+</div>

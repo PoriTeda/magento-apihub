@@ -1,0 +1,72 @@
+<?php
+//@codingStandardsIgnoreFile
+/** @var $block \Mirasvit\FraudCheck\Block\Adminhtml\Score\Edit\Renderer\Rules */
+$rules = $block->getScore()->getRules();
+?>
+<legend class="admin__legend legend">
+    <span><?= __('Statuses') ?></span>
+</legend>
+<div class="clearfix"></div>
+<div class="fc__score-slider" id="slider"></div>
+
+<input type="hidden" name="status[accept]" value="<?= $block->getScore()->getAcceptThreshold() ?>"
+       data-status="accept">
+<input type="hidden" name="status[review]" value="<?= $block->getScore()->getReviewThreshold() ?>" data-status="review">
+
+<legend class="admin__legend legend">
+    <span><?= __('Checklist') ?></span>
+</legend>
+<div class="clearfix"></div>
+
+<div class="fc__score-edit" data-mage-init='<?= json_encode($block->getJsConfig()) ?>'>
+    <div class="fc__score-edit-rules">
+        <div class="fc__score-table">
+            <div class="fc__score-table-header">
+                <div class="col-is-active">
+                    <?= __('Status') ?>
+                </div>
+                <div class="col-importance">
+                    <?= __('Importance') ?>
+                </div>
+                <div class="col-label">
+                    <?= __('Rule') ?>
+                </div>
+            </div>
+
+            <?php foreach ($rules as $code => $rule): ?>
+                <div class="fc__score-table-row editable <?= $rule->isActive() ? 'active' : 'inactive' ?>"
+                     data-row="">
+                    <div class="col-is-active">
+                        <div class="fa fa-fw <?= $rule->isActive() ? 'fa-toggle-on' : 'fa-toggle-off' ?>"
+                             data-is-active="<?= $rule->isActive() ?>"></div>
+
+                        <input type="hidden" value="<?= $rule->isActive() ?>"
+                               name="rule[<?= $code ?>][is_active]"/>
+                    </div>
+
+                    <div class="col-importance"
+                         data-importance="<?= $rule->getImportance() ?>">
+                        <?php for ($i = 1; $i <= 10; $i++): ?>
+                            <div data-value="<?= $i ?>"></div>
+                        <?php endfor ?>
+
+                        <input type="hidden" value="<?= $rule->getImportance() ?>"
+                               name="rule[<?= $code ?>][importance]"/>
+                    </div>
+
+                    <div class="col-label">
+                        <?php echo $rule->getLabel() ?>
+                    </div>
+                </div>
+            <?php endforeach ?>
+        </div>
+
+        <div class="fc__score-help">
+            <b><?= __('Importance') ?></b>
+            <p><?= __('1 - not important indicator, 10 - very important indicator') ?></p>
+        </div>
+    </div>
+    <div class="fc__score-edit-preview">
+        <iframe name="preview_iframe"></iframe>
+    </div>
+</div>

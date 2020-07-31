@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2019 Amasty (https://www.amasty.com)
+ * @package Amasty_Smtp
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="amsmtp_clear_messages" instance="Amasty\Smtp\Model\Logger\MessageLogger" method="autoClear">
+            <config_path>amsmtp/clear/schedule_clear_email</config_path>
+        </job>
+        <job name="amsmtp_clear_debug" instance="Amasty\Smtp\Model\Logger\DebugLogger" method="autoClear">
+            <schedule>0 1 * * *</schedule>
+        </job>
+    </group>
+</config>

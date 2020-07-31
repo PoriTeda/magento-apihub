@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+
+    <table name="subscription_course" resource="sales" engine="innodb" comment="Subscription Course">
+        <column xsi:type="text" name="restrict_exclude_course" nullable="true" comment="Restrict Exclude Courses"/>
+        <column xsi:type="text" name="terms_of_use" nullable="true" comment="Terms of use"/>
+    </table>
+</schema>

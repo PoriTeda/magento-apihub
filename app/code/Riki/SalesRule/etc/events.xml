@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+
+    <event name="checkout_submit_all_after">
+        <observer name="riki_salesrule_checkout_submit_after" instance="Riki\SalesRule\Observer\CheckoutSubmitAllAfter" />
+    </event>
+    <event name="order_cancel_after">
+        <observer name="after_canceled_order_revert_rule_usage" instance="Riki\SalesRule\Observer\RevertRuleUsage" />
+    </event>
+    <event name="salesrule_validator_process">
+        <observer name="riki_salesrule_cover_discount_qty_step_case_multipleshipping" instance="Riki\SalesRule\Observer\CoverDiscountQtyStepCase" />
+        <observer name="riki_salesrule_register_rule_for_update_applied_rules_info" instance="Riki\SalesRule\Observer\RegisterRuleForUpdateAppliedRulesInfo" />
+    </event>
+</config>

@@ -1,0 +1,91 @@
+<?php /** @var $block \Riki\Questionnaire\Block\Adminhtml\Questions\Edit\Tab\Options\Type\Select */ ?>
+
+<script id="question-option-select-type-template" type="text/x-magento-template">
+    <div id="question_option_<%- data.question_id %>_type_<%- data.group %>" class="fieldset">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th class="col-draggable">&nbsp;</th>
+                    <th class="col-name">
+                        <?php /* @escapeNotVerified */ echo __('ID') ?>
+                    </th>
+                    <th class="col-name required">
+                        <?php /* @escapeNotVerified */ echo __('Content') ?>
+                        <span class="">*</span>
+                    </th>
+                    <th class="col-name">
+                        <?php /* @escapeNotVerified */ echo __('Is Children Choice') ?>
+                    </th>
+                    <th class="col-name">
+                        <?php /* @escapeNotVerified */ echo __('Hide Delete') ?>
+                    </th>
+                    <th class="col-actions">Action</th>
+                </tr>
+            </thead>
+            <tbody id="select_option_type_row_<%- data.question_id %>"></tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6"><?php echo $block->getAddButtonHtml() ?>
+                        <input name="validation_<%- data.question_id %>_result"
+                               class="required-option-select-type-rows" 
+                               type="hidden" value="">
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</script>
+<script id="question-option-select-type-row-template" type="text/x-magento-template">
+     <tr id="question_option_<%- data.id %>_select_<%- data.select_id %>" class="fieldset-alt-row">
+         <td class="col-draggable">
+            <div data-role="draggable-handle" class="draggable-handle"
+                 title="<?php /* @escapeNotVerified */ echo __('Sort Question Choice Option'); ?>"></div>
+            <input name="questionnaire[questions][<%- data.id %>][choices][<%- data.select_id %>][sort_order]"
+                   type="hidden" value="<%- data.sort_order %>">
+        </td>
+         <td class="col-choice-id">
+             <span><%- data.parent_id %></span>
+             <input id="question_option_<%- data.id %>_select_<%- data.select_id %>_parent_id"
+                    name="questionnaire[questions][<%- data.id %>][choices][<%- data.select_id %>][parent_id]"
+                    type="hidden" value="<%- data.parent_id %>" class="parent-id">
+         </td>
+         <td class="col-name select-opt-title">
+             <input name="questionnaire[questions][<%- data.id %>][choices][<%- data.select_id %>][choice_id]" 
+                    type="hidden" value="<%- data.choice_id %>">
+             <input id="question_option_<%- data.id %>_select_<%- data.select_id %>_is_delete"
+                    name="questionnaire[questions][<%- data.id %>][choices][<%- data.select_id %>][is_delete]" 
+                    type="hidden" value="">
+             
+             <textarea id="question_option_<%- data.id %>_select_<%- data.select_id %>_title"
+                      name="questionnaire[questions][<%- data.id %>][choices][<%- data.select_id %>][label]" 
+                      class="required-entry input-text select-type-title" 
+                      data-store-label="<%- data.label %>" title="<%- data.label %>"><%- data.label %></textarea>
+        </td>
+         <td class="col-parent-choice-id" id="col-parent-choice-id-question">
+             <input id="question_option_<%- data.id %>_select_<%- data.select_id %>_is_children"
+                    class="is-children" type="checkbox" title="Is Children"/>
+             <div class="parent-choice-id" style="display: none">
+                 <label for="questionnaire[questions][<%- data.id %>][choices][<%- data.select_id %>][parent_choice_id]">Parent ID</label>
+                 <input id="question_option_<%- data.id %>_select_<%- data.select_id %>_parent_choice_id"
+                    name="questionnaire[questions][<%- data.id %>][choices][<%- data.select_id %>][parent_choice_id]"
+                    type="text" title="Parent Choice Id"
+                    class="required-parent-choice-id-select required-valid-parent-choice-id input-text select-parent-choice-id"
+                    value="<%- data.parent_choice_id %>"/>
+             </div>
+
+         </td>
+         <td class="col-name select-opt-title">
+             <input id="question_option_<%- data.id %>_select_<%- data.select_id %>_is_hide_delete"
+                    class="is_hide_delete" type="checkbox"
+                    name="questionnaire[questions][<%- data.id %>][choices][<%- data.select_id %>][hide_delete]"
+                    title="Hide" value="<%- data.hide_delete %>" />
+             <input id="question_option_<%- data.id %>_select_<%- data.select_id %>_exist"
+                    name="questionnaire[questions][<%- data.id %>][choices][<%- data.select_id %>][exist]"
+                    type="hidden" value="<%- data.hide_delete %>">
+         </td>
+         <td class="col-actions col-delete">
+             <?php echo $block->getDeleteButtonHtml() ?>
+         </td>
+     </tr>
+</script>
+

@@ -1,0 +1,78 @@
+<div id="choose-subscription" style="display: none">
+    <div class="list-profiles" data-bind="visible: profiles().profiles.items.length">
+        <div class="explanation" data-bind="i18n: 'Select the subscription course to add product'">
+        </div>
+        <form data-bind="attr:{
+                action: profiles().confirm_url,
+                method: 'POST',
+                id: 'form-choose-subscription'
+            }">
+            <input type="hidden" id="product_id" name="product_id" data-bind="value: productId" />
+            <input type="hidden" id="product_qty" name="product_qty" data-bind="value: 1" />
+            <table class="subscription-list">
+                <thead>
+                    <tr>
+                        <th class="course-name" data-bind="i18n: 'Subscription course name'"></th>
+                        <th class="frequency" data-bind="i18n: 'Frequency'"></th>
+                        <th class="deliver-to" data-bind="i18n: 'Deliver To'"></th>
+                        <th class="next-delivery-date" data-bind="i18n: 'Next delivery date'"></th>
+                        <th class="delivery-fee a-right" data-bind="i18n: 'Delivery fee'"></th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: { data: profiles().profiles.items, as: 'profile' }">
+                <!--NED-1534: add condition to show profile-->
+                <!-- ko if: profile.allow_change_product == 1 -->
+                    <tr>
+                        <td class="course-name" data-bind="attr: {'data-th': $parent.trans('Subscription course name')}">
+                            <div class="data">
+                                <input name="profile_id" type="radio" class="required-entry radio"
+                                       data-bind="
+                                       value: profile.profile_id,
+                                       attr:{
+                                           id: 'profile_' + profile.profile_id
+                                       }
+                                   " />
+                                <label data-bind="attr:{ for: 'profile_' + profile.profile_id }">
+                                    <span data-bind="text: profile.course_name"></span>
+                                </label>
+                                <span class="show-mb" data-bind="text: profile.course_name"></span>
+                            </div>
+                        </td>
+                        <td class="frequency" data-bind="attr: {'data-th': $parent.trans('Frequency')}">
+                            <div class="data"><span data-bind="text: profile.frequency_interval"></span><span data-bind="i18n: profile.frequency_unit"></span></div>
+                        </td>
+                        <td class="deliver-to" data-bind="attr: {'data-th': $parent.trans('Deliver To')}">
+                            <div class="data" data-bind="i18n: profile.delivery_type"></div>
+                        </td>
+                        <td class="next-delivery-date" data-bind="attr: {'data-th': $parent.trans('Next delivery date')}">
+                            <div class="data" data-bind="text: profile.next_delivery_date_format"></div>
+                        </td>
+                        <td class="delivery-fee a-right" data-bind="attr: {'data-th': $parent.trans('Delivery fee')}">
+                            <div class="data">
+                                <span data-bind="text: $parent.formatCurrency(profile.shipping_fee)"></span><br>
+                                <span data-bind="html: profile.delivery_type_name"></span>
+                            </div>
+                            <!-- ko if: $index() == 0 -->
+                            <div generated="true" class="mage-error show-mb" id="profile_id-error-clone"></div>
+                            <!-- /ko -->
+                        </td>
+                    </tr>
+                    <!-- /ko -->
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <div class="no-profile"  data-bind="visible: !profiles().profiles.items.length">
+        <div class="title" data-bind="i18n: 'Add in next delivery'">
+        </div>
+        <div class="content" data-bind="html: profiles().no_scription">
+        </div>
+    </div>
+    <div class="no-display">
+        <span data-bind="i18n: 'home'"></span>
+        <span data-bind="i18n: 'company'"></span>
+        <span data-bind="i18n: 'shipping'"></span>
+        <span data-bind="i18n: 'week'"></span>
+        <span data-bind="i18n: 'month'"></span>
+    </div>
+</div>

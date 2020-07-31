@@ -1,0 +1,35 @@
+<?php
+    /* @var $block \Riki\Subscription\Block\Frontend\Profile\ConfirmChangeFrequency */
+
+?>
+<fieldset class="fieldset panel">
+    <div class="label">
+        <h4><?php echo __("Please check the contents of registration and click Update."); ?></h4>
+    </div>
+    <div class="status confirm">
+        <span class="label"><?php echo __("Select Frequency"); ?></span>
+        <span><?php echo $block->getTextFrequencySelected(); ?></span>
+    </div>
+    <form action="<?php /* @escapeNotVerified */ echo $block->getUrl('*/*/SaveFrequency'); ?>"
+          method="post"
+          id="form-submit-profile"
+          class="form form-giftregistry-edit validation"
+          data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>"
+          data-mage-init='{"validation":{}}'
+    >
+        <?php echo $block->getBlockHtml('formkey')?>
+        <input name="profile_id" type="hidden" value="<?php echo $block->getProfileId(); ?>">
+        <input name="frequency_id" type="hidden" value="<?php echo $block->getProfileFrequencyId(); ?>">
+    </form>
+</fieldset>
+<div class="actions-toolbar">
+    <div class="check-offset"></div>
+    <div class="actions-toolbar-floating confirm">
+        <div class="action-left">
+            <a href="<?php echo $block->getReferUrl($block->getProfileId()); ?>"><span><?php echo __('Go back') ?></span></a>
+        </div>
+        <div class="action-right">
+            <button type="submit" onclick="return submitForm(this,'form-submit-profile')" name="save_frequency" class="flat-button yellow-subs"><?php echo __('Save Changes'); ?></button>
+        </div>
+    </div>
+</div>

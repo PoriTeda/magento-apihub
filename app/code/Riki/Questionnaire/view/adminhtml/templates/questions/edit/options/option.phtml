@@ -1,0 +1,100 @@
+<?php /** @var $block \Riki\Questionnaire\Block\Adminhtml\Questions\Edit\Tab\Options\Option */ ?>
+
+<?php echo $block->getTemplatesHtml() ?>
+
+<script id="question-option-base-template" type="text/x-magento-template">
+    <div class="fieldset-wrapper admin__collapsible-block-wrapper opened" id="option_<%- data.id %>">
+        <div class="fieldset-wrapper-title">
+            <strong
+                class="admin__collapsible-title"
+                data-toggle="collapse"
+                data-target="#<%- data.id %>-content">
+                <span id="option_<%- data.id %>_header_title"><%- data.title %></span>
+            </strong>
+            <div class="actions">
+                <button type="button" title="<?php /* @escapeNotVerified */ echo __('Delete Question Option'); ?>" class="action-delete" id="<?php /* @escapeNotVerified */ echo $block->getFieldId() ?>_<%- data.id %>_delete">
+                    <span><?php /* @escapeNotVerified */ echo __('Delete Question Option'); ?></span>
+                </button>
+            </div>
+            <div id="<?php /* @escapeNotVerified */ echo $block->getFieldId() ?>_<%- data.id %>_move" data-role="draggable-handle" class="draggable-handle"
+                 title="<?php /* @escapeNotVerified */ echo __('Sort Question Options'); ?>"></div>
+        </div>
+        <div class="fieldset-wrapper-content in collapse" id="<%- data.id %>-content">
+             <fieldset class="fieldset">
+                 <fieldset class="fieldset-alt" id="<?php /* @escapeNotVerified */ echo $block->getFieldId() ?>_<%- data.id %>">
+                     <input id="<?php /* @escapeNotVerified */ echo $block->getFieldId() ?>_<%- data.id %>_is_delete" name="<?php /* @escapeNotVerified */ echo $block->getFieldName() ?>[<%- data.id %>][is_delete]" type="hidden" value=""/>
+                     <input id="<?php /* @escapeNotVerified */ echo $block->getFieldId() ?>_<%- data.id %>_previous_type" name="<?php /* @escapeNotVerified */ echo $block->getFieldName() ?>[<%- data.id %>][previous_type]" type="hidden" value="<%- data.type %>"/>
+                     <input id="<?php /* @escapeNotVerified */ echo $block->getFieldId() ?>_<%- data.id %>_id" name="<?php /* @escapeNotVerified */ echo $block->getFieldName() ?>[<%- data.id %>][id]" type="hidden" value="<%- data.id %>"/>
+                     <input id="<?php /* @escapeNotVerified */ echo $block->getFieldId() ?>_<%- data.id %>_question_id" name="<?php /* @escapeNotVerified */ echo $block->getFieldName() ?>[<%- data.id %>][question_id]" type="hidden" value="<%- data.question_id %>"/>
+                     <input name="<?php /* @escapeNotVerified */ echo $block->getFieldName() ?>[<%- data.id %>][sort_order]" type="hidden" value="<%- data.sort_order %>"/>
+
+                     <div class="field field-option-title required">
+                        <label class="label" for="<?php /* @escapeNotVerified */ echo $block->getFieldId() ?>_<%- data.id %>_title">
+                            <span><?php /* @escapeNotVerified */ echo __('Question Title') ?></span>
+                        </label>
+                        <div class="control">
+                            <textarea id="<?php /* @escapeNotVerified */ echo $block->getFieldId() ?>_<%- data.id %>_title"
+                                   name="<?php /* @escapeNotVerified */ echo $block->getFieldName() ?>[<%- data.id %>][title]"
+                                   class="required-entry input-text" title="<%- data.title %>"
+                                   data-store-label="<%- data.title %>"><%- data.title %></textarea>
+                        </div>
+                     </div>
+                     <div class="field field-option-input-type required">
+                         <label class="label" for="<?php /* @escapeNotVerified */ echo $block->getFieldId() ?>_<%- data.id %>_title">
+                             <span><?php /* @escapeNotVerified */ echo __('Input Type') ?></span>
+                         </label>
+                         <div class="control opt-type">
+                             <?php echo $block->getTypeSelectHtml() ?>
+                         </div>
+                     </div>
+                     <div class="field field-option-req">
+                         <div class="control">
+                             <input id="<?php /* @escapeNotVerified */ echo $block->getFieldId() ?>_<%- data.id %>_required_question" class="is-required" type="checkbox" checked="checked"/>
+                             <label for="field-option-req">
+                                 <?php /* @escapeNotVerified */ echo __('Required')?>
+                             </label>
+                             <span style="display:none"><?php echo $block->getRequireSelectHtml() ?></span>
+                         </div>
+                     </div>
+                 </fieldset>
+             </fieldset>
+        </div>
+    </div>
+</script>
+
+<script>
+require([
+    'jquery',
+    'Riki_Questionnaire/js/question-options'
+], function(jQuery){
+
+    jQuery(function ($) {
+
+    var fieldSet = $('[data-block=questionaire-question-options]');
+
+    fieldSet.questionOptions(<?php /* @escapeNotVerified */ echo $this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode(
+        [
+            'fieldId' => $block->getFieldId(),
+            'formKey' => $block->getFormKey(),
+            'customOptionsUrl' => $block->getQuestionOptionsUrl(),
+            'isReadonly' => $block->isReadonly(),
+            'itemCount' => $block->getItemCount(),
+            'currentQuestionnaireId' => $block->getCurrentQuestionnaireId(),
+        ]
+    )?>);
+
+        //adding data question to templates
+    <?php /** @var $_value \Magento\Framework\DataObject */ ?>
+    <?php foreach ($block->getQuestionValues() as $_value): ?>
+        fieldSet.questionOptions('addOption', <?php /* @escapeNotVerified */ echo $_value->toJson() ?>);
+    <?php endforeach; ?>
+        
+    });
+
+});
+</script>
+
+
+
+
+

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\Stdlib\Cookie\PhpCookieManager">
+        <plugin name="riki-cookie-set-cookie-as-session" type="Riki\Cookie\Plugin\SetCookieAsSession" />
+        <plugin name="riki-cookie-set-cookie-as-secure" type="Riki\Cookie\Plugin\SetCookieAsSecure" />
+        <plugin name="riki-cookie-filter-data-cookie" type="Riki\Cookie\Plugin\FilterDataSetCookie" />
+    </type>
+</config>

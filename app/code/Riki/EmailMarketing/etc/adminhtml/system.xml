@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="general" translate="label" sortOrder="100">
+            <label>General</label>
+        </tab>
+        <section id="trans_email" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
+            <tab>general</tab>
+            <group id="emailtemplate" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Common Footer Email</label>
+                <field id="emailfooter" translate="label" type="textarea" sortOrder="1" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Footer of Email content</label>
+                </field>
+            </group>
+        </section>
+        <section id="sales_email" translate="label" type="text" sortOrder="301" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
+            <group id="general" type="text" sortOrder="0" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="send_order_schedule" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Order confirmation email sending schedule</label>
+                </field>
+            </group>
+            <group id="order" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <field id="template_multicheckout" translate="label comment" type="select" sortOrder="2"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>New Order confirmation (Separate Shipment) Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="hanpukai_order_confirmation" translate="label comment" type="select" sortOrder="7"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Hanpukai Order Confirmation Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="spot_order_change_enable" translate="label" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable Spot Order Change</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable email sending</comment>
+                </field>
+                <field id="spot_order_change" translate="label comment" type="select" sortOrder="9" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Spot Order Change Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="subscription_order_change_enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable Subscription Order Change</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable email sending</comment>
+                </field>
+
+                <field id="subscription_order_change" translate="label comment" type="select" sortOrder="11"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Subscription Order Change Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+        </section>
+        <section id="emailqueue" translate="label" type="text" sortOrder="155" showInDefault="1" showInWebsite="1"
+                 showInStore="0">
+            <label>Email Queue (Dont send at night)</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_EmailMarketing::config_emailmarketing</resource>
+            <group id="setting" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1"
+                   showInStore="0">
+                <field id="unsendhours" translate="label comment" type="multiselect" sortOrder="1" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <label>Define mid-night hours</label>
+                    <comment>Multiple options. Please press Ctrl + click to select options</comment>
+                    <source_model>Riki\EmailMarketing\Model\Hours</source_model>
+                </field>
+                <field id="scheduler" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Email Queue sending scheduler</label>
+                </field>
+            </group>
+        </section>
+
+        <section id="resend_email_queue" translate="label" type="text" sortOrder="156" showInDefault="1" showInWebsite="1"
+                 showInStore="0">
+            <label>Resend Failed Email Queue</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_EmailMarketing::config_emailmarketing</resource>
+            <group id="setting" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                   showInStore="0">
+                <field id="identity" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Resend Email Identity</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="queue_cron" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Resend Email Queue Cron</label>
+                </field>
+            </group>
+        </section>
+        <section id="system" translate="label" type="text" sortOrder="900" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>System</label>
+            <tab>advanced</tab>
+            <resource>Magento_Config::config_system</resource>
+            <group id="error_cron" translate="label" type="text" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Error cron email Settings</label>
+                <field id="error_cron_email" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Error cron email receiver</label>
+                    <validate>validate-email</validate>
+                    <backend_model>Magento\Config\Model\Config\Backend\Email\Address</backend_model>
+                    <depends>
+                        <field id="set_return_path">2</field>
+                    </depends>
+                </field>
+                <field id="error_cron_template" translate="label comment" type="select" sortOrder="2"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Error cron email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

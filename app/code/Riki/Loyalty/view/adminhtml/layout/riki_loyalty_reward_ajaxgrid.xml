@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <referenceContainer name="root">
+        <block class="Magento\Backend\Block\Widget\Grid" after="reward_form" name="customer.rewards.edit.tab">
+            <arguments>
+                <argument name="dataSource" xsi:type="object">Riki\Loyalty\Model\ResourceModel\Reward\Collection\Grid</argument>
+                <argument name="id" xsi:type="string">rewardsGrid</argument>
+                <argument name="use_ajax" xsi:type="string">true</argument>
+                <argument name="default_sort" xsi:type="string">id</argument>
+                <argument name="grid_url" xsi:type="url" path="*/*/grid">
+                    <param name="_current">1</param>
+                </argument>
+                <argument name="product_configuration_helpers" xsi:type="array">
+                    <item name="default" xsi:type="string">Magento\Catalog\Helper\Product\Configuration</item>
+                </argument>
+            </arguments>
+            <block class="Magento\Backend\Block\Widget\Grid\ColumnSet" as="grid.columnSet" name="customer.rewards.edit.tab.columnSet">
+                <arguments>
+                    <argument name="empty_text" xsi:type="string" translate="true">No Items Found</argument>
+                </arguments>
+                <block class="Magento\Backend\Block\Widget\Grid\Column" as="reward_id">
+                    <arguments>
+                        <argument name="header" xsi:type="string" translate="true">Id</argument>
+                        <argument name="index" xsi:type="string">reward_id</argument>
+                        <argument name="id" xsi:type="string">reward_id</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Backend\Block\Widget\Grid\Column" as="action_date">
+                    <arguments>
+                        <argument name="header" xsi:type="string" translate="true">Date</argument>
+                        <argument name="index" xsi:type="string">action_date</argument>
+                        <argument name="timezone" xsi:type="boolean">false</argument>
+                        <argument name="type" xsi:type="string">date</argument>
+                        <argument name="id" xsi:type="string">action_date</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Backend\Block\Widget\Grid\Column" as="point">
+                    <arguments>
+                        <argument name="header" xsi:type="string" translate="true">Point Amount</argument>
+                        <argument name="index" xsi:type="string">total_point</argument>
+                        <argument name="type" xsi:type="string">number</argument>
+                        <argument name="id" xsi:type="string">point</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Backend\Block\Widget\Grid\Column" as="description">
+                    <arguments>
+                        <argument name="header" xsi:type="string" translate="true">Comment</argument>
+                        <argument name="index" xsi:type="string">description</argument>
+                        <argument name="id" xsi:type="string">description</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Backend\Block\Widget\Grid\Column" as="point_type">
+                    <arguments>
+                        <argument name="header" xsi:type="string" translate="true">Point Type</argument>
+                        <argument name="index" xsi:type="string">point_type</argument>
+                        <argument name="id" xsi:type="string">point_type</argument>
+                        <argument name="type" xsi:type="string">options</argument>
+                        <argument name="options" xsi:type="options" model="Riki\Loyalty\Model\Config\Source\Reward\Type"/>
+                        <argument name="renderer" xsi:type="string">Riki\Loyalty\Block\Adminhtml\Reward\Widget\Grid\Renderer\Type</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Backend\Block\Widget\Grid\Column" as="order_no">
+                    <arguments>
+                        <argument name="header" xsi:type="string" translate="true">Order No</argument>
+                        <argument name="index" xsi:type="string">order_no</argument>
+                        <argument name="id" xsi:type="string">order_no</argument>
+                        <argument name="renderer" xsi:type="string">Riki\Loyalty\Block\Adminhtml\Reward\Widget\Grid\Renderer\OrderNo</argument>
+                    </arguments>
+                </block>
+                <!--<block class="Magento\Backend\Block\Widget\Grid\Column" as="order_item_id">-->
+                    <!--<arguments>-->
+                        <!--<argument name="header" xsi:type="string" translate="true">Order Item</argument>-->
+                        <!--<argument name="index" xsi:type="string">order_item_id</argument>-->
+                        <!--<argument name="id" xsi:type="string">order_item_id</argument>-->
+                    <!--</arguments>-->
+                <!--</block>-->
+                <block class="Magento\Backend\Block\Widget\Grid\Column" as="expiry_period">
+                    <arguments>
+                        <argument name="header" xsi:type="string" translate="true">Expiry period in (days)</argument>
+                        <argument name="index" xsi:type="string">expiry_period</argument>
+                        <argument name="id" xsi:type="string">expiry_period</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Backend\Block\Widget\Grid\Column" as="serial_code">
+                    <arguments>
+                        <argument name="header" xsi:type="string" translate="true">Serial Code</argument>
+                        <argument name="index" xsi:type="string">serial_code</argument>
+                        <argument name="id" xsi:type="string">serial_code</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Backend\Block\Widget\Grid\Column" as="wbs_code">
+                    <arguments>
+                        <argument name="header" xsi:type="string" translate="true">WBS</argument>
+                        <argument name="index" xsi:type="string">wbs_code</argument>
+                        <argument name="id" xsi:type="string">wbs_code</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Backend\Block\Widget\Grid\Column" as="account_code">
+                    <arguments>
+                        <argument name="header" xsi:type="string" translate="true">Account Code</argument>
+                        <argument name="index" xsi:type="string">account_code</argument>
+                        <argument name="id" xsi:type="string">account_code</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Backend\Block\Widget\Grid\Column" as="status">
+                    <arguments>
+                        <argument name="header" xsi:type="string" translate="true">Status</argument>
+                        <argument name="index" xsi:type="string">status</argument>
+                        <argument name="id" xsi:type="string">status</argument>
+                        <argument name="type" xsi:type="string">options</argument>
+                        <argument name="options" xsi:type="options" model="Riki\Loyalty\Model\Config\Source\Reward\Status"/>
+                        <argument name="renderer" xsi:type="string">Riki\Loyalty\Block\Adminhtml\Reward\Widget\Grid\Renderer\Status</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Backend\Block\Widget\Grid\Column" as="action">
+                    <arguments>
+                        <argument name="header" xsi:type="string" translate="true">Action</argument>
+                        <argument name="id" xsi:type="string">account_code</argument>
+                        <argument name="sortable" xsi:type="boolean">false</argument>
+                        <argument name="renderer" xsi:type="string">Riki\Loyalty\Block\Adminhtml\Reward\Widget\Grid\Renderer\Action</argument>
+                    </arguments>
+                </block>
+            </block>
+        </block>
+    </referenceContainer>
+</layout>

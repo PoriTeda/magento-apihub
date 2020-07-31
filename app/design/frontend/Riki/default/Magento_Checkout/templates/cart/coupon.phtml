@@ -1,0 +1,39 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<div class="block discount" id="block-discount">
+    <form id="discount-coupon-form"
+          action="<?php /* @escapeNotVerified */ echo $block->getUrl('checkout/cart/couponPost') ?>"
+          method="post"
+          data-mage-init='{"discountCode":{"couponCodeSelector": "#coupon_code",
+                                           "removeCouponSelector": "#remove-coupon",
+                                           "applyButton": "button.action.apply",
+                                           "cancelButton": "button.action.cancel"}}'>
+        <div class="fieldset coupon<?php strlen($block->getCouponCode()) ? ' applied' : ''?>">
+            <input type="hidden" name="remove" id="remove-coupon" value="0" />
+            <div class="actions-toolbar">
+                <label for="coupon_code" class="label"><span><?php /* @escapeNotVerified */ echo __('Coupon use') ?></span></label>
+                <div class="control">
+                    <input type="text" class="input-text" id="coupon_code" name="coupon_code" value="<?php echo $block->escapeHtml($block->getCouponCode()) ?>" />
+                </div>
+                <?php if (!strlen($block->getCouponCode())): ?>
+                <div class="primary">
+                    <button class="action apply primary" type="button" value="<?php /* @escapeNotVerified */ echo __('Apply coupon code') ?>">
+                        <span><?php /* @escapeNotVerified */ echo __('Apply coupon code') ?></span>
+                    </button>
+                </div>
+                <?php else: ?>
+                    <div class="primary">
+                        <button  type="button" class="action cancel primary" value="<?php /* @escapeNotVerified */ echo __('Cancel coupon code') ?>"><span><?php /* @escapeNotVerified */ echo __('Cancel coupon code') ?></span></button>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </form>
+</div>

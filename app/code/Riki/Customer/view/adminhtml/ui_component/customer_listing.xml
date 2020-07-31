@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="buttons" xsi:type="array">
+            <item name="search" xsi:type="array">
+                <item name="name" xsi:type="string">search</item>
+                <item name="label" xsi:type="string" translate="true">Search Customer ConsumerDB</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/search</item>
+            </item>
+        </item>
+    </argument>
+    <columns name="customer_columns" class="Magento\Customer\Ui\Component\Listing\Columns">
+
+        <column name="shosha_cmp">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Shosha company name</item>
+                    <item name="sortOrder" xsi:type="number">260</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="shosha_cmp_kana">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Shosha company name - Kana</item>
+                    <item name="sortOrder" xsi:type="number">300</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="shosha_code">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Riki\Customer\Model\Config\Source\ShoshaCode</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Shosha code</item>
+                    <item name="sortOrder" xsi:type="number">301</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="shosha_dept">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Company department name</item>
+                    <item name="sortOrder" xsi:type="number">302</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="shosha_dept_kana">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Company department name - Kana</item>
+                    <item name="sortOrder" xsi:type="number">303</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="shosha_first_code">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Riki\Customer\Model\Config\Source\StoreCode</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">First code</item>
+                    <item name="sortOrder" xsi:type="number">304</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="shosha_in_charge">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Name of person in charge</item>
+                    <item name="sortOrder" xsi:type="number">305</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="shosha_in_charge_kana">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Name of person in charge - Kana</item>
+                    <item name="sortOrder" xsi:type="number">306</item>
+                </item>
+            </argument>
+        </column>
+    </columns>
+</listing>

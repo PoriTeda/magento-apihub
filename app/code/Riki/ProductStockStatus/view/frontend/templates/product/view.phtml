@@ -1,0 +1,176 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+/* @var $block \Magento\ProductAlert\Block\Product\View\Stock */
+
+/** @var \Riki\ProductStockStatus\Helper\StockData $stockHelper */
+$stockHelper = $this->helper('Riki\ProductStockStatus\Helper\StockData');
+
+$mess =  $stockHelper->getOutstockMessage() ?
+         $stockHelper->getOutstockMessage():
+         __($block->getSignupLabel());
+
+$kssLink = $block->getLoginKssUrl();
+
+$isLogin = $block->isLogin();
+
+$checkReturnLink = $block->checkPopup();
+
+$product = $stockHelper->getProduct();
+
+$unitDisplays = $stockHelper->getProductUnitDisplay($product);
+?>
+<div class="product-add-form box-tocart">
+    <div class="box-tocart">
+        <div class="fieldset">
+            <div class="actions-checker-submit">
+                <label class="inner">単品購入
+                    <input type="radio" checked="checked" name="radio" value=1>
+                    <span class="checkmark"></span>
+                </label>
+                <?php if ($product->getData('spot_allow_subscription')): ?>
+                    <label class="inner">定期便に追加する
+                        <input type="radio" name="radio" value=2>
+                        <span class="checkmark"></span>
+                    </label>
+                <?php endif; ?>
+            </div>
+            <div class="field qty qty-case">
+                <?php
+                if('bundle' != $product->getTypeId()):
+                    ?>
+                    <?php
+                    if(is_array($unitDisplays) && count($unitDisplays) ):
+                        ?>
+                        <label class="label" for="qty" style="display: none;"><span><?php /* @escapeNotVerified */ echo __('Unit') ?></span></label>
+                        <div class="control" style="display: none;">
+                            <select name="case_display" id="case_display">
+                                <?php foreach ($unitDisplays as $key_unit => $_unitdisplay){ ?>
+                                    <option value="<?php echo $key_unit;?>"><?php echo $_unitdisplay;?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    <?php endif;?>
+                <?php endif; ?>
+            </div>
+            <div class="field qty" style="display: none;">
+                <label class="label" for="qty"><span><?php echo __('Quantity'); ?></span></label>
+                <div class="control">
+                    <select disabled name="qty-stock" id="qty-stock">
+                        <option selected="selected" value="1">1</option>
+                    </select>
+                </div>
+                <?php if('bundle' != $product->getTypeId()): ?>
+                    <span class="label_piece"><?php echo __('Piece'); ?></span>
+                    <span class="label_case"  style="display: none;"><?php echo __('Case'); ?></span>
+                <?php endif; ?>
+            </div>
+            <div class="form-actions-qty">
+                <div class="notification-qty error"><span><?php echo $block->escapeHtml(__($mess)); ?></span></div>
+                <div class="field qty block_quantity disableddiv">
+                    <label class="label hidden" for="qty"><span><?php /* @escapeNotVerified */ echo __('Qty') ?></span></label>
+                    <div class="control buttons_added">
+                        <span class="minus delete"><span>削除</span></span>
+                        <span class="minus hidden"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                        <input type="hidden" id="qty" name="qty" disabled>
+                        <select name="qty_select" id="qty_select">
+                            <option selected='selected' value="0">0</option>
+                        </select>
+                        <input type="hidden" name="qty_case" id="qty_case">
+                        <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                        <div class="control">
+                            <input type="hidden" name="unit_qty" id="unit_qty" value="0"/>
+                            <input type="hidden" name="is_unit_case" id="is_unit_case" value="0" />
+                            <input type="hidden" name="qty_cs_double_check" id="qty_cs_double_check" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <?php if($product->getData('description_campaign') != NULL) :?>
+                <div class="campaign_details">
+                    <?php /* @escapeNotVerified */ echo $this->helper('Magento\Catalog\Helper\Output')->productAttribute($product, $product->getDescriptionCampaign(), 'description_campaign') ?>
+                </div>
+            <?php endif;?>
+        </div>
+    </div>
+
+    <div class="product alerts">
+        <?php if($isLogin) {?>
+        <button class="action out-of-stock-popup is_login tocart button-order action">
+            <?php echo $block->escapeHtml(__($block->getSignupLabel())); ?>
+        </button>
+            <?php }else { ?>
+                <button class="out-of-stock-popup tocart button-order action" onclick="location.href='<?php echo $kssLink ?>'">
+                    <?php echo $block->escapeHtml(__($block->getSignupLabel())); ?>
+                </button>
+        <?php } ?>
+    </div>
+
+    <div id="out-of-stock" style="display: none" >
+        <h3><?php echo __('Confirm contact information of restocked items'); ?></h3>
+        <p><?php echo __('When the product re-arrives, we will send an e-mail to the following e-mail address registered with member information.'); ?></p>
+        <div data-bind="scope: 'customer'">
+            <p data-bind="text: customer().email"></p>    
+        </div>
+        
+        
+        <div class="product alert <?php echo $block->getHtmlClass() ?>">
+            <a href="#" data-post='<?php /* @escapeNotVerified */ echo $block->getPostAction(); ?>'
+               title="<?php echo $block->escapeHtml(__($block->getSignupLabel())); ?>" class="action alert">
+                <?php echo __('Yes'); ?>
+            </a>
+            <a href="#" class="close-popup-out-of-stock">
+                <?php echo __('No'); ?>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.checkReturnLink = "<?php echo $checkReturnLink; ?>";
+</script>
+
+<script>
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal',
+            'Magento_Customer/js/customer-data'
+        ],
+        function ($, modal, customerData) {
+            var options = {
+                type: 'popup',
+                responsive: false,
+                innerScroll: true,
+                modalClass: 'out-of-stock'
+            };
+            var popup = modal(options, $('#out-of-stock'));
+
+            if(window.checkReturnLink == 'popup') {
+                customerData.get('customer').subscribe(function (data) {
+                    if (data.firstname) {
+                        $('#out-of-stock').modal('openModal');
+                    }
+                });
+            }
+
+            $(".out-of-stock-popup.is_login").on('click', function () {
+                $('#out-of-stock').modal('openModal');
+            });
+            $(".close-popup-out-of-stock").on('click', function () {
+                $('#out-of-stock').modal('closeModal');
+            });
+        }
+    );
+</script>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Riki_Theme/js/view/minicart-merge-quote": {}
+        }
+    }
+</script>

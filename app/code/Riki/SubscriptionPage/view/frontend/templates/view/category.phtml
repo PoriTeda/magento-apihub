@@ -1,0 +1,116 @@
+<?php
+/** @var \Riki\SubscriptionPage\Block\SubscriptionView $block */
+$arrHanpukaiProductIdAndQty = [];
+if ($block->isHanpukai()) {
+    $arrHanpukaiProductIdAndQty = $block->getHanpukaiProductIdAndQtyPieceCase($block->getHanpukaiType());
+}
+?>
+<div class="subscription-container category-change-mode m-category-section <?php if (!$isAddition) {
+    echo 'category-container';
+} ?>">
+    <?php if ($isAddition): ?>
+<input type="checkbox" checked class="toggle-checkbox" id="subscription-container-block-<?php echo $categoryId; ?>">
+    <div class="category-title">
+        <?php endif; ?>
+        <div class="<?php echo ($thumbnail) ? 'title-img has-img' : 'title-img' ?>">
+            <h2 id="section-<?php echo $categoryId ?>" class="title">
+                <?php if (!$block->isHanpukai()): ?>
+                    <?php if ($categoryId == Riki\SubscriptionPage\Block\SubscriptionView::CATEGORY_ID_FOR_PRODUCT_ADD_FROM_COURSE_TAB): ?>
+                        <?php echo __('Product Not Allow Category') ?>
+                    <?php else: ?>
+                        <?php echo $categoryName; ?>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <?php echo __('Below is the schedule for the this delivery of 1 course') ?>
+                <?php endif; ?>
+            </h2>
+            <?php if ($thumbnail) : ?>
+                <div class="thumbnail-category">
+                    <img src="<?= $thumbnail ?>" alt="<?php echo $categoryName; ?>">
+                </div>
+            <?php endif; ?>
+        </div>
+        <?php if ($categoryDescription != ''): ?>
+        <div class="riki-category-description"><?= $categoryDescription ?></div>
+        <?php endif; ?>
+        <?php if ($isAddition): ?>
+        <label for="subscription-container-block-<?php echo $categoryId; ?>" class="triangle-toggle"></label>
+    </div>
+<?php endif; ?>
+
+    <div class="subscription-content">
+        <div class="subscription-table">
+
+            <div class="rk_row">
+                <!-- Load Product -->
+                <?php
+                $countListPro = count($listProduct);
+                for ($i = 0; $i < $countListPro; $i++):
+                    $product = $listProduct[$i];
+                    $stockMessage = $block->getStockStatusMessage($product);
+
+                    if (array_key_exists('class', $stockMessage)
+                        && array_key_exists('message', $stockMessage)
+                    ) {
+                        $classMessage = $stockMessage['class'];
+                        $textMessage = __('Stock:') .' '. $stockMessage['message'];
+                    } else {
+                        $classMessage = '';
+                        $textMessage = '';
+                    }
+                    $isInStock = $product->getIsSalable();
+                    if ($isInStock == false) {
+                        $textMessage = __('Stock:') .' '. $block->getOutStockMessageByProduct($product);
+                    }
+
+                    ?>
+                    <div class="rk_col <?php echo ($block->isHanpukai()) ? 'rk_col-hanpukai' : '' ?>">
+                        <div class="subscription-row-item item<?php if ($block->getProductType($product) == 'configurable'): ?> config<?php endif; ?><?php if ($block->getProductType($product) == 'configurable' || $block->getProductType($product) == 'bundle'): ?> subscription-info-price<?php echo $product->getId() ?><?php endif; ?>"
+                             data-category-id="<?php echo $categoryId ?>"
+                             data-product-id="<?php echo $product->getId() ?>">
+                            <div class="col image"
+                                 data-mage-init='<?php echo $block->getViewModel()->getProductDetailJsData($product, $categoryId, $block->isHanpukai(), $textMessage); ?>'>
+                                <?php echo $block->render('Riki_SubscriptionPage::view/product/image.phtml', ['product' => $product]) ?>
+                                <div class="riki_qv"
+                                     data-bind="click: function(){openDetailPopup(<?php echo $product->getId() ?>)}, touchstart:function(){openDetailPopup(<?php echo $product->getId() ?>)}">
+                                    <a href="#" id="subscription-product-view" class="subscription-product-view">
+                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                             xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16"
+                                             viewBox="0 0 16 16">
+                                            <path fill="#666"
+                                                  d="M15.504 13.616l-3.79-3.223c-0.392-0.353-0.811-0.514-1.149-0.499 0.895-1.048 1.435-2.407 1.435-3.893 0-3.314-2.686-6-6-6s-6 2.686-6 6 2.686 6 6 6c1.486 0 2.845-0.54 3.893-1.435-0.016 0.338 0.146 0.757 0.499 1.149l3.223 3.79c0.552 0.613 1.453 0.665 2.003 0.115s0.498-1.452-0.115-2.003zM6 10c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zM7 3h-2v2h-2v2h2v2h2v-2h2v-2h-2z"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col name <?php echo ($block->isHanpukai()) ? 'no-set-width' : '' ?>">
+                                <?php echo $block->render('Riki_SubscriptionPage::view/product/name.phtml', [
+                                    'product' => $product,
+                                    'originProduct' => $listProduct[$i],
+                                    'categoryId' => $categoryId,
+                                    'stockMessageArr' => $stockMessage,
+                                    'textMessage' => $textMessage,
+                                    'classMessage' => $classMessage
+                                ]) ?>
+                            </div>
+                            <div class="col price <?php echo ($block->isHanpukai()) ? 'hidden' : '' ?>"
+                                 data-th="<?php echo __('Price') ?>">
+                                <?php echo $block->render('Riki_SubscriptionPage::view/product/price.phtml', ['product' => $product]) ?>
+                            </div>
+                            <div class="col qty <?php echo ($block->isHanpukai()) ? 'no-set-width' : '' ?>"
+                                 data-th="<?php echo __('Qty') ?>">
+                                <?php echo $block->getChildBlock('product.view.qty')
+                                    ->setProduct($product)
+                                    ->setCategoryId($categoryId)
+                                    ->setIsAddition($isAddition)
+                                    ->setIsHanpukai($block->isHanpukai())
+                                    ->toHtml(); ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endfor; ?>
+                <!-- End Loop Product -->
+            </div>
+        </div>
+    </div>
+</div>

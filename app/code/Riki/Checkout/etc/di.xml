@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Checkout\Block\Checkout\AttributeMerger" type="Riki\Checkout\Block\Checkout\AttributeMerger"/>
+    <preference for="Magento\Checkout\Controller\Index\Index"
+                type="Riki\Checkout\Controller\Index\Single"/>
+
+    <preference for="Riki\Checkout\Api\ShippingAddressInterface" type="Riki\Checkout\Model\ShippingAddress" />
+    <preference for="Riki\Checkout\Api\Data\AddressItemRelationshipInterface" type="Riki\Checkout\Model\AddressItemRelationship" />
+    <preference for="Riki\Checkout\Api\DeliveryDateMethodInterface" type="Riki\Checkout\Model\DeliveryDateMethod" />
+    <preference for="Riki\Checkout\Api\PaymentInformationManagementInterface" type="Riki\Checkout\Model\PaymentInformationManagement" />
+    <preference for="Magento\Checkout\Model\Cart" type="Riki\Checkout\Model\Cart"/>
+    <preference for="Magento\Checkout\Block\Cart\Sidebar" type="Riki\Checkout\Block\Cart\Sidebar"/>
+    <preference for="Magento\Checkout\Model\DefaultConfigProvider" type="Riki\Checkout\Model\DefaultConfigProvider"/>
+    <preference for="Magento\Checkout\Controller\Sidebar\UpdateItemQty" type="Riki\Checkout\Controller\Sidebar\UpdateItemQty"/>
+    <preference for="Magento\Checkout\Api\PaymentInformationManagementInterface" type="Riki\Checkout\Model\MagentoPaymentInformationManagement" />
+    <preference for="Riki\Checkout\Api\CartTotalSimulatorInterface" type="Riki\Checkout\Model\CartTotalSimulator" />
+    <preference for="Riki\Checkout\Api\Data\CartSimulationTotalsInterface" type="Riki\Checkout\Model\CartSimulationTotals" />
+
+    <type name="Magento\Checkout\Block\Cart">
+        <plugin name="riki_checkout_checkout_block_cart" type="Riki\Checkout\Plugin\Cart" />
+    </type>
+    <type name="Magento\Checkout\Block\Cart\Item\Renderer">
+        <plugin name="riki_checkout_block_cart_item_renderer" type="Riki\Checkout\Plugin\Cart\Item\Renderer" />
+    </type>
+    <type name="Magento\Quote\Model\Cart\CartTotalRepository">
+        <plugin name="riki_checkout_quote_model_cart_cartTotalsRepository" type="Riki\Checkout\Plugin\Quote\Model\Cart\CartTotalRepository\PromotionCollect" />
+    </type>
+
+    <type name="Riki\Checkout\Model\ResourceModel\Order\Address\Item">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Magento\ScalableOms\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="order_address_item" xsi:type="string">order_address_item</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Checkout\Model\ShippingInformationManagement" >
+        <plugin name="rikiCheckoutModelShippingInformationManagement" type="Riki\Checkout\Plugin\Model\ShippingInformationManagement" />
+    </type>
+    <type name="Magento\Quote\Model\BillingAddressManagement" >
+        <plugin name="rikiCheckoutQuoteModelBillingAddressManagement" type="Riki\Checkout\Plugin\Quote\Model\BillingAddressManagement" />
+    </type>
+    <type name="Magento\CatalogInventory\Model\Quote\Item\QuantityValidator">
+        <plugin name="riki_checkout_catalogInventory_model_quote_item_quantityValidator" type="Riki\Checkout\Plugin\CatalogInventory\Model\Quote\Item\QuantityValidator" sortOrder="10" />
+    </type>
+    <type name="Magento\CatalogInventory\Model\StockStateProvider">
+        <plugin name="riki_checkout_catalogInventory_model_stockStateProvider" type="Riki\Checkout\Plugin\CatalogInventory\Model\StockStateProvider\MultiShippingQty" sortOrder="10" />
+    </type>
+    <type name="\Magento\CatalogInventory\Model\StockStateProvider">
+        <plugin name="Riki_Checkout::stockStateMessage" type="Riki\Checkout\Plugin\CatalogInventory\Model\StockStateProvider" />
+    </type>
+    <preference for="Magento\TargetRule\Block\Checkout\Cart\Crosssell" type="Riki\Checkout\Block\Checkout\Cart\Crosssell"/>
+
+    <preference for="Magento\CatalogInventory\Model\Quote\Item\QuantityValidator" type="Riki\Checkout\Model\QuantityValidator"/>
+    <preference for="Magento\CatalogInventory\Model\StockManagement" type="Riki\Checkout\Model\StockManagement"/>
+
+    <preference for="Riki\Checkout\Api\ManageCartInterface" type="Riki\Checkout\Model\ManageCart" />
+
+    <type name="\Magento\AdvancedCheckout\Model\Cart">
+        <plugin name="riki_checkout_check_add_qty_bysku" type="Riki\Checkout\Plugin\Cart\AdvancedCart" />
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item">
+        <plugin name="riki_checkout_quote_model_quote_item_qty-combine" type="Riki\Checkout\Plugin\Quote\Model\Quote\Item\QtyCombine" />
+    </type>
+    <virtualType name="OrderRelationsComposite" type="Magento\Framework\Model\ResourceModel\Db\VersionControl\RelationComposite">
+        <arguments>
+            <argument name="relationProcessors" xsi:type="array">
+                <item name="orderAddress" xsi:type="object">Riki\Checkout\Model\ResourceModel\Order\AddressRelation</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <preference for="Magento\Checkout\Controller\Cart\Add" type="Riki\Checkout\Controller\Cart\Add" />
+
+    <type name="Magento\Checkout\Api\PaymentInformationManagementInterface">
+        <plugin name="saveQuestionare" type="Riki\Checkout\Plugin\Model\PaymentInformationManagement"/>
+    </type>
+    <type name="Riki\SalesRule\Model\Rule\Condition\Product\Found">
+        <plugin name="rikiSalesRuleCombineItemMultipleCheckout" type="Riki\Checkout\Plugin\SalesRule\Model\Rule\Condition\Product\Found\CombineItemMultipleCheckout"/>
+    </type>
+    <type name="Magento\Quote\Model\QuoteManagement">
+        <plugin name="riki_check_data_bundle_item" type="Riki\Checkout\Plugin\Quote\Model\QuoteManagement\ValidateBundleItems" sortOrder="120" />
+    </type>
+    <type name="Magento\Checkout\Controller\Cart\Index">
+        <plugin name="riki_redirect_to_checkout" type="Riki\Checkout\Plugin\Cart\RedirectIndex" sortOrder="120" />
+    </type>
+</config>

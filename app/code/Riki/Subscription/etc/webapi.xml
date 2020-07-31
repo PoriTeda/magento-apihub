@@ -1,0 +1,328 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/subprofile/:consumerId" method="GET">
+        <service class="Riki\Subscription\Api\WebApi\ProfileRepositoryInterface" method="get"/>
+        <resources>
+            <resource ref="Riki_SubscriptionFrequency::subscription"/>
+        </resources>
+    </route>
+    <route url="/V1/updateSubscriptionProfile/:profile_id" method="POST">
+        <service class="Riki\Subscription\Api\WebApi\ProfileRepositoryInterface" method="update"/>
+        <resources>
+            <resource ref="Riki_SubscriptionFrequency::subscription"/>
+        </resources>
+    </route>
+    <route url="/V1/validateSubscriptionProfileUpdate/:profile_id" method="POST">
+        <service class="Riki\Subscription\Api\WebApi\ProfileRepositoryInterface" method="validate"/>
+        <resources>
+            <resource ref="Riki_SubscriptionFrequency::subscription"/>
+        </resources>
+    </route>
+    <route url="/V1/getSubscriptionProfileDateRange/:profile_id" method="GET">
+        <service class="Riki\Subscription\Api\WebApi\ProfileRepositoryInterface" method="getDateRange"/>
+        <resources>
+            <resource ref="Riki_SubscriptionFrequency::subscription"/>
+        </resources>
+    </route>
+    <route url="/V1/subcourse/:profile_id/frequency" method="GET">
+        <service class="Riki\Subscription\Api\WebApi\ProfileRepositoryInterface" method="getFrequency"/>
+        <resources>
+            <resource ref="Riki_SubscriptionFrequency::subscription"/>
+        </resources>
+    </route>
+    <route url="/V1/editprofile/changeProductQty" method="POST">
+        <service class="Riki\Subscription\Api\WebApi\ProfileRepositoryInterface" method="changeProductQty"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V1/product-list/product-info" method="GET">
+        <service class="Riki\Subscription\Api\ProductInfoInterface" method="getProducts"/>
+        <resources>
+            <resource ref="Riki_SubscriptionFrequency::subscription"/>
+        </resources>
+    </route>
+
+    <!-- rest /V1/subscriptions/profiles/multiple-category-campaigns/me -->
+    <route url="/V1/subscriptions/profiles/multiple-category-campaigns/me" method="POST">
+        <service class="Riki\Subscription\Api\WebApi\ProfileRepositoryInterface"
+                 method="getMultipleCategoryCampaignProfileByCustomer"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+    <route url="/V1/subscriptions/profile/add" method="PUT">
+        <service class="Riki\Subscription\Api\WebApi\SubProfileItemInterface" method="add"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <route url="/V1/subscriptions/profile/updateItem" method="PUT">
+        <service class="Riki\Subscription\Api\WebApi\SubProfileItemInterface" method="update"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <route url="/V1/subscriptions/profile/deleteItem" method="PUT">
+        <service class="Riki\Subscription\Api\WebApi\SubProfileItemInterface" method="delete"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <route url="/V1/subscriptions/landing/profile/:profileId" method="GET">
+        <service class="Riki\Subscription\Api\WebApi\LandingPage\LandingPageProfileInterface"
+                 method="getLandingPageProfile"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+    <route url="/V1/subscriptions/landing/profileList" method="GET">
+        <service class="Riki\Subscription\Api\WebApi\LandingPage\LandingPageProfileInterface"
+                 method="getLandingPageProfileList"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+    <route url="/V1/subscriptions/landing/changeDeliveryDate" method="PUT">
+        <service class="Riki\Subscription\Api\WebApi\LandingPage\LandingPageProfileInterface"
+                 method="setLandingPageDeliveryDate"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+    <route url="/V1/subscriptions/landing/getFrequency/:profileId" method="GET">
+        <service class="Riki\Subscription\Api\WebApi\LandingPage\LandingPageProfileInterface"
+                 method="getLandingPageFrequency"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+    <route url="/V1/subscriptions/landing/changeFrequency" method="PUT">
+        <service class="Riki\Subscription\Api\WebApi\LandingPage\LandingPageProfileInterface"
+                 method="setLandingPageFrequency"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+
+    <route method="GET" url="/V1/subscriptions/profile/getProfileDetail/:profileId">
+        <service class="Riki\Subscription\Api\WebApi\EditPage\WebAppEditProfileInterface" method="getById"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+
+    <route url="/V1/subscriptions/landing/getPaymentMethod/:profileId" method="GET">
+        <service class="Riki\Subscription\Api\WebApi\LandingPage\LandingPageProfileInterface"
+                 method="getLandingPagePaymentMethod"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+
+    <route method="PUT" url="/V1/subscriptions/profile/applyProfileChanges">
+        <service class="Riki\Subscription\Api\WebApi\EditPage\WebAppEditProfileInterface" method="applyProfileChange"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+    <route url="/V1/subscriptions/landing/changePaymentMethod" method="PUT">
+        <service class="Riki\Subscription\Api\WebApi\LandingPage\LandingPageProfileInterface"
+                 method="setLandingPagePaymentMethod"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+    <route method="PUT" url="/V1/subscriptions/profile/applyCouponCode">
+        <service class="Riki\Subscription\Api\WebApi\EditPage\WebAppEditProfileInterface" method="applyCouponCode"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+    <route method="PUT" url="/V1/subscriptions/profile/removeCouponCode">
+        <service class="Riki\Subscription\Api\WebApi\EditPage\WebAppEditProfileInterface" method="removeCouponCode"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+    <route url="/V1/subscriptions/profiles/list/products/:course_id/:categories_id/:page/:limit/:isCategoryHomePage" method="GET">
+        <service class="Riki\Subscription\Api\WebApi\SubProfileListProductByCategoryInterface" method="getListProductByCategories"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/subscriptions/profiles/list/categories/:profile_id" method="GET">
+        <service class="Riki\Subscription\Api\WebApi\SubProfileListProductByCategoryInterface" method="getListCategories"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/subscriptions/profiles/list/categories/recommend/:categories_id" method="GET">
+        <service class="Riki\Subscription\Api\WebApi\SubProfileListProductByCategoryInterface" method="getListCategoriesRecommend"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/google/tag/manager" method="GET">
+        <service class="Riki\Subscription\Api\WebApi\TagManagerInterface" method="getTagManager"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/subscriptions/landing/getShippingAddress/:profileId/:redirectUrl" method="GET">
+        <service class="Riki\Subscription\Api\WebApi\LandingPage\LandingPageProfileInterface"
+                 method="getLandingPageShippingAddress"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+    <route url="/V1/subscriptions/landing/changeShippingAddress" method="PUT">
+        <service class="Riki\Subscription\Api\WebApi\LandingPage\LandingPageProfileInterface"
+                 method="setLandingPageShippingAddress"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+    <route url="/V1/subscriptions/landing/profiles" method="GET">
+        <service class="Riki\Subscription\Api\WebApi\LandingPage\LandingPageProfileInterface"
+                 method="getLandingPageProfileListAll"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+    <route url="/V1/subscriptions/landing/profileDetail/:profileId" method="GET">
+        <service class="Riki\Subscription\Api\WebApi\LandingPage\LandingPageProfileInterface"
+                 method="getLandingPageProfileDetail"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+    <route url="/V1/subscriptions/landing/getPromotionBanner" method="GET">
+        <service class="Riki\Subscription\Api\WebApi\LandingPage\LandingPageProfileInterface"
+                 method="getPromotionBanner"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+    <route url="/V1/subscriptions/landing/getNavigationBanner" method="GET">
+        <service class="Riki\Subscription\Api\WebApi\LandingPage\LandingPageProfileInterface"
+                method="getNavigationBanner"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <route url="/V1/subscriptions/landing/getStockPoint/:profileId/:redirectUrl" method="GET">
+        <service class="Riki\Subscription\Api\WebApi\LandingPage\LandingPageProfileInterface"
+                 method="getStockPoint"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+    <route url="/V1/subscriptions/landing/getPointAndCoin" method="GET">
+        <service class="Riki\Subscription\Api\WebApi\LandingPage\LandingPageProfileInterface"
+                 method="getPointAndCoin"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+    <route url="/V1/subscriptions/landing/setPoint" method="PUT">
+        <service class="Riki\Subscription\Api\WebApi\LandingPage\LandingPageProfileInterface"
+                 method="setPoint"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+    <route url="/V1/subscriptions/landing/applySerialCode" method="PUT">
+        <service class="Riki\Subscription\Api\WebApi\LandingPage\LandingPageProfileInterface"
+                 method="applySerialCode"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+</routes>

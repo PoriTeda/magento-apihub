@@ -1,0 +1,728 @@
+<?php
+/** @var \Riki\SubscriptionPage\Block\SubscriptionView $block */
+$preFrequency = $block->getPreFrequency();
+$machineOption = $block->getMachineOption();
+/* @var $stockHelper \Riki\ProductStockStatus\Helper\StockData */
+$stockHelper = $this->helper('Riki\ProductStockStatus\Helper\StockData');
+$arrProductGroupByCategory           = $block->getListOfProductGroupByCategory();
+$arrProductGroupByAdditionalCategory = $block->getListOfProductGroupByAdditionalCategory();
+$arrProductGroupByCategory[\Riki\SubscriptionPage\Block\SubscriptionView::CATEGORY_ID_FOR_PRODUCT_ADD_FROM_COURSE_TAB]
+    = $block->getProductAddByCourse();
+if($block->isCourseActive() && $block->isCourseVisibility() && $block->isCourseAvailableInCurrentWebsite()
+    && $block->getAccessSubscriptionPage() && $block->isHanpukaiAvailableBetweenLaunchAndCloseTime()
+    && $block->getHaveProductOutOfStockInHanpukai() == false):
+    ?>
+    <?php $productIds = []; ?>
+    <?php $productCatIds = []; ?>
+    <?php $productMainCatIds = []; ?>
+    <?php $productAdditionCatIds = []; ?>
+    <?php $isSubscriptionHanpukai = false; $hanpukaiType = ''; $arrHanpukaiProductIdAndQty = array(); $hasProduct = false; ?>
+    <?php $frequencyOption = $block->getFrequency(); ?>
+    <?php $currentFrequencyId = $block->getSubscriptionFrequencyId(); ?>
+    <?php if ($preFrequency != null) { $currentFrequencyId = null;  }?>
+    <?php $courseDescription = $block->getCourseDescription(); ?>
+    <?php $courseAdditionalDescription = $block->getAdditionalCourseDescription(); ?>
+    <?php if($block->getSubscriptionType() == \Riki\SubscriptionCourse\Model\Course\Type::TYPE_HANPUKAI) {
+    $isSubscriptionHanpukai = true;
+    $hanpukaiType = $block->getHanpukaiType();
+    $arrHanpukaiProductIdAndQty = $block->getHanpukaiProductIdAndQtyPieceCase($hanpukaiType);
+}
+
+
+    /* @var $checkRequestLineAppHelper \Riki\SubscriptionPage\Helper\CheckRequestLineApp */
+    $checkRequestLineAppHelper = $this->helper('Riki\SubscriptionPage\Helper\CheckRequestLineApp');
+
+    ?>
+
+    <form action="<?php echo $checkRequestLineAppHelper->getLinkFormAction($block->getUrl('subscription-page/ajax/add'));?>" id="form-validate" enctype="multipart/form-data" method="post" data-bind="scope: 'priceBox'">
+        <div id="main-course-container">
+            <input name="form_key" type="hidden" value="<?php echo $block->getAddToCartFormKey(); ?>">
+            <input name="riki_course_id" id="riki_course_id" type="hidden" value="<?php echo $block->getSubscriptionCourseId(); ?>">
+            <?php if ($block->isNespresso()): ?>
+                <div class="<?php echo ($isSubscriptionHanpukai) ? 'note' : '' ?>"><?php echo __('Please select products from the following.') ?></div>
+            <?php endif; ?>
+            <?php if ($isSubscriptionHanpukai): ?>
+                <div class="note"><?php echo $courseDescription; ?></div>
+            <?php endif; ?>
+            <!-- check if hanpukai create select box change hanpukai qty -->
+            <?php if ($isSubscriptionHanpukai): ?>
+                <div class="sidebar subscription-left subscription-container multiple-quantity">
+                    <div class="field required subscription-content">
+                        <label class="label"><?php echo __('Selection of several intervals'); ?></label>
+                        <div class="select-multiple-qty" data-bind="scope: 'priceBox'">
+                            <div class="label"><?php echo __('Qty');?></div>
+                            <div class="control qty select" data-bind="event: {change: refreshAllQtyForHapukai}">
+                                <select id="hanpukai_change_set_qty"  name="hanpukai_change_set_qty" data-bind="value: change_all_qty_hanpukai">
+                                    <?php for($j=1; $j <= 30; $j++): ?>
+                                        <option value="<?php echo $j ?>"><?php echo $j ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                            </div>
+                            <div class="stock">
+                                <?php echo __('Stock: Your order is being accepted.') ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <!-- end check if hanpukai create select box change hanpukai qty -->
+            <?php if (!$isSubscriptionHanpukai): ?>
+                <div class="note"><?php echo __('The price may not show the discount amount, please go to "shipping and pay method" page to display the discount amount') ?></div>
+                <div class="note"><?php echo $courseDescription; ?></div>
+            <?php endif; ?>
+            <div class="sidebar subscription-left subscription-container<?php echo ($isSubscriptionHanpukai) ? ' no-display' : '' ?>" data-bind="scope: 'priceBox'">
+                <div class="field required subscription-content">
+                    <label class="label" for="frequency"><?php echo __('Selection of Delivery Interval') ?></label>
+                    <div class="control<?php echo (!$isSubscriptionHanpukai) ? ' select' : '' ?>">
+                        <?php if ($isSubscriptionHanpukai) { ?>
+                            <div>
+                                <?php foreach($frequencyOption as $value => $label) { ?>
+                                    <input type="hidden" id="frequency" name="frequency" value="<?php echo $value; ?>">
+                                    <span><?php echo $label; ?></span>
+                                <?php } ?>
+                            </div>
+                        <?php } else { ?>
+                            <select name="frequency" id="frequency" class="validate-select-sub-page-frequency required-entry" data-bind="event: {change: changeFrequency}">
+                                <option value="0"><?php echo __('Please select one'); ?></option>
+                                <?php foreach($frequencyOption as $value => $label) { ?>
+                                    <option value="<?php echo $value ?>" <?php echo $value == $currentFrequencyId || $value == $preFrequency ? 'selected' : '' ?>><?php echo $label; ?></option>
+                                <?php } ?>
+                            </select>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+            <?php if ($machineOption): ?>
+                <div class="sidebar subscription-left subscription-container">
+                    <div class="field required subscription-content">
+                        <label class="label" for="machine"><?php echo __('Machine') ?></label>
+                        <div class="control select">
+                            <select name="machine" id="machine" class="validate-select-sub-page-machine required-entry"
+                                    data-bind="
+                            options: machineData,
+                            optionsText: 'text',
+                            optionsValue: 'id',
+                            optionsCaption: '<?php echo __('Please select one'); ?>',
+                            optionsAfterRender: setOptionPrice,
+                            value: selectedMachine,
+                            event: { change: changeMachine }
+                            ">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <div class="subscription-main">
+                <div class="table-wrapper">
+                    <div class="subscription-block">
+                        <?php if (!$isSubscriptionHanpukai && !$block->isNespresso()): ?>
+                            <div class="note"><?php echo __('Please select products from the following.') ?></div>
+                        <?php endif; ?>
+                        <?php
+                        if(count($arrProductGroupByCategory) > 0) : ?>
+                            <?php if(!$isSubscriptionHanpukai){ ?>
+                                <div>
+                                    <div class="subscription-toolbar top" data-bind="event: {change: refreshAllQty}" >
+                                        <?php echo __('The quantity of all items') ?>
+                                        <select name="action-1-top" class="action-change-qty" data-bind="value: change_all_qty" rel="1">
+                                            <?php for($i = 0; $i <= 4; $i++): ?>
+                                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                            <?php endfor; ?>
+                                        </select>
+                                        <?php echo __('to change') ?>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                            <!-- Loop Categories Here -->
+                            <?php foreach($arrProductGroupByCategory as $categoryId => $listProduct) { ?>
+                                <?php if(count($listProduct) > 0): ?>
+                                    <div class="subscription-container">
+                                        <h2 class="title">
+                                            <?php if (!$isSubscriptionHanpukai): ?>
+                                                <?php if($categoryId == Riki\SubscriptionPage\Block\SubscriptionView::CATEGORY_ID_FOR_PRODUCT_ADD_FROM_COURSE_TAB){ ?>
+                                                    <?php echo __('Product Not Allow Category') ?>
+                                                <?php } else { ?>
+                                                    <?php echo $block->getCategoryById($categoryId)->getName(); ?>
+                                                <?php } ?>
+                                            <?php else : ?>
+                                                <?php echo __('Below is the schedule for the this delivery of 1 course') ?>
+                                            <?php endif; ?>
+                                        </h2>
+                                        <div class="subscription-content">
+                                            <table class="subscription-table">
+                                                <caption role="heading" aria-level="2" class="table-caption"><?php echo __('Subscription Items') ?></caption>
+                                                <thead>
+                                                <tr>
+                                                    <th>&nbsp;</th>
+                                                    <th><?php echo __('Product name') ?></th>
+                                                    <th class="col price <?php echo ($isSubscriptionHanpukai) ? 'no-display' : '' ?>"><?php echo __('Price (tax incl)') ?></th>
+                                                    <th class="col qty <?php echo ($isSubscriptionHanpukai) ? 'small-width' : '' ?>"><?php echo __('Qty') ?></th>
+                                                    <th class="col price subtotal <?php echo ($isSubscriptionHanpukai) ? 'no-display' : '' ?>"><?php echo __('Subtotal (tax incl)') ?></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <!-- Load Product -->
+                                                <?php
+                                                $countListPro = count($listProduct);
+                                                for($i=0; $i < $countListPro; $i++):
+                                                    $product = $block->loadProductById($listProduct[$i]->getId());
+                                                    $isInStock = $product->getIsSalable();
+
+                                                    $hasProduct = true;
+                                                    $productIds[] = $product->getId();
+                                                    $productCatIds[] = $product->getId().'_'.$categoryId;
+                                                    $productMainCatIds[] = $product->getId().'_'.$categoryId;
+
+                                                    ?>
+                                                    <?php //stock status
+                                                    $stockMessageArr = $stockHelper->getStockStatusMessage($product);
+                                                    if (array_key_exists('class', $stockMessageArr)
+                                                        && array_key_exists('message', $stockMessageArr)) {
+                                                        $classMessage = $stockMessageArr['class'];
+                                                        $textMessage = $stockMessageArr['message'];
+                                                    } else {
+                                                        $classMessage = '';
+                                                        $textMessage = '';
+                                                    }
+
+                                                    if ($isInStock == false) {
+                                                        $textMessage = $stockHelper->getOutStockMessageByProduct($product);
+                                                    }
+
+                                                    ?>
+                                                    <tr class="item<?php if($block->getProductType($product) == 'configurable'): ?> config<?php endif; ?><?php if($block->getProductType($product) == 'configurable' || $block->getProductType($product) == 'bundle'): ?> subscription-info-price<?php echo $product->getId() ?><?php endif; ?>">
+                                                        <td class="col image"><div class="product-item-photo"><?php echo $block->getImage($product, 'cart_page_product_thumbnail')->toHtml(); ?></div></td>
+                                                        <td class="col name <?php echo ($isSubscriptionHanpukai) ? 'no-set-width' : '' ?>">
+                                                            <input type="hidden" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[product_id]' ?>" value="<?php echo $product->getId(); ?>">
+                                                            <div class="product-item-name">
+                                                                <span><?php echo $product->getName(); ?></span>
+                                                                <?php if (!$isSubscriptionHanpukai): ?>
+                                                                    <div class="notification-qty <?php echo $classMessage;?>"><span><?php echo __('Stock:').' '.$textMessage;?></span></div>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                            <?php if($block->getProductType($product) == 'configurable'): ?>
+                                                                <input type="hidden" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[product_type]' ?>" value="<?php echo $block->getProductType($product); ?>">
+                                                                <div class="swatch-opt<?php echo $product->getId() ?>"></div>
+                                                                <script type="text/javascript">
+                                                                    require(["jquery", "jquery/ui", "Riki_SubscriptionPage/js/SwatchRendererCustom"], function ($) {
+                                                                        $('.swatch-opt<?php echo $product->getId() ?>').SwatchRenderer({
+                                                                            jsonConfig: <?php /* @escapeNotVerified */ echo $swatchOptions = $block->getJsonConfig($product)->getJsonConfig(); ?>,
+                                                                            jsonSwatchConfig: <?php /* @escapeNotVerified */ echo $swatchOptions = $block->getJsonConfig($product)->getJsonSwatchConfig(); ?>,
+                                                                            selectorProduct: '.subscription-info-price<?php echo $product->getId() ?>',
+                                                                            productId: <?php echo $product->getId() ?>
+                                                                        });
+                                                                    });
+                                                                </script>
+                                                                <script type="text/javascript">
+                                                                    require([
+                                                                        'jquery',
+                                                                        'Magento_Catalog/js/price-box'
+                                                                    ], function ($) {
+                                                                        var priceBoxes<?php echo $product->getId() ?> = $('.subscription-info-price<?php echo $product->getId() ?> .price-box');
+                                                                        priceBoxes<?php echo $product->getId() ?>.priceBox({'priceConfig': <?php /* @escapeNotVerified */ echo $block->getJsonPriceConfig($product)->getJsonConfig() ?>});
+                                                                    });
+                                                                </script>
+                                                                <?php
+                                                                $block->deleteRegister('product');
+                                                            endif;
+                                                            ?>
+                                                            <?php if($block->getProductType($product) == 'bundle'): ?>
+                                                                <input type="hidden" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[product_type]' ?>" value="<?php echo $block->getProductType($product); ?>">
+                                                                <div class="no-display"><?php echo $block->getLayout()->getBlock('product.info.bundle.options')->setProduct($product)->setCategoryId($categoryId)->toHtml() ?></div>
+
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td class="col price <?php echo ($isSubscriptionHanpukai) ? 'no-display' : '' ?>" data-th="<?php echo __('Price') ?>" data-bind="scope: 'priceBox'">
+                                                            <div data-bind="html: product_price_<?php echo $product->getId() ?>" id="product_price_<?php echo $product->getId() ?>">
+                                                                <?php echo $this->getLayout()->getBlock('product.price.render.default')->render('final_price', $product,[]); ?>
+                                                            </div>
+                                                            <div class="custom-price">
+                                                                <?php echo $this->getLayout()->getBlock('product.price.render.default')->render('tier_price', $product,[]); ?>
+                                                            </div>
+                                                        </td>
+                                                        <td class="col qty" data-th="<?php echo __('Qty') ?>">
+                                                            <?php
+                                                            $minimalQty = $product->getMinSaleQty();
+                                                            $maximumQty = $product->getMaxSaleQty();
+                                                            $maximumQty = ($maximumQty > 99) ? 99 : $maximumQty;
+                                                            $_unitdisplays = $block->getUnitDisplay($product);
+                                                            $unitQty = $block->getUnitQty($product);
+                                                            if((count($_unitdisplays) == 1 && (key($_unitdisplays) == 'cs'))){
+                                                                $maximumQty = $maximumQty * $unitQty;
+                                                            }
+                                                            ?>
+
+                                                            <div data-bind="visible: <?php echo 'unit_qty_'.$product->getId().'_'.$categoryId.''; ?>" id="<?php echo 'unit_qty_'.$product->getId().'_'.$categoryId.''; ?>">
+                                                                <label class="label no-display" for="<?php echo 'qty_'.$product->getId(); ?>"><?php echo __('Qty') ?></label>
+                                                                <?php if($isSubscriptionHanpukai){ ?>
+                                                                    <input type="hidden" class="hanpukai-disable-default" id="<?php echo $product->getId().'_'.$categoryId; ?>" hanpukai_unit="ea"
+                                                                           value="<?php echo ($arrHanpukaiProductIdAndQty[$product->getId()]['unit_case'] == 'EA')?1:0;?>">
+
+                                                                    <span id="<?php echo 'product_hanpukai_qty_'.$product->getId().'_'.$categoryId.''; ?>"
+                                                                          data-bind="html :<?php echo 'product_hanpukai_qty_'.$product->getId().'_'.$categoryId.''; ?>">
+                                                                <?php echo (int)$arrHanpukaiProductIdAndQty[$product->getId()]['qty']; ?>
+                                                            </span>
+
+                                                                    <div class="control qty select" style="display:none;" data-bind="event: {change: refreshPrice}">
+                                                                        <select  id="<?php echo 'qty_'.$product->getId().'_'.$categoryId; ?>" data-bind="value :<?php echo 'qty_selected_'.$product->getId().'_'.$categoryId.''; ?>" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[qty]' ?>">
+                                                                            <?php for($j = 1; $j <= 1000; $j++): ?>
+                                                                                <option value="<?php echo $j;?>" <?php if((int)$arrHanpukaiProductIdAndQty[$product->getId()]['qty'] == $j){ echo "selected";} ?> ><?php echo $j;?></option>
+                                                                            <?php endfor; ?>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="unit-label"><?php echo __('EA') ?></div>
+                                                                <?php } else { ?>
+                                                                    <div class="control qty select" data-bind="event: {change: refreshPrice}">
+                                                                        <select <?php if(!$isInStock) echo 'disabled'; ?> id="<?php echo 'qty_'.$product->getId().'_'.$categoryId; ?>" data-bind="value :<?php echo 'qty_selected_'.$product->getId().'_'.$categoryId.''; ?>" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[qty]' ?>">
+                                                                            <option value="0">0</option>
+                                                                            <?php $j = $minimalQty > 1 ? $minimalQty : 1 ?>
+                                                                            <?php for($j; $j <= $maximumQty; $j++): ?>
+                                                                                <option value="<?php echo $j ?>"><?php echo $j ?></option>
+                                                                            <?php endfor; ?>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="unit-label"><?php echo __('EA') ?></div>
+                                                                <?php } ?>
+                                                            </div>
+
+                                                            <div style="display: none;" data-bind="visible :<?php echo 'unit_case_'.$product->getId().'_'.$categoryId.''; ?>" id="<?php echo 'unit_case_'.$product->getId().'_'.$categoryId.''; ?>">
+                                                                <!-- Unit product is case-->
+                                                                <label class="label no-display" for="<?php echo 'qty_case_'.$product->getId(); ?>"><?php echo __('Qty') ?></label>
+                                                                <?php if($isSubscriptionHanpukai){ ?>
+                                                                    <input type="hidden" class="hanpukai-disable-default" id="<?php echo $product->getId().'_'.$categoryId; ?>" hanpukai_unit="cs" value="<?php echo ($arrHanpukaiProductIdAndQty[$product->getId()]['unit_case'] == 'CS')?1:0;?>">
+                                                                    <?php $unitQty = (null != $arrHanpukaiProductIdAndQty[$product->getId()]['unit_qty'])?$arrHanpukaiProductIdAndQty[$product->getId()]['unit_qty']:1;?>
+                                                                    <input productid="<?php echo ((int)$product->getId().'_'.$categoryId);?>" id="<?php echo 'qty_case_'.$product->getId().'_'.$categoryId; ?>" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[qty_case]' ?>" value="<?php echo (int)($arrHanpukaiProductIdAndQty[$product->getId()]['qty'])/$unitQty; ?>" type="hidden" class="input-text qty_case required-entry validate-zero-or-greater" />
+                                                                    <span id="<?php echo 'product_hanpukai_qty_case_'.$product->getId().'_'.$categoryId.''; ?>"
+                                                                          data-bind="html :<?php echo 'product_hanpukai_qty_case_'.$product->getId().'_'.$categoryId.''; ?>">
+                                                                <?php echo (int)($arrHanpukaiProductIdAndQty[$product->getId()]['qty'])/$unitQty; ?>
+                                                            </span>
+
+                                                                    <div class="control qty select" style="display:none;"  data-bind="event: {change: refreshPriceCase}">
+                                                                        <select  id="<?php echo ((int)$product->getId().'_'.$categoryId);?>" data-bind="value :<?php echo 'qty_case_selected_'.$product->getId().'_'.$categoryId.''; ?>" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[qty_case]' ?>" class="qty_case">
+                                                                            <option value="<?php echo (int)($arrHanpukaiProductIdAndQty[$product->getId()]['qty']/$unitQty); ?>"><?php echo (int)($arrHanpukaiProductIdAndQty[$product->getId()]['qty']/$unitQty); ?></option>
+                                                                        </select>
+                                                                    </div>
+
+                                                                    <div class="unit-label"><?php echo __('CS') ?></div>
+
+                                                                <?php } else { ?>
+                                                                    <div class="control qty select" data-bind="event: {change: refreshPriceCase}">
+                                                                        <select <?php if(!$isInStock) echo 'disabled'; ?> id="<?php echo ((int)$product->getId().'_'.$categoryId);?>" data-bind="value :<?php echo 'qty_case_selected_'.$product->getId().'_'.$categoryId.''; ?>" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[qty_case]' ?>" class="qty_case">
+                                                                            <option value="0">0</option>
+                                                                            <?php $j = ceil($minimalQty/$unitQty) > 1 ? ceil($minimalQty/$unitQty) : 1 ?>
+                                                                            <?php for($j; $j <= floor($maximumQty/$unitQty); $j++): ?>
+                                                                                <option value="<?php echo $j ?>"><?php echo $j ?></option>
+                                                                            <?php endfor; ?>
+                                                                        </select>
+                                                                    </div>
+                                                                    <?php if(count($_unitdisplays) ==  1){ ?>
+                                                                        <div class="unit-label"><?php echo __('CS') ?></div>
+                                                                    <?php } ?>
+                                                                <?php } ?>
+                                                            </div>
+
+                                                            <input type="hidden" data-bind="value :<?php echo 'unit_qty_value_'.$product->getId().'_'.$categoryId.''; ?>" id="<?php echo 'unit_qty_value_'.$product->getId().'_'.$categoryId; ?>" value="<?php echo $block->getUnitQty($product);?>">
+
+                                                            <input type="hidden" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[unit_qty]' ?>" id="<?php echo 'unit_qty_'.$product->getId().'_'.$categoryId; ?>" value="<?php echo $block->getUnitQty($product);?>">
+                                                            <input type="hidden" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[is_addition]' ?>" id="<?php echo 'is_addition_'.$product->getId().'_'.$categoryId; ?>" value="0">
+                                                            <?php if($isSubscriptionHanpukai){ ?>
+                                                                <?php if(is_array($_unitdisplays) && count($_unitdisplays) ){ ?>
+                                                                    <div style="display: none" class="unit-option no-display">
+                                                                        <div class="control qty select" data-bind="event: {change: refreshPieceCase}">
+                                                                            <select data-bind="value :<?php echo 'case_display_'.$product->getId().'_'.$categoryId.''; ?>" id="<?php echo 'case_display_'.$product->getId().'_'.$categoryId; ?>" class="unit-case" unitqty="<?php echo $block->getUnitQty($product);?>"  productid="<?php echo ((int)$product->getId().'_'.$categoryId);?>" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[case_display]' ?>">
+                                                                                <?php $unitCase = isset($arrHanpukaiProductIdAndQty[$product->getId()]['unit_case'])?$arrHanpukaiProductIdAndQty[$product->getId()]['unit_case']:'EA'; ?>
+                                                                                <option value="<?php echo strtolower($unitCase);?>"><?php echo $unitCase;?></option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                <?php } ?>
+                                                            <?php  } else {?>
+                                                                <?php if(is_array($_unitdisplays) && count($_unitdisplays) ){ ?>
+                                                                    <div style="display: none" class="unit-option<?php echo (count($_unitdisplays) > 1) ? '' : ' no-display' ?>">
+                                                                        <div class="control qty select" data-bind="event: {change: refreshPieceCase}">
+                                                                            <select data-bind="value :<?php echo 'case_display_'.$product->getId().'_'.$categoryId.''; ?>" id="<?php echo 'case_display_'.$product->getId().'_'.$categoryId; ?>" class="unit-case" unitqty="<?php echo $block->getUnitQty($product);?>"  productid="<?php echo ((int)$product->getId().'_'.$categoryId);?>" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[case_display]' ?>">
+                                                                                <?php foreach ($_unitdisplays as $key_unit => $_unitdisplay){ ?>
+                                                                                    <option value="<?php echo $key_unit;?>"><?php echo $_unitdisplay;?></option>
+                                                                                <?php } ?>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                <?php } ?>
+                                                            <?php  }?>
+
+                                                            <?php if(!$isInStock): ?>
+                                                                <input type="hidden" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[qty]' ?>" value="0">
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td class="col price subtotal <?php echo ($isSubscriptionHanpukai) ? 'no-display' : '' ?>" data-th="<?php echo __('Subtotal (tax incl)') ?>" data-bind="scope: 'priceBox'">
+                                                            <div id="<?php echo 'subtotal_item_'.$product->getId().'_'.$categoryId.''; ?>" data-bind="html :<?php echo 'subtotal_item_'.$product->getId().'_'.$categoryId.''; ?>">
+                                                                0円
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <?php endfor; ?>
+                                                <!-- End Loop Product -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                            <?php } ?>
+                            <!-- End Loop Here -->
+                            <?php if(!$isSubscriptionHanpukai){ ?>
+                                <div>
+                                    <div class="subscription-toolbar bottom" data-bind="event: {change: refreshAllQty}">
+                                        <?php echo __('The quantity of all items') ?>
+                                        <select name="action-1-bottom" class="action-change-qty" data-bind="value: change_all_qty" rel="1">
+                                            <?php for($i = 0; $i <= 4; $i++): ?>
+                                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                            <?php endfor; ?>
+                                        </select>
+                                        <?php echo __('to change') ?>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                        <?php else : ?>
+                            <?php echo __('There is no product in this subscription course'); ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="total-amount-block">
+                    <table class="table table-total-amount">
+                        <tr>
+                            <?php if ($isSubscriptionHanpukai): ?>
+                                <td class="init_payment_amount"><?php echo __('Initial payment amount') ?></td>
+                            <?php endif; ?>
+                            <td class="mask" data-label="<?php echo $block->escapeHtml(__('(Incl. Tax)')); ?>"><?php echo __('Total Amount') ?></td>
+                            <td class="value" id="total-amount" data-bind="html :<?php echo 'total_amount'; ?>">0円</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="actions-toolbar">
+                    <?php if($hasProduct == true) { ?>
+                        <div class="primary">
+                            <?php if(count($arrProductGroupByAdditionalCategory)) { ?>
+                                <a data-bind="event: {click: onRedirectAddition }" class="action primary change-content" title="<?php echo __('We also add other regular courses') ?>"><span><?php echo __('We also add other regular courses') ?></span></a>
+                                <button type="submit" class="action submit primary tocart" title="<?php echo __('Continue to cart') ?>"><span><?php echo __('Continue to cart') ?></span></button>
+                            <?php } else { ?>
+                                <button type="submit" class="action submit primary tocart" title="<?php echo __('Continue to cart') ?>"><span><?php echo __('Continue to cart') ?></span></button>
+                            <?php } ?>
+                        </div>
+                    <?php } ?>
+                    <?php if ($isSubscriptionHanpukai): ?>
+                        <div class="short-desc-hanpukai">
+                            <?php echo $block->getMetaDescription(); ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="secondary"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="additional-course-container">
+            <div id="add-another-course-popup">
+
+                <?php if($courseAdditionalDescription){ ?>
+                    <div class="subscription-container free-html">
+                        <?php echo $courseAdditionalDescription; ?>
+                    </div>
+                <?php } ?>
+                <div class="note"><?php echo __('Please select products from the following.') ?></div>
+
+
+                <!-- Loop Categories Here -->
+                <?php foreach($arrProductGroupByAdditionalCategory as $categoryId => $listProduct) { ?>
+                    <?php if(count($listProduct) > 0): ?>
+                        <div class="subscription-container">
+                            <input type="checkbox" class="toggle-checkbox" id="subscription-container-block-<?php echo $categoryId;?>">
+                            <div class="category-title">
+                                <?php if($categoryId == Riki\SubscriptionPage\Block\SubscriptionView::CATEGORY_ID_FOR_PRODUCT_ADD_FROM_COURSE_TAB){ ?>
+                                    <h2><?php echo __('Product Not Allow Category') ?></h2>
+                                <?php } else { ?>
+                                    <h2><?php echo $block->getCategoryById($categoryId)->getName(); ?></h2>
+                                <?php } ?>
+                                <label for="subscription-container-block-<?php echo $categoryId;?>" class="triangle-toggle"></label>
+                            </div>
+                            <div class="subscription-content">
+                                <table class="subscription-table">
+                                    <caption role="heading" aria-level="2" class="table-caption"><?php echo __('Subscription Items') ?></caption>
+                                    <thead>
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <th><?php echo __('Product name') ?></th>
+                                        <th class="col price <?php echo ($isSubscriptionHanpukai) ? 'no-display' : '' ?>"><?php echo __('Price (tax incl)') ?></th>
+                                        <th class="col qty <?php echo ($isSubscriptionHanpukai) ? 'small-width' : '' ?>"><?php echo __('Qty') ?></th>
+                                        <th class="col price subtotal <?php echo ($isSubscriptionHanpukai) ? 'no-display' : '' ?>"><?php echo __('Subtotal (tax incl)') ?></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!-- Load Product -->
+                                    <?php
+                                    $countListProduct = count($listProduct);
+                                    for($i=0; $i < $countListProduct; $i++):
+                                        $product = $block->loadProductById($listProduct[$i]->getId());
+                                        $isInStock = $product->getIsSalable();
+
+                                        $hasProduct = true;
+                                        $productIds[] = $product->getId();
+                                        $productCatIds[] = $product->getId().'_'.$categoryId;
+                                        $productAdditionCatIds[] = $product->getId().'_'.$categoryId;
+
+                                        ?>
+                                        <?php //stock status
+                                        $stockMessageArr = $stockHelper->getStockStatusMessage($product);
+                                        if (array_key_exists('class', $stockMessageArr)
+                                            && array_key_exists('message', $stockMessageArr)) {
+                                            $classMessage = $stockMessageArr['class'];
+                                            $textMessage = $stockMessageArr['message'];
+                                        } else {
+                                            $classMessage = '';
+                                            $textMessage = '';
+                                        }
+
+                                        if ($isInStock == false) {
+                                            $textMessage = $stockHelper->getOutStockMessageByProduct($product);
+                                        }
+
+                                        ?>
+                                        <tr class="item<?php if($block->getProductType($product) == 'configurable'): ?> config<?php endif; ?><?php if($block->getProductType($product) == 'configurable' || $block->getProductType($product) == 'bundle'): ?> subscription-info-price<?php echo $product->getId() ?><?php endif; ?>">
+                                            <td class="col image"><div class="product-item-photo"><?php echo $block->getImage($product, 'cart_page_product_thumbnail')->toHtml(); ?></div></td>
+                                            <td class="col name <?php echo ($isSubscriptionHanpukai) ? 'no-set-width' : '' ?>">
+                                                <input type="hidden" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[product_id]' ?>" value="<?php echo $product->getId(); ?>">
+                                                <div class="product-item-name">
+                                                    <span><?php echo $product->getName(); ?></span>
+                                                    <?php if (!$isSubscriptionHanpukai): ?>
+                                                        <div class="notification-qty <?php echo $classMessage;?>"><span><?php echo __('Stock:').' '.$textMessage;?></span></div>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <?php if($block->getProductType($product) == 'configurable'): ?>
+                                                    <input type="hidden" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[product_type]' ?>" value="<?php echo $block->getProductType($product); ?>">
+                                                    <div class="swatch-opt<?php echo $product->getId() ?>"></div>
+                                                    <script type="text/javascript">
+                                                        require(["jquery", "jquery/ui", "Riki_SubscriptionPage/js/SwatchRendererCustom"], function ($) {
+                                                            $('.swatch-opt<?php echo $product->getId() ?>').SwatchRenderer({
+                                                                jsonConfig: <?php /* @escapeNotVerified */ echo $swatchOptions = $block->getJsonConfig($product)->getJsonConfig(); ?>,
+                                                                jsonSwatchConfig: <?php /* @escapeNotVerified */ echo $swatchOptions = $block->getJsonConfig($product)->getJsonSwatchConfig(); ?>,
+                                                                selectorProduct: '.subscription-info-price<?php echo $product->getId() ?>',
+                                                                productId: <?php echo $product->getId() ?>
+                                                            });
+                                                        });
+                                                    </script>
+                                                    <script type="text/javascript">
+                                                        require([
+                                                            'jquery',
+                                                            'Magento_Catalog/js/price-box'
+                                                        ], function ($) {
+                                                            var priceBoxes<?php echo $product->getId() ?> = $('.subscription-info-price<?php echo $product->getId() ?> .price-box');
+                                                            priceBoxes<?php echo $product->getId() ?>.priceBox({'priceConfig': <?php /* @escapeNotVerified */ echo $block->getJsonPriceConfig($product)->getJsonConfig() ?>});
+                                                        });
+                                                    </script>
+                                                    <?php
+                                                    $block->deleteRegister('product');
+                                                endif;
+                                                ?>
+                                                <?php if($block->getProductType($product) == 'bundle'): ?>
+                                                    <input type="hidden" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[product_type]' ?>" value="<?php echo $block->getProductType($product); ?>">
+                                                    <div class="no-display"><?php echo $block->getLayout()->getBlock('product.info.bundle.options')->setProduct($product)->setCategoryId($categoryId)->toHtml() ?></div>
+
+                                                <?php endif; ?>
+                                            </td>
+                                            <td class="col price <?php echo ($isSubscriptionHanpukai) ? 'no-display' : '' ?>" data-th="<?php echo __('Price') ?>" data-bind="scope: 'priceBox'">
+                                                <div data-bind="html: product_price_<?php echo $product->getId() ?>" id="product_price_<?php echo $product->getId() ?>">
+                                                    <?php echo $this->getLayout()->getBlock('product.price.render.default')->render('final_price', $product,[]); ?>
+                                                </div>
+                                                <div class="custom-price">
+                                                    <?php echo $this->getLayout()->getBlock('product.price.render.default')->render('tier_price', $product,[]); ?>
+                                                </div>
+                                            </td>
+                                            <td class="col qty" data-th="<?php echo __('Qty') ?>">
+                                                <?php
+                                                $minimalQty = $product->getMinSaleQty();
+                                                $maximumQty = $product->getMaxSaleQty();
+                                                $maximumQty = ($maximumQty > 99) ? 99 : $maximumQty;
+                                                $_unitdisplays = $block->getUnitDisplay($product);
+                                                $unitQty = $block->getUnitQty($product);
+                                                if((count($_unitdisplays) == 1 && (key($_unitdisplays) == 'cs'))){
+                                                    $maximumQty = $maximumQty * $unitQty;
+                                                }
+                                                ?>
+
+                                                <div data-bind="visible: <?php echo 'unit_qty_'.$product->getId().'_'.$categoryId.''; ?>" id="<?php echo 'unit_qty_'.$product->getId().'_'.$categoryId.''; ?>">
+                                                    <label class="label no-display" for="<?php echo 'qty_'.$product->getId(); ?>"><?php echo __('Qty') ?></label>
+                                                        <div class="control qty select" data-bind="event: {change: refreshPrice}">
+                                                            <select <?php if(!$isInStock) echo 'disabled'; ?> id="<?php echo 'qty_'.$product->getId().'_'.$categoryId; ?>" data-bind="value :<?php echo 'qty_selected_'.$product->getId().'_'.$categoryId.''; ?>" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[qty]' ?>">
+                                                                <option value="0">0</option>
+                                                                <?php $j = $minimalQty > 1 ? $minimalQty : 1 ?>
+                                                                <?php for($j; $j <= $maximumQty; $j++): ?>
+                                                                    <option value="<?php echo $j ?>"><?php echo $j ?></option>
+                                                                <?php endfor; ?>
+                                                            </select>
+                                                        </div>
+                                                        <div class="unit-label"><?php echo __('EA') ?></div>
+                                                </div>
+
+                                                <div style="display: none;" data-bind="visible :<?php echo 'unit_case_'.$product->getId().'_'.$categoryId.''; ?>" id="<?php echo 'unit_case_'.$product->getId().'_'.$categoryId.''; ?>">
+                                                    <!-- Unit product is case-->
+                                                    <label class="label no-display" for="<?php echo 'qty_case_'.$product->getId(); ?>"><?php echo __('Qty') ?></label>
+                                                        <div class="control qty select" data-bind="event: {change: refreshPriceCase}">
+                                                            <select <?php if(!$isInStock) echo 'disabled'; ?> id="<?php echo ((int)$product->getId().'_'.$categoryId);?>" data-bind="value :<?php echo 'qty_case_selected_'.$product->getId().'_'.$categoryId.''; ?>" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[qty_case]' ?>" class="qty_case">
+                                                                <option value="0">0</option>
+                                                                <?php $j = ceil($minimalQty/$unitQty) > 1 ? ceil($minimalQty/$unitQty) : 1 ?>
+                                                                <?php for($j; $j <= floor($maximumQty/$unitQty); $j++): ?>
+                                                                    <option value="<?php echo $j ?>"><?php echo $j ?></option>
+                                                                <?php endfor; ?>
+                                                            </select>
+                                                        </div>
+                                                        <?php if(count($_unitdisplays) ==  1){ ?>
+                                                            <div class="unit-label"><?php echo __('CS') ?></div>
+                                                        <?php } ?>
+                                                </div>
+
+                                                <input type="hidden" data-bind="value :<?php echo 'unit_qty_value_'.$product->getId().'_'.$categoryId.''; ?>" id="<?php echo 'unit_qty_value_'.$product->getId().'_'.$categoryId; ?>" value="<?php echo $block->getUnitQty($product);?>">
+
+                                                <input type="hidden" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[unit_qty]' ?>" id="<?php echo 'unit_qty_'.$product->getId().'_'.$categoryId; ?>" value="<?php echo $block->getUnitQty($product);?>">
+                                                <input type="hidden" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[is_addition]' ?>" id="<?php echo 'is_addition_'.$product->getId().'_'.$categoryId; ?>" value="1">
+                                                    <?php if(is_array($_unitdisplays) && count($_unitdisplays) ){ ?>
+                                                        <div style="display: none" class="unit-option<?php echo (count($_unitdisplays) > 1) ? '' : ' no-display' ?>">
+                                                            <div class="control qty select" data-bind="event: {change: refreshPieceCase}">
+                                                                <select data-bind="value :<?php echo 'case_display_'.$product->getId().'_'.$categoryId.''; ?>" id="<?php echo 'case_display_'.$product->getId().'_'.$categoryId; ?>" class="unit-case" unitqty="<?php echo $block->getUnitQty($product);?>"  productid="<?php echo ((int)$product->getId().'_'.$categoryId);?>" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[case_display]' ?>">
+                                                                    <?php foreach ($_unitdisplays as $key_unit => $_unitdisplay){ ?>
+                                                                        <option value="<?php echo $key_unit;?>"><?php echo $_unitdisplay;?></option>
+                                                                    <?php } ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    <?php } ?>
+                                                <?php if(!$isInStock): ?>
+                                                    <input type="hidden" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[qty]' ?>" value="0">
+                                                <?php endif; ?>
+                                            </td>
+                                            <td class="col price subtotal <?php echo ($isSubscriptionHanpukai) ? 'no-display' : '' ?>" data-th="<?php echo __('Subtotal (tax incl)') ?>" data-bind="scope: 'priceBox'">
+                                                <div id="<?php echo 'subtotal_item_'.$product->getId().'_'.$categoryId.''; ?>" data-bind="html :<?php echo 'subtotal_item_'.$product->getId().'_'.$categoryId.''; ?>">
+                                                    0円
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php endfor; ?>
+                                    <!-- End Loop Product -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                <?php } ?>
+                <!-- End Loop Here -->
+
+                <div class="total-amount-block">
+                    <table class="table table-total-amount">
+                        <tr>
+                            <td class="mask" data-label="<?php echo $block->escapeHtml(__('(Incl. Tax)')); ?>"><?php echo __('Total Amount') ?></td>
+                            <td class="value" id="total-amount" data-bind="html :<?php echo 'total_amount'; ?>">0円</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="actions-toolbar">
+                    <?php if($hasProduct == true) { ?>
+                        <div class="primary">
+                            <button type="submit" class="action submit primary tocart" title="<?php echo __('Proceed to purchase') ?>"><span><?php echo __('Proceed to purchase') ?></span></button>
+                        </div>
+                    <?php } ?>
+
+                    <div class="secondary"><a data-bind="event: {click: onBackMainPage }" href="javascript:void(0)" class="action back" ><span><?php echo __('Go back') ?></span></a></div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "priceBox": {
+                        "component": "Riki_SubscriptionPage/js/view/priceBox",
+                        "productIds": "<?php echo implode(',', $productIds) ?>",
+                        "productCatIds": "<?php echo implode(',', $productCatIds) ?>",
+                        "productMainCatIds": "<?php echo implode(',', $productMainCatIds) ?>",
+                        "productAdditionCatIds": "<?php echo implode(',', $productAdditionCatIds) ?>",
+                        "machineConfig": <?php /* @escapeNotVerified */ echo $block->getMachineDataJson();?>,
+                        "$isSubscriptionHanpukai": <?php /* @escapeNotVerified */ echo (int)($isSubscriptionHanpukai)?>
+                    }
+                }
+            }
+        }
+    }
+    </script>
+    <script>
+        window.subscriptionConfig = <?php /* @escapeNotVerified */ echo $block->getPriceFormat();?>;
+    </script>
+<?php  else: ?>
+    <?php if (!$block->isCourseActive()) { ?>
+        <div class="message error empty">
+            <div><?php echo __('This page is disable.') ?></div>
+            <div><a href="/"><?php echo __('Home page') ?></a></div>
+        </div>
+    <?php } elseif(!$block->isCourseVisibility()) { ?>
+        <div class="message error empty">
+            <div><?php echo __('This page is not visibility.') ?></div>
+            <div><a href="/"><?php echo __('Home page') ?></a></div>
+        </div>
+    <?php } elseif(!$block->isCourseAvailableInCurrentWebsite()){ ?>
+        <div class="message error empty">
+            <div><?php echo __('This page is not available in website.') ?></div>
+            <div><a href="/"><?php echo __('Home page') ?></a></div>
+        </div>
+    <?php }elseif(!$block->getAccessSubscriptionPage()) { ?>
+        <div class="message error empty"><div><?php echo __('This product can only be purchased by customers who applied for a specific program.') ?></div></div>
+        <div class=""><a href="/" ><?php echo __("Home page") ?></a></div>
+    <?php } elseif(!$block->isHanpukaiAvailableBetweenLaunchAndCloseTime()) { ?>
+        <div class="message error empty"><div><?php echo __('This subscription is out of date') ?></div></div>
+    <?php } elseif ($block->getHaveProductOutOfStockInHanpukai() == true) { ?>
+        <div class="message error empty"><div><?php echo __('This Hanpukai course is out of stock') ?></div></div>
+    <?php } else { ?>
+        <div class="message error empty"><div><?php echo __('This page is not longer exists.') ?></div></div>
+    <?php } ?>
+
+<?php  endif; ?>
+<script type="text/javascript">
+    require([
+        'jquery',
+        'mage/mage',
+        'Magento_Catalog/product/view/validation',
+        'Riki_SubscriptionPage/js/catalog-add-to-cart'
+    ], function ($) {
+        'use strict';
+        $('.item.config input.qty').on('change', function() {
+            var self = $(this),
+                qty = self.val(),
+                swatchInput = self.parent().parent().parent().find('input.swatch-input');
+            if(qty < 1){
+                swatchInput.each(function(){
+                    $(this).attr('data-validate','{required:false}');
+                })
+            }else {
+                swatchInput.each(function(){
+                    $(this).attr('data-validate','{required:true}');
+                })
+            }
+        });
+
+        $('#form-validate').mage('validation', {
+            radioCheckboxClosest: '.nested',
+            submitHandler: function (form) {
+                var isLogin = <?php echo $block->checkCustomerIsLogged(); ?>;
+                var urlLogin = '<?php echo $block->getUrlLogin() ?>';
+                if (isLogin == 0) {
+                    window.location = urlLogin;
+                    return;
+                }
+                var widget = $(form).catalogAddToCart({
+                    bindSubmit: false
+                });
+                widget.catalogAddToCart('submitForm', $(form));
+
+                return false;
+            }
+        });
+    });
+</script>

@@ -1,0 +1,10 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<input type="text" name="qty[<?= /* @escapeNotVerified */ $block->getItem()->getId() ?>]" class="qty input-text" data-validate="{required:true, 'validate-greater-than-zero':true}" value="<?= /* @escapeNotVerified */ $block->getItem()->getQty()*1 ?>" size="2">

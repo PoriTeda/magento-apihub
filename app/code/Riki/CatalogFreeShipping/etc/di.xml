@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\OfflineShipping\Model\SalesRule\Calculator">
+        <plugin name="rikiCatalogFreeShippingSalesRuleCalculator" type="Riki\CatalogFreeShipping\Plugin\OfflineShipping\Model\SalesRule\Calculator"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="rikiCatalogFreeShippingQuoteItemToOrderItem" type="Riki\CatalogFreeShipping\Plugin\Quote\Item\ToOrderItem"/>
+    </type>
+</config>

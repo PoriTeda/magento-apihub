@@ -1,0 +1,21 @@
+#order-delivery-date .ui-datepicker-trigger:after {
+    height: 100px;
+}
+
+
+
+#order-delivery-date .input-text {
+	width: 160px;
+}
+
+#sales_order_create_search_grid_table .case_display{
+    width: 75px;
+}
+
+#sales_order_create_product_course_grid_table .case_display{
+    width: 75px;
+}
+
+#sales_order_view_tabs_order_info_content .col-ordered-qty{
+    width: 170px;
+}

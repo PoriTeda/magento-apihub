@@ -1,0 +1,285 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/system.xsd">
+    <system>
+        <section id="shipmentimporter" translate="label" type="text" sortOrder="152" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Shipment Importing</label>
+            <tab>bluecom_cronjob</tab>
+            <!-- resource tag name which we have to defined in the acl.xml -->
+            <resource>Riki_ShipmentImporter::config_shipmentimporter</resource>
+            <group id="common" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Common Settings</label>
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable Shipment Importing</comment>
+                </field>
+                <field id="enable_logger" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable Logger</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable Shipment Importing</comment>
+                </field>
+            </group>
+            <group id="pattern" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Filename pattern regex</label>
+                <field id="pattern1501" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>TOYO - Shipped out 1501</label>
+                    <comment>Example : XTXR1501</comment>
+                </field>
+                <field id="pattern1601" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>BIZEX - Shipped out 1601</label>
+                    <comment>Example : XBXR1601</comment>
+                </field>
+                <field id="pattern1701" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>HITACHI-TS - Shipped out 1701</label>
+                    <comment>Example : XHXR1701</comment>
+                </field>
+                <field id="pattern1801" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>LOGICALPLANT - Shipped out</label>
+                    <comment>Example : LOGICALPLANT_SHIP</comment>
+                </field>
+                <field id="pattern1901" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>WH5 - Shipped out </label>
+                    <comment>Example : WAREHOUSE5_SHIP</comment>
+                </field>
+
+                <field id="pattern1502" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>TOYO - Completion of Delivery 1502</label>
+                    <comment>Example : XTXR1502</comment>
+                </field>
+                <field id="pattern1602" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>BIZEX - Completion of Delivery 1602</label>
+                    <comment>Example : XBXR1602</comment>
+                </field>
+                <field id="pattern1702" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>HITACHI-TS - Completion of Delivery 1702</label>
+                    <comment>Example : XHXR1702</comment>
+                </field>
+                <field id="pattern1802" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>LOGICALPLANT - Completion of Delivery </label>
+                    <comment>Example : LOGICALPLANT_DELIVERY</comment>
+                </field>
+                <field id="pattern1902" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>WH5- Completion of Delivery </label>
+                    <comment>Example : WAREHOUSE5_DELIVERY</comment>
+                </field>
+
+                <field id="pattern1504" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Money Collection By COD (TOYO) 1504</label>
+                    <comment>Example : XTXR1504</comment>
+                </field>
+                <field id="pattern1604" translate="label" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Money Collection By COD (BIZEX) 1604</label>
+                    <comment>Example : XBXR1604</comment>
+                </field>
+                <field id="pattern1704" translate="label" type="text" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Money Collection By COD (HITACHI-TS) 1704</label>
+                    <comment>Example : XHXR1704</comment>
+                </field>
+                <field id="pattern1804" translate="label" type="text" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Money Collection By COD (LOGICALPLANT) </label>
+                    <comment>Example : LOGICALPLANT_COD</comment>
+                </field>
+                <field id="pattern1904" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Money Collection By COD (WH5)</label>
+                    <comment>Example : WAREHOUSE5_COD</comment>
+                </field>
+
+                <field id="pattern1507" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Money Collection By CVS (Wellnet) 1507</label>
+                    <comment>Example : XTXR1507</comment>
+                </field>
+            </group>
+            <group id="location" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Location of Importing Files</label>
+
+                <field id="import1501" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Shipped Out ( TOYO) 1501</label>
+                    <comment>Folder in SFTP that EC will read the CSV file for Completion Shipped out</comment>
+                </field>
+                <field id="import1601" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Shipped Out (BIZEX) 1601</label>
+                    <comment>Folder in SFTP that EC will read the CSV file for Completion Shipped out</comment>
+                </field>
+                <field id="import1701" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Shipped Out (HITACHI-TS) 1701</label>
+                    <comment>Folder in SFTP that EC will read the CSV file for Completion Shipped out</comment>
+                </field>
+                <field id="import1801" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Shipped Out (LOGICALPLANT) </label>
+                    <comment>Folder in SFTP that EC will read the CSV file for Completion Shipped out</comment>
+                </field>
+                <field id="import1901" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Shipped Out (WH5) </label>
+                    <comment>Folder in SFTP that EC will read the CSV file for Completion Shipped out</comment>
+                </field>
+
+                <field id="import1502" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Delivery ( TOYO) 1502</label>
+                    <comment>Folder in SFTP that EC will read the CSV file for Completion of Delivery</comment>
+                </field>
+                <field id="import1602" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Delivery (BIZEX) 1602</label>
+                    <comment>Folder in SFTP that EC will read the CSV file for Completion of Delivery</comment>
+                </field>
+                <field id="import1702" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Delivery (HITACHI-TS) 1702</label>
+                    <comment>Folder in SFTP that EC will read the CSV file for Completion of Delivery</comment>
+                </field>
+                <field id="import1802" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Delivery (LOGICALPLANT)</label>
+                    <comment>Folder in SFTP that EC will read the CSV file for Completion of Delivery</comment>
+                </field>
+                <field id="import1902" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Delivery (WH5)</label>
+                    <comment>Folder in SFTP that EC will read the CSV file for Completion of Delivery</comment>
+                </field>
+
+                <field id="import1504" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Money Collection By COD (TOYO) 1504</label>
+                    <comment>Folder in SFTP that EC will read the CSV file for Money Collection By COD From Toyo</comment>
+                </field>
+                <field id="import1604" translate="label" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Money Collection By COD (BIZEX) 1604</label>
+                    <comment>Folder in SFTP that EC will read the CSV file for Money Collection By COD From Bizex</comment>
+                </field>
+                <field id="import1704" translate="label" type="text" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Money Collection By COD (HITACHI-TS) 1704</label>
+                    <comment>Folder in SFTP that EC will read the CSV file for Money Collection By COD From Bizex</comment>
+                </field>
+                <field id="import1804" translate="label" type="text" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Money Collection By COD (LOGICALPLANT)</label>
+                    <comment>Folder in SFTP that EC will read the CSV file for Money Collection By COD From Bizex</comment>
+                </field>
+                <field id="import1904" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Money Collection By COD (WH5)</label>
+                    <comment>Folder in SFTP that EC will read the CSV file for Money Collection By COD From Bizex</comment>
+                </field>
+
+                <field id="import1507" translate="label" type="text" sortOrder="17" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Money Collection By CVS (Wellnet) 1507</label>
+                    <comment>Folder in SFTP that EC will read the CSV file for Money Collection By CVS Payment</comment>
+                </field>
+            </group>
+            <group id="expression" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Scheduler Settings</label>
+                <field id="express1501_01" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Shipped Out (TOYO) 1501 1st</label>
+                </field>
+                <field id="express1501_02" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Shipped Out (TOYO) 1501 2nd</label>
+                </field>
+                <field id="express1501_03" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Shipped Out (TOYO) 1501 3rd</label>
+                </field>
+                <field id="express1601_01" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Shipped Out (BIZEX) 1601 1st</label>
+                </field>
+                <field id="express1601_02" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Shipped Out (BIZEX) 1601 2nd</label>
+                </field>
+                <field id="express1701_01" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Shipped Out (HITACH) 1701 1st</label>
+                </field>
+                <field id="express1801_01" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Shipped Out (LOGICALPLANT) 1st</label>
+                </field>
+                <field id="express1901_01" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Shipped Out (WH5) 1st</label>
+                </field>
+                <!-- delivery complete -->
+                <field id="express1502_01" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Delivery (TOYO) 1502</label>
+                </field>
+                <field id="express1602_01" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Delivery (BIZEX) 1602 1st</label>
+                </field>
+                <field id="express1602_02" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Delivery (BIZEX) 1602 2nd</label>
+                </field>
+                <field id="express1702_01" translate="label" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Delivery (HITACHI-TS) 1701</label>
+                </field>
+                <field id="express1802_01" translate="label" type="text" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Delivery (LOGICALPLANT) </label>
+                </field>
+                <field id="express1902_01" translate="label" type="text" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Completion of Delivery (LOGICALPLANT) </label>
+                </field>
+                <!-- money collection COD -->
+                <field id="express1504_01" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Money Collection By COD (TOYO) 1504</label>
+                </field>
+                <field id="express1604_01" translate="label" type="text" sortOrder="16" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Money Collection By COD (BIZEX) 1604</label>
+                </field>
+                <field id="express1704_01" translate="label" type="text" sortOrder="17" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Money Collection By COD (HITACHI-TS) 1704</label>
+                </field>
+                <field id="express1804_01" translate="label" type="text" sortOrder="18" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Money Collection By COD (LOGICALPLANT)</label>
+                </field>
+                <field id="express1904_01" translate="label" type="text" sortOrder="19" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Money Collection By COD (WH5)</label>
+                </field>
+                <!-- money collection CVS-->
+                <field id="express1507_01" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Money Collection By CVS (Wellnet) 1507</label>
+                </field>
+            </group>
+
+            <group id="email" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Email Settings</label>
+
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable email sending</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable email sending</comment>
+                </field>
+                <field id="shippedout_xday" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>X days shipped out email</label>
+                    <source_model>Riki\ShipmentImporter\Model\Config\Source\Xdays</source_model>
+                    <comment>Sending shipped out email before X days</comment>
+                </field>
+                <field id="receiver" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Receiver Email</label>
+                    <comment>Email address which will receive the notifications and separated by a semicolon ";"</comment>
+                </field>
+                <field id="template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="template_tracking" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template Shipment tracking</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="template_tracking_spot" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template Shipment Shipped out of Completion - Spot</label>
+                    <comment>For Spot order.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="template_tracking_hanpukai" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template Shipment Shipped out of Completion- Hanpukai</label>
+                    <comment>For Hanpukai order</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="template_tracking_subscription" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template Shipment Shipped out of Completion - Subscription</label>
+                    <comment>For Subscription order</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="template_error_cod" translate="label comment" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template for error importing COD</label>
+                    <comment>COD money collection</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="template_error_cvs" translate="label comment" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template for error importing Wellnet</label>
+                    <comment>Wellnet money collection</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Checkout\Block\Checkout\AttributeMerger" type="Riki\Checkout\Block\Checkout\AttributeMerger"/>
+    <preference for="Magento\Checkout\Block\Checkout\LayoutProcessor" type="Riki\Checkout\Block\Checkout\LayoutProcessor"/>
+    <preference for="Magento\Checkout\Block\Onepage\Success" type="Riki\Checkout\Block\Checkout\Onepage\Success"/>
+    <preference for="Magento\Checkout\Controller\Onepage\Success" type="Riki\Checkout\Controller\Onepage\Success"/>
+    <type name="Magento\Checkout\Observer\UnsetAllObserver">
+        <arguments>
+            <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Checkout\Api\PaymentInformationManagementInterface">
+        <plugin name="saveQuestionare" type="Riki\Checkout\Plugin\Model\PaymentInformationManagement"/>
+    </type>
+    <preference for="Magento\Checkout\Controller\Cart\Delete" type="Riki\Checkout\Controller\Cart\Delete"/>
+    <preference for="Magento\Checkout\Model\Sidebar" type="Riki\Checkout\Model\Sidebar"/>
+    <type name="Magento\Checkout\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="hanpukai_max_order_time" xsi:type="object">Riki\Checkout\Model\HanpukaiMaxOrderTimeConfigProvider</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\Checkout\Model\HanpukaiMaxOrderTimeConfigProvider">
+        <arguments>
+           <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Checkout\Controller\Cart\Index">
+        <plugin name="repairCartData" type="Riki\Checkout\Plugin\Cart\RepairCartData"/>
+    </type>
+</config>

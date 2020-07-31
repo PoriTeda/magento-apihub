@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="rma" type="text" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="100" translate="label">
+            <tab>bluecom_cronjob</tab>
+            <label><![CDATA[
+                Return & Refund Configuration
+            ]]></label>
+            <resource>Riki_Rma::config</resource>
+            <group id="reason" type="text" showInStore="1" showInDefault="1" showInWebsite="1" sortOrder="1" translate="label">
+                <label>Reason Code</label>
+                <field id="cod_not_allowed" type="text" showInWebsite="1" showInDefault="1" showInStore="1" sortOrder="1" translate="label">
+                    <label>Not allowed reason code on COD payment method</label>
+                    <comment>Separate by , character. Example: 11,12,13</comment>
+                </field>
+                <field id="cod_rejected" type="multiselect" showInWebsite="1" showInDefault="1" showInStore="1" sortOrder="2" translate="label">
+                    <label>Payment method COD - Reason for case that return will get shipping fee from original shipment</label>
+                    <source_model>Riki\Rma\Model\Config\Source\Reason</source_model>
+                </field>
+            </group>
+            <group id="carrier" type="text" showInStore="1" showInDefault="1" showInWebsite="1" sortOrder="2" translate="label">
+                <label>Carrier</label>
+                <field id="cod" type="select" showInWebsite="1" showInDefault="1" showInStore="1" sortOrder="1" translate="label">
+                    <label>Default carrier for COD</label>
+                    <source_model>\Riki\ShippingCarrier\Model\Source\CarrierOption</source_model>
+                </field>
+            </group>
+            <group id="return_amount" type="text" showInStore="1" showInDefault="1" showInWebsite="1" sortOrder="3" translate="label">
+                <label>Return Amount Calculation</label>
+                <field id="remaining_amount_limit" type="text" showInWebsite="1" showInDefault="1" showInStore="1" sortOrder="1" translate="label">
+                    <label>Remaining Items Total Amount</label>
+                    <comment>Will display in warning area the message "Warning if partial return and order more than xxxx"</comment>
+                </field>
+                <field id="shipment_fees_with_remaining" type="text" showInWebsite="1" showInDefault="1" showInStore="1" sortOrder="10" translate="label">
+                    <label>Shipment Fees</label>
+                    <comment>Shipment fees to return with Remaining Items Total Amount</comment>
+                </field>
+            </group>
+            <group id="refund_method" type="text" showInStore="1" showInDefault="1" showInWebsite="1" sortOrder="100" translate="label">
+                <label>Refund Method</label>
+                <field id="enable_payment" type="multiselect" showInWebsite="1" showInDefault="1" showInStore="1" sortOrder="1" translate="label">
+                    <label>Enable Payment</label>
+                    <source_model>Riki\Rma\Model\Config\Source\Payment\Method</source_model>
+                </field>
+                <field id="enable_refund" type="multiselect" showInWebsite="1" showInDefault="1" showInStore="1" sortOrder="1" translate="label">
+                    <label>Enable Refund</label>
+                    <source_model>Riki\Rma\Model\Config\Source\Payment\Method</source_model>
+                </field>
+            </group>
+            <group id="mass_action" type="text" showInStore="1" showInDefault="1" showInWebsite="1" sortOrder="200" translate="label">
+                <label>Return Mass Action</label>
+                <field id="cron_schedule" type="text" showInWebsite="1" showInDefault="1" showInStore="1" sortOrder="1" translate="label">
+                    <label>Cron Scheduler Expression</label>
+                    <comment>Ex: */10 * * * * (Cron will run every 10 minutes)</comment>
+                </field>
+                <field id="approve_condition" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Approve Allowed Conditions</label>
+                    <frontend_model>Riki\Rma\Block\Adminhtml\System\Config\Form\Field\MassActionCondition</frontend_model>
+                    <backend_model>Riki\Rma\Model\System\Config\Backend\MassActionCondition</backend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

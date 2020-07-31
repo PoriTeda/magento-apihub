@@ -1,0 +1,112 @@
+// /**
+//  * Copyright © 2016 Magento. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+
+@checkout-modal-popup__width: 730px;
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .checkout-index-index,
+    .multicheckout-index-index {
+        .modal-popup {
+            .field-tooltip {
+                .field-tooltip-content {
+                    &:extend(.abs-checkout-tooltip-content-position-top all);
+                }
+            }
+            .modal-footer {
+                .action-hide-popup {
+                    &:extend(.abs-action-button-as-link all);
+                    margin-top: 8px;
+                }
+            }
+            .modal-inner-wrap .modal-content {
+                padding: 15px 15px 0;
+            }
+        }
+        .modal-footer {
+            text-align: center;
+            border-top: 0;
+            &.add-address {
+                border: solid 1px #cccccc;
+            }
+            .action-save-address {
+                display: inline-block;
+                min-width: 200px;
+                margin: 0;
+                font-weight: 400;
+                padding: 12px 15px;
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .checkout-index-index,
+    .multicheckout-index-index {
+        .modal-popup {
+            .modal-footer {
+                .action-save-address {
+                    width: auto;
+                }
+                .action-hide-popup {
+                    margin-top: @indent__base;
+                }
+            }
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .checkout-index-index,
+    .multicheckout-index-index {
+        .modal-popup {
+            .form-shipping-address {
+                .lib-css(max-width, @checkout-shipping-address__max-width);
+            }
+        }
+        .modal-popup {
+            .field-tooltip {
+                .field-tooltip-content {
+                    &:extend(.abs-checkout-tooltip-content-position-top all);
+                }
+            }
+            .modal-footer {
+                .action-hide-popup {
+                    &:extend(.abs-action-button-as-link all);
+                    margin-top: 8px;
+                }
+            }
+        }
+        .modal-popup.modal-slide .modal-footer {
+            text-align: center;
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    .checkout-index-index,
+    .multicheckout-index-index {
+        .modal-popup {
+            .modal-inner-wrap {
+                .lib-css(max-width, @checkout-modal-popup__width);
+            }
+        }
+    }
+}

@@ -1,0 +1,69 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<div class="block block-dashboard-orders">
+<?php $_orders = $block->getOrders(); ?>
+    <div class="block-title order">
+        <strong><?php /* @escapeNotVerified */ echo __('Recent Orders') ?></strong>
+        <?php if (sizeof($_orders->getItems()) > 0): ?>
+            <a class="action view" href="<?php /* @escapeNotVerified */ echo $block->getUrl('sales/order/history') ?>">
+                <span><?php /* @escapeNotVerified */ echo __('View All') ?></span>
+            </a>
+        <?php endif; ?>
+    </div>
+    <div class="block-content">
+    <?php echo $block->getChildHtml()?>
+    <?php if (sizeof($_orders->getItems()) > 0): ?>
+        <div class="table-wrapper orders-recent">
+            <table class="data table table-order-items recent" id="my-orders-table">
+                <caption class="table-caption"><?php /* @escapeNotVerified */ echo __('Recent Orders') ?></caption>
+                <thead>
+                    <tr>
+                        <th scope="col" class="col id"><?php /* @escapeNotVerified */ echo __('Order #') ?></th>
+                        <th scope="col" class="col date"><?php /* @escapeNotVerified */ echo __('Order Date') ?></th>
+                        <th scope="col" class="col payment"><?php /* @escapeNotVerified */ echo __('Payment Date') ?></th>
+                        <th scope="col" class="col type"><?php /* @escapeNotVerified */ echo __('Order Type') ?></th>
+                        <th scope="col" class="col total"><?php /* @escapeNotVerified */ echo __('Order Total') ?></th>
+                        <th scope="col" class="col status"><?php /* @escapeNotVerified */ echo __('Shipments') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($_orders as $_order): ?>
+                        <?php $colorCode = $block->getColorStatus($_order->getStatus());  ?>
+                        <tr>
+                            <td data-th="<?php echo $block->escapeHtml(__('Order #')) ?>" class="col id"><a href="<?php /* @escapeNotVerified */ echo $block->getViewUrl($_order) ?>" class="action view"><?php /* @escapeNotVerified */ echo $_order->getRealOrderId() ?></a></td>
+                            <td data-th="<?php echo $block->escapeHtml(__('Order Date')) ?>" class="col date"><?php /* @escapeNotVerified */ echo $block->formatDate($_order->getCreatedAt(), \IntlDateFormatter::MEDIUM) ?></td>
+                            <td data-th="<?php echo $block->escapeHtml(__('Payment Date')) ?>" class="col payment">
+                            <?php
+                                if($_order->hasInvoices()){
+                                    $timeInvoice = $_order->getInvoiceCollection()->getFirstItem()->getData();
+                                    echo $block->formatDate($timeInvoice['updated_at'] );
+
+                                }
+                            ?>
+                            </td>
+
+                            <td data-th="<?php echo $block->escapeHtml(__('Order Type')) ?>" class="col type">
+                                <?php /* @escapeNotVerified */ echo __($_order->getRikiType()); 
+                                echo $block->checkPreOrder($_order->getData('entity_id')) ? __('Pre order') :'';
+                                ?>
+                            </td>
+                            
+                            <td data-th="<?php echo $block->escapeHtml(__('Order Total')) ?>" class="col total"><?php /* @escapeNotVerified */ echo $_order->formatPrice($_order->getGrandTotal()) ?></td>
+                            <td data-th="<?php echo $block->escapeHtml(__('Shipments')) ?>" class="col status"><span style="background-color: <?php echo $colorCode; ?>"><?php /* @escapeNotVerified */ echo $_order->getStatusLabel() ?></span></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php else: ?>
+        <div class="message info empty"><span><?php /* @escapeNotVerified */ echo __('You have placed no orders.'); ?></span></div>
+    <?php endif; ?>
+    </div>
+</div>

@@ -1,0 +1,249 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="payment">
+            <group id="paygent" translate="label" type="text" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Credit Card With Paygent</label>
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                </field>
+                <field id="merchant_id" type="text" sortOrder="26" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Merchant Id</label>
+                </field>
+                <field id="site_id" type="text" sortOrder="27" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Site Id</label>
+                </field>
+                <field id="payment_detail" type="text" sortOrder="27" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Payment Detail</label>
+                </field>
+                <field id="payment_detail_kana" type="text" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Payment Detail Kana</label>
+                </field>
+                <field id="payment_term_day" type="text" sortOrder="29" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Payment Term Day</label>
+                </field>
+                <field id="merchant_name" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Merchant Name</label>
+                </field>
+                <field id="connect_id" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Connect Id</label>
+                </field>
+                <field id="connect_password" translate="label" type="obscure" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Connect Password</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+                <field id="telegram_version" translate="label" type="text" sortOrder="33" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Telegram Version</label>
+                </field>
+                <field id="hash_key" translate="label" type="text" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Hash Key</label>
+                </field>
+                <field id="connect_url" translate="label" type="text" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Connect Url</label>
+                </field>
+                <field id="test_connect_url" translate="label" type="text" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Test Connect Url</label>
+                </field>
+                <field id="debug" translate="label" type="select" sortOrder="36" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Debug</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="sandbox_flag" translate="label" type="select" sortOrder="37" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Test Mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="use_cvv" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Card Verification Number</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="use_3dsecure" translate="label" type="select" sortOrder="41" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>3D Secure Card Validation</label>
+                    <source_model>Bluecom\Paygent\Model\Config\Source\Secure</source_model>
+                </field>
+                <!--<field id="use_stock_card" translate="label" type="select" sortOrder="42" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Use registered card</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>-->
+                <field id="paymentclass" translate="label" type="select" sortOrder="43" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Payment Types</label>
+                    <source_model>Bluecom\Paygent\Model\Config\Source\Paymenttype</source_model>
+                </field>
+                <field id="use_http_inform" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Use HTTP inform URL</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="allowspecific" translate="label" type="allowspecific" sortOrder="130" showInDefault="9"
+                       showInWebsite="1" showInStore="0">
+                    <label>Payment From Applicable Countries</label>
+                    <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                </field>
+                <field id="specificcountry" translate="label" type="multiselect" sortOrder="140" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <label>Payment From Specific Countries</label>
+                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="160" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Sort Order</label>
+                    <frontend_class>validate-number</frontend_class>
+                </field>
+            </group>
+        </section>
+
+        <section id="paygent_config" translate="label" type="text" sortOrder="141" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Paygent Configurations</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Bluecom_Paygent::cron_cancellation</resource>
+
+            <group id="generalconfig" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Cron Cancellation Order Paygent After X Hours</label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="cancellation_exp" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cronjob expression</label>
+                </field>
+                <field id="identity" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Order Pending Payment Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="active_send_email" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled Send Email</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="template_pending_payment" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="statuslist" translate="label" type="multiselect" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Status List Allowed to Cancel</label>
+                    <source_model>Bluecom\Paygent\Model\Config\Source\AllowStatus</source_model>
+                    <comment>List status of order can to apply Cancellation</comment>
+                </field>
+                <field id="cancelhours" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cancel after X Hours</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                </field>
+            </group>
+
+            <group id="authorisation" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Cron Re-Authorisation Timing</label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="cron_exp" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cronjob call Paygent for re-authorize order</label>
+                </field>
+                <field id="afterdays" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Number of days for Re-authorisation AFTER ordered (SPOT and SUBSCRIPTION)</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                </field>
+                <field id="afterdays_preorder" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Number of days for Re-authorisation BEFORE Fulfillment Date (PRE-ORDER)</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                </field>
+                <field id="afterdays_again" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Number of days for Re-authorisation again AFTER re-authorize was failure</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                </field>
+
+                <field id="identity" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sender Email</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="receiver" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Recipient Emails</label>
+                    <comment>Email address which will receive the notifications and separated by a semicolon ";"</comment>
+                </field>
+                <field id="template_business" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template (Business)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template (Not Subscription)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="template_subscription" translate="label comment" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template (Subscription) </label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+
+            <group id="delete_fail" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Cron cancel order after 3 fails re-authorisation failure</label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="cron_exp" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cronjob cancel after 3 fails re-authorize</label>
+                </field>
+            </group>
+
+            <group id="ivr" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>IVR (Interactive Voice Response), Cron get update Result</label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="registration_request" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Registration Request to IVR</label>
+                </field>
+                <field id="request_data" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Registration get Data from IVR</label>
+                </field>
+                <field id="cron_exp" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cronjob call IVR API and get result payment</label>
+                </field>
+            </group>
+
+            <group id="refund" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Email notify Paygent Refund</label>
+                <field id="email_enable" translate="label" type="select"  sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="identity" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sender Email</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="receiver" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Recipient Emails</label>
+                    <comment>Email address which will receive the notifications and separated by a semicolon ";"</comment>
+                </field>
+                <field id="email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+
+            </group>
+
+            <group id="paygent_fail" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Email notify to customer when Paygent authorize or capture failure</label>
+                <field id="enable" translate="label" type="select"  sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="identity" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sender Email</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="receiver" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Recipient Emails</label>
+                    <comment>Email address which will receive the notifications and separated by a semicolon ";"</comment>
+                </field>
+                <field id="template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

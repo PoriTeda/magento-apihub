@@ -1,0 +1,41 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<?php $_item = $block->getItem() ?>
+<tr class="border">
+    <td><?= /* @escapeNotVerified */ __('Gift Wrapping') ?></td>
+    <td class="a-right">
+        <?php if ($this->helper('Magento\GiftWrapping\Helper\Data')->displaySalesWrappingBothPrices() || $this->helper('Magento\GiftWrapping\Helper\Data')->displaySalesWrappingExcludeTaxPrice()): ?>
+            <span class="price-excl-tax">
+                <?php if ($this->helper('Magento\GiftWrapping\Helper\Data')->displaySalesWrappingBothPrices()): ?>
+                    <span class="label"><?= /* @escapeNotVerified */ __('Excl. Tax') ?>:</span>
+                <?php endif; ?>
+                <?= /* @escapeNotVerified */ $block->displayPrices($_item->getGwBasePrice(), $_item->getGwPrice()) ?>
+            </span>
+        <?php endif; ?>
+        <?php if ($this->helper('Magento\GiftWrapping\Helper\Data')->displaySalesWrappingBothPrices() || $this->helper('Magento\GiftWrapping\Helper\Data')->displaySalesWrappingIncludeTaxPrice()): ?>
+            <br />
+            <span class="price-incl-tax">
+                <?php if ($this->helper('Magento\GiftWrapping\Helper\Data')->displaySalesWrappingBothPrices()): ?>
+                    <span class="label"><?= /* @escapeNotVerified */ __('Incl. Tax') ?>:</span>
+                <?php endif; ?>
+                <?php $_incl = $_item->getGwPrice() + $_item->getGwTaxAmount(); ?>
+                <?php $_baseIncl = $_item->getGwBasePrice() + $_item->getGwBaseTaxAmount(); ?>
+                <?= /* @escapeNotVerified */ $block->displayPrices($_baseIncl, $_incl) ?>
+            </span>
+        <?php endif; ?>
+    </td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td class="a-right"><?= /* @escapeNotVerified */ $block->displayPrices($_item->getGwBaseTaxAmount(), $_item->getGwTaxAmount()) ?></td>
+    <td></td>
+    <td class="last"></td>
+</tr>

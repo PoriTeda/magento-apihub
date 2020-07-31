@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Dotdigitalgroup\Email\Model\Apiconnector\Customer">
+        <plugin name="ddg_enterprise_customer_plugin" type="Dotdigitalgroup\Enterprise\Plugin\CustomerPlugin"
+                sortOrder="1"/>
+    </type>
+    <type name="Dotdigitalgroup\Email\Helper\Data">
+        <plugin name="ddg_enterprise_helper_plugin" type="Dotdigitalgroup\Enterprise\Plugin\HelperPlugin" sortOrder="1"/>
+    </type>
+    <type name="Dotdigitalgroup\Email\Model\Connector\Datafield">
+        <plugin name="ddg_enterprise_data_field_plugin" type="Dotdigitalgroup\Enterprise\Plugin\DataFieldPlugin" sortOrder="1"/>
+    </type>
+    <type name="Magento\CustomerSegment\Model\ResourceModel\Segment">
+        <plugin name="ddg_customer_segment_resource" type="Dotdigitalgroup\Enterprise\Plugin\SegmentPlugin"
+                sortOrder="1"/>
+    </type>
+    <type name="Magento\Framework\ForeignKey\ConstraintProcessor">
+        <arguments>
+            <argument name="strategies" xsi:type="array">
+                <item name="CASCADE" xsi:type="object">Magento\Framework\ForeignKey\Strategy\Cascade</item>
+                <item name="RESTRICT" xsi:type="object">Magento\Framework\ForeignKey\Strategy\Restrict</item>
+                <item name="SET NULL" xsi:type="object">Magento\Framework\ForeignKey\Strategy\SetNull</item>
+                <item name="NO ACTION" xsi:type="object">Magento\Framework\ForeignKey\Strategy\NoAction</item>
+                <item name="DB CASCADE" xsi:type="object">Magento\Framework\ForeignKey\Strategy\DbCascade</item>
+                <item name="DB RESTRICT" xsi:type="object">Magento\Framework\ForeignKey\Strategy\DbIgnore</item>
+                <item name="DB SET NULL" xsi:type="object">Magento\Framework\ForeignKey\Strategy\DbIgnore</item>
+                <item name="DB NO ACTION" xsi:type="object">Magento\Framework\ForeignKey\Strategy\DbIgnore</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\Model\ResourceModel\Db\ObjectRelationProcessor">
+        <plugin name="object_constraints_resolver" type="Magento\Framework\ForeignKey\ObjectRelationProcessor\Plugin" />
+    </type>
+</config>

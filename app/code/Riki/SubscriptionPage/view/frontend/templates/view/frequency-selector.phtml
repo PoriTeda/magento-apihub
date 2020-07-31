@@ -1,0 +1,61 @@
+<?php
+/** @var \Riki\SubscriptionPage\Block\SubscriptionView $block */
+
+$preFrequency = $block->getPreFrequency();
+$currentFrequencyId = $block->getSubscriptionFrequencyId();
+if (!is_null($preFrequency)) {
+    $currentFrequencyId = null;
+}
+?>
+<div class="field required subscription-content">
+    <label class="label" for="frequency">
+        <?php echo __('Selection of Delivery Interval') ?>
+    </label>
+    <div class="frequency_sp">
+        <div class="control">
+            <ul id="ulFrequency" class="validate-select-sub-page-frequency">
+                <?php foreach ($block->getFrequency() as $value => $label): ?>
+                    <li id="<?php echo $value ?>"
+                        class="item_frequency "
+                        data-bind="click: function(){frequencyId('<?php echo $value ?>')}, touchstart: frequencyId('<?php echo $value ?>'), css: {active: frequencyId() == '<?php echo $value ?>' }"><?php echo $label; ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    </div>
+
+    <div class="hidden control<?php if ($block->isHanpukai() || count($block->getFrequency()) == 1) {
+        echo '';
+    } else {
+        echo ' select';
+    } ?>">
+        <?php if ($block->isHanpukai()): ?>
+            <div>
+                <?php foreach ($block->getFrequency() as $value => $label) { ?>
+                    <input class="validate-select-sub-page-frequency required-entry" type="hidden" id="frequency"
+                           name="frequency" value="<?php echo $value; ?>">
+                    <span><?php echo $label; ?></span>
+                <?php } ?>
+            </div>
+        <?php else: ?>
+            <?php if (count($block->getFrequency()) == 1) : ?>
+                <?php foreach ($block->getFrequency() as $value => $label): ?>
+                    <input class="validate-select-sub-page-frequency required-entry" type="hidden" id="frequency"
+                           name="frequency" value="<?php echo $value; ?>">
+                    <span><?php echo $label; ?></span>
+                <?php endforeach; ?>
+            <?php else : ?>
+                <select name="frequency" id="frequency" class="validate-select-sub-page-frequency required-entry">
+                    <option value="0"><?php echo __('Please select one'); ?></option>
+                    <?php foreach ($block->getFrequency() as $value => $label): ?>
+                        <option value="<?php echo $value ?>" <?php echo $value == $currentFrequencyId || $value == $preFrequency ? 'selected' : '' ?>><?php echo $label; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            <?php endif; ?>
+        <?php endif; ?>
+    </div>
+</div>
+
+
+
+
+

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
+    <system>
+        <tab id="bluecom_cronjob" translate="label" sortOrder="0">
+            <label>Riki Configurations</label>
+        </tab>
+
+        <section id="productactive" translate="label" type="text" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Product Activation</label>
+            <tab>bluecom_cronjob</tab>
+            <!-- resource tag name which we have to defined in the acl.xml -->
+            <resource>Riki_ProductActive::config_productactive</resource>
+
+            <group id="setting" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Product Activation</label>
+
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or Disable this module</comment>
+                </field>
+
+                <field id="expression" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Schedule Expression</label>
+                    <comment>Expression time setting for cron job schedule</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

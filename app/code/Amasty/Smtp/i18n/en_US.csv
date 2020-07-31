@@ -1,0 +1,75 @@
+Back,Back
+Autofill,Autofill
+"Save and Check Connection","Save and Check Connection"
+"Connection Successful!","Connection Successful!"
+"Debug log has been cleared.","Debug log has been cleared."
+Reports,Reports
+"SMTP Debug Log","SMTP Debug Log"
+"Emails log has been cleared.","Emails log has been cleared."
+"Sent Emails Log","Sent Emails Log"
+"This log message no longer exists.","This log message no longer exists."
+"View Message","View Message"
+"Authentication Not Required","Authentication Not Required"
+Login/Password,Login/Password
+None,None
+SSL,SSL
+TLS,TLS
+Pending,Pending
+"Successfully Sent","Successfully Sent"
+Failed,Failed
+"Starting to auto clear debug log (after %1 days)","Starting to auto clear debug log (after %1 days)"
+"Ready to send e-mail at amsmtp/transport::sendMessage()","Ready to send e-mail at amsmtp/transport::sendMessage()"
+"E-mail sent successfully at amsmtp/transport::sendMessage().","E-mail sent successfully at amsmtp/transport::sendMessage()."
+"Actual delivery disabled under settings.","Actual delivery disabled under settings."
+"Error sending e-mail: %1","Error sending e-mail: %1"
+"Connection test successful: connected to %1","Connection test successful: connected to %1"
+"'Sender Email' or 'Sender Name' is empty. Please ensure that all values in the 'General Contact' section are correctly set by visiting Stores > Configuration > General > Store Email Addresses.","'Sender Email' or 'Sender Name' is empty. Please ensure that all values in the 'General Contact' section are correctly set by visiting Stores > Configuration > General > Store Email Addresses."
+"Preparing to send test e-mail to %1 from %2","Preparing to send test e-mail to %1 from %2"
+"Amasty SMTP Email Test Message","Amasty SMTP Email Test Message"
+"If you see this e-mail, your configuration is OK.","If you see this e-mail, your configuration is OK."
+"Test e-mail was sent successfully!","Test e-mail was sent successfully!"
+"Test e-mail failed: %1","Test e-mail failed: %1"
+"Connection test failed: connection to %1 failed. Error: %2","Connection test failed: connection to %1 failed. Error: %2"
+"Connection failed","Connection failed"
+View,View
+"Please note that ""SMTP for E-mail extension"" is disabled.","Please note that ""SMTP for E-mail extension"" is disabled."
+"Debug info","Debug info"
+Date,Date
+Subject,Subject
+To,To
+Body,Body
+"SMTP Email Settings","SMTP Email Settings"
+"General Settings","General Settings"
+"Enable SMTP For E-mail","Enable SMTP For E-mail"
+"When disabled, the extension has no impact on Magento e-mail sending routines.","When disabled, the extension has no impact on Magento e-mail sending routines."
+"Log Outgoing Mail","Log Outgoing Mail"
+"Makes it possible to see the list of all e-mails ever sent through Magento, including email contents.","Makes it possible to see the list of all e-mails ever sent through Magento, including email contents."
+"Enable Debug Mode","Enable Debug Mode"
+"When enabled, all debug information is logged. Recommended not to use on production sites.","When enabled, all debug information is logged. Recommended not to use on production sites."
+"Disable E-mail Delivery","Disable E-mail Delivery"
+"Set to ""Yes"" to not actually send e-mails. Useful when logging is enabled, for debug/development purposes.","Set to ""Yes"" to not actually send e-mails. Useful when logging is enabled, for debug/development purposes."
+"SMTP Configuration","SMTP Configuration"
+"SMTP Provider","SMTP Provider"
+"Pre-defined SMTP providers","Pre-defined SMTP providers"
+"Server Address","Server Address"
+"Either host name or IP address","Either host name or IP address"
+Port,Port
+"Usually is 25, 587 or 465. Please consult with your service provider.","Usually is 25, 587 or 465. Please consult with your service provider."
+"Authentication Method","Authentication Method"
+Login,Login
+Password,Password
+"Connection Security","Connection Security"
+"Use Another Email Sender","Use Another Email Sender"
+"Be careful! Use Sender with the same domain from where you send mail. Otherwise, your mail server can get into the ban because of spam.","Be careful! Use Sender with the same domain from where you send mail. Otherwise, your mail server can get into the ban because of spam."
+"Sender Email","Sender Email"
+"Sender Name","Sender Name"
+"Send Test E-mail To","Send Test E-mail To"
+"Automatic Log Clearing","Automatic Log Clearing"
+"Clear Sent Emails Log After","Clear Sent Emails Log After"
+"Automatically remove old log records after specified number of days. If set to 0, will not auto clean.","Automatically remove old log records after specified number of days. If set to 0, will not auto clean."
+"Clear Debug Log After","Clear Debug Log After"
+"Clear Debug Log","Clear Debug Log"
+Message,Message
+"Clear Sent Emails Log","Clear Sent Emails Log"
+"Recipient Email","Recipient Email"
+Status,Status

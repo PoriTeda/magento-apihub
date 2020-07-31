@@ -1,0 +1,9 @@
+Dear Administrator
+
+There were CVS orders which has been canceled:
+
+{{orders_list}}
+
+Thanks,
+
+Riki Team

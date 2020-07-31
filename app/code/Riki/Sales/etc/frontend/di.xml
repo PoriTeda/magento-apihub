@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Sales\Block\Order\Info"
+                type="Riki\Sales\Block\Order\Info" />
+    <type name="Magento\Checkout\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="riki_tax_config_provider" xsi:type="object">Riki\Sales\Model\ConfigProvider</item>
+            </argument>
+        </arguments>
+    </type>
+    <preference for="Magento\Tax\Block\Sales\Order\Tax"
+                type="Riki\Sales\Block\Order\Tax" />
+    <preference for="Magento\Sales\Controller\Order\PrintAction"
+                type="Riki\Sales\Controller\Order\PrintAction" />
+</config>

@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="rikipreorder" translate="label" type="text" sortOrder="161809" showInDefault="1" showInWebsite="1" showInStore="1">
+            <resource>Riki_Preorder::config</resource>
+            <class>separator-top</class>
+            <label>Pre Order</label>
+            <tab>bluecom_cronjob</tab>
+            <group id="functional" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Functional Options</label>
+                <field id="enabled" translate="label comment tooltip" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Pre Orders</label>
+                    <comment>Affects new orders with products set to be pre-ordered.</comment>
+                    <tooltip>Please note! Products on "Pre Order" must be set to "In Stock"</tooltip>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+
+            <group id="general" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Display Options</label>
+                <field id="addtocartbuttontext" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Add To Cart Button Text</label>
+                    <comment>Text to display on the button instead of 'Add To Cart'</comment>
+                </field>
+                <field id="defaultpreordernote" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default Pre-Order Note</label>
+                    <comment>You can use product attributes like {sku} or {delivery_time}</comment>
+                </field>
+                <field id="orderpreorderwarning" translate="label comment" type="textarea" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Pre-Order Warning</label>
+                    <comment>Message to be displayed with order information</comment>
+                </field>
+            </group>
+
+            <group id="additional" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Additional Options</label>
+                <field id="discovercompositeoptions" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Detect Complex Products Which Consist only of Pre-Order Components</label>
+                    <comment><![CDATA[
+                            If set to 'Yes', the extension analyzes your configurable, bundle and grouped products on category pages to indicate preorder status before customers choose any option in cases, when all components have 'Preorder' status.<br />
+                            Please be aware this may cause huge performance degradation for larger catalogs.
+                            ]]></comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <!--<field id="autoaddwarningtoemail" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Automatically Add Warning to Transactional Emails</label>
+                    <comment>Please select 'No' in case you prefer to use {{var order.preorder_warning}} variable in your placing order transactional email template.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field> -->
+            </group>
+
+            <!--<group id="integration" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Theme Integration Parameters</label>
+                <field id="cartbutton" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cart Button</label>
+                    <comment>(left static) replacing text (right static)</comment>
+                </field>
+                <field id="productlistcartbutton" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product List Cart Button</label>
+                    <comment>left part (product id) right part</comment>
+                </field>
+                <field id="cartproductname" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cart Product Name</label>
+                    <comment>Note will be added right after match</comment>
+                </field>
+            </group>-->
+
+            <group id="email" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Email Configuration</label>
+                <field id="confirmation_template" translate="label" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Preorder Confirmation Email</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="cancellation_template" translate="label" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Preorder Cancellation Email</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+
+            <group id="cron" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Cron Configuration</label>
+                <field id="schedule" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cron Schedule</label>
+                    <comment>Exp: 0 0 * * *</comment>
+                </field>
+            </group>
+
+        </section>
+    </system>
+</config>

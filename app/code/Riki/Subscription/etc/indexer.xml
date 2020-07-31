@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Indexer/etc/indexer.xsd">
+    <indexer id="profile_simulator" view_id="profile_simulator" class="Riki\Subscription\Model\Indexer\Profile">
+        <title translate="true">Simulate Profiles Cache</title>
+        <description translate="true">Simulate all profiles to cache data</description>
+    </indexer>
+    <indexer id="profile_simulator_catalogrule" view_id="profile_simulator_catalogrule" class="Riki\Subscription\Model\Indexer\CatalogRule">
+        <title translate="true">Simulate Profiles Cache - catalogrule</title>
+        <description translate="true">Simulate profiles based on catalogrule</description>
+    </indexer>
+    <indexer id="profile_simulator_cartrule" view_id="profile_simulator_cartrule" class="Riki\Subscription\Model\Indexer\CartRule">
+        <title translate="true">Simulate Profiles Cache - cartrule</title>
+        <description translate="true">Simulate profiles based on cartrule</description>
+    </indexer>
+</config>

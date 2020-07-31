@@ -1,0 +1,106 @@
+<?php /** @var \Riki\Subscription\Block\Frontend\Profile\Payment\Method\Edit $block */ ?>
+<form id="form-submit-profile" action="<?php echo $block->getSubmitUrl() ?>" method="post">
+    <input type="hidden" name="id" value="<?php echo $block->getProfileId() ?>">
+    <?php echo $block->getBlockHtml('formkey') ?>
+
+    <!-- List Payment Method -->
+    <fieldset class="fieldset panel">
+        <div class="label">
+            <h4><?php echo __("Payment method")  ?></h4><span class="note"><?php echo __('* This also applies after this delivery number.') ?></span>
+        </div>
+        <div class="payment-method-block">
+            <table class="payment-method required field">
+                <input
+                        type="hidden"
+                        name="selected_payment_method"
+                        value="<?php echo $block->getSelectedPaymentMethod() ?>"
+                />
+                <?php foreach($block->getAvailablePaymentMethods() as $paymentMethod): ?>
+                    <!-- make radio payment button-->
+                    <tr class="control">
+                        <td>
+                            <input
+                                    type="radio" id="payment_<?php echo $paymentMethod['value']  ?>"
+                                    name="payment_method"
+                                    value="<?php echo $paymentMethod['value'] ?>"
+                                    class="radio"
+                                    data-validate="{'validate-one-required-by-name': true}"
+                                <?php echo $block->getProfilePaymentMethod() == $paymentMethod['value'] ? 'checked disabled' : ''  ?>
+                                <?php echo $block->getSelectedPaymentMethod() == $paymentMethod['value'] ? 'checked' : '' ?>
+                            />
+                            <?php if($paymentMethod['value'] == 'paygent' ):?>
+                                <label for="payment_<?php echo $paymentMethod['value']  ?>">
+                                    <?php echo __('クレジット支払い'); ?>
+                                </label>
+                            <?php else: ?>
+                                <label for="payment_<?php echo $paymentMethod['value']  ?>">
+                                    <?php echo __($paymentMethod['label']); ?>
+                                </label>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <?php
+                                if ($childBlock = $block->getChildBlock('subscriptions.profile.payment.method.edit.' . $paymentMethod['value'])) {
+                                    echo $childBlock->addData($paymentMethod['params'])->toHtml();
+                                }
+                            ?>
+                        </td>
+                    </tr>
+                    <!-- end make radio payment button -->
+                <?php endforeach; ?> <!-- end foreach payment method -->
+                <tr>
+                    <td class="field choice" colspan="2"><div for="payment_method" generated="true" class="mage-error no-display"></div></td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+    <?php if ($block->getSelectedPaymentMethod()): ?>
+        <?php if ($block->getIsHanpukai()): ?>
+            <?php echo $block->getChildHtml('subscriptions.profile.hanpukai.edit') ?>
+        <?php else: ?>
+            <?php echo $block->getChildHtml('subscriptions.profile.edit') ?>
+        <?php endif; ?>
+    <?php endif; ?>
+
+    <?php if (!$block->getProfilePaymentMethod()): ?>
+        <div class="actions-toolbar">
+            <div class="action-right">
+                <button type="submit" value="update" class="flat-button yellow-subs">
+                    <span><?php echo __('Proceed to the next') ?></span>
+                </button>
+            </div>
+        </div>
+    <?php endif; ?>
+</form>
+<script type="text/javascript">
+    require([
+        'jquery',
+        'mage/mage'
+    ], function ($) {
+        'use strict';
+
+        $('#form-submit-profile').mage('validation', {
+            submitHandler: function (form) {
+                $('body').trigger('processStart');
+                form.submit();
+            }
+        });
+
+        if($( "input:checked" ).val() == 'paygent')
+        {
+            $(".yellow-subs span").text("カード情報の入力へ進む");
+        }
+
+        if ($(".payment-method-block-text span").text() != '')
+        {
+            $( "input" ).on( "click", function() {
+                if($( "input:checked" ).val() == 'paygent')
+                {
+                    $(".yellow-subs span").text("カード情報の入力へ進む");
+                } else {
+                    $(".yellow-subs span").text("次へ進む");
+                }
+            });
+        }
+    });
+</script>

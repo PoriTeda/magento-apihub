@@ -1,0 +1,40 @@
+<?php /** @var $block \Riki\FairAndSeasonalGift\Block\Adminhtml\Items\ListItem */ ?>
+
+<?php
+    $fairProduct = $block->getProduct();
+    if( !empty( $fairProduct ) ):
+        foreach ( $fairProduct as $product ):
+?>
+        <tr class="current-fair-product" data-detail-id="<?php echo $product->getId();?>">
+            <td class="col-serial-no">
+                <input class="input-text admin__control-text fair-detail-serial-no required-entry _required"
+                       type="text"
+                       name="detail[<?php echo $product->getId();?>][serial_no]"
+                       value=""
+                />
+
+            </td>
+            <td class="col-product-sku">
+                <?php echo $product->getSku();?>
+            </td>
+            <td class="col-product-name">
+                <?php echo $product->getName();?>
+            </td>
+            <td class="col-recommend">
+                <input class="input-radio fair-detail-recommend"
+                   type="radio"
+                   name="detail[<?php echo $product->getId();?>][is_recommend]"
+                   value="1"
+                />
+            </td>
+            <td class="col-action last">
+                <button title="Delete" type="button" class="action-default scalable action-delete fair-detail-delete-new-item" data-ui-id="fair-seasonal-edit-tab-fair-detail-delete-new-item-button-<?php echo $product->getId();?>">
+                    <span><?php echo __('Delete');?></span>
+                </button>
+            </td>
+        </tr>
+<?php
+
+        endforeach;
+    endif;
+?>

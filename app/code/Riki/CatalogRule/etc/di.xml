@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- add time to the query apply rule -->
+    <preference for="Magento\CatalogRule\Model\ResourceModel\Rule" type="Riki\CatalogRule\Model\ResourceModel\Rule" />
+    <preference for="Magento\CatalogRule\Model\Indexer\IndexBuilder" type="Riki\CatalogRule\Model\Indexer\IndexBuilder" />
+    <preference for="Magento\CatalogRule\Observer\ProcessAdminFinalPriceObserver" type="Riki\CatalogRule\Observer\ProcessAdminFinalPriceObserver" />
+    <preference for="Magento\CatalogRule\Observer\ProcessFrontFinalPriceObserver" type="Riki\CatalogRule\Observer\ProcessFrontFinalPriceObserver" />
+    <preference for="Riki\Subscription\Block\Adminhtml\Order\Create\Product\Grid" type="Riki\CatalogRule\Block\Adminhtml\Subscription\Order\Create\Product\Grid" />
+    <preference for="Riki\Subscription\Block\Adminhtml\Order\Create\Course\Frequency" type="Riki\CatalogRule\Block\Adminhtml\Subscription\Order\Create\Course\Frequency" />
+    <preference for="Magento\CatalogRule\Model\Rule" type="Riki\CatalogRule\Model\Rule" />
+    <preference for="Magento\Indexer\Model\Processor" type="Riki\CatalogRule\Model\Indexer\Processor" />
+    <preference for="Magento\Framework\Mview\Processor" type="Riki\CatalogRule\Model\Framework\Mview\Processor" />
+    <type name="Magento\CatalogRule\Model\Rule">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="WbsConversionGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">\Riki\CatalogRule\Model\ResourceModel\WbsConversion\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">WbsConversionGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="wbs_conversion_listing_data_source" xsi:type="string">Riki\CatalogRule\Model\ResourceModel\WbsConversion\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Riki\CatalogRule\Model\ResourceModel\WbsConversion\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">riki_wbs_conversion</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\CatalogRule\Model\ResourceModel\WbsConversion</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Riki\SapIntegration\Helper\Data">
+        <plugin name="riki_catalog_rule_wbs_convert_for_sap" type="Riki\CatalogRule\Plugin\SapWbsConversion" />
+    </type>
+    <type name="Magento\CatalogRule\Model\Rule\Job">
+        <plugin name="rikiCatalogRuleCheckIndexerStateBeforeApplyRule" type="Riki\CatalogRule\Plugin\CheckIndexerStateBeforeApplyRule" />
+    </type>
+</config>

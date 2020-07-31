@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+ <tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../../../../../../dev/tests/acceptance/vendor/magento/magento2-functional-testing-framework/src/Magento/FunctionalTestingFramework/Test/etc/testSchema.xsd">
+    <test name="AdminScheduledUpdateMoveToAnotherCampaignTest">
+        <annotations>
+            <features value="Staging"/>
+            <stories value="Scheduled Update: Move to Another Campaign"/>
+            <title value="Scheduled Update: Move to Another Campaign"/>
+            <description value="Purpose of this test is to check functionality of moving the new update to another campaign."/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="MAGETWO-68739"/>
+            <group value="staging"/>
+        </annotations>
+        <before>
+            <!--Create Simple Products-->
+            <createData entity="SimpleTwo" stepKey="createSimpleProduct"/>
+            <createData entity="SimpleTwo" stepKey="createSimpleProduct2"/>
+            <actionGroup ref="LoginAsAdmin" stepKey="loginAsAdmin"/>
+
+            <!-- Open Product Edit -->
+            <amOnPage url="{{AdminProductEditPage.url($$createSimpleProduct.id$$)}}" stepKey="goToEditPage"/>
+            <waitForPageLoad time="30" stepKey="waitForProductPageLoad"/>
+
+            <!-- Create Schedule New Update -->
+            <click selector="{{AdminStagingSlideOutSection.scheduleNewUpdateBtn}}" stepKey="clickButtonScheduleNewUpdate"/>
+            <waitForPageLoad time="30" stepKey="waitForScheduleSectionLoad"/>
+            <actionGroup ref="FillScheduleUpdateWithoutDateEndActionGroup" stepKey="createScheduleUpdate">
+                <argument name="schedule" value="UpdateWithoutEnd"/>
+            </actionGroup>
+            <actionGroup ref="saveProductForm" stepKey="saveProductForm"/>
+
+            <!-- Open Product2 Edit -->
+            <amOnPage url="{{AdminProductEditPage.url($$createSimpleProduct2.id$$)}}" stepKey="goToEditPage2"/>
+            <waitForPageLoad time="30" stepKey="waitForProductPageLoad2"/>
+
+            <!-- Create Schedule New Update -->
+            <click selector="{{AdminStagingSlideOutSection.scheduleNewUpdateBtn}}" stepKey="clickButtonScheduleNewUpdate2"/>
+            <waitForPageLoad time="30" stepKey="waitForScheduleSectionLoad2"/>
+            <actionGroup ref="FillScheduleUpdateActionGroup" stepKey="createScheduleUpdate2">
+                <argument name="staging" value="S8UpdateNameStaging"/>
+            </actionGroup>
+            <actionGroup ref="saveProductForm" stepKey="saveProductForm2"/>
+        </before>
+        <after>
+            <deleteData createDataKey="createSimpleProduct" stepKey="deleteProduct"/>
+            <deleteData createDataKey="createSimpleProduct2" stepKey="deleteProduct2"/>
+            <actionGroup ref="logout" stepKey="logout"/>
+        </after>
+        <!--Remove Product from Update-->
+        <click selector="{{AdminScheduledChangesSection.scheduleActions(S8UpdateNameStaging.updateName, S8UpdateNameStaging.viewedit)}}" stepKey="clickScheduleActions"/>
+        <seeElement selector="{{AdminStagingSlideOutSection.removeFromUpdate}}" stepKey="seeUpdatePopup"/>
+        <click selector="{{AdminStagingSlideOutSection.removeFromUpdate}}" stepKey="clickRemoveFromUpdate"/>
+        <see selector="{{AdminRemoveFromUpdateSection.title}}" userInput="Remove Product from Update" stepKey="seeTitleRemoveSection"/>
+        <!--Move to Another Update-->
+        <click selector="{{AdminRemoveFromUpdateSection.moveToAnotherUpdate}}" stepKey="clickMoveToAnotherUpdate"/>
+        <conditionalClick selector="{{AdminRemoveFromUpdateSection.gridCellTime}}" dependentSelector="{{AdminRemoveFromUpdateSection.gridCellTimeAscSort}}" visible="true" stepKey="clickSortByTime"/>
+        <seeElement selector="{{AdminRemoveFromUpdateSection.updateName(UpdateWithoutEnd.updateName)}}" stepKey="seeUpdateName1"/>
+        <seeElement selector="{{AdminRemoveFromUpdateSection.selectButtonDisabled(S8UpdateNameStaging.updateName)}}" stepKey="seeSelectButtonDisable"/>
+        <click selector="{{AdminRemoveFromUpdateSection.selectMoveToAnotherUpdate(UpdateWithoutEnd.updateName)}}" stepKey="clickSelectAssignToExistingUpdate"/>
+        <seeElement selector="{{AdminRemoveFromUpdateSection.updateName(UpdateWithoutEnd.updateName)}}" stepKey="seeUpdateName2"/>
+        <see selector="{{AdminRemoveFromUpdateSection.scheduleSummaryName}}" userInput="{{UpdateWithoutEnd.updateName}}" stepKey="seeScheduleSummaryName"/>
+        <click selector="{{AdminRemoveFromUpdateSection.done}}" stepKey="clickDone"/>
+        <dontSeeElement selector="{{AdminRemoveFromUpdateSection.title}}" stepKey="panelIsClosed"/>
+        <seeElement selector="{{AdminScheduledChangesSection.scheduleDetails(UpdateWithoutEnd.updateName)}}" stepKey="seeNewScheduleUpdate"/>
+    </test>
+</tests>

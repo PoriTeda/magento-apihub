@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">blacklisted_form.blacklisted_form_data_source</item>
+            <item name="deps" xsi:type="string">blacklisted_form.blacklisted_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Package Information</item>
+        <item name="layout" xsi:type="array">
+            <item name="type" xsi:type="string">tabs</item>
+        </item>
+        <item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="array">
+                <item name="name" xsi:type="string">back</item>
+                <item name="label" xsi:type="string" translate="true">Back</item>
+                <item name="class" xsi:type="string">back</item>
+                <item name="url" xsi:type="string">*/*/</item>
+            </item>
+            <item name="delete" xsi:type="string">Riki\Blacklisted\Block\Adminhtml\Blacklisted\Edit\DeleteButton</item>
+            <item name="save" xsi:type="string">Riki\Blacklisted\Block\Adminhtml\Blacklisted\Edit\SaveButton</item>
+            <item name="save_and_continue" xsi:type="string">Riki\Blacklisted\Block\Adminhtml\Blacklisted\Edit\SaveAndContinueButton</item>
+        </item>
+    </argument>
+
+    <dataSource name="package_edit_form_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Riki\Blacklisted\Model\Blacklisted\DataProvider</argument>
+            <argument name="name" xsi:type="string">blacklisted_form_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">prize_id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="submit_url" xsi:type="url" path="blacklisted/index/save" />
+                    <item name="validate_url" xsi:type="url" path="blacklisted/index/validate"/>
+                </item>
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+
+    <fieldset name="data">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Blacklisted Information</item>
+            </item>
+        </argument>
+        <field name="name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Name</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="email">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Email</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-email" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="address">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Address</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="telephone">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Telephone</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-digits" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+</form>

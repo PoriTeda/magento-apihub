@@ -1,0 +1,46 @@
+<?php
+/** @var $helper \Magento\Search\Helper\Data */
+$helper = $this->helper('Riki\Subscription\Helper\Profile\AddSpotHelper');
+$parentBlock = $block->getParentBlock();
+?>
+<div class="item search-field">
+    <div class="title">&nbsp;</div>
+    <div class="content">
+        <form class="form" id="search_catalog_form" action="<?php /* @escapeNotVerified */ echo $helper->getResultUrl() ?>" method="get">
+            <input type="text"
+                   name="<?php /* @escapeNotVerified */ echo $helper->getQueryParamName() ?>"
+                   value="<?php /* @escapeNotVerified */ echo $helper->getEscapedQueryText() ?>"
+                   placeholder="<?php echo __('What are you looking for? (Product name, model number)') ?>"
+                   data-mage-init='{"quickSearch":{
+                        "formSelector":"#search_catalog_form",
+                        "url":"<?php /* @escapeNotVerified */ echo $this->getUrl('search/ajax/suggest'); ?>",
+                        "destinationSelector":"#search_autocomplete_catalog"}
+                   }'
+                   name="" />
+            <div id="search_autocomplete_catalog" class="search-autocomplete"></div>
+            <button type="submit"><?php echo __('Search') ?></button>
+        </form>
+    </div>
+</div>
+
+
+<?php foreach ($parentBlock->getFilterList() as $filter): ?>
+    <?php if ($filter->getItemsCount()): ?>
+    <div class="item branch">
+        <div class="title"><strong><?php echo __($filter->getName()) ?></strong></div>
+        <div class="content">
+            <div class="select-wrapper">
+                <select title="" name="" id="" class="input-new select-box" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+                    <option value=""><?php echo __('Please select') ?></option>
+                    <?php foreach ($filter->getItems() as $filterItem): ?>
+                        <option value="<?php echo $block->escapeUrl($filterItem->getUrl()) ?>"><?php /* @escapeNotVerified */ echo $filterItem->getLabel() ?></option>
+                    <?php endforeach ?>
+                </select>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+<?php endforeach; ?>
+
+
+

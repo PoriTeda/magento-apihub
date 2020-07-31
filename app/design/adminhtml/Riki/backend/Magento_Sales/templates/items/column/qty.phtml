@@ -1,0 +1,77 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php if ($_item = $block->getItem()): ?>
+    <?php $unit_qty = (null != $_item->getData('unit_qty'))?$_item->getData('unit_qty'):1;?>
+<table class="qty-table">
+    <tr>
+        <th><?php /* @escapeNotVerified */ echo __('Ordered') ?></th>
+        <?php if('CS' == $_item->getData('unit_case')) {?>
+            <td><?php /* @escapeNotVerified */ echo $_item->getQtyOrdered()*1/$unit_qty; ?>(<?php echo __('CS').' ('.$unit_qty.' '.__('EA').')';?>)</td>
+        <?php  } elseif('EA' == $_item->getData('unit_case')) {?>
+            <td><?php /* @escapeNotVerified */ echo $_item->getQtyOrdered()*1; ?>(<?php echo __('EA');?>)</td>
+        <?php  } else {?>
+            <td><?php /* @escapeNotVerified */ echo $_item->getQtyOrdered()*1 ?></td>
+        <?php  }?>
+    </tr>
+
+    <?php if ((float) $_item->getQtyInvoiced()): ?>
+        <tr>
+            <th><?php /* @escapeNotVerified */ echo __('Invoiced') ?></th>
+            <?php if('CS' == $_item->getData('unit_case')) {?>
+                <td><?php /* @escapeNotVerified */ echo $_item->getQtyInvoiced()*1/$unit_qty; ?>(<?php echo __('CS').' ('.$unit_qty.' '.__('EA').')';?>)</td>
+            <?php  } elseif('EA' == $_item->getData('unit_case')) {?>
+                <td><?php /* @escapeNotVerified */ echo $_item->getQtyInvoiced()*1 ?>(<?php echo __('EA');?>)</td>
+            <?php  } else {?>
+                <td><?php /* @escapeNotVerified */ echo $_item->getQtyInvoiced()*1 ?></td>
+            <?php  }?>
+        </tr>
+    <?php endif; ?>
+
+    <?php if ((float) $_item->getQtyShipped()): ?>
+        <tr>
+            <th><?php /* @escapeNotVerified */ echo __('Shipped') ?></th>
+            <?php if('CS' == $_item->getData('unit_case')) {?>
+                <td><?php /* @escapeNotVerified */ echo $_item->getQtyShipped()*1/$unit_qty; ?>(<?php echo __('CS').' ('.$unit_qty.' '.__('EA').')';?>)</td>
+            <?php  } elseif('EA' == $_item->getData('unit_case')) {?>
+                <td><?php /* @escapeNotVerified */ echo $_item->getQtyShipped()*1 ?>(<?php echo __('EA');?>)</td>
+            <?php  } else {?>
+                <td><?php /* @escapeNotVerified */ echo $_item->getQtyShipped()*1 ?></td>
+            <?php  }?>
+        </tr>
+    <?php endif; ?>
+
+    <?php if ((float) $_item->getQtyRefunded()): ?>
+        <tr>
+            <th><?php /* @escapeNotVerified */ echo __('Refunded') ?></th>
+            <?php if('CS' == $_item->getData('unit_case')) {?>
+                <td><?php /* @escapeNotVerified */ echo $_item->getQtyRefunded()*1/$unit_qty; ?>(<?php echo __('CS').' ('.$unit_qty.' '.__('EA').')';?>)</td>
+            <?php  } elseif('EA' == $_item->getData('unit_case')) {?>
+                <td><?php /* @escapeNotVerified */ echo $_item->getQtyRefunded()*1 ?>(<?php echo __('EA');?>)</td>
+            <?php  } else {?>
+                <td><?php /* @escapeNotVerified */ echo $_item->getQtyRefunded()*1 ?></td>
+            <?php  }?>
+        </tr>
+    <?php endif; ?>
+
+    <?php if ((float) $_item->getQtyCanceled()): ?>
+        <tr>
+            <th><?php /* @escapeNotVerified */ echo __('Canceled') ?></th>
+            <?php if('CS' == $_item->getData('unit_case')) {?>
+                <td><?php /* @escapeNotVerified */ echo $_item->getQtyCanceled()*1/$unit_qty; ?>(<?php echo __('CS').' ('.$unit_qty.' '.__('EA').')';?>)</td>
+            <?php } elseif('EA' == $_item->getData('unit_case')) {?>
+                <td><?php /* @escapeNotVerified */ echo $_item->getQtyCanceled()*1 ?>(<?php echo __('EA');?>)</td>
+            <?php  } else {?>
+                <td><?php /* @escapeNotVerified */ echo $_item->getQtyCanceled()*1 ?></td>
+            <?php  }?>
+        </tr>
+    <?php endif; ?>
+
+</table>
+<?php endif; ?>

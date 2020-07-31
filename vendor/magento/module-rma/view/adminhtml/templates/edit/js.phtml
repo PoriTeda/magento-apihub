@@ -1,0 +1,37 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/** @var Magento\Rma\Block\Adminhtml\Rma\Edit\Js $block */
+?>
+<script>
+//<![CDATA[
+require(['prototype', 'Magento_Rma/rma', 'domReady!'], function() {
+    rma.setLoadAttributesUrl('<?= /* @escapeNotVerified */ $block->getLoadAttributesUrl() ?>');
+    rma.setLoadSplitLineUrl('<?= /* @escapeNotVerified */ $block->getLoadSplitLineUrl() ?>');
+    rma.setDeleteLineLabel('<?= /* @escapeNotVerified */ __('Delete Line') ?>');
+    $$('a.action-item-details').each(function (obj) {
+        obj.observe('click', rma.itemDetailsRowClick.bind(rma))
+    });
+    $$('a.action-item-split-line').each(function (obj) {
+        obj.observe('click', rma.itemSplitLineRowClick.bind(rma))
+    });
+    $$('a.item-reason-other').each(function (obj) {
+        obj.observe('click', rma.itemReasonOtherRowClick.bind(rma))
+    });
+    rma.setFormKey('<?= /* @escapeNotVerified */ $block->getFormKey() ?>');
+    rma.setLoadShippingMethodsUrl('<?= /* @escapeNotVerified */ $block->getLoadShippingMethodsUrl() ?>');
+    rma.setLoadPslUrl('<?= /* @escapeNotVerified */ $block->getLoadPslUrl() ?>');
+    if ($('get-shipping-method-and-rates')) {
+        $('get-shipping-method-and-rates').observe('click', rma.showShippingMethods.bind(rma));
+    }
+    $$('input.rowId').each(function (el, val) {
+        rma.getAjaxData($(el).value, true);
+    });
+    rma.callLoadProductsCallback();
+});
+//]]>
+</script>

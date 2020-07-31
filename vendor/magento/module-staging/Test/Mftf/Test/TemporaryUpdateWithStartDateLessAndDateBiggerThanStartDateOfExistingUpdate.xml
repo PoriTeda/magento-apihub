@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+ <tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="TemporaryUpdateWithStartDateLessAndDateBiggerThanStartDateOfExistingUpdate">
+        <annotations>
+            <features value="Staging"/>
+            <stories value="Staging updates"/>
+            <title value="Temporary Update with start date less than start date of existing update and end date bigger than start date of existing update."/>
+            <description value="Temporary Update with start date less than start date of existing update and end date bigger than start date of existing update."/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="MAGETWO-55026"/>
+            <group value="staging"/>
+        </annotations>
+        <before>
+            <!--Create Simple Product and Category-->
+            <createData entity="_defaultCategory" stepKey="createCategory"/>
+            <createData entity="ApiProductWithDescription" stepKey="createProduct">
+                <requiredEntity createDataKey="createCategory"/>
+                <field key="price">10</field>
+            </createData>
+            <actionGroup ref="LoginAsAdmin" stepKey="loginAsAdmin"/>
+            <!-- Create storeView -->
+            <actionGroup ref="AdminCreateStoreViewActionGroup" stepKey="createStoreView"/>
+        </before>
+        <after>
+            <deleteData createDataKey="createProduct" stepKey="deleteProduct"/>
+            <deleteData createDataKey="createCategory" stepKey="deleteCategory"/>
+            <actionGroup ref="AdminDeleteStoreViewActionGroup" stepKey="deleteStoreView"/>
+            <actionGroup ref="AdminClearFiltersActionGroup" stepKey="clearProductFilters"/>
+            <actionGroup ref="logout" stepKey="logout"/>
+        </after>
+        <!-- Open Product Grid, Filter product and open -->
+        <amOnPage url="{{AdminProductIndexPage.url}}" stepKey="amOnProductGridPage"/>
+        <waitForPageLoad time="30" stepKey="waitForPageLoad"/>
+
+        <actionGroup ref="filterProductGridBySku" stepKey="filterGroupedProductOptions">
+            <argument name="product" value="ApiProductWithDescription"/>
+        </actionGroup>
+        <click selector="{{AdminProductGridSection.productGridXRowYColumnButton('1', '2')}}" stepKey="openProductForEdit"/>
+        <!-- Create Schedule New Update -->
+        <click selector="{{AdminStagingSlideOutSection.scheduleNewUpdateBtn}}" stepKey="clickButtonSheduleNewUpdate"/>
+        <waitForPageLoad time="30" stepKey="waitForPageLoad1"/>
+        <click selector="{{AdminStagingSlideOutSection.changeStoreButton}}" stepKey="clickStoreSwitcher"/>
+        <click selector="{{AdminStagingSlideOutSection.selectStoreView(customStore.name)}}" stepKey="clickStoreView"/>
+        <click selector="{{AdminConfirmationModalSection.ok}}" stepKey="acceptMessage"/>
+        <waitForPageLoad time="30" stepKey="waitForPageLoad2"/>
+        <actionGroup ref="FillScheduleUpdateActionGroup" stepKey="createScheduleUpdate">
+            <argument name="staging" value="S5UpdateNameStaging"/>
+        </actionGroup>
+        <!-- Create Schedule New Update1 -->
+        <click selector="{{AdminStagingSlideOutSection.scheduleNewUpdateBtn}}" stepKey="clickButtonSheduleNewUpdate1"/>
+        <waitForPageLoad time="30" stepKey="waitForPageLoad3"/>
+        <fillField selector="{{AdminStagingSlideOutSection.updateName}}" userInput="S8.9UpdateName" stepKey="fillUpdateName"/>
+        <fillField selector="{{AdminStagingSlideOutSection.updateDescription}}" userInput="S8.9Description" stepKey="fillDescription"/>
+        <fillField selector="{{AdminStagingSlideOutSection.startDate}}" userInput="07/10/2020 8:00 AM" stepKey="fillStartDate"/>
+        <fillField selector="{{AdminStagingSlideOutSection.endDate}}" userInput="07/12/2020 7:00 AM" stepKey="fillEndDate"/>
+        <click selector="{{AdminStagingSlideOutSection.save}}" stepKey="clickSave"/>
+        <waitForPageLoad time="30" stepKey="waitForPageLoad4"/>
+        <see selector="{{AdminStagingSlideOutSection.scheduleErrorMessage}}" userInput="error: : Future Update already exists in this time range. Set a different range and try again." stepKey="seeMessageError"/>
+    </test>
+</tests>

@@ -1,0 +1,77 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<li id="payment" role="presentation" class="checkout-payment-method" data-bind="fadeVisible: isVisible">
+    <div id="checkout-step-payment"
+         class="step-content"
+         data-role="content"
+         role="tabpanel"
+         aria-hidden="false">
+        <!-- ko if: (quoteIsVirtual) -->
+        <!-- ko foreach: getRegion('customer-email') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <!--/ko-->
+        <form id="co-payment-form" class="form payments" novalidate="novalidate">
+            <input data-bind='attr: {value: getFormKey()}' type="hidden" name="form_key"/>
+            <div class="opc-single-sub">
+                <div class="step-title" data-bind="i18n: 'Please choose a usage point'" data-role="title"></div>
+                <!-- ko foreach: getRegion('beforeMethods') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+                <!-- /ko -->
+                <!-- ko foreach: getRegion('afterMethods') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+                <!-- /ko -->
+            </div>
+
+            <!-- ko foreach: getRegion('customer-email') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+
+            <!-- ko foreach: getRegion('reward-points') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+
+
+            <div class="opc-single-sub no-margin-bottom">
+                <div class="step-title" data-bind="text: title" data-role="title"></div>
+                <fieldset class="fieldset">
+                    <legend class="legend">
+                        <span data-bind="i18n: 'Payment Information'"></span>
+                    </legend>
+                    <div id="checkout-payment-method-load" class="opc-payment" data-bind="visible: isPaymentMethodsAvailable">
+                        <!-- ko foreach: getRegion('payment-methods-list') -->
+                        <!-- ko template: getTemplate() --><!-- /ko -->
+                        <!-- /ko -->
+                        <!-- ko if: isSavePreferredMethodVisible() && isSavePreferredMethodAvailable -->
+                        <input type="checkbox" name="save_preferred_method" id="save_preferred_method" value="1" data-bind="checked: isPreferredChecked" />
+                        <label for="save_preferred_method" data-bind="i18n: 'Save selected method above as your preferred payment method'"></label>
+                        <!-- /ko -->
+                    </div>
+                    <div class="no-quotes-block" data-bind="visible: isPaymentMethodsAvailable() == false">
+                        <!-- ko i18n: 'No Payment method available.'--><!-- /ko -->
+                    </div>
+                </fieldset>
+            </div>
+            <div class="actions-toolbar step-action">
+                <div class="secondary">
+                    <a class="action back for-single" data-bind="click: function() { goTo('shipping') }">
+                        <span>
+                            <!-- ko i18n: 'Return to Selecting shipping address'-->
+                            <!-- /ko -->
+                        </span>
+                    </a>
+                    <a class="action back for-multiple" data-bind="click: function() { goTo('multiple_shipping_method') }">
+                        <span>
+                              <!-- ko i18n: 'Return to Selecting shipping address'-->
+                            <!-- /ko -->
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</li>

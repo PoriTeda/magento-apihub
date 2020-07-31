@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\User\Block\User"
+                type="Riki\User\Block\User" />
+    <preference for="Magento\User\Model\ResourceModel\User" type="Riki\User\Model\ResourceModel\User" />
+    <preference for="Magento\User\Model\User" type="Riki\User\Model\User" />
+    <preference for="Magento\User\Controller\Adminhtml\User\Save" type="Riki\User\Controller\Adminhtml\User\Save" />
+
+</config>

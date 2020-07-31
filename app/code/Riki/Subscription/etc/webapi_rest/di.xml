@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Amasty\Promo\Observer\CollectTotalsAfterObserver">
+        <arguments>
+            <argument name="promoCartHelper" xsi:type="object">Amasty\Promo\Helper\Cart</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Quote\Model\QuoteManagement">
+        <plugin name="checkApplicationLimitOnPlaceOrder" type="Riki\Subscription\Plugin\CheckApplicationLimitPlaceOrder" sortOrder="20" />
+    </type>
+</config>

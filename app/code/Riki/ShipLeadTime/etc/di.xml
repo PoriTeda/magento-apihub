@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Riki\ShipLeadTime\Api\Data\LeadtimeInterface"
+                type="Riki\ShipLeadTime\Model\Leadtime" />
+    <preference for="Riki\ShipLeadTime\Api\LeadtimeRepositoryInterface"
+                type="Riki\ShipLeadTime\Model\ResourceModel\LeadtimeRepository" />
+    <preference for="Riki\ShipLeadTime\Api\StockStateInterface"
+                type="Riki\ShipLeadTime\Model\StockState" />
+    <!-- Create our type ShipLeadTimeGridDataProvider -->
+    <virtualType name="ShipLeadTimeGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\ShipLeadTime\Model\ResourceModel\Leadtime\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">ShipLeadTimeGridFilterPool</argument> <!-- Define new object for filters -->
+        </arguments>
+    </virtualType>
+
+    <!-- Create our type ShipLeadTimeGridFilterPool -->
+    <virtualType name="ShipLeadTimeGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Type for jobs_department_listing_data_source -->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="shipleadtime_listing_data_source" xsi:type="string">Riki\ShipLeadTime\Model\ResourceModel\Grid\Leadtime\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Simulate our class Maxime\Jobs\Model\ResourceModel\Grid\Department\Collection -->
+    <virtualType name="Riki\ShipLeadTime\Model\ResourceModel\Grid\Leadtime\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">riki_shipleadtime</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\ShipLeadTime\Model\ResourceModel\Leadtime</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Riki\ShipLeadTime\Helper\Data">
+        <arguments>
+            <argument name="assignationModel" xsi:type="object">Riki\AdvancedInventory\Model\Assignation\Proxy</argument>
+        </arguments>
+    </type>
+
+    <!--<type name="Magento\Checkout\Model\ShippingInformationManagement">-->
+        <!--<plugin name="riki_save_delivery_date_to_session" type="Riki\ShipLeadTime\Plugin\Checkout\Model\ShippingInformationManagement" sortOrder="1"/>-->
+    <!--</type>-->
+    <type name="Riki\Quote\Api\ShippingAddressManagementInterface">
+        <plugin name="rikiShipLeadTimeQuoteApiShippingAddressManagementInterface" type="Riki\ShipLeadTime\Plugin\Quote\Api\ShippingAddressManagementInterface" />
+    </type>
+    <type name="Riki\DeliveryType\Controller\Delivery\ShippingAddress">
+        <plugin name="rikiShipLeadTimeQuoteControllerShippingAddress" type="Riki\ShipLeadTime\Plugin\DeliveryType\Controller\Delivery\ShippingAddress" />
+    </type>
+    <type name="Riki\Checkout\Model\ShippingAddress">
+        <plugin name="rikiShipLeadTimeCheckoutShippingAddress" type="Riki\ShipLeadTime\Plugin\Checkout\Model\ShippingAddress" />
+    </type>
+    <type name="Wyomind\AdvancedInventory\Model\Assignation">
+        <plugin name="rikiShipLeadTimeAdvancedInventoryModelAssignation" type="Riki\ShipLeadTime\Plugin\AdvancedInventory\Model\Assignation" />
+    </type>
+</config>

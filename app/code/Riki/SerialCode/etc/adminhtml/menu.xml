@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_SerialCode::serial_code" title="Serial codes"
+             module="Riki_SerialCode" sortOrder="60" parent="Riki::sales_operation_extend"
+             action="serial_code" resource="Riki_SerialCode::serial_code"/>
+    </menu>
+</config>

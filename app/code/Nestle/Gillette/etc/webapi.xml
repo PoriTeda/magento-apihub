@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <!-- Load products -->
+    <route url="/V1/gillette/products/" method="POST">
+        <service class="Nestle\Gillette\Api\ProductInfoInterface" method="getProducts"/>
+        <resources>
+            <resource ref="Nestle_Gillette::api_execution" />
+        </resources>
+    </route>
+    <!--Cart estimation-->
+    <route url="/V1/gillette/cartEstimation/" method="POST">
+        <service class="Nestle\Gillette\Api\CartEstimationManagementInterface" method="cartEstimation"/>
+        <resources>
+            <resource ref="Nestle_Gillette::api_execution" />
+        </resources>
+    </route>
+    <!--Order management-->
+    <route url="/V1/gillette/order/" method="POST">
+        <service class="Nestle\Gillette\Api\OrderManagementInterface" method="placeOrder"/>
+        <resources>
+            <resource ref="Nestle_Gillette::api_execution" />
+        </resources>
+    </route>
+</routes>

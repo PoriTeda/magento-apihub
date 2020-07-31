@@ -1,0 +1,249 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/system.xsd">
+    <system>
+        <section id="importstock" translate="label" type="text" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Import Stock</label>
+            <tab>bluecom_cronjob</tab>
+            <!-- resource tag name which we have to defined in the acl.xml -->
+            <resource>Riki_AdvancedInventory::config_importstock</resource>
+            <group id="common" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Common Settings</label>
+                <field id="1st_wh" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>1st Warehouse</label>
+                    <source_model>Riki\PointOfSale\Model\Config\Source\PointOfSale</source_model>
+                </field>
+                <field id="2nd_wh" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>2nd Warehouse</label>
+                    <source_model>Riki\PointOfSale\Model\Config\Source\PointOfSale</source_model>
+                </field>
+                <field id="3rd_wh" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>3nd Warehouse</label>
+                    <source_model>Riki\PointOfSale\Model\Config\Source\PointOfSale</source_model>
+                </field>
+                <field id="4th_wh" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>4th Warehouse</label>
+                    <source_model>Riki\PointOfSale\Model\Config\Source\PointOfSale</source_model>
+                </field>
+                <field id="5th_wh" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>5th Warehouse</label>
+                    <source_model>Riki\PointOfSale\Model\Config\Source\PointOfSale</source_model>
+                </field>
+                <field id="1st_wh_enable" translate="label" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>1st Warehouse - Enable import stock</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable Import Stock</comment>
+                </field>
+                <field id="2nd_wh_enable" translate="label" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>2nd Warehouse - Enable import stock</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable Import Stock</comment>
+                </field>
+                <field id="3rd_wh_enable" translate="label" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>3rd Warehouse - Enable import stock</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable Import Stock</comment>
+                </field>
+                <field id="4th_wh_enable" translate="label" type="select" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>4th Warehouse - Enable import stock</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable Import Stock</comment>
+                </field>
+                <field id="5th_wh_enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>5th Warehouse - Enable import stock</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable Import Stock</comment>
+                </field>
+            </group>
+
+            <group id="pattern" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Filename pattern regex</label>
+                <field id="1st_wh_pattern" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>1st Warehouse - File name</label>
+                    <comment>Example : 1stWhStock</comment>
+                </field>
+                <field id="2nd_wh_pattern" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>2nd Warehouse - File name</label>
+                    <comment>Example : 2ndWhStock</comment>
+                </field>
+                <field id="3rd_wh_pattern" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>3rd Warehouse - File name</label>
+                    <comment>Example : 3rdWhStock</comment>
+                </field>
+                <field id="4th_wh_pattern" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>4th Warehouse - File name</label>
+                    <comment>Example : 4thWhStock</comment>
+                </field>
+                <field id="5th_wh_pattern" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>5th Warehouse - File name</label>
+                    <comment>Example : 5thWhStock</comment>
+                </field>
+            </group>
+
+            <group id="location" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Location of Importing Files</label>
+                <field id="1st_wh_location" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>1st Warehouse - Location</label>
+                    <comment>Folder in SFTP that EC will read the CSV file for 1st warehouse</comment>
+                </field>
+                <field id="2nd_wh_location" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>2nd Warehouse - Location</label>
+                    <comment>Folder in SFTP that EC will read the CSV file for 2nd warehouse</comment>
+                </field>
+                <field id="3rd_wh_location" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>3rd Warehouse - Location</label>
+                    <comment>Folder in SFTP that EC will read the CSV file for 3rd warehouse</comment>
+                </field>
+                <field id="4th_wh_location" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>4th Warehouse - Location</label>
+                    <comment>Folder in SFTP that EC will read the CSV file for 4th warehouse</comment>
+                </field>
+                <field id="5th_wh_location" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>5th Warehouse - Location</label>
+                    <comment>Folder in SFTP that EC will read the CSV file for 5th warehouse</comment>
+                </field>
+            </group>
+
+            <group id="expression" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Scheduler Settings</label>
+                <field id="1st_wh_schedule" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>1st Warehouse - Scheduler</label>
+                </field>
+                <field id="2nd_wh_schedule" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>2nd Warehouse - Scheduler</label>
+                </field>
+                <field id="3rd_wh_schedule" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>3rd Warehouse - Scheduler</label>
+                </field>
+                <field id="4th_wh_schedule" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>4th Warehouse - Scheduler</label>
+                </field>
+                <field id="5th_wh_schedule" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>5th Warehouse - Scheduler</label>
+                </field>
+            </group>
+
+            <group id="email" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Email Settings</label>
+                <field id="receiver" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Receiver Email</label>
+                    <comment>Email address which will receive the notifications and separated by a comma ","</comment>
+                </field>
+                <field id="template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Error importing email template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="template_stock" translate="label comment" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Success result importing email template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+
+        </section>
+        <section id="advancedinventory_outofstock" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Out Of Stock Configurations</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_AdvancedInventory::out_of_stock_config</resource>
+            <group id="generate_order" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Generate OOS Order</label>
+                <field id="cron_schedule" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Cronjob to trigger listen Oos consumer</label>
+                </field>
+                <!--<field id="max_message_queue" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Message consumer limit</label>
+                    <comment>Number off maximum messages can be generated on each consumer.</comment>
+                </field>-->
+                <field id="trigger_consumer_cron_expression" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Trigger Consumer Cron Expression</label>
+                </field>
+                <field id="max_authorize_times" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Authorize times limit</label>
+                    <comment>Number off maximum Paygent authorize times.</comment>
+                </field>
+                <field id="tax_change_total_adjustment_sales_rule_id" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Promotion Id will apply when Tax Differences</label>
+                </field>
+            </group>
+            <group id="free_gift" translate="label" type="text" sortOrder="0" showInDefault="10" showInWebsite="1" showInStore="0">
+                <label>Free gift</label>
+                <field id="email_recipients" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Notification email recipients</label>
+                    <comment>Recipients who was received notification via email, you can input multiple recipients, separate by commas ,</comment>
+                </field>
+                <field id="email_template" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Notification email template</label>
+                    <comment>When a product out-of-stock on place order, a notification sent to recipients</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+            <group id="authorize_failure_email" translate="label" type="text" sortOrder="0" showInDefault="20" showInWebsite="1" showInStore="0">
+                <label>Authorize Failure Email</label>
+                <field id="recipients" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Recipients</label>
+                    <comment>Recipients who was received notification via email, you can input multiple recipients, separate by commas ,</comment>
+                </field>
+                <field id="template" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+        </section>
+        <section id="advancedinventory_riki_inventory" translate="label" type="text" sortOrder="900" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Advanced Inventory Configurations</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_AdvancedInventory::riki_inventory</resource>
+            <group id="order_stock" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Cart Stock Option</label>
+                <field id="maximum_cart_stock" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Maximum Qty Allowed In Cart</label>
+                    <comment>maximum qty of all product in cart </comment>
+                </field>
+            </group>
+            <group id="stock_fo" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Default point of sale for FO and Stock Point</label>
+                <field id="default_fo_pos" translate="label comment" type="multiselect" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Default point of sale for FO</label>
+                    <source_model>Riki\PointOfSale\Model\Config\Source\PointOfSale</source_model>
+                    <comment>Default product stock will be get from this warehouse</comment>
+                </field>
+                <field id="default_stock_point_pos" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Default point of sale for Stock point</label>
+                    <source_model>Riki\PointOfSale\Model\Config\Source\PointOfSale</source_model>
+                    <comment>For stock point order, product stock will be get from this warehouse</comment>
+                </field>
+            </group>
+            <group id="reassignation_cron" type="text" showInDefault="1" sortOrder="200" translate="label">
+                <label>Re-assignation Cron Setting</label>
+                <field id="schedule" type="text" showInDefault="1" sortOrder="1" translate="label">
+                    <label>Scheduler Expression</label>
+                    <comment>Ex: */10 * * * * (Cron will run every 10 minutes)</comment>
+                </field>
+            </group>
+        </section>
+        <section id="loggersetting">
+            <group id="advancedinventorylogger" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>AdvancedInventory</label>
+                <field id="logger_re_assign_active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable logger info when re-assign stock</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>File name: advanced_inventory_re_assign.log</comment>
+                </field>
+            </group>
+
+            <group id="importproductsapapilogger" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Import Product Sap Api</label>
+                <field id="logger_import_product_sap_api_active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable logger import product sap api</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>File name: import_product_sap_api.log</comment>
+                </field>
+            </group>
+        </section>
+        <section id="advancedinventory" showInWebsite="1">
+            <group id="system" showInWebsite="1">
+                <field id="log_enabled" showInWebsite="1"/>
+            </group>
+        </section>
+    </system>
+</config>

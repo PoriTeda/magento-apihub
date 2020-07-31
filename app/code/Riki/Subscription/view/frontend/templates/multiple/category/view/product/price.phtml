@@ -1,0 +1,11 @@
+<?php
+/** @var \Riki\Subscription\Block\Multiple\Category\View $parentBlock */
+$parentBlock = $block->getParentBlock()->getParentBlock();
+
+$product = $block->getProduct();
+?>
+
+<div id="product_price_<?php echo $product->getId() ?>">
+    <?php echo $parentBlock->getLayout()->getBlock('product.price.render.default')->render('final_price', $product,[]); ?>
+</div>
+<div><?php echo $this->getLayout()->getBlock('product.price.render.default')->render('tier_price', $product, []); ?></div>

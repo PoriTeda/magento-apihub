@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Sales::sales">
+                    <resource id="Magento_Sales::sales_operation">
+                        <resource id="Riki_Rma::reason" title="Return Reason" sortOrder="1000">
+                            <resource id="Riki_Rma::reason_save" title="Save Return Reason" sortOrder="10"/>
+                            <resource id="Riki_Rma::reason_delete" title="Delete Return Reason" sortOrder="20"/>
+                        </resource>
+
+                        <resource id="Magento_Rma::magento_rma" title="Riki Rma">
+                            <resource id="Riki_Rma::rma_return" title="Return" >
+                                <resource id="Riki_Rma::rma_return_actions" title="Actions">
+                                    <resource id="Riki_Rma::rma_return_actions_view_comment" title="View/Comment" />
+                                    <resource id="Riki_Rma::rma_return_actions_close" title="Close" />
+                                    <resource id="Riki_Rma::rma_return_actions_save" title="Create" />
+                                    <!--<resource id="Riki_Rma::rma_return_actions_export_without_personal" title="Export without personal information" />-->
+                                    <resource id="Riki_Rma::rma_return_actions_export_to_sap" title="Export To SAP" />
+                                    <resource id="Riki_Rma::rma_return_actions_save_w" title="Edit by warehouse" />
+                                    <resource id="Riki_Rma::rma_return_actions_save_cc" title="Edit by call center" />
+                                    <resource id="Riki_Rma::rma_return_actions_review_cc"  title="Review(CCop)" />
+                                    <resource id="Riki_Rma::rma_return_actions_accept_request"  title="Approve(CC op)" />
+                                    <resource id="Riki_Rma::rma_return_actions_deny_request" title="Reject (CC op)" />
+                                    <resource id="Riki_Rma::rma_return_actions_approve_request" title="Approve(CC s)" />
+                                    <resource id="Riki_Rma::rma_return_actions_reject_request" title="Reject (CC s)" />
+                                    <resource id="Riki_Rma::rma_return_actions_approve" title="Approve (SC)" />
+                                    <resource id="Riki_Rma::rma_return_actions_reject" title="Reject (SC)" />
+                                    <resource id="Riki_Rma::rma_return_reconciliation" title="GAC can change return reconciliation" />
+                                </resource>
+                            </resource>
+                            <resource id="Riki_Rma::rma_refund" title="Refund" >
+                                <resource id="Riki_Rma::rma_refund_actions" title="Actions">
+                                    <resource id="Riki_Rma::rma_refund_actions_view" title="View" />
+                                    <resource id="Riki_Rma::rma_refund_actions_approve" title="Approved by GAC" />
+                                    <resource id="Riki_Rma::rma_refund_actions_deny" title="GAC Reject refund (adjustment needed)" />
+                                    <resource id="Riki_Rma::rma_refund_actions_reject" title="GAC Reject refund (no need refund)" />
+                                    <!--<resource id="Riki_Rma::rma_refund_actions_deny_reviewed" title="GAC feedback - Reviewed by CC" />-->
+<!--                                <resource id="Riki_Rma::rma_refund_actions_deny_accepted" title="GAC feedback - Approved by CC supervisor" />
+                                    <resource id="Riki_Rma::rma_refund_actions_deny_approved" title="GAC feedback - CS Approved" />-->
+                                    <resource id="Riki_Rma::rma_refund_actions_processing_bank" title="Process by Bank transfer" />
+                                    <resource id="Riki_Rma::rma_refund_actions_complete_bank" title="Complete by Bank transfer " />
+                                    <resource id="Riki_Rma::rma_refund_actions_processing_check" title="Process by Check issues " />
+                                    <resource id="Riki_Rma::rma_refund_actions_complete_check" title="GAC will change Refund status to Check issued" />
+                                    <resource id="Riki_Rma::rma_refund_actions_card_complete_check" title="GAC will change Refund status to Card complete" />
+                                    <!--<resource id="Riki_Rma::rma_refund_actions_save_status" title="GAC change Refund status" />-->
+                                    <resource id="Riki_Rma::rma_refund_actions_save_method" title="Update refund method" />
+                                    <resource id="Riki_Rma::rma_refund_actions_export_csv" title="Export To Csv" />
+                                </resource>
+                            </resource>
+                        </resource>
+                    </resource>
+                </resource>
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Riki_Rma::config" title="Riki Rma Config" sortOrder="80" />
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

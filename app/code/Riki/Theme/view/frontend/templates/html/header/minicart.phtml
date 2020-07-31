@@ -1,0 +1,251 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/**
+ * @var \Riki\Theme\Block\Html\Header\Minicart $block
+ */
+$isSubscriptionHanpukai = $block->isHanpukaiSubscription();
+?>
+<?php if (!$isSubscriptionHanpukai): ?>
+<div class="block-minicart" id="riki-block-minicart" data-bind="scope: 'mMiniCart'">
+    <div class="minicart-wraper" data-bind="click: displayCart, touchstart: displayCart">
+        <div class="total-cart total-amount">
+            <span class="item"><?= __("合計（税込）"); ?></span>
+            <span class="total-price mb-total-price" data-bind="html: subtotalNumber"> </span>
+        </div>
+        <a class="action showcart active" title="" href="javascript:void(0)">
+            <i class="icon-cart">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22px" height="22px" viewBox="0 0 70 70">
+                    <image id="carticon" width="70" height="70" xlink:href="data:image/png;base64,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"/>
+                </svg>
+            </i>
+            <span class="counter qty" data-bind="html: getTotalQty()"></span>
+            <span class="text-cart"><?= __("カートを見る"); ?></span>
+        </a>
+    </div>
+
+    <div class="minicart_content">
+        <!-- ko if: !checkRealCartHanpukai() -->
+        <div class="minicart_head clearfix">
+            <div class="close_minicart_content action close" data-bind="click: hideCart, touchstart: hideCart">
+
+            </div>
+            <div class="actions_subtotals">
+                <div class="subtotals">
+                    <div class="subtotal_price">
+                        <span class="label"><?= __("Subtotal"); ?>:</span>
+                        <span class="price-wrapper"><span class="price" data-bind="text: subtotalNumber"></span></span>
+                    </div>
+                    <div class="subtotal_qty">
+                        <span class="label"><?= __("Total Qty"); ?>:</span>
+                        <span class="qty-wrapper"><span data-bind="text: getCartTotalQty()"></span></span>
+                    </div>
+                </div>
+                <div class="actions_checkout">
+                    <!-- ko if: checkRealCart() -->
+                    <div class="order-type-btn"><span data-bind="text: getOrderType()"></span></div>
+                    <!-- /ko -->
+                    <form data-bind="attr:{action: urlRemoveCart(),method: 'POST', id: 'form-validate-delete-cart'}">
+                        <?php echo $block->getBlockHtml('formkey'); ?>
+                            <input type="hidden" value="empty_cart" name="update_cart_action">
+                            <button type="submit"
+                                    title="<?php echo __('Clear carts'); ?>"
+                                    class="action clear clear_cart_all" id="empty_cart_button"
+                                    style="display: block;"  data-bind="click: clearCart, touchstart: clearCart">
+                                <i class="fa fa-trash-o"></i><span><?php echo __('Clear carts'); ?></span>
+                            </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: checkRealCartHanpukai() -->
+        <div class="minicart_head_hanpukai">
+            <div class="hanpukai-head">
+                <div class="order-type-btn"><span data-bind="i18n: 'Order type Hanpukai'"></span></div>
+                <div class="close_minicart_content action close" data-bind="click: hideCart, touchstart: hideCart">&nbsp;</div>
+            </div>
+            <div class="hanpukai-item-name"><span data-bind="text: getRikiCourseName()"></span></div>
+            <div class="hanpukai-price"><span>小計 </span><span data-bind="text: subtotalNumber"></span></div>
+            <div class="hanpukai-qty-action">
+                <div class="hanpukai-qty"><span data-bind="text: getRikiHanpukaiQty()"></span></div>
+                <form data-bind="attr:{action: urlRemoveCart(),method: 'POST', id: 'form-validate-delete-cart'}">
+                    <?php echo $block->getBlockHtml('formkey'); ?>
+                    <input type="hidden" value="empty_cart" name="update_cart_action">
+                    <button type="submit"
+                            title="<?php echo __('Clear carts'); ?>"
+                            class="action clear clear_cart_all" id="empty_cart_button"
+                            style="display: block;"  data-bind="click: clearCart, touchstart: clearCart">
+                        <i class="fa fa-trash-o"></i><span>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+        <!-- /ko -->
+        <div class="minicart_content-inner" data-bind="foreach: productsInCart">
+            <!-- ko if: !free_item || is_riki_machine -->
+            <div class="minicart_content-item">
+                <div class="minicart_content-head">
+                    <div class="product-item-photo">
+                        <div class="product-image-container">
+                            <img class="product-image-photo" width="80px" data-bind="attr: {src:imageUrl, alt:name}"/>
+                        </div>
+                    </div>
+                    <div class="minicart-head-right">
+                        <strong class="product-item-name" data-bind="text: name">
+                            <span></span>
+                        </strong>
+                     <!-- ko if: !$parent.checkRealCartHanpukai() -->
+                        <!-- ko if: $parent.hasGiftWrapping($data)-->
+                        <div class="control gift-wrapping-select">
+                            <div class="select-wrapper">
+                                <select class="input-new select-box" data-bind="attr: {name: 'gift_wrapping_' + id + '_' + catId}, event: {change: function() {$parent.updateGiftWrapping(id, catId)}}">
+                                    <option value="-1" data-bind="i18n: 'のし包装歳暮'"></option>
+                                    <!-- ko foreach: $parent.getOptionGiftWrapping(gift_wrapping) -->
+                                    <option data-bind="text: label  + ' ' + priceAfterFormat, attr: {value: id, selected: (id == $parent.giftWrappingSelected), 'data-price':price, id:'gift_wrapping_' + $parent.id + '_' + $parent.catId+ '_' + id}"></option>
+                                    <!-- /ko -->
+                                </select>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                    <!-- /ko -->
+                    </div>
+                </div>
+
+                <div class="product-item-details">
+                    <!-- ko if: !$parent.checkRealCartHanpukai() -->
+                    <div class="details_group-prive">
+                        <div class="minicart-price">
+                            <span class="price" data-bind="text: $parent.getPriceFormatted(finalPriceNumber)"></span>
+                        </div>
+                        <div class="minicart-price minicart-price_total">
+                            <label><?php echo __('Subtotal ck') ?></label>
+                            <span class="price" data-bind="text: subtotal"></span>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if: $parent.checkRealCartHanpukai() -->
+                    <div class="details_group-prive">
+                        <div class="minicart-price">
+                            <span>数量  </span><span class="price" data-bind="text: qtySelected"></span>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if: !$parent.checkRealCartHanpukai() -->
+                    <div class="details-qty-price">
+                        <div class="cart_group-label">
+                            <label class="group-label__cool" data-bind="visible: $parent.deliveryTypeIs($data,'cool')">
+                                <?php echo __('Cool') ?>
+                            </label>
+                            <label class="group-label__dm" data-bind="visible: $parent.deliveryTypeIs($data,'direct_mail')">
+                                <div><?= __('DM') ?></div>
+                            </label>
+                            <label class="group-label__cold" data-bind="visible: $parent.deliveryTypeIs($data,'cold')">
+                                <div><?= __('別送') ?></div>
+                                <div class="txt-cold"><?=__('冷蔵専用') ?></div>
+                            </label>
+                            <label class="group-label__chilled" data-bind="visible: $parent.deliveryTypeIs($data,'chilled')">
+                                <div><?= __('別送') ?></div>
+                                <div class="txt-chilled"><?php echo __('冷凍専用') ?></div>
+                            </label>
+                            <label class="group-label__cosmetic" data-bind="visible: $parent.deliveryTypeIs($data,'cosmetic')">
+                                <div><?= __('別送') ?></div>
+                                <div class="txt-cosmetic"><?= __('化粧品専用') ?></div>
+                            </label>
+                            <!-- ko if: $parent.hasGiftWrapping($data) && subtotal != 0 -->
+                            <!-- ko if: $parent.hasFreeGiftWrapping(gift_wrapping) -->
+                            <label class="group-label__gift"><?php echo __('Wrapping Free') ?></label>
+                            <!-- /ko -->
+                            <!-- ko if: !$parent.hasFreeGiftWrapping(gift_wrapping) -->
+                            <label class="group-label__gift"><?php echo __('Wrapping Available') ?></label>
+                            <!-- /ko -->
+                            <!-- /ko -->
+                            <label class="group-label__free-gift" data-bind="visible: $parent.hasGiftWrapping($data) && subtotal == 0  ? true : false">
+                                <?php echo __('Free Gift') ?>
+                            </label>
+                        </div>
+
+                        <div class="details-qty-inner">
+                            <div class="detail_form">
+                                <div class="details-qty_form" data-bind="visible: type === 'machine' ? false : true">
+                                    <span class="minus delete"
+                                          data-bind="attr: { id: 'minicart_qty_delete_' + id + '_'+ catId},click: $parent.qtyDecrement, touchstart: $parent.qtyDecrement,css: { hidden: qtySelected() > 1}">
+                                        <span><?php echo __('Delete') ?></span>
+                                    </span>
+                                    <span class="minus btn_qty"
+                                          data-bind="attr: { id: 'minicart_qty_minus_' + id + '_'+ catId},click: $parent.qtyDecrement, touchstart: $parent.qtyDecrement,css: { hidden: qtySelected() <= 1}">
+                                        <i class="fa fa-minus" aria-hidden="true"></i></span>
+                                    <select data-bind="attr: { id: 'minicart_qty_select_' + id + '_'+ catId},value: qtySelected"
+                                            data-render="0">
+                                    </select>
+
+                                    <span class="plus btn_qty"
+                                          data-bind="attr: { id: 'minicart_qty_plus_' + id + '_'+ catId},click: $parent.qtyIncrement, touchstart: $parent.qtyIncrement,css: { disabled: qty()  >= maxQty}"><i
+                                                class="fa fa-plus" aria-hidden="true"></i></span>
+                                </div>
+                            </div>
+                            <button class="minicart-remove-cart" data-bind="attr: { id: 'minicart_qty_remove_' + id + '_'+ catId},click: $parent.removeProduct, touchstart: $parent.removeProduct, visible: type === 'machine' ? false : true">
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+
+        <div class="minicart_content-footer">
+            <div class="actions_checkout tracking_enable_disable_add_to_cart_button">
+                <button class="actions_checkout_button"
+                   data-bind="click: submitCart, touchstart: submitCart,text: getBtCheckoutText()"></button>
+            </div>
+        </div>
+    </div>
+    <div class="minicart-screen" data-bind="click: hideCart, touchstart: hideCart">&nbsp;</div>
+</div>
+<!-- case mini cart  hanpukai start -->
+<?php else: ?>
+<div class="block-minicart" id="riki-block-minicart" data-bind="scope: 'mMiniCart'">
+    <div class="minicart-wraper">
+        <div class="total-cart total-amount">
+            <span class="item"><?= __("合計（税込）"); ?></span>
+            <span class="total-price mb-total-price" data-bind="html: getSubtotalHanpukaiPage()"> </span>
+        </div>
+        <a class="action showcart active" data-bind="attr: {href: getUrlCheckoutCart()}">
+            <i class="icon-cart">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22px" height="22px" viewBox="0 0 70 70">
+                    <image id="carticon" width="70" height="70" xlink:href="data:image/png;base64,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"/>
+                </svg>
+            </i>
+            <span class="counter qty" data-bind="html: getTotalQtyHanpukaiPage()"></span>
+            <span class="text-cart"><?= __("カートを見る"); ?></span>
+        </a>
+    </div>
+</div>
+<?php endif; ?>
+<!-- case mini cart  hanpukai end -->
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+           "Magento_Ui/js/core/app": {
+               "components": {
+                    "mMiniCart": {
+                        "component": "Riki_Theme/js/minicart"
+                   }
+               }
+            }
+       }
+    }
+</script>
+<script>
+    window.getDesignsInfo = <?= /* @escapeNotVerified */ $block->getDesignsInfo()->toJson() ?>;
+    window.minicartCheckout = <?= /* @escapeNotVerified */ $block->getCheckoutConfig() ?>;
+</script>

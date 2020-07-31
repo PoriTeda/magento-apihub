@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <freemachine>
+            <stock>
+                <default_place>2</default_place>
+            </stock>
+            <paygent_authorize_fail>
+                <sender>general</sender>
+                <email_template>freemachine_paygent_authorize_fail_email_template</email_template>
+            </paygent_authorize_fail>
+        </freemachine>
+        <loggersetting>
+            <subscriptionlogger>
+                <monthly_fee_api>1</monthly_fee_api>
+            </subscriptionlogger>
+        </loggersetting>
+    </default>
+</config>

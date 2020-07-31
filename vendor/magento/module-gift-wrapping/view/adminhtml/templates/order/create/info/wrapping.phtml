@@ -1,0 +1,20 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var $block \Magento\GiftWrapping\Block\Adminhtml\Order\Create\Info\Content */ ?>
+
+<fieldset class="admin__fieldset">
+    <?php if ($block->isGiftWrappingForEntireOrder()): ?>
+    <legend class="admin__legend"><span><?= /* @escapeNotVerified */ __('Gift Wrapping for the Entire Order') ?></span></legend>
+    <?php else: ?>
+    <legend class="admin__legend"><span><?= /* @escapeNotVerified */ __('Other Gift Options') ?></span></legend>
+    <?php endif; ?>
+    <br>
+    <?php require 'content.phtml'; ?>
+</fieldset>

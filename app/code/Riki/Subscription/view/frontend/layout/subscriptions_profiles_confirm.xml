@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" layout="1column">
+    <head>
+        <script src="Riki_Subscription::js/edit/edit_profile.js"/>
+    </head>
+    <body>
+        <referenceBlock name="header-wrapper" remove="true"/>
+        <referenceContainer name="content">
+            <block class="Riki\Subscription\Block\Profiles\Confirm" name="subscription_profiles_confirm" template="Riki_Subscription::profiles/confirm.phtml" cacheable="false">
+            </block>
+        </referenceContainer>
+    </body>
+</page>

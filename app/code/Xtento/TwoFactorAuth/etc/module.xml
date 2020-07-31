@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Xtento_TwoFactorAuth" setup_version="2.1.5">
+        <sequence>
+            <module name="Magento_Backend"/>
+            <module name="Xtento_XtCore"/>
+        </sequence>
+    </module>
+</config>
+<!--
+/**
+ * Product:       Xtento_TwoFactorAuth (2.1.5)
+ * ID:            %!uniqueid!%
+ * Packaged:      %!packaged!%
+ * Last Modified: 2017-10-13T10:00:34+00:00
+ * File:          etc/module.xml
+ * Copyright:     Copyright (c) 2017 XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

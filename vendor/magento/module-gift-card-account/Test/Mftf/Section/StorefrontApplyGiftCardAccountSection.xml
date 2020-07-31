@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="StorefrontApplyGiftCardAccountSection">
+        <element name="applyGiftCardSection" type="text" selector="#giftcardaccount-placer"/>
+        <element name="sectionGiftCardIsExpanded" type="text" selector="#giftcardaccount-placer>div.payment-option-content"/>
+        <element name="openApplyGiftCardSection" type="text" selector="#block-giftcard-heading"/>
+        <element name="giftCardCodeField" type="input" selector="#giftcard-code"/>
+        <element name="applyGiftCardButton" type="button" selector="#giftcard-form>div.actions-toolbar>div.primary>button"/>
+        <element name="seeBalanceButton" type="button" selector="#giftcard-form>div.actions-toolbar>div.secondary>button"/>
+        <element name="giftCardInfo" type="text" selector="#giftcard-form>div.payment-option-inner>div.giftcard-account-info>div.giftcard-account-number>span:nth-child(1)"/>
+        <element name="giftCardNumber" type="text" selector="#giftcard-form>div.payment-option-inner>div.giftcard-account-info>div.giftcard-account-number>span.giftcard-number"/>
+        <element name="currentBalance" type="text" selector="#giftcard-form>div.payment-option-inner>div.giftcard-account-info>div.giftcard-account-balance>span.price"/>
+        <element name="giftCardCodeAdded" type="text" selector="#giftcardaccount-placer>div.payment-option-content>div>div"/>
+        <element name="giftCardAccountCodeName" type="text" selector="#opc-sidebar>div.opc-block-summary>table >tbody >tr:nth-child(2)"/>
+        <element name="giftCardAccountCodeDiscount" type="text" selector="#opc-sidebar>div.opc-block-summary>table>tbody>tr.totals.giftcard>td"/>
+    </section>
+</sections>

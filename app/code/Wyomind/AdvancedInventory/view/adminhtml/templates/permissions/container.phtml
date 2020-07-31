@@ -1,0 +1,119 @@
+<?php
+/*
+ * Copyright © 2016 Wyomind. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+
+$pos = $block->getPos();
+$users = $block->getUsers();
+$permissions = $block->getPermissions();
+?>
+<script type="text/javascript">
+    AdvancedInventoryPermissions.permissions = <?php echo ($permissions == "*") ? "'*'" : $permissions; ?>;
+    AdvancedInventoryPermissions.url = "<?php echo $block->getUrl('*/*/save'); ?>";
+
+</script>
+
+
+
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td style="width:50%;"><h3 class="icon-head head-products"><?php echo __('Manage POS / Warehouses users permissions') ?></h3></td>
+            <td class="a-right">
+                <?php echo $block->getButtonsHtml() ?>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="" style="float:left;width:20%">
+    <div class="">
+        <table id="permissionsGrid_table" class="data-grid" cellspacing="0">
+            <thead class='head'>
+                <tr class="headings">
+                    <th style="min-width:200px;" class='data-grid-th'>
+                        <span class="nobr">
+
+                            <span class="sort-title" style=""><?php echo __('Admin User'); ?></span>
+
+                        </span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class='body'>
+                <?php
+                $i = 0;
+                foreach ($users as $user) {
+                    ?>
+                    <tr class="<?php echo ($i % 2 == 0) ? "even" : ""; ?> pointer">
+                        <td style="text-overflow:ellipsis">
+                            <?php echo str_replace(" ", "&nbsp;", $user['label']); ?>
+                        </td>
+                    </tr>
+                    <?php
+                    $i++;
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="" style="width:80%;float: left; overflow:auto;">
+    <div class="hor-scroll">
+        <table id="permissionsGrid_table" class="data-grid" cellspacing="0">
+            <thead class='head'>
+                <tr class="">
+                    <th class="data-grid-th">
+                        <span class="nobr">
+
+                            <span class="sort-title" style="color:orangered"><?php echo __("All"); ?></span>
+
+                        </span>
+                    </th>
+                    <th class='data-grid-th'>
+                        <span class="nobr">
+
+                            <span class="sort-title" style="color:orangered;"><?php echo __("Unassigned&nbsp;orders"); ?></span>
+
+                        </span>
+                    </th>
+                    <?php foreach ($pos as $store) { ?>
+                        <th class='data-grid-th'>
+                            <span class="nobr">
+
+                                <span class="sort-title"> <?php echo str_replace(" ", "&nbsp;", $store->getName()); ?></span>
+
+                            </span>
+                        </th>
+                    <?php } ?>
+                </tr>
+            </thead>
+            <tbody class='body'>
+                <?php
+                $i = 0;
+                $checked = ($permissions == "*") ? "checked" : "";
+                $disabled = ($permissions == "*") ? "disabled" : "";
+                foreach ($users as $user) {
+                    ?>
+                    <tr class="<?php echo ($i % 2 == 0) ? "even" : ""; ?> pointer">
+                        <td style="text-align:center;">
+                            <input type="checkbox" id="<?php echo $user['id']; ?>_all" <?php echo $checked; ?>/>
+                        </td>
+                        <td style="text-align:center;">
+                            <input class="store_cbx" type="checkbox" id="<?php echo $user['id']; ?>_0" <?php echo $checked . " " . $disabled; ?>/>
+                        </td>
+                        <?php foreach ($pos as $store) { ?>
+                            <td style="text-align:center;">
+                                <input class="store_cbx" type="checkbox" id="<?php echo $user['id']; ?>_<?php echo $store->getPlaceId(); ?>" <?php echo $checked . " " . $disabled; ?>/>
+                            </td>
+                        <?php } ?>
+                    </tr>
+                    <?php
+                    $i++;
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+

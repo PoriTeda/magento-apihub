@@ -1,0 +1,328 @@
+<?php
+/* @var $block \Riki\Subscription\Block\Frontend\Profile\View */
+$profileInfo = $block->getEntity();
+$courseInfo = $block->getCourseInfo($profileInfo->getData('course_id'));
+$customerInfo = $block->getCustomerInfo($profileInfo->getData('customer_id'));
+$shippingAddress = $block->getShippingAddressInfo();
+$checkAllowEditSubProfile = $block->checkAllowEditSubscriptionProfile();
+
+$total_payment_fee = 0;
+
+$totalProductsPrice = $block->getTotalProductsPrice();
+$giftWrappingFee = $block->getGiftWrappingFee();
+$finalShippingFee = $block->getFinalShippingFee();
+$paymentFee = $block->getPaymentFee();
+$pointUsed = 0;
+$total_payment_fee =  $block->getTotalPaymentFee();
+/*Simulator order info*/
+$simulatorOrder = $block->getSimulatorOrderOfProfile($profileInfo->getData('profile_id'));
+/** @var \Riki\Subscription\Helper\Data $helper */
+$helper = $this->helper('Riki\Subscription\Helper\Data');
+if($simulatorOrder) {
+    $discountAmount = $simulatorOrder->getDiscountAmount();
+    $gwFee = $simulatorOrder->getData('gw_items_base_incl_tax');
+    $grandTotal = $simulatorOrder->getGrandTotal();
+    $surchargeFee = $simulatorOrder->getFee() == null? 0: $simulatorOrder->getFee();
+    $subtotal = $simulatorOrder->getBaseSubtotalInclTax();
+    $shippingFee = $block->getShippingFeeAfterSimulator($simulatorOrder,$profileInfo->getData('store_id'));
+    $tax = $simulatorOrder->getTaxRikiTotal();
+    $pointUsed = $simulatorOrder->getUsedPointAmount();
+    $pointEarn = $simulatorOrder->getBonusPointAmount();
+}
+?>
+<div class="subscription-profile-view">
+    <?php if($checkAllowEditSubProfile):?>
+        <div class="actions-toolbar">
+        <a class="subscription-edit-profile" href="<?php echo $block->escapeUrl($block->getBaseUrlSubProfile()).'simulate/profile_id/'.$block->getProfileOriginFromTmp($profileInfo->getData('profile_id')) ?>">
+            <span><?php echo __('Simulate Order')?></span>
+        </a>
+        <a class="subscription-edit-profile" href="<?php echo $block->escapeUrl($block->getBaseUrlSubProfile()).'edit/id/'.$block->getProfileOriginFromTmp($profileInfo->getData('profile_id')) ?>">
+            <span><?php echo __('Edit Subscription')?></span>
+        </a>
+        </div>
+    <?php endif; ?>
+    <div class="content-profile-view">
+        <div class="profile-view-delivery-info">
+            <label><?php echo $courseInfo->getCourseName();?></label>
+            <?php
+            if(!empty($shippingAddress)):
+                foreach ($shippingAddress as $shipping):?>
+                <table class="table-deliery-info">
+                    <thead>
+                    <tr>
+                        <th colspan="2"><?php echo __('お届け情報')?></th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <td class="label"><span><?php echo __('お届け先') ?></span></td>
+                        <td><span><?php echo $block->getAddressName($shipping->getId()); ?></span></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><span><?php echo __('住所') ?></span></td>
+                        <td><span>
+                                <?php
+                                $address = array();
+                                if($shipping->getId() > 0) {
+                                    $address[] = $shipping->getStreetLine(1);
+                                    $address[] = $shipping->getCity();
+                                    $address[] = $shipping->getPostcode();
+                                    $address[] = $shipping->getRegion();
+                                }
+                                echo implode(', ', $address);
+                                ?></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label"><span><?php echo __('電話番号') ?></span></td>
+                        <td><span><?php echo $shipping->getTelephone(); ?></span></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><span><?php echo __('お届け予定日時') ?></span></td>
+                        <td><span><?php echo $profileInfo->getData('next_delivery_date'); ?></span></td>
+                    </tr>
+                </table>
+                <br/>
+            <?php
+                endforeach;
+            endif;
+            ?>
+
+            <table>
+                <tr>
+                    <td class="label"><span><?php echo __('お支払い方法') ?></span></td>
+                    <td><span><?php echo $block->getPaymentMethod(); ?></span></td>
+                </tr>
+            </table>
+        </div>
+
+
+        <div class="profile-payment-amount">
+            <div class="title">
+                <strong><?php echo __('お支払い金額(税込)')?></strong>
+            </div>
+            <table class="payment-total-table">
+                <thead></thead>
+                <tbody></tbody>
+                <tfoot>
+                <tr class="subtotal">
+                    <td colspan="4" class="mark" scope="row"><?php echo __('Subtotal')?></td>
+                    <td class="amount" data-th="Subtotal">
+                        <span class="price"><?php echo isset($subtotal)?$block->getFormatPriceProfile($subtotal) : $block->getFormatPriceProfile($totalProductsPrice);?></span>
+                    </td>
+                </tr>
+                <?php if(isset($discountAmount) and $discountAmount != 0) :?>
+                <tr class="discount">
+                    <td colspan="4" class="mark" scope="row"><?php echo __('Discount (Tax included)')?></td>
+                    <td class="amount" data-th="Subtotal">
+                        <span class="price"><?php echo $block->getFormatPriceProfile($discountAmount) ?></span>
+                    </td>
+                </tr>
+                <?php endif; ?>
+                <tr class="wrappingfee">
+                    <td colspan="4" class="mark" scope="row"><?php echo __('Wrapping Fee (Tax included)')?></td>
+                    <td class="amount" data-th="Subtotal">
+                        <span class="price"><?php echo isset($gwFee)? $block->getFormatPriceProfile($gwFee) : $block->getFormatPriceProfile($giftWrappingFee);?></span>
+                    </td>
+                </tr>
+                <tr class="shipping">
+                    <td colspan="4" class="mark" scope="row"><?php echo __('Shipping fee')?></td>
+                    <td class="amount" data-th="Subtotal">
+                        <span class="price"><?php echo isset($shippingFee)? $block->getFormatPriceProfile($shippingFee) : $block->getFormatPriceProfile($finalShippingFee);?></span>
+                    </td>
+                </tr>
+                <tr class="point-used">
+                    <td colspan="4" class="mark" scope="row"><?php echo __('Point used')?></td>
+                    <td class="amount" data-th="<?php echo __('Point used')?>">
+                        <span class="price"><?php echo $block->getFormatPriceProfile($pointUsed);?></span>
+                    </td>
+                </tr>
+                <tr class="paymentfee">
+                    <td colspan="4" class="mark" scope="row"><?php echo __('Transaction Fee (Tax included)')?></td>
+                    <td class="amount" data-th="Shipping &amp; Handling">
+                        <span class="price"><?php echo isset($surchargeFee)? $block->getFormatPriceProfile($surchargeFee) : $block->getFormatPriceProfile($paymentFee);?></span>
+                    </td>
+                </tr>
+                <tr class="tax">
+                    <td colspan="4" class="mark" scope="row"><?php echo __('Tax')?></td>
+                    <td class="amount" data-th="<?php echo __('Tax')?>">
+                        <span class="price"><?php echo isset($tax)?$block->getFormatPriceProfile($tax) : null ?></span>
+                    </td>
+                </tr>
+                <tr class="grand_total_incl">
+                    <td colspan="4" class="mark" scope="row"><?php echo __('Grand Total (Incl.Tax)')?></td>
+                    <td class="amount" data-th="<?php echo __('Grand Total (Incl.Tax)')?>">
+                        <span class="price"><?php echo  isset($grandTotal)? $block->getFormatPriceProfile($grandTotal) : $total_payment_fee;?></span>
+                    </td>
+                </tr>
+                <tr class="point_earn">
+                    <td colspan="4" class="mark" scope="row"><?php echo __('Earned reward point')?></td>
+                    <td class="amount" data-th="<?php echo __('Earned reward point')?>">
+                        <span class="price"><?php echo isset($pointEarn)? $pointEarn: 0;?><?php echo __('ポイント');?></span>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="profile-product-item">
+            <fieldset class="fieldset">
+                <strong><?php echo __("お届け予定商品")  ?></strong>
+                <div class="table-wrapper orders-history">
+                    <!--        Show list product here-->
+                    <?php
+                    $arrListProduct = $block->getListProduct();
+                    if(!empty($arrListProduct)):
+                    ?>
+                    <table class="data table table-order-items history" id="my-orders-table">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="col id"><?php echo __('商品') ?></th>
+                            <th scope="col" class="col name"><?php echo __("Product name")?></th>
+                            <th scope="col" class="col price"><?php echo __('商品価格') ?></th>
+                            <th scope="col" class="col qty"><?php echo __('数量') ?></th>
+                            <th scope="col" class="col total"><?php echo __('小計') ?> </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        $total_price = 0;
+                        foreach($arrListProduct as $entityId => $arrProduct):
+                            if(isset($arrProduct['profile']) && isset($arrProduct['details'])):
+                            ?>
+                            <tr>
+                                <td class="col product-image" data-th="<?php echo __('商品') ?>"><img src="<?php echo $block->getProductImagesProfile($arrProduct['details'])->getUrl(); ?>"></td>
+                                <td class="col name" data-th="<?php echo __("Product name")?>">
+                                    <span><?php echo  $arrProduct['details']->getData("name")  ?></span>
+                                    <?php
+                                        if($arrProduct['profile']->getData('gw_id') > 0 && $arrProduct['profile']->getData('gw_id') != null) {
+                                    ?>
+                                        <br/> <?php echo $block->getAttributeName($arrProduct['profile']->getData('gw_id')); ?>
+                                    <?php
+                                    }
+                                    ?>
+                                    <?php
+                                        $allowStockOrder = $arrProduct['details']->getData('allow_spot_order');
+                                        if (!$allowStockOrder):
+                                    ?>
+                                    <div class="stock unavailable">
+                                        <span>
+                                            <b>
+                                                <?php /* @escapeNotVerified */ echo __('Out of stock') ?>
+                                            </b>
+                                        </span>
+                                    </div>
+                                    <?php endif; ?>
+
+                                </td>
+                                <td class="col price" data-th="<?php echo __('商品価格') ?>">
+                                     <span class="price-excluding-tax" data-label="<?php echo $block->escapeHtml(__('Excl. Tax'));?>">
+                                        <span class="cart-price">
+                                            <?php
+                                            echo $this->helper('Magento\Checkout\Helper\Data')->formatPrice($arrProduct['amount']);
+                                            ?>
+                                        </span>
+                                    </span>
+
+                                </td>
+                                <?php if($arrProduct['profile']->getData("unit_case") == 'CS') { ?>
+                                    <td class="col qty" data-th="<?php echo __('数量') ?>"><?php echo $arrProduct['profile']->getData("qty")/$arrProduct['profile']->getData("unit_qty");?>(<?php echo __('CS');?><?php echo '('.$arrProduct['profile']->getData("unit_qty").' '.__('EA').')';?>)</td>
+                                <?php  } elseif($arrProduct['profile']->getData("unit_case") == 'N/A') {?>
+                                    <td class="col qty" data-th="<?php echo __('数量') ?>"><?php echo $arrProduct['profile']->getData("qty")  ?>(<?php echo __('EA');?>)</td>
+                                <?php  } else {?>
+                                    <td class="col qty" data-th="<?php echo __('数量') ?>"><?php echo $arrProduct['profile']->getData("qty")  ?>(<?php echo __('EA');?>)</td>
+                                <?php  } ?>
+                                <td class="col total price" data-th="<?php echo __('小計') ?>">
+                                    <span class="price-excluding-tax" data-label="<?php echo $block->escapeHtml(__('Excl. Tax'));?>">
+                                        <span class="cart-price">
+                                            <?php
+                                            $subtotal = ($arrProduct['amount'] *  $arrProduct['profile']->getData("qty"));
+                                            echo $this->helper('Magento\Checkout\Helper\Data')->formatPrice($subtotal);
+
+                                            ?>
+                                        </span>
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <?php
+                            $total_price += $arrProduct['details']->getData("price") *  $arrProduct['profile']->getData("qty");
+                            endif;
+                        endforeach; ?>
+                        <?php $freeGifts = $helper->getFreeGifts($simulatorOrder); ?>
+                        <?php if (sizeof($freeGifts)) : ?>
+                            <?php /** @var \Riki\Subscription\Model\Emulator\Order\Item $orderItem */;?>
+                            <?php foreach ($freeGifts as $orderItem) : //Amasty free gifts ?>
+                                <tr>
+                                    <td class="col product-image" data-th="<?php echo __('商品') ?>">
+                                        <img src="<?php echo $block->getProductImagesProfile($orderItem->getProduct())->getUrl(); ?>">
+                                    </td>
+                                    <td class="col name" data-th="<?php echo __("Product name")?>">
+                                        <?php echo $orderItem->getName();?>
+                                    </td>
+                                    <td class="col price" data-th="<?php echo __('商品価格') ?>">
+                                        <span class="price-excluding-tax" data-label="<?php echo $block->escapeHtml(__('Excl. Tax'));?>">
+                                            <span class="cart-price">
+                                                <?php echo $this->helper('Magento\Checkout\Helper\Data')->formatPrice($orderItem->getPrice());?>
+                                            </span>
+                                        </span>
+                                    </td>
+                                    <td class="col qty" data-th="<?php echo __('数量') ?>">
+                                        <?php if ($orderItem->getData("unit_case") == 'CS') : ?>
+                                            <?php echo $orderItem->getQtyOrdered()/$orderItem->getData("unit_qty");?>(<?php echo __('CS');?><?php echo '('.$orderItem->getData("unit_qty").' '.__('EA').')';?>)
+
+                                        <?php else : ?>
+                                            <?php echo $orderItem->getQtyOrdered() ;?>(<?php echo __('EA');?>)
+                                        <?php endif;?>
+                                    </td>
+                                    <td class="col total price" data-th="<?php echo __('小計') ?>">
+                                    <span class="price-excluding-tax" data-label="<?php echo $block->escapeHtml(__('Excl. Tax'));?>">
+                                        <span class="cart-price">
+                                            <?php echo $this->helper('Magento\Checkout\Helper\Data')->formatPrice($orderItem->getPrice()); ?>
+                                        </span>
+                                    </span>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif;?>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="4"><?php echo __('Shipping fee');?></td>
+                            <td colspan="2"><?php echo isset($shippingFee)? $block->getFormatPriceProfile($shippingFee) : $block->getFormatPriceProfile($finalShippingFee);?></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">お支払い予定金額</td>
+                            <td colspan="2">
+                                    <span class="price-excluding-tax" data-label="<?php echo $block->escapeHtml(__('Excl. Tax'));?>">
+                                        <span class="cart-price">
+                                            <?php
+                                            $finalShippingFee = isset($shippingFee)?$shippingFee:$finalShippingFee;
+                                            $total_payment_amount = ($totalProductsPrice + $finalShippingFee);
+                                            echo $this->helper('Magento\Checkout\Helper\Data')->formatPrice($total_payment_amount);
+                                            ?>
+                                        </span>
+                                    </span>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </fieldset>
+        </div>
+    </div>
+    <div class="actions-toolbar">
+
+            <a href="<?php echo $block->escapeUrl($block->getBaseUrlSubProfile()) ?>" class="action back"> <!-- remove class  back -->
+                <span><?php /* @escapeNotVerified */ echo __('Back') ?></span>
+            </a>
+            <?php if($checkAllowEditSubProfile):?>
+                <a class="subscription-edit-profile" href="<?php echo $block->escapeUrl($block->getBaseUrlSubProfile()).'simulate/profile_id/'.$block->getProfileOriginFromTmp($profileInfo->getData('profile_id')) ?>">
+                    <span><?php echo __('Simulate Order')?></span>
+                </a>
+                <a class="subscription-edit-profile" href="<?php echo $block->escapeUrl($block->getBaseUrlSubProfile()).'edit/id/'.$block->getProfileOriginFromTmp($profileInfo->getData('profile_id')) ?>">
+                    <span><?php echo __('Edit Subscription')?></span>
+                </a>
+            <?php endif;?>
+
+    </div>
+</div>

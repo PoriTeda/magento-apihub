@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <rma>
+            <reason>
+                <cod_not_allowed>11,12,13,14,15,16,21,22,23,24</cod_not_allowed>
+                <cod_rejected>11,12,13,14,15,16,17,18,19,20,21,22,23,24,41,44,45,51</cod_rejected>
+            </reason>
+            <refund_method>
+                <enable_payment>cvspayment,paygent,invoicedbasedpayment,cashondelivery</enable_payment>
+                <enable_refund>checkmo,banktransfer,invoicedbasedpayment,paygent</enable_refund>
+            </refund_method>
+            <paygent>
+                <default>paygent</default>
+                <alternative>checkmo,banktransfer</alternative>
+            </paygent>
+            <cvspayment>
+                <default>checkmo</default>
+                <alternative>banktransfer</alternative>
+            </cvspayment>
+            <cashondelivery>
+                <default>checkmo</default>
+                <alternative>banktransfer</alternative>
+            </cashondelivery>
+            <return_amount>
+                <remaining_amount_limit>4000</remaining_amount_limit>
+                <shipment_fees_with_remaining>-450</shipment_fees_with_remaining>
+            </return_amount>
+            <review_cc_cron>
+                <schedule>*/10 * * * *</schedule>
+            </review_cc_cron>
+            <riki_rma_mass_action>
+                <schedule>*/10 * * * *</schedule>
+            </riki_rma_mass_action>
+            <carrier>
+                <cod>yupack</cod>
+            </carrier>
+        </rma>
+    </default>
+</config>

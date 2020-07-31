@@ -1,0 +1,14 @@
+<?php /* @var $block \Riki\Preorder\Block\Product\View\Preorder\ProductConfigurable */?>
+
+<script type="text/javascript">
+    require(['jquery', 'Riki_Preorder/js/product/preorder_configurable'], function($) {
+        $widget = $.mage.rikiPreorderConfigurable({
+            aviabilityElement: $(".stock").first(),
+            addToCartButton: $("#product-addtocart-button span"),
+            preOrderNote: '',
+            addToCartLabel: '',
+            map: <?=json_encode($block->getProductPreorderMap());?>,
+            currentAttributes: <?=json_encode($block->getConfigurableAttributes());?>
+        });
+    });
+</script>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/layout_generic.xsd">
+    <container name="root">
+        <!--<block class="Riki\Subscription\Block\Adminhtml\Customer\Tab\Profile" name="profile_info" template="Riki_Subscription::profile/list.phtml">-->
+            <block class="Riki\Subscription\Block\Adminhtml\Customer\Tab\View\Grid" name="profile_list_grid" as="grid"/>
+        <!--</block>-->
+    </container>
+</layout>

@@ -1,0 +1,82 @@
+<li id="reward-point" class="checkout-reward-point">
+    <!-- ko ifnot: hasPointForTrial() -->
+    <div class="opc-single-sub reward-point-block">
+        <div class="opc-sub-title" data-bind="i18n: 'How to use shopping points'"></div>
+        <div class="shoping-point-content">
+            <div class="reward-point-info">
+                <!-- ko if: pointControl()=='0' -->
+                <span class="selected-option" data-bind="i18n: 'Do not use a point'"></span><br />
+                <!-- /ko -->
+                <!-- ko if: pointControl()=='1' -->
+                <span class="selected-option" data-bind="i18n: 'Use all point'"></span><br />
+                <!-- /ko -->
+                <!-- ko if: pointControl()=='2' -->
+                <span class="selected-option" data-bind="i18n: 'Using some of point'"></span><br />
+                <!-- /ko -->
+                (<span data-bind="i18n: 'Available point balance:'"></span>:<span data-bind="text: window.customerData.loyalty_reward_point"></span><span data-bind="i18n: 'pts'"></span>)
+            </div>
+            <div class="actions-group">
+                <button type="button" class="action btn-blue" data-bind="click: showPopupModal">
+                    <span data-bind="i18n: 'Edit info'"></span>
+                </button>
+            </div>
+        </div>
+        <div data-bind="attr: { 'id': 'opc-select-reward-point-use'},visible: false, afterRender: initPopupModal">
+            <form class="form form-reward-point" id="reward-point-form">
+                <div class="point-balance">
+                    <div class="avaiable-point" data-bind="i18n: 'Available point balance:'"></div>
+                    <div class="number-point">
+                        <span  data-bind="text: window.customerData.loyalty_reward_point"></span><span data-bind="i18n: 'point'"></span>
+                    </div>
+                </div>
+                <div class="how-to-block">
+                    <div data-bind="i18n: 'how to automatically use your points'"></div>
+                    <!-- ko if: pointControl()=='0' -->
+                    <div class="selected-option" data-bind="i18n: 'Current : Earn points (Do not use a point)'"></div>
+                    <!-- /ko -->
+                    <!-- ko if: pointControl()=='1' -->
+                    <div class="selected-option" data-bind="i18n: 'Current : Earn points (Use all point)'"></div>
+                    <!-- /ko -->
+                    <!-- ko if: pointControl()=='2' -->
+                    <div class="selected-option" data-bind="i18n: 'Current : Earn points (Using some of point)'"></div>
+                    <!-- /ko -->
+                </div>
+                <div class="select-point">
+                    <div class="select">
+                        <input type="radio" class="radio" name="select-point" id="select-point-0"  value="0" data-bind="checked: pointControl">
+                        <label for="select-point-0" class="value" data-bind="i18n: 'Do not use a point'"></label>
+                    </div>
+                    <div class="select">
+                        <div class="left">
+                            <input type="radio" class="radio" name="select-point" id="select-point-1"  value="1" data-bind="checked: pointControl">
+                            <label for="select-point-1" class="value" data-bind="i18n: 'Use all point'"></label>
+                        </div>
+                        <div class="right">
+                            <div data-bind="i18n: 'Available points for this order'"></div>
+                            <div><span data-bind="i18n: 'Maximum'"></span>: <span data-bind="text: pointEstimation()"></span><span data-bind="i18n: 'pts'"></span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="check-point-input">
+                    <input type="text" name="select-point-amount"
+                           id="point-amount"
+                           data-bind="value: pointAmount"
+                           data-validate="{'point-validate-digits': true, 'point-redeem-negative': true, 'point-redeem-total': true, 'point-redeem-balance': true}">
+                    <button  class="action action-apply btn-use-point" type="submit" data-bind="click: apply">
+                        <span><!-- ko i18n: 'Apply Reward Point'--><!-- /ko --></span>
+                    </button>
+                </div>
+            </form>
+
+            <ul class="list-text">
+                <li><a data-bind="attr: { href: urlPointsHistory}" target="_blank" ><!-- ko i18n: 'Point history'--><!-- /ko --></a></li>
+                <li><a data-bind="attr: { href: urlPointsExpired }" target="_blank"><!-- ko i18n: 'Revocation plan'--><!-- /ko --></a></li>
+                <li><a href="https://shop.nestle.jp/contents/about_nsp/" target="_blank" rel="noopener noreferrer"><!-- ko i18n: 'About Shopping Point'--><!-- /ko --></a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- /ko -->
+</li>
+
+

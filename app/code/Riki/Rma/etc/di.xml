@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- preference -->
+    <preference for="Riki\Rma\Api\RmaRepositoryInterface" type="Riki\Rma\Model\Repository\RmaRepository" />
+    <preference for="Riki\Rma\Api\GridRepositoryInterface" type="Riki\Rma\Model\Repository\Rma\GridRepository" />
+    <preference for="Riki\Rma\Api\ReasonRepositoryInterface" type="Riki\Rma\Model\Repository\ReasonRepository" />
+    <preference for="Riki\Rma\Api\Data\GridInterface" type="Riki\Rma\Model\Grid" />
+    <preference for="Riki\Rma\Api\Data\ReasonInterface" type="Riki\Rma\Model\Reason" />
+    <preference for="Riki\Rma\Api\Data\ItemInterface" type="Riki\Rma\Model\Item" />
+    <preference for="Riki\Rma\Api\Data\Rma\Status\HistoryInterface" type="Riki\Rma\Model\Rma\Status\History" />
+    <preference for="Riki\Rma\Api\Rma\Status\HistoryRepositoryInterface" type="Riki\Rma\Model\Repository\Rma\Status\HistoryRepository" />
+    <preference for="Riki\Rma\Api\ItemRepositoryInterface" type="Riki\Rma\Model\Repository\ItemRepository" />
+    <preference for="Riki\Rma\Api\Data\RmaInterface" type="Riki\Rma\Model\Rma" />
+    <preference for="Riki\Rma\Api\Data\NewRmaInterface" type="Riki\Rma\Model\NewRma" />
+    <preference for="Riki\Rma\Api\Data\NewRmaResultInterface" type="Riki\Rma\Model\NewRmaResult" />
+    <preference for="Riki\Rma\Api\RmaManagementInterface" type="Riki\Rma\Model\RmaManagement" />
+
+    <!-- type -->
+    <type name="Magento\Config\Model\Config\Structure\Element\Section">
+        <plugin name="rikiRma_SectionPlugin" type="Riki\Rma\Plugin\Config\Model\Config\Structure\Element\SectionPlugin" disabled="false" sortOrder="100" />
+    </type>
+    <type name="Magento\Rma\Model\Rma">
+        <plugin name="riki_rma_rma_model_rma_grid" type="Riki\Rma\Plugin\Rma\Model\Rma\Grid" sortOrder="20" />
+        <!--<plugin name="riki_rma_rma_model_rma_status" type="Riki\Rma\Plugin\Rma\Model\Rma\Status" sortOrder="50" />-->
+        <!--<plugin name="riki_rma_rma_model_rma_point" type="Riki\Rma\Plugin\Rma\Model\Rma\Point" sortOrder="60" />-->
+        <!--<plugin name="riki_rma_rma_model_rma_history" type="Riki\Rma\Plugin\Rma\Model\Rma\History" sortOrder="80" />-->
+        <plugin name="riki_rma_rma_model_rma_subscriptionProfile" type="Riki\Rma\Plugin\Rma\Model\Rma\SubscriptionProfile" sortOrder="100" />
+        <plugin name="riki_rma_rma_model_rma_add_review_cc_data_items" type="Riki\Rma\Plugin\Rma\Model\Rma\AddReviewCcDataForItems"/>
+    </type>
+    <type name="Magento\Customer\Model\Customer">
+        <plugin name="riki_rma_customer_model_customer" type="Riki\Rma\Plugin\Customer\Model\Customer" />
+    </type>
+    <type name="Magento\Sales\Model\Order">
+        <plugin name="riki_rma_customer_model_customer" type="Riki\Rma\Plugin\Sales\Model\Order" />
+    </type>
+    <type name="Magento\Rma\Block\Adminhtml\Rma\Grid">
+        <plugin name="riki_rma_rma_block_adminhtml_rma_grid" type="Riki\Rma\Plugin\Rma\Block\Adminhtml\Rma\Grid" />
+    </type>
+    <type name="Magento\Rma\Controller\Adminhtml\Rma\SaveNew">
+        <plugin name="riki_rma_rma_controller_adminhtml_rma_savenew" type="Riki\Rma\Plugin\Rma\Controller\Adminhtml\Rma\SaveNew" />
+    </type>
+    <type name="Magento\Rma\Block\Adminhtml\Rma\Edit\Tab\General\Details">
+        <plugin name="riki_rma_rma_block_adminhtml_rma_edit_tab_general_details" type="Riki\Rma\Plugin\Rma\Block\Adminhtml\Rma\Edit\Tab\General\Details" />
+    </type>
+    <type name="Magento\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\Grid">
+        <plugin name="riki_rma_rma_block_adminhtml_rma_edit_tab_items_grid" type="Riki\Rma\Plugin\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\Grid" />
+    </type>
+    <type name="Magento\Rma\Block\Adminhtml\Rma\NewRma\Tab\Items\Grid">
+        <plugin name="riki_rma_rma_block_adminhtml_rma_newrma_tab_items_grid" type="Riki\Rma\Plugin\Rma\Block\Adminhtml\Rma\NewRma\Tab\Items\Grid" />
+    </type>
+    <type name="Magento\Rma\Block\Adminhtml\Rma\NewRma\Tab\Items">
+        <plugin name="riki_rma_rma_block_adminhtml_rma_newrma_tab_items" type="Riki\Rma\Plugin\Rma\Block\Adminhtml\Rma\NewRma\Tab\Items" />
+    </type>
+    <type name="Magento\Rma\Block\Adminhtml\Rma\NewRma\Tab\Items\Order\Grid">
+        <plugin name="riki_rma_rma_block_adminhtml_rma_newrma_tab_items_order_grid" type="Riki\Rma\Plugin\Rma\Block\Adminhtml\Rma\NewRma\Tab\Items\Order\Grid" />
+    </type>
+    <type name="Magento\Rma\Block\Adminhtml\Rma\Edit">
+        <plugin name="riki_rma_rma_block_adminhtml_rma_edit" type="Riki\Rma\Plugin\Rma\Block\Adminhtml\Rma\Edit" />
+    </type>
+    <type name="Magento\Sales\Model\Order\Creditmemo\Config">
+        <plugin name="riki_rma_sales_model_order_creditmemo_config" type="Riki\Rma\Plugin\Sales\Model\Order\Creditmemo\Config" />
+    </type>
+    <type name="Magento\Rma\Model\Rma\Status\History">
+        <plugin name="riki_rma_rma_model_rma_status_history" type="Riki\Rma\Plugin\Rma\Model\Rma\Status\History" />
+    </type>
+    <!--<type name="Bluecom\Paygent\Helper\Data">-->
+        <!--<plugin name="riki_rma_paygent_helper_data" type="Riki\Rma\Plugin\Paygent\Helper\Data" />-->
+    <!--</type>-->
+    <!--<type name="Bluecom\Paygent\Model\Paygent">-->
+        <!--<plugin name="riki_rma_paygent_model_paygent" type="Riki\Rma\Plugin\Paygent\Model\Paygent" />-->
+    <!--</type>-->
+    <type name="Magento\Rma\Block\Adminhtml\Rma\Edit\Tab\General\History">
+        <plugin name="riki_rma_rma_block_adminhtml_rma_edit_tab_general_history" type="Riki\Rma\Plugin\Rma\Block\Adminhtml\Rma\Edit\Tab\General\History" />
+    </type>
+    <type name="Magento\Rma\Model\Item">
+        <plugin name="riki_rma_rma_model_item" type="Riki\Rma\Plugin\Rma\Model\Item" sortOrder="10" />
+    </type>
+    <type name="Magento\SalesRule\Block\Adminhtml\Promo\Quote\Edit\Tab\Main">
+        <plugin name="riki_rma_salesRule_block_adminhtml_promo_quote_edit_tab_main_promotionRmaValidator" type="Riki\Rma\Plugin\SalesRule\Block\Adminhtml\Promo\Quote\Edit\Tab\Main\PromotionRmaValidator" sortOrder="10" />
+    </type>
+    <type name="Magento\Rma\Block\Adminhtml\Rma\Edit\Tab\General\Shipping\Tracking">
+        <plugin name="riki_rma_rma_block_adminhtml_rma_edit_tab_general_shipping_tracking" type="Riki\Rma\Plugin\Rma\Block\Adminhtml\Rma\Edit\Tab\General\Shipping\Tracking" sortOrder="10" />
+    </type>
+    <type name="Riki\Rma\Model\Rma">
+        <plugin name="riki_rma_rma_model_rma" type="Riki\Rma\Plugin\Rma\Model\Rma" />
+    </type>
+
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="ReturnImportCommand" xsi:type="object">Riki\Rma\Command\ReturnImport</item>
+                <item name="RefundChangeStatusCommand" xsi:type="object">Riki\Rma\Command\RefundChangeStatus</item>
+                <item name="UpdatePaymentStatus" xsi:type="object">Riki\Rma\Command\UpdatePaymentStatus</item>
+                <item name="RefundApproveCommand" xsi:type="object">Riki\Rma\Command\RefundApprove</item>
+                <item name="UpdateRefundStatus" xsi:type="object">Riki\Rma\Command\UpdateRefundStatus</item>
+                <item name="ReturnComplete" xsi:type="object">Riki\Rma\Command\ReturnComplete</item>
+            </argument>
+        </arguments>
+    </type>
+    <preference for="Magento\Rma\Model\Shipping\Info"
+                type="Riki\Rma\Model\Shipping\Info"/>
+    <type name="Riki\Rma\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+
+    <preference for="Magento\Rma\Controller\Adminhtml\Rma\RmaCustomer"
+                type="Riki\Rma\Controller\Adminhtml\Rma\RmaCustomer"/>
+
+    <preference for="Magento\Rma\Model\Rma" type="Riki\Rma\Model\Rma"/>
+    <preference for="Magento\Rma\Model\ResourceModel\Item" type="Riki\Rma\Model\ResourceModel\Item"/>
+    <type name="Magento\Rma\Helper\Data">
+        <plugin name="riki_rma_can_create_return" type="Riki\Rma\Plugin\Rma\Helper\Data" />
+    </type>
+
+    <type name="Riki\Rma\Logger\Refund\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">refundLogger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="error" xsi:type="object">Riki\Rma\Logger\Refund\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\Rma\Logger\Point\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">returnRewardPointLogger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="error" xsi:type="object">Riki\Rma\Logger\Point\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

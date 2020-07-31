@@ -1,0 +1,401 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Riki\ThirdPartyImportExport\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Riki\ThirdPartyImportExport\Logger\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBi</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger cvs order payment -->
+    <type name="Riki\ThirdPartyImportExport\Logger\CvsOrderPayment\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">CvsOrderPayment</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\CvsOrderPayment\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export shipping -->
+    <type name="Riki\ThirdPartyImportExport\Logger\LoggerShippingCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportShipping</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\HandlerShippingCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export product -->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\Product\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiProduct</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\Product\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export Order -->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\Order\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiOrder</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\Order\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export Order -->
+    <!--logger bi export Order promotion -->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\OrderPromotion\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiOrderPromotion</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\OrderPromotion\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export Order promotion-->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\Shipment\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiShipment</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\Shipment\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export gift wrapping -->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\GiftWrapping\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiGiftWrapping</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\GiftWrapping\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export Stock -->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\Stock\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiStock</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\Stock\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export enquiry -->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\Enquiry\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiEnquiry</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\Enquiry\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export enquete -->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\Enquete\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiEnquete</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\Enquete\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export customer -->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\Customer\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiCustomer</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\Customer\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export customer -->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\Promotion\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiPromotion</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\Promotion\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export subscription profile -->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\SubscriptionProfile\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiSubscriptionProfile</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\SubscriptionProfile\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export subscription profile product cart -->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\SubscriptionProfile\LoggerSubProfileCart">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiSubscriptionProfileProductCart</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\SubscriptionProfile\HandlerSubProfileCart</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export subscription shipment profile -->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\SubscriptionProfile\LoggerShipmentCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiSubscriptionShipmentProfile</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\SubscriptionProfile\HandlerShipmentCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export subscription shipment profile product cart -->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\SubscriptionProfile\LoggerSubShipmentProfileCart">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiSubscriptionShipmentProfileProductCart</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\SubscriptionProfile\HandlerSubProfileCartShipment</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export subscription profile version -->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\SubscriptionProfile\LoggerSubVersion">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiSubscriptionProfileVersion</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\SubscriptionProfile\HandlerSubVersion</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!--logger bi export subscription course -->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\SubscriptionProfile\LoggerSubCourse">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiSubscriptionCourse</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\SubscriptionProfile\HandlerSubCourse</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!--logger bi export subscription course category-->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\SubscriptionProfile\LoggerSubCategory">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiSubscriptionCategory</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\SubscriptionProfile\HandlerSubCategory</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export reward point-->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\RewardPoint\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiRewardPoint</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\RewardPoint\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export fair seasonal gift-->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\FairSeasonalGift\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiFairSeasonalGift</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\FairSeasonalGift\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export rma-->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\Rma\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiRma</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\Rma\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export rma invoice-->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\RmaInvoice\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiRmaInvoice</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\RmaInvoice\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export shosha-->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\MmSalesReport\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiMmSalesReport</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\MmSalesReport\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export mm sales report-->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\Shosha\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ShoshaExport</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\Shosha\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi export invoice sale shipment-->
+    <type name="Riki\ThirdPartyImportExport\Logger\ExportToBi\InvoiceSaleShipment\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportBiInvoiceSaleShipment</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\ExportToBi\InvoiceSaleShipment\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- Create our type OrderLegacyGridDataProvider -->
+    <virtualType name="OrderLegacyGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\ThirdPartyImportExport\Model\ResourceModel\Order\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">OrderLegacyGridFilterPool</argument> <!-- Define new object for filters -->
+        </arguments>
+    </virtualType>
+
+    <!-- Create our type OrderLegacyGridFilterPool -->
+    <virtualType name="OrderLegacyGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Riki\ThirdPartyImportExport\Model\ResourceModel\Grid\Order\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">riki_order</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\ThirdPartyImportExport\Model\ResourceModel\Order</argument>
+        </arguments>
+    </type>
+
+    <!-- Type for order_legacy_listing_data_source -->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="order_legacy_listing_data_source" xsi:type="string">Riki\ThirdPartyImportExport\Model\ResourceModel\Grid\Order\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Simulate our class Riki\ThirdPartyImportExport\Model\ResourceModel\Grid\Order\Collection -->
+    <!--<virtualType name="Riki\ThirdPartyImportExport\Model\ResourceModel\Grid\Order\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">-->
+    <!--<arguments>-->
+    <!--<argument name="mainTable" xsi:type="string">riki_order</argument>-->
+    <!--<argument name="resourceModel" xsi:type="string">Riki\ThirdPartyImportExport\Model\ResourceModel\Order</argument>-->
+    <!--</arguments>-->
+    <!--</virtualType>-->
+
+    <preference for="Riki\ThirdPartyImportExport\Api\ExportNextDelivery\ProfileItemsInterface" type="Riki\ThirdPartyImportExport\Model\ExportNextDelivery\ProfileItems" />
+
+    <preference for="Riki\ThirdPartyImportExport\Api\ExportNextDelivery\ProfileItemInterface" type="Riki\ThirdPartyImportExport\Model\ExportNextDelivery\ProfileItem" />
+
+    <preference for="Magento\Amqp\Model\Queue" type="Riki\ThirdPartyImportExport\Model\Amqp\Queue" />
+
+    <preference for="Magento\Sales\Observer\GridSyncInsertObserver" type="Riki\ThirdPartyImportExport\Observer\GridSyncInsertObserver" />
+
+    <virtualType name="SalesOrderIndexGridSyncInsert" type="Riki\ThirdPartyImportExport\Observer\GridSyncInsertObserver">
+        <arguments>
+            <argument name="entityGrid" xsi:type="object">Magento\Sales\Model\ResourceModel\Order\Grid</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="SalesShipmentIndexGridSyncInsert" type="Riki\ThirdPartyImportExport\Observer\GridSyncInsertObserver">
+        <arguments>
+            <argument name="entityGrid" xsi:type="object">ShipmentGridAggregator</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\MessageQueue\MergerFactory">
+        <arguments>
+            <argument name="mergers" xsi:type="array">
+
+                <item name="aNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="bNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="cNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="dNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="eNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="fNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="gNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="hNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="iNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="jNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="kNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="lNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="mNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="nNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="oNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="pNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="qNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="rNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="sNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="tNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="uNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="vNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="wNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="xNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="yNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="zNextOrderSubscriptionProfileHeader" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+
+
+                <item name="aNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="bNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="cNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="dNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="eNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="fNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="gNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="hNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="iNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="jNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="kNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="lNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="mNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="nNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="oNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="pNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="qNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="rNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="sNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="tNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="uNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="vNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="wNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="xNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="yNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+                <item name="zNextOrderSubscriptionProfileSimulate" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Riki\ThirdPartyImportExport\Cron\Order\Import1">
+        <plugin name="riki_thirdPartyImportExport_plugin_thirdPartyImportExport_cron_order_import_initialize" type="Riki\ThirdPartyImportExport\Plugin\ThirdPartyImportExport\Cron\Order\Import\Initialize" sortOrder="1" />
+        <plugin name="riki_thirdPartyImportExport_plugin_thirdPartyImportExport_cron_order_import_files" type="Riki\ThirdPartyImportExport\Plugin\ThirdPartyImportExport\Cron\Order\Import\Files" sortOrder="2" />
+        <plugin name="riki_thirdPartyImportExport_plugin_thirdPartyImportExport_cron_order_import_emailNotification" type="Riki\ThirdPartyImportExport\Plugin\ThirdPartyImportExport\Cron\Order\Import\EmailNotification" sortOrder="3" />
+    </type>
+    <!--logger reconciliation-->
+    <type name="Riki\ThirdPartyImportExport\Logger\Reconciliation\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ExportReconciliation</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\Reconciliation\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger bi asumeproduct-->
+    <type name="Riki\ThirdPartyImportExport\Logger\Asume\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">AsumeProduct</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ThirdPartyImportExport\Logger\Asume\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

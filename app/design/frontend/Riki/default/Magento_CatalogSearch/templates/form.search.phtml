@@ -1,0 +1,52 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+?>
+<?php
+/** @var $block \Magento\Framework\View\Element\Template */
+/** @var $helper \Magento\Search\Helper\Data */
+$helper = $this->helper('Magento\Search\Helper\Data');
+?>
+<div class="block-catalog-search">
+    <div class="block-catalog-search-title"><strong><?php /* @escapeNotVerified */ echo __('Find Product'); ?></strong></div>
+    <div class="block-catalog-search-content">
+        <form class="form" id="search_catalog_form" action="<?php /* @escapeNotVerified */ echo $helper->getResultUrl() ?>" method="get">
+            <div class="field">
+                <label class="label" for="searchCatalog">
+                    <span><?php /* @escapeNotVerified */ echo __('Find Product'); ?></span>
+                </label>
+                <div class="control">
+                    <input id="searchCatalog"
+                           data-mage-init='{"quickSearch":{
+                                "formSelector":"#search_catalog_form",
+                                "url":"<?php /* @escapeNotVerified */ echo $block->getUrl('search/ajax/suggest'); ?>",
+                                "destinationSelector":"#search_autocomplete_catalog"}
+                           }'
+                           type="text"
+                           name="<?php /* @escapeNotVerified */ echo $helper->getQueryParamName() ?>"
+                           value="<?php /* @escapeNotVerified */ echo $helper->getEscapedQueryText() ?>"
+                           placeholder=""
+                           class="input-text"
+                           maxlength="<?php /* @escapeNotVerified */ echo $helper->getMaxQueryLength();?>"
+                           role="combobox"
+                           aria-haspopup="false"
+                           aria-autocomplete="both"
+                           autocomplete="off"/>
+                    <div id="search_autocomplete_catalog" class="search-autocomplete"></div>
+                    <?php echo $block->getChildHtml() ?>
+                </div>
+            </div>
+            <div class="actions">
+                <button type="submit"
+                        title="<?php echo $block->escapeHtml(__('Search')) ?>"
+                        class="action search">
+                    <span><?php /* @escapeNotVerified */ echo __('Search'); ?></span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Riki\CatalogRule\Block\Adminhtml\Wbs\Edit" name="wbs_conversion_fair_edit" />
+        </referenceContainer>
+        <referenceContainer name="left">
+            <block class="Riki\CatalogRule\Block\Adminhtml\Wbs\Edit\Tabs" name="wbs_conversion_tabs">
+                <block class="Riki\CatalogRule\Block\Adminhtml\Wbs\Edit\Tab\Main" name="wbs_conversion_edit_tab_main"/>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">main_section</argument>
+                    <argument name="block" xsi:type="string">wbs_conversion_edit_tab_main</argument>
+                </action>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="js">
+            <block class="Magento\Framework\View\Element\Text" name="riki_catalogrule_wbs_rule_validate">
+                <arguments>
+                    <argument name="text" xsi:type="string"><![CDATA[
+                    <script>require(["Riki_CatalogRule/js/rules"]);</script>
+                    ]]></argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

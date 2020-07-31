@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_ThirdPartyImportExport::order_legacy_menu"
+             title="Legacy Orders"
+             module="Riki_ThirdPartyImportExport"
+             sortOrder="45"
+             parent="Magento_Sales::sales"
+             resource="Magento_Sales::sales"
+            />
+        <add id="Riki_ThirdPartyImportExport::order_legacy"
+             title="Orders"
+             module="Riki_ThirdPartyImportExport"
+             sortOrder="10"
+             action="thirdpartyimportexport/index"
+             parent="Riki_ThirdPartyImportExport::order_legacy_menu"
+             resource="Riki_ThirdPartyImportExport::order_legacy"/>
+    </menu>
+</config>

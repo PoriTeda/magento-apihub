@@ -1,0 +1,638 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+
+    <preference for="Riki\Subscription\Api\ProfileRepositoryInterface"
+                type="Riki\Subscription\Model\Profile\ProfileRepository"/>
+    <preference for="Riki\Subscription\Api\WebApi\ProfileRepositoryInterface"
+                type="Riki\Subscription\Model\Profile\WebApi\ProfileRepository"/>
+    <preference for="Riki\Subscription\Api\Data\ProfileInterface"
+                type="Riki\Subscription\Model\Profile\Profile"/>
+    <preference for="Riki\Subscription\Api\Data\ProfileSearchResultsInterface"
+                type="Magento\Framework\Api\SearchResults"/>
+    <preference for="Riki\Subscription\Api\CreateOrderRepositoryInterface"
+                type="Riki\Subscription\Model\Order\CreateOrderRepository"/>
+    <preference for="Riki\Subscription\Api\Data\ApiProfileInterface"
+                type="\Riki\Subscription\Model\Data\ApiProfile"/>
+    <preference for="Riki\Subscription\Api\Data\ApiProductCartInterface"
+                type="\Riki\Subscription\Model\Data\ApiProductCart"/>
+    <preference for="Riki\Subscription\Api\ProfileProductCartRepositoryInterface"
+                type="Riki\Subscription\Model\ProductCart\ProfileProductCartRepository"/>
+    <preference for="Riki\Subscription\Api\Data\ProductCartSearchResultsInterface"
+                type="Magento\Framework\Api\SearchResults"/>
+    <preference for="Riki\Subscription\Api\Data\ValidatorInterface"
+                type="Riki\Subscription\Model\Validator"/>
+    <preference for="Riki\Subscription\Api\WebApi\SubProfileListProductByCategoryInterface"
+                type="Riki\Subscription\Model\Profile\WebApi\SubProfileListProductByCategory"/>
+    <preference for="Riki\Subscription\Api\WebApi\TagManagerInterface"
+                type="Riki\Subscription\Model\Profile\WebApi\TagManager"/>
+
+    <preference for="Riki\Subscription\Api\WebApi\SubProfileItemInterface" type="Riki\Subscription\Model\Profile\WebApi\SubProfileItem" />
+    <preference for="Riki\Subscription\Api\Data\Profile\ProductInterface" type="Riki\Subscription\Model\Data\Profile\Product" />
+    <preference for="Riki\Subscription\Api\Data\ProductCartInterface" type="Riki\Subscription\Model\Profile\SubProfileItems"/>
+    <preference for="Riki\Subscription\Api\Data\WebAppProfileInterface" type="Riki\Subscription\Model\Data\WebAppProfile"/>
+
+    <preference for="Riki\Subscription\Api\WebApi\LandingPage\LandingPageProfileInterface"
+                type="Riki\Subscription\Model\Profile\WebApi\LandingPage\LandingPageProfile"/>
+
+    <type name="Riki\Subscription\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Logger\HandlerReplaceProduct">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">subscriptionLogger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Subscription\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Logger\LoggerOrder">
+        <arguments>
+            <argument name="name" xsi:type="string">Subscription Logger Create Order</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Subscription\Logger\HandlerOrder</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Logger\LoggerFreeMachine">
+        <arguments>
+            <argument name="name" xsi:type="string">Subscription Logger Add Free Machine</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Subscription\Logger\HandlerFreeMachine</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Logger\LoggerSimulator">
+        <arguments>
+            <argument name="name" xsi:type="string">Subscription Simulator</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Subscription\Logger\HandlerSimulator</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Logger\LoggerReplaceProduct">
+        <arguments>
+            <argument name="name" xsi:type="string">Subscription Logger Replace Product</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Subscription\Logger\HandlerReplaceProduct</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Logger\LoggerPublishMessageQueue">
+        <arguments>
+            <argument name="name" xsi:type="string">Subscription Logger Publish profile to message queue</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Subscription\Logger\HandlerPublishMessageQueue</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Riki\Subscription\Logger\LoggerStateProfile">
+        <arguments>
+            <argument name="name" xsi:type="string">State Profile</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Subscription\Logger\HandlerStateProfile</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Riki\Subscription\Logger\LoggerDeleteProfile">
+        <arguments>
+            <argument name="name" xsi:type="string">Delete Profile</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Subscription\Logger\HandlerDeleteProfile</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Riki\Subscription\Logger\LoggerMergeProfile">
+        <arguments>
+            <argument name="name" xsi:type="string">Subscription Logger Merge Profile</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Subscription\Logger\HandlerMergeProfile</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Riki\Subscription\Logger\LoggerCancelIncompleteGenerateProfileOrder">
+        <arguments>
+            <argument name="name" xsi:type="string">Cancel Incomplete Generate Profile Order</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Subscription\Logger\HandlerCancelIncompleteGenerateProfileOrder</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Logger\DelayPayment">
+        <arguments>
+            <argument name="name" xsi:type="string">Delay Payment Order</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Subscription\Logger\HandlerDelayPayment</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Riki\Subscription\Logger\LoggerAddProductToProfile">
+        <arguments>
+            <argument name="name" xsi:type="string">Add Product To Profile</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Subscription\Logger\HandlerAddProductToProfile</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <preference for="Riki\Subscription\Api\WebApi\SubProfileCartOrderInterface"
+                type="Riki\Subscription\Model\ProductCart\ProductCart"/>
+    <preference for="Riki\Subscription\Api\WebApi\SubProfileCartProductsInterface"
+                type="Riki\Subscription\Model\ProductCart\ProductCart"/>
+    <type name="Magento\CatalogInventory\Model\StockStateProvider">
+        <plugin name="Wyomind_AdvancedInventory_Model_CatalogInventory_StockStateProvider" type="Riki\Subscription\Model\CatalogInventory\StockStateProvider" sortOrder="1"/>
+    </type>
+
+    <type name="Riki\ShippingProvider\Model\Carrier">
+        <plugin name="rikiSubscriptionShippingProviderModelCarrier" type="Riki\Subscription\Plugin\RikiShippingProvider\Model\Carrier" />
+    </type>
+
+    <type name="\Amasty\Promo\Observer\CollectTotalsAfterObserver">
+        <plugin name="rikiSubscriptionPromoCollectTotalsAfterObserver" type="Riki\Subscription\Plugin\Promo\Observer\CollectTotalsAfterObserver" />
+    </type>
+
+    <type name="Magento\SalesRule\Model\Rule\Action\Discount\CalculatorFactory">
+        <plugin name="rikiSubscriptionSalesRuleModelActionDiscountCalculatorFactory" type="Riki\Subscription\Plugin\SalesRule\Model\Rule\Action\Discount\CalculatorFactory" sortOrder="1" />
+        <plugin name="Amasty_Promo::CalculatorFactory" type="Amasty\Promo\Plugin\CalculatorFactory" sortOrder="2" />
+    </type>
+
+    <!-- api magic -->
+    <type name="Magento\Framework\Webapi\ServiceOutputProcessor">
+        <plugin name="Riki_Subscription_Webapi_ServiceOutputProcessor" type="Riki\Subscription\Webapi\ServiceOutputProcessor" sortOrder="1"/>
+    </type>
+
+    <!-- Begin Emulator di -->
+    <virtualType name="emulatorOrderMetadata" type="Riki\Subscription\Model\Emulator\ResourceModel\Order\Metadata">
+        <arguments>
+            <argument name="resourceClassName" xsi:type="string">Riki\Subscription\Model\Emulator\ResourceModel\Order</argument>
+            <argument name="modelClassName" xsi:type="string">Riki\Subscription\Model\Emulator\Order</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="emulatorOrderItemMetadata" type="Riki\Subscription\Model\Emulator\ResourceModel\Order\Metadata">
+        <arguments>
+            <argument name="resourceClassName" xsi:type="string">Riki\Subscription\Model\Emulator\ResourceModel\Order\Item</argument>
+            <argument name="modelClassName" xsi:type="string">Riki\Subscription\Model\Emulator\Order\Item</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="emulatorInvoiceMetadata" type="Riki\Subscription\Model\Emulator\ResourceModel\Order\Metadata">
+        <arguments>
+            <argument name="resourceClassName" xsi:type="string">Riki\Subscription\Model\Emulator\ResourceModel\Order\Invoice</argument>
+            <argument name="modelClassName" xsi:type="string">Riki\Subscription\Model\Emulator\Order\Invoice</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="emulatorShipmentMetadata" type="Riki\Subscription\Model\Emulator\ResourceModel\Order\Metadata">
+        <arguments>
+            <argument name="resourceClassName" xsi:type="string">Riki\Subscription\Model\Emulator\ResourceModel\Order\Shipment</argument>
+            <argument name="modelClassName" xsi:type="string">Riki\Subscription\Model\Emulator\Order\Shipment</argument>
+        </arguments>
+    </virtualType>
+    <!--virtualType name="emulatorCreditmemoMetadata" type="Riki\Subscription\Model\Emulator\ResourceModel\Order\Metadata">
+        <arguments>
+            <argument name="resourceClassName" xsi:type="string">Riki\Subscription\Model\Emulator\ResourceModel\Order\Creditmemo</argument>
+            <argument name="modelClassName" xsi:type="string">Riki\Subscription\Model\Emulator\Order\Creditmemo</argument>
+        </arguments>
+    </virtualType-->
+    <virtualType name="emulatorTransactionMetaData" type="Riki\Subscription\Model\Emulator\ResourceModel\Order\Metadata">
+        <arguments>
+            <argument name="resourceClassName" xsi:type="string">Riki\Subscription\Model\Emulator\ResourceModel\Order\Payment\Transaction</argument>
+            <argument name="modelClassName" xsi:type="string">Riki\Subscription\Model\Emulator\Order\Payment\Transaction</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="emulatorPaymentMetaData" type="Riki\Subscription\Model\Emulator\ResourceModel\Order\Metadata">
+        <arguments>
+            <argument name="resourceClassName" xsi:type="string">Riki\Subscription\Model\Emulator\ResourceModel\Order\Payment</argument>
+            <argument name="modelClassName" xsi:type="string">Riki\Subscription\Model\Emulator\Order\Payment</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="emulatorOrderAddressMetadata" type="Riki\Subscription\Model\Emulator\ResourceModel\Order\Metadata">
+        <arguments>
+            <argument name="resourceClassName" xsi:type="string">Riki\Subscription\Model\Emulator\ResourceModel\Order\Address</argument>
+            <argument name="modelClassName" xsi:type="string">Riki\Subscription\Model\Emulator\Order\Address</argument>
+        </arguments>
+    </virtualType>
+    <type name="Riki\Subscription\Model\Emulator\OrderRepository">
+        <arguments>
+            <argument name="metadata" xsi:type="object">emulatorOrderMetadata</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\Order\ItemRepository">
+        <arguments>
+            <argument name="metadata" xsi:type="object">emulatorOrderItemMetadata</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\Order\InvoiceRepository">
+        <arguments>
+            <argument name="invoiceMetadata" xsi:type="object">emulatorInvoiceMetadata</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\Order\ShipmentRepository">
+        <arguments>
+            <argument name="metadata" xsi:type="object">emulatorShipmentMetadata</argument>
+        </arguments>
+    </type>
+    <!--type name="Riki\Subscription\Model\Emulator\Order\CreditmemoRepository">
+        <arguments>
+            <argument name="metadata" xsi:type="object">emulatorCreditmemoMetadata</argument>
+        </arguments>
+    </type-->
+    <!--type name="Riki\Subscription\Model\Emulator\Order\Payment\Transaction\Repository">
+        <arguments>
+            <argument name="metaData" xsi:type="object">emulatorTransactionMetaData</argument>
+        </arguments>
+    </type-->
+    <type name="Riki\Subscription\Model\Emulator\Order\Payment\Repository">
+        <arguments>
+            <argument name="metaData" xsi:type="object">emulatorPaymentMetaData</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\Order\AddressRepository">
+        <arguments>
+            <argument name="metadata" xsi:type="object">emulatorOrderAddressMetadata</argument>
+        </arguments>
+    </type>
+
+
+    <virtualType name="emulatorOrderRelationsComposite" type="Magento\Framework\Model\ResourceModel\Db\VersionControl\RelationComposite">
+        <arguments>
+            <argument name="relationProcessors" xsi:type="array">
+                <item name="default" xsi:type="object">Riki\Subscription\Model\Emulator\ResourceModel\Order\Relation</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Order">
+        <arguments>
+            <argument name="entityRelationComposite" xsi:type="object">emulatorOrderRelationsComposite</argument>
+        </arguments>
+    </type>
+    <virtualType name="emulatorShipmentRelationsComposite" type="Magento\Framework\Model\ResourceModel\Db\VersionControl\RelationComposite">
+        <arguments>
+            <argument name="relationProcessors" xsi:type="array">
+                <item name="default" xsi:type="object">Riki\Subscription\Model\Emulator\ResourceModel\Order\Shipment\Relation</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Order\Shipment">
+        <arguments>
+            <argument name="entityRelationComposite" xsi:type="object">emulatorShipmentRelationsComposite</argument>
+        </arguments>
+    </type>
+    <!--virtualType name="InvoiceRelationsComposite" type="Magento\Framework\Model\ResourceModel\Db\VersionControl\RelationComposite">
+        <arguments>
+            <argument name="relationProcessors" xsi:type="array">
+                <item name="default" xsi:type="object">Magento\Sales\Model\ResourceModel\Order\Invoice\Relation</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Sales\Model\ResourceModel\Order\Invoice">
+        <arguments>
+            <argument name="entityRelationComposite" xsi:type="object">InvoiceRelationsComposite</argument>
+        </arguments>
+    </type>
+    <virtualType name="ShipmentRelationsComposite" type="Magento\Framework\Model\ResourceModel\Db\VersionControl\RelationComposite">
+        <arguments>
+            <argument name="relationProcessors" xsi:type="array">
+                <item name="default" xsi:type="object">Magento\Sales\Model\ResourceModel\Order\Shipment\Relation</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Sales\Model\ResourceModel\Order\Shipment">
+        <arguments>
+            <argument name="entityRelationComposite" xsi:type="object">ShipmentRelationsComposite</argument>
+        </arguments>
+    </type>
+    <virtualType name="CreditmemoRelationsComposite" type="Magento\Framework\Model\ResourceModel\Db\VersionControl\RelationComposite">
+        <arguments>
+            <argument name="relationProcessors" xsi:type="array">
+                <item name="default" xsi:type="object">Magento\Sales\Model\ResourceModel\Order\Creditmemo\Relation</item>
+                <item name="creditmemo_refund" xsi:type="object">Magento\Sales\Model\ResourceModel\Order\Creditmemo\Relation\Refund</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Sales\Model\ResourceModel\Order\Creditmemo">
+        <arguments>
+            <argument name="entityRelationComposite" xsi:type="object">CreditmemoRelationsComposite</argument>
+        </arguments>
+    </type-->
+
+    <!-- End Emulator di -->
+    <type name="Amasty\Promo\Observer\CollectTotalsAfterObserver">
+        <arguments>
+            <argument name="promoRegistry" xsi:type="object">Riki\Subscription\Model\Promotion\Registry</argument>
+        </arguments>
+    </type>
+    <type name="Amasty\Promo\Model\Rule\Action\Discount\AbstractDiscount">
+        <arguments>
+            <argument name="promoRegistry" xsi:type="object">Riki\Subscription\Model\Promotion\Registry</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Helper\Order\Data">
+        <arguments>
+            <argument name="promoRegistry" xsi:type="object">Riki\Subscription\Model\Promotion\Registry</argument>
+        </arguments>
+    </type>
+    <type name="Amasty\Promo\Observer\AddressCollectTotalsAfterObserver">
+        <arguments>
+            <argument name="promoRegistry" xsi:type="object">Riki\Subscription\Model\Promotion\Registry</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Sales\Observer\CheckFreeGiftAfterReorder">
+        <arguments>
+            <argument name="promoRegistry" xsi:type="object">Riki\Subscription\Model\Promotion\Registry</argument>
+        </arguments>
+    </type>
+    <type name="Amasty\Promo\Observer\FixWholeCartRuleObserver">
+        <arguments>
+            <argument name="promoRegistry" xsi:type="object">Riki\Subscription\Model\Promotion\Registry</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="SubscriptionBeforeImportCommand" xsi:type="object">Riki\Subscription\Command\SubscriptionBeforeImport</item>
+                <item name="SubscriptionAfterImportCommand" xsi:type="object">Riki\Subscription\Command\SubscriptionAfterImport</item>
+                <item name="SubscriptionImportCommand" xsi:type="object">Riki\Subscription\Command\SubscriptionImport</item>
+                <item name="ProductCartBeforeImportCommand" xsi:type="object">Riki\Subscription\Command\ProductCartBeforeImport</item>
+                <item name="ProductCartImportCommand" xsi:type="object">Riki\Subscription\Command\ProductCartImport</item>
+                <item name="SubscriptionProfileCartOosImportCommand" xsi:type="object">Riki\Subscription\Command\ProfileCartOosImport</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Frequency\ResourceModel\Frequency">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\ProductCart\ResourceModel\ProductCart">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Profile\ResourceModel\Profile">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Profile">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Profile\ResourceModel\ProfileLink">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Version\ResourceModel\Version">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Address">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Address\Item">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Address\Rate">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Cart">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Cart\Item">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Cart\Item\Option">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Cart\Payment">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Order">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Order\Address">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Order\Address\Item">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Order\Invoice">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Order\Item">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Order\Shipment">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Order\Status\History">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Order\Shipment\Item">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Order\Shipment\Track">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Order\Tax">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Payment">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\RewardQuote">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\Emulator\ResourceModel\Order\Payment">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+
+    <!-- end custom connection -->
+
+
+    <type name="Magento\ScalableOms\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="subscription_frequency" xsi:type="string">subscription_frequency</item>
+                <item name="subscription_profile_product_cart" xsi:type="string">subscription_profile_product_cart</item>
+                <item name="subscription_profile" xsi:type="string">subscription_profile</item>
+                <item name="subscription_profile_simulate_cache" xsi:type="string">subscription_profile_simulate_cache</item>
+                <item name="subscription_profile_link" xsi:type="string">subscription_profile_link</item>
+                <item name="subscription_profile_version" xsi:type="string">subscription_profile_version</item>
+                <item name="emulator_sales_order_tmp" xsi:type="string">emulator_sales_order_tmp</item>
+                <item name="emulator_sales_order_address_tmp" xsi:type="string">emulator_sales_order_address_tmp</item>
+                <item name="emulator_order_address_item_tmp" xsi:type="string">emulator_order_address_item_tmp</item>
+                <item name="emulator_sales_invoice_tmp" xsi:type="string">emulator_sales_invoice_tmp</item>
+                <item name="emulator_sales_order_item_tmp" xsi:type="string">emulator_sales_order_item_tmp</item>
+                <item name="emulator_sales_order_payment_tmp" xsi:type="string">emulator_sales_order_payment_tmp</item>
+                <item name="emulator_sales_shipment_tmp" xsi:type="string">emulator_sales_shipment_tmp</item>
+                <item name="emulator_sales_shipment_item_tmp" xsi:type="string">emulator_sales_shipment_item_tmp</item>
+                <item name="emulator_sales_shipment_track_tmp" xsi:type="string">emulator_sales_shipment_track_tmp</item>
+                <item name="emulator_sales_order_tax_tmp" xsi:type="string">emulator_sales_order_tax_tmp</item>
+                <item name="hanpukai_fixed" xsi:type="string">hanpukai_fixed</item>
+                <item name="hanpukai_sequence" xsi:type="string">hanpukai_sequence</item>
+                <item name="hanpukai_month" xsi:type="string">hanpukai_month</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\ScalableCheckout\Console\Command\SplitQuote">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="emulator_quote_address_tmp" xsi:type="string">emulator_quote_address_tmp</item>
+                <item name="emulator_quote_address_item_tmp" xsi:type="string">emulator_quote_address_item_tmp</item>
+                <item name="emulator_quote_shipping_rate_tmp" xsi:type="string">emulator_quote_shipping_rate_tmp</item>
+                <item name="emulator_quote_tmp" xsi:type="string">emulator_quote_tmp</item>
+                <item name="emulator_quote_item_tmp" xsi:type="string">emulator_quote_item_tmp</item>
+                <item name="emulator_quote_item_option_tmp" xsi:type="string">emulator_quote_item_option_tmp</item>
+                <item name="emulator_quote_payment_tmp" xsi:type="string">emulator_quote_payment_tmp</item>
+                <item name="emulator_riki_reward_quote_tmp" xsi:type="string">emulator_riki_reward_quote_tmp</item>
+                <item name="riki_reward_quote" xsi:type="string">riki_reward_quote</item>
+            </argument>
+        </arguments>
+    </type>
+<!--    <preference for="Magento\GoogleTagManager\Observer\SetGoogleAnalyticsOnCartAddObserver" type="Riki\Subscription\Plugin\GoogleTagManager\Observer\SetGoogleAnalyticsOnCartAddObserver" />-->
+    <preference for="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface" type="Riki\Subscription\Model\Profile\Order\ProfileBuilder" />
+    <preference for="Riki\Subscription\Api\GenerateOrder\ProfileOrderInterface" type="Riki\Subscription\Model\Profile\Order\ProfileOrder" />
+    <preference for="Riki\Subscription\Api\GenerateOrder\ProfileEmailBuilderInterface" type="Riki\Subscription\Model\Profile\Order\ProfileEmailBuilder" />
+    <preference for="Riki\Subscription\Api\GenerateOrder\ProfileEmailOrderInterface" type="Riki\Subscription\Model\Profile\Order\ProfileEmailOrder" />
+    <type name="Magento\Framework\MessageQueue\MergerFactory">
+        <arguments>
+            <argument name="mergers" xsi:type="array">
+                <item name="generateOrderSubscription" xsi:type="string">\Riki\ThirdPartyImportExport\Model\ExportNextDelivery\Merger</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <preference for="Magento\Framework\Mview\View\Changelog" type="Riki\Subscription\Mview\View\Changelog" />
+    <preference for="Magento\Framework\Mview\View\Subscription" type="Riki\Subscription\Mview\View\Subscription" />
+
+    <preference for="Riki\Subscription\Api\Simulator\OrderSimulatorInterface" type="Riki\Subscription\Model\Simulator\OrderSimulator" />
+    <preference for="Riki\Subscription\Api\Simulator\DeliveryDateSimulatorInterface" type="Riki\Subscription\Model\Simulator\DeliveryDateSimulator" />
+    <preference for="Riki\Subscription\Api\Simulator\CalendarInterface" type="Riki\Subscription\Model\Simulator\Calendar" />
+    <preference for="Riki\Subscription\Api\Simulator\CouponSimulatorInterface" type="Riki\Subscription\Model\Simulator\CouponSimulator" />
+
+    <type name="Riki\Rule\Observer\OrderBeforePlaceObserver">
+        <plugin name="rikiSubscriptionCumulativeOrderBeforePlaceObserver" type="Riki\Subscription\Plugin\Riki\Rule\Observer\OrderBeforePlaceObserver"/>
+    </type>
+    <type name="Magento\Quote\Api\CartRepositoryInterface">
+        <plugin name="rikiSubscriptionSetCourseData" type="Riki\Subscription\Plugin\SetCourseData" />
+    </type>
+    <type name="Riki\AdvancedInventory\Helper\Assignation">
+        <plugin name="rikiSubscriptionAdvancedInventoryHelperAssignation" type="Riki\Subscription\Plugin\AdvancedInventory\Helper\Assignation"/>
+    </type>
+
+    <preference for="Riki\Subscription\Model\Profile\ResourceModel\Profile" type="Riki\Subscription\Model\ResourceModel\Profile" />
+
+    <type name="Riki\Subscription\Model\ResourceModel\Multiple\Category\Campaign">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+
+    <type name="Riki\Subscription\Model\ResourceModel\Landing\Page">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="subscription_multiple_category_campaign_grid_data_source" xsi:type="string">Riki\Subscription\Model\ResourceModel\Multiple\Category\Campaign\Grid\Collection</item>
+                <item name="subscription_landing_page_grid_data_source" xsi:type="string">Riki\Subscription\Model\ResourceModel\Landing\Page\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\ResourceModel\Multiple\Category\Campaign\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">subscription_multiple_category_campaign</argument>
+            <argument name="eventPrefix" xsi:type="string">subscription_multiple_category_campaign_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">subscription_multiple_category_campaign_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\Subscription\Model\ResourceModel\Multiple\Category\Campaign</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Model\ResourceModel\Landing\Page\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">subscription_landing_page</argument>
+            <argument name="eventPrefix" xsi:type="string">subscription_landing_page_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">subscription_landing_page_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\Subscription\Model\ResourceModel\Landing\Page</argument>
+        </arguments>
+    </type>
+    <virtualType name="LandingPagePostGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\Subscription\Model\ResourceModel\Landing\Page\Grid\Collection</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PostGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\Subscription\Model\ResourceModel\Multiple\Category\Campaign\Grid\Collection</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Quote\Model\Quote\Item\AbstractItem">
+        <plugin name="rikiSubscriptionSyncBundleChildrenData" type="Riki\Subscription\Plugin\Quote\Model\Quote\Item\SyncBundleChildrenData"/>
+    </type>
+
+    <!-- WebApp APIs -->
+    <preference for="Riki\Subscription\Api\WebApi\EditPage\WebAppEditProfileInterface"
+                type="Riki\Subscription\Model\Profile\WebApi\WebAppEditProfile" />
+
+    <preference for="Riki\Subscription\Api\ProductInfoInterface"
+                type="Riki\Subscription\Model\Product\ProductInfo"/>
+    <preference for="Riki\Subscription\Api\Data\ProductInfoResultInterface"
+                type="Riki\Subscription\Model\Data\ProductInfoResult"/>
+</config>

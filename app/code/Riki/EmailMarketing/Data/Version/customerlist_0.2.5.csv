@@ -1,0 +1,36 @@
+"Notification for Completion of Order Taking (Gift Products)","【ネスレ通販】　ご注文受付完了のお知らせ","order_confirmation_seasonal_gift.txt","",1,1
+"Notification for Completion of Order Taking (PC)","【ネスレ通販】　ご注文受付完了のお知らせ","spot_confirmation_order.txt","sales_email/order/template",1,1
+"Notification for Completion of Hanpukai Order Taking (PC)","【ネスレ通販】　ご注文受付完了のお知らせ","hanpukai_confirmation_order.txt","sales_email/order/hanpukai_order_confirmation",1,1
+"Notification for Cancellation of Order Taking","【ネスレ通販】　ご注文キャンセル完了のお知らせ","spot_cancel_order.txt","riki_email/order_cancel/template",1,1
+"Notification for Completion of Pre-Order Taking","【ネスレ通販】　予約ご注文受付完了のお知らせ","preorder_confirmation_order.txt","rikipreorder/email/confirmation_template",1,1
+"Notification for Cancellation of Pre-Order Taking","【ネスレ通販】　予約ご注文キャンセル完了のお知らせ","preorder_cancellation_order.txt","rikipreorder/email/cancellation_template",1,1
+"Notification of Completion of Shipping Out (SPOT order)","【ネスレ通販】　ご注文商品出荷のお知らせ","spot_shippedout_confirmation.txt","shipmentimporter/email/template_tracking_spot",0,1
+"Notification of Completion of Shipping Out (Subscription order)","【ネスレ通販】　ご注文商品出荷のお知らせ","subscription_shippedout_confirmation.txt","shipmentimporter/email/template_tracking_subscription",0,1
+"Notification of Completion of Shipping Out (Hanpukai order)","【ネスレ通販】　ご注文商品出荷のお知らせ","hanpukai_shippedout_confirmation.txt","shipmentimporter/email/template_tracking_hanpukai",0,1
+"Notification for completion of registering Serial No.","【ネスレ通販】　シリアルコード登録完了のお知らせ","serial_code_registration.txt","riki_loyalty/serial_code/template_confirmation",1,1
+"Notification for Completion of Order Taking (Multi checkout)","【ネスレ通販】ご注文受付完了のお知らせ(分割配送","spot_confirmation_order_multicheckout.txt","sales_email/order/template_multicheckout",1,1
+"Order change (Spot)","【ネスレ通販】注文内容変更完了メール","spot_order_change.txt","sales_email/order/spot_order_change",1,1
+"Order change (Subscription)","【ネスレ通販】定期便内容変更完了メール","subscription_order_change.txt","sales_email/order/subscription_order_change",1,1
+"Cut-off date","ネスレ通販 「定期お届け便」次回お届け{{var cutxdate}}日前となりました","subscription_cut_off_date.txt","subscriptioncourse/cutoffdate/email_template",0,1
+"System send email to customer in case of stock unavailability (Subscription order generation)","【ネスレ通販】　ご注文受付完了のお知らせ","subscription_order_stock_unavailability.txt","subcreateorder/outofstock/email_template",0,1
+"Discontinued product","【重要なお知らせ】商品名称変更のご連絡","discontinued_product.txt","subscriptioncourse/replaceproduct/email_template",0,1
+"Inform consumers when product be back","【ネスレ通販】ご注文商品入荷のお知らせ","product_back_to_stock.txt","catalog/productalert/email_stock_template",0,1
+"Stop subscription manually from the backend","【ネスレ通販】「定期お届けコース」の解約手続き完了のご連絡","subscription_profile_disengaged.txt","subscriptioncourse/profile_disengagement_email/template",0,1
+"Credit Card re-authorization - Email to pay again (Subscription)","【ネスレ通販】　お支払い決済再設定のお願い","credit_card_reauthorization_email_pay_again_subscription.txt","paygent_config/authorisation/template_subscription",0,1
+"Credit Card re-authorization - Email to pay again (Not subscription)","【ネスレ通販】　お支払方法（クレジットカード情報）更新のお願い","credit_card_reauthorization_email_pay_again_spot.txt","paygent_config/authorisation/template",0,1
+"Notification for Cancellation of Subscription Taking","【ネスレ通販】　ご注文キャンセル完了のお知らせ","subscription_cancellation_order.txt","subscriptioncourse/cancelsubscription/cancel_template",1,1
+"Black-listed customer (Business user)","【自動送信】　ブラックリスト登録者の購入通知","bu_black_list_customer.txt","",1,1
+"Cedyna threshold exceed notifincation","【DDM-EC】決済代行サービス閾値超過に関するお知らせ【自動送信】","bu_cedyna_threshold_exceed_notification.txt","rikifraud/email/cedyna_threshold_notification",1,1
+"Error Capture Credit Card (Business user)","【自動送信】クレジットカード　売上送信失敗しました。","bu_error_capture_credit_card.txt","paygent_config/paygent_fail/template",1,1
+"Error Product XML Export","Error Product XML Export","bu_error_product_xml_export.txt","",1,1
+"Fraud notification (Business user)","【クレジットカード不正利用機能】検知対象の受注が作成されました。","bu_fraud_notification.txt","rikifraud/email/fraud_notification",1,1
+"Free machine subscription","【自動送信】マシン同梱出荷に関して、エラーが発生しています。","bu_free_machine_subscription.txt","",1,1
+"Hold Customer (Business user)","Hold Customer","bu_hold_customer.txt","cedyna_customer_hold/email_setting/email_template",1,1
+"Import COD collection error","【DDMEC】バッチ処理でエラーが発生しています【自動送信】","bu_import_cod_collection_error.txt","shipmentimporter/email/template_error_cod",1,1
+"Payment collection from Wellnet","【自動送信】取込エラーとなったコンビニ入金データがあります。","bu_payment_collection_from_wellnet.txt","shipmentimporter/email/template_error_cvs",1,1
+"Prize attachment error (Business user)","【自動送信】定期便プレゼント同梱　在庫切れです。","bu_prize_attachment_error.txt","",1,1
+"Re-authorization failure","【自動送信】 クレジットカード　再与信失敗しました。","bu_re_authorization_failure.txt","subcreateorder/authorizationfailed/email_template",1,1
+"Refund rejected","[Refund rejected by Paygent]クレジットカード　売上取消失敗","bu_refund_rejected.txt","",1,1
+"Shopping point approval","ショッピングポイント特別付与申請","bu_shopping_point_approval.txt","riki_loyalty/pointapproval_email_template",1,1
+"Stock import email","SAPからの在庫データ取り込み失敗のお知らせ　【自動送信】","bu_stock_import_email.txt","importstock/email/template_stock",1,1
+"Subscription order stock unavailability (Business user)","【自動送信】在庫不足により定期便が受注変換できませんでした。","bu_subscription_order_stock_unavailability.txt","subcreateorder/outofstockadmin/email_template",1,1

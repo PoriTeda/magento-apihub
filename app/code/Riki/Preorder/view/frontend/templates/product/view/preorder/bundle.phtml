@@ -1,0 +1,15 @@
+<?php /* @var $block \Riki\Preorder\Block\Product\View\Preorder\ProductBundle */?>
+
+<script type="text/javascript">
+    require(['jquery', 'Riki_Preorder/js/product/preorder_bundle'], function($) {
+        $widget = $.mage.rikiPreorderBundle({
+            aviabilityElement: $(".stock").first(),
+            addToCartButton: $("#product-addtocart-button span"),
+            preOrderNote: '',
+            addToCartLabel: '<?=$block->getCartLabel();?>',
+            map: <?=json_encode($block->getMap());?>,
+            optionsData: <?=json_encode($block->getBundleOptionsData());?>
+            /*selectionsData: <?=json_encode($block->getBundleSelectionsData());?>*/
+        });
+    });
+</script>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Temp Return</title>
+    </head>
+    <body>
+        <referenceBlock name="menu">
+            <action method="setActive">
+                <argument name="itemId" xsi:type="string">Riki_TmpRma::tmprma</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <uiComponent name="tmprma_form"/>
+            <block class="Riki\TmpRma\Block\Adminhtml\Rma\Edit\Comment" template="Riki_TmpRma::rma/edit/comment.phtml" />
+            <block class="Magento\Framework\View\Element\Text" name="riki_script">
+                <arguments>
+                    <argument name="text" xsi:type="string"><![CDATA[
+                    <script>require(["Riki_Customer/js/lib/element/validation/rules"]);</script>
+                    ]]></argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

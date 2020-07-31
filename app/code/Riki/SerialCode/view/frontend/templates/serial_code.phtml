@@ -1,0 +1,28 @@
+<div class="page-title">
+    <h3 class="title">
+        <span class="base" data-ui-id="page-title-wrapper"><?php echo __('Serial code');?></span>
+    </h3>
+</div>
+<div class="block serialcode">
+   <div class="title"><?php /* @escapeNotVerified */ echo __("Enter serial number which is backside of gift card")?></div>
+    <form class="form-inline" id="serial-code-form" action="<?php echo $block->getUrl('serial_code/reward/apply/') ?>">
+        <?php echo $block->getBlockHtml('formkey')?>
+        <input class="input-text required-entry" type="text" value="" name="serial_code"/>
+        <button type="submit" id="serial-code-button" class="action primary" name="send">
+            <span><?php echo __('Apply code'); ?></span>
+        </button>
+        <div class="serialcode-messages"></div>
+        <div class="tips">
+            <?php echo __("※ スペースを空けずに入力してください。");?>
+        </div>
+    </form>
+</div>
+<script type="text/x-magento-init">
+    {
+        "#serial-code-form": {
+            "serialCode": {}
+        }
+    }
+</script>
+
+

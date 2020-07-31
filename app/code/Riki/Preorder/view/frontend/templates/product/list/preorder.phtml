@@ -1,0 +1,23 @@
+<?php
+/**
+ * @var $block \Riki\Preorder\Block\Product\ListProduct\Preorder
+ */
+?>
+
+<div class="riki-preorder-note"><?=$block->getPreorderNote();?></div>
+<script type="text/javascript">
+    require(['jquery', 'Magento_Catalog/js/catalog-add-to-cart'], function($) {
+        var cartLabel = '<?=$block->getCartLabel();?>';
+        var $button = $('input[name="product"][value="6"]').parent().find('.tocart')[0];
+        if(!$button){
+            return;
+        }
+        $button = $($button);
+        while ($button.children().length > 0) {
+            $button = $button.children();
+        }
+        $.mage.catalogAddToCart.prototype.options.addToCartButtonTextDefault = cartLabel;
+        $button.html(cartLabel);
+    });
+</script>
+

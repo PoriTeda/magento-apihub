@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="promo.catalog.grid.columnSet.from_date">
+            <arguments>
+                <argument name="type" xsi:type="string">datetime</argument>
+                <argument name="index" xsi:type="string">from_time</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="promo.catalog.grid.columnSet.to_date">
+            <arguments>
+                <argument name="type" xsi:type="string">datetime</argument>
+                <argument name="index" xsi:type="string">to_time</argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>

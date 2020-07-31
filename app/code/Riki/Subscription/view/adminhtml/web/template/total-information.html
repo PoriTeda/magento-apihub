@@ -1,0 +1,125 @@
+<div class="left delivery-option">
+    <div data-bind="visible: allowChangeEarnPoint">
+        <div class="label">
+            <h4 data-bind="i18n: 'Earning Points Settings:'"></h4>
+        </div>
+        <div>
+            <label>
+                <input data-bind="checked: earnPointOnOrder,disable: isDisabledAll" type="checkbox" name="earn_point_on_order" value="1"  title="Earn Point" />
+                <span data-bind="i18n: 'Earn points on orders'">
+            </span>
+            </label>
+        </div>
+    </div>
+    <div class="label">
+        <h4 data-bind="i18n: 'Modification method'"></h4>
+    </div>
+    <div class="field change_profile required">
+        <div class="control" data-bind="enable: !isHanpukai">
+            <input id="skip-next-delivery"
+                   name="skip_next_delivery"
+                   type="checkbox"
+                   data-bind="enable: isAllowSkipNextDelivery && !isDisabledAll() && !isStockPointProfile,checked: skip_next_delivery" />
+            <label for="skip-next-delivery" data-bind="i18n: 'Skip next delivery'">
+            </label>
+        </div>
+    </div>
+    <div class="order-discounts">
+        <div class="left">
+            <div id="order-coupons" class="order-coupons">
+                <div class="admin__field field-apply-coupon-code">
+                    <label class="admin__field-label"><span data-bind="i18n: 'Apply Coupon Code'"></span></label>
+                    <div class="admin__field-control">
+                        <input type="text" class="admin__control-text" id="profile_add_coupon_code" value="" name="add_coupon_code">
+                        <input type="hidden" data-bind="textInput: window.subscriptionConfig.coupon_code" name="coupon_code">
+                        <button type="button" class="action-default scalable" data-ui-id="widget-button-18" data-bind="click: function() {addCoupon()};"><span data-bind="i18n: 'Apply'"></span></button>
+                        <label class="no-display" id="profile_coupon_error_message"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ko if: window.subscriptionConfig.appliedCoupon.length -->
+        <div class="right">
+            <div class="admin__field">
+                <label class="admin__field-label"><span data-bind="i18n: 'Applied coupon code:'"></span></label>
+                <div class="admin__field-control" id="multi-coupon-list" data-bind="foreach: window.subscriptionConfig.appliedCoupon">
+                    <p class="added-coupon-code">
+                        <span data-bind="text: $data"></span>
+                        <a class="subscription-profile-remove-coupon action-remove" href="javascript:void(0)" data-bind="click: function() {$parent.deleteCoupon($data)};"><span data-bind="i18n: 'Remove'"></span></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+    <div>
+        <div class="label">
+            <h4 data-bind="i18n: 'Warehouse Specified:'"></h4>
+        </div>
+        <div>
+            <select data-bind="
+                options: warehouseOptions,
+                optionsText: 'text',
+                optionsValue: 'id',
+                value: profileWarehouseId,
+                disable: (stockPointIsSelected || isStockPointProfile),
+                event: {change:changeProfileWarehouse}"
+                name="specified_warehouse_id"
+                id="specified_warehouse_id"
+                aria-required="true"
+                class="select global-scope required-entry">
+            </select>
+            <label class="no-display" id="change_warehouse_message"></label>
+        </div>
+    </div>
+</div>
+
+<div class="field status required right">
+    <div class="label">
+        <h2 data-bind="i18n: 'Subscription profile summary'"></h2>
+    </div>
+    <ul class="control subscription summary">
+
+        <li class="item">
+            <span data-bind="i18n: 'Total Amount Product'"></span>
+            <span class="price" data-bind="text: getPriceFormatted(orderData.getSubTotalInclTax())"></span>
+        </li>
+
+        <li class="item" data-bind="visible: (orderData.getDiscount() != 0)">
+            <span data-bind="i18n: 'Discount'"></span>
+            <span class="price" data-bind="text: getPriceFormatted(orderData.getDiscount())"></span>
+        </li>
+
+        <li class="item" data-bind="visible: (orderData.gw_amount() > 0)">
+            <span data-bind="i18n: 'Gift Wrapping Fee'"></span>
+            <span class="price" data-bind="text: getPriceFormatted(orderData.gw_amount())"></span>
+        </li>
+
+        <li class="item">
+            <span data-bind="i18n: 'Shipping Fee'"></span>
+            <span class="price" data-bind="text: getPriceFormatted(orderData.getShippingFeeInclTax())"></span>
+        </li>
+
+        <li class="item">
+            <span data-bind="i18n: 'Payment Fee'"></span>
+            <span class="price" data-bind="text: getPriceFormatted(orderData.getPaymentFee())"></span>
+        </li>
+
+        <li class="item">
+            <span data-bind="i18n: 'Point Used'"></span>
+            <span class="price" data-bind="text: getPoints(orderData.getUsedPointAmount())"></span>
+        </li>
+
+        <li class="item">
+            <span data-bind="i18n: 'Total Payment Fee'"></span>
+            <span class="price" data-bind="text: getPriceFormatted(orderData.getGrandTotal())"></span>
+        </li>
+
+        <li class="item">
+            <span data-bind="i18n: 'Tentative Point Earned'"></span>
+            <span class="price" data-bind="text: getPoints(orderData.getBonusPointAmount())">
+            </span>
+        </li>
+
+    </ul>
+</div>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="customer">
+        <field name="firstnamekana">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">customer</item>
+                </item>
+            </argument>
+        </field>
+        <field name="lastnamekana">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">customer</item>
+                </item>
+            </argument>
+        </field>
+        <field name="email">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Riki_Customer/js/fakeemail</item>
+                    <item name="template" xsi:type="string">Riki_Customer/fake-email</item>
+                    <item name="description" xsi:type="string" translate="true">Generate Fake Email</item>
+                    <item name="generate_email_url" xsi:type="url" path="customer/index/fakeemail"/>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">email</item>
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">false</item>
+                        <item name="validate-email" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="website_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="tooltip" xsi:type="array">
+                        <item name="link" xsi:type="string">http://www.magentocommerce.com/knowledge-base/entry/understanding-store-scopes</item>
+                        <item name="description" xsi:type="string" translate="true">If your Magento site has multiple views, you can set the scope to apply to a specific view.</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+    <fieldset name="address">
+        <field name="firstnamekana">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">address</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="imports" xsi:type="array">
+                        <item name="default" xsi:type="string">${ $.provider }:data.customer.firstnamekana</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="firstname">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="validation" xsi:type="array">
+                        <item name="max_text_length" xsi:type="number">25</item>
+                        <item name="validate-double_byte" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="lastname">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="validation" xsi:type="array">
+                        <item name="max_text_length" xsi:type="number">25</item>
+                        <item name="validate-double_byte" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="lastnamekana">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">address</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="imports" xsi:type="array">
+                        <item name="default" xsi:type="string">${ $.provider }:data.customer.lastnamekana</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="riki_type_address">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/address-type</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+</form>

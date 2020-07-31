@@ -1,0 +1,38 @@
+<?php
+if (isset($data['deliveryType']) && isset($data['stockPointDelivery'])) :
+    $deliveryType = isset($data['deliveryType']) ? $data['deliveryType'] : '';
+    $stockPointDelivery = isset($data['stockPointDelivery']) ? $data['stockPointDelivery'] : '';
+    $addressId = $data["addressId"];
+    $arrProductByAddress = $data["arrProduct"];
+    $nextDeliveryDate = $data['next_delivery_date'];
+    if($arrProductByAddress['delivery_date']['next_delivery_date'] != null){
+        $nextDeliveryDate = $arrProductByAddress['delivery_date']['next_delivery_date'];
+    }
+?>
+<div class="label no-border">
+    <h4><?php echo __("Delivery schedule date and time") ?></h4>
+</div>
+
+<div class="current-shipping-address delivery-block block-delivery-item" delivery-type="<?php echo $deliveryType; ?>" >
+    <div class="wrapper">
+        <div class="delivery-type next-delivery-date full">
+            <div>
+                <div class="next-delivery-date">
+                    <div class="stock_point_delivery_information">
+                         <?php echo $stockPointDelivery; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <input type="hidden" name="next_delivery[<?php echo $addressId  ?>][<?php echo $deliveryType  ?>]"
+           value="<?php
+           if ($arrProductByAddress['delivery_date']['next_delivery_date'] != null) {
+               echo $arrProductByAddress['delivery_date']['next_delivery_date'];
+           } else {
+               echo $nextDeliveryDate;
+           }
+           ?>"
+    />
+<?php endif; ?>

@@ -1,0 +1,61 @@
+<?php
+/**
+* @var \Riki\Sales\Block\Adminhtml\Order\Create\Items\Renderer\Addresses $block
+*/
+?>
+
+<?php
+/** @var \Riki\Promo\Helper\Data $_promoHelper */
+$_promoHelper = $this->helper('Riki\Promo\Helper\Data');
+?>
+<?php
+$_item = $block->getItem();
+$isPromoItem = $_promoHelper->isPromoItem($_item);
+?>
+<?php $_selectedAddressId = $block->getAddressId(); ?>
+
+<?php $defaultAddressId = $block->getDefaultShippingAddress(); ?>
+
+<?php if(count($block->getAddressCollection())): ?>
+    <div class="admin__field-control">
+
+        <?php if($_selectedAddressId): ?>
+            <select name="item[<?php echo $_item->getId() ?>][address_id]"
+                    class="admin__control-select" <?php if($isPromoItem): ?> disabled="disabled" <?php endif; ?>>
+                <?php foreach ($block->getAddressCollection() as $_address): ?>
+
+                    <?php if($_address->getId() == $block->getAddressId()): ?>
+                        <option value="<?php echo $_address->getId() ?>" selected="selected">
+                            <?php echo $block->getAddressAsString($_address) ?>
+                        </option>
+                    <?php else: ?>
+                        <option value="<?php echo $_address->getId() ?>">
+                            <?php echo $block->getAddressAsString($_address) ?>
+                        </option>
+                    <?php endif; ?>
+
+                <?php endforeach; ?>
+            </select>
+        <?php else: ?>
+            <select name="item[<?php echo $_item->getId() ?>][address_id]"
+                    class="admin__control-select" <?php if($isPromoItem): ?> disabled="disabled" <?php endif; ?>>
+                <?php foreach ($block->getAddressCollection() as $_address): ?>
+
+                    <?php if($_address->getId() == $defaultAddressId): ?>
+                        <option value="<?php echo $_address->getId() ?>" selected="selected">
+                            <?php echo $block->getAddressAsString($_address) ?>
+                        </option>
+                    <?php else: ?>
+                        <option value="<?php echo $_address->getId() ?>">
+                            <?php echo $block->getAddressAsString($_address) ?>
+                        </option>
+                    <?php endif; ?>
+
+                <?php endforeach; ?>
+            </select>
+        <?php endif; ?>
+    </div>
+<?php else: ?>
+    <span><?php echo __('No Address') ?></span>
+<?php endif; ?>
+

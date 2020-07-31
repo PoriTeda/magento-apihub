@@ -1,0 +1,1 @@
+<?xml version="1.0"?><!-- Layout of the new form of a google shopping data feed => redirect to the edit form--><layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../Core/etc/layout_single.xsd">    <update handle="pointofsale_manage_edit"/></layout>

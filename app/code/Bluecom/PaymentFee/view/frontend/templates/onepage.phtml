@@ -1,0 +1,70 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+?>
+<?php /** @var $block Bluecom\PaymentFee\Block\Onepage */?>
+<?php /** @var $this Bluecom\PaymentFee\Block\Onepage */?>
+
+<div id="checkout" data-bind="scope:'checkout'" class="checkout-container">
+    <div id="checkout-loader" data-role="checkout-loader" class="loading-mask no-display">
+        <div class="loader">
+            <i class="fa fa-spinner fa-spin"></i>
+            <p><?php echo __('Sorry, the server is under heavy load. Please wait a second.') ?></p>
+        </div>
+    </div>
+    <p id="loadingText" class="no-display"><?php echo __('Sorry, the server is under heavy load. Please wait a second.') ?></p>
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <script type="text/x-magento-init">
+        {
+            "#checkout": {
+                "Magento_Ui/js/core/app": <?php /* @escapeNotVerified */ echo $block->getJsLayout();?>
+            }
+        }
+    </script>
+    <script>
+        window.checkoutConfig = <?php /* @escapeNotVerified */ echo \Zend_Json::encode($block->getCheckoutConfig()); ?>;
+        // Create aliases for customer.js model from customer module
+        window.isCustomerLoggedIn = window.checkoutConfig.isCustomerLoggedIn;
+        window.customerData = window.checkoutConfig.customerData;
+        window.checkoutConfig.gift_wrapping_available = <?php echo $this->helper('\Magento\GiftWrapping\Helper\Data')->isGiftWrappingAvailableForItems();?>;
+        window.customerData.loyalty_reward_point = <?php echo $block->getCustomerRewardPoint();?>;
+        window.customerData.reward_user_setting = "<?php echo $block->getRewardUserSetting();?>";
+        window.customerData.reward_user_redeem = <?php echo $block->getRewardUserRedeem();?>;
+        window.cardMethodImage = "<?php echo $block->getViewFileUrl('images/credit_card_method.png') ?>";
+        window.cvsPaymentImage = "<?php echo $block->getViewFileUrl('images/cvs-payment-form.jpg') ?>";
+        window.checkoutConfig.isSubscriptionCheckout = <?php echo $block->isSubscription() ?>;
+        window.checkoutConfig.urlEditHomeNoCompany = '<?php echo $block->escapeQuote($block->getUrlEditHomeNoCompany()) ?>';
+        window.checkoutConfig.urlEditHomeHaveCompany = '<?php echo $block->escapeQuote($block->getUrlEditHomeHaveCompany()) ?>';
+        window.checkoutConfig.urlEditCompany = '<?php echo $block->escapeQuote($block->getUrlEditCompany()) ?>';
+        window.checkoutConfig.wrappingServicesLink = '<?php echo $block->escapeQuote($block->getWrappingServicesLink()) ?>';
+        window.checkoutConfig.existProductHaveQtyMoreThanOneHundred = <?php echo $block->existProductHaveQtyMoreThanOneHundred(); ?>;
+        <?php if($block->isSubscription()): ?>
+        window.checkoutConfig.courseName = '<?php echo $block->escapeQuote($block->getCourseName()) ?>';
+        window.checkoutConfig.courseMinimumOrderTimes = '<?php echo $block->getMinimumOrderTimes() ?>';
+        window.checkoutConfig.penaltyFee = '<?php echo $block->getPenaltyFee() ?>';
+        window.checkoutConfig.orderTotalMinimumAmount = '<?php echo $block->getOrderTotalMinimumAmount(); ?>';
+        window.checkoutConfig.frequency = '<?php echo $block->getFrequencyString(); ?>';
+        window.checkoutConfig.isSubHanpukai = <?php echo $block->isHanpukaiSubscription(); ?>;
+        window.checkoutConfig.hanpukaiFactor = <?php echo $block->getFactor(); ?>;
+        window.checkoutConfig.hanpukaiChangeQtySelect = <?php echo \Zend_Json::encode($block->getSelectBoxHanpukai())?>;
+        window.checkoutConfig.hanpukaiMaximumOrderTimes = <?php echo $block->getHanpukaiMaximumOrderTime(); ?>;
+        <?php endif; ?>
+    </script>
+    <script>
+        require([
+            'mage/url',
+            'Magento_Ui/js/block-loader'
+        ], function(url, blockLoader) {
+            blockLoader("<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('images/loader-1.gif'); ?>");
+            return url.setBaseUrl('<?php /* @escapeNotVerified */ echo $block->getBaseUrl();?>');
+        })
+    </script>
+    <script>
+        window.paymentFeeKeyCode = <?php echo \Zend_Json::encode($block->getKeyCode())?>;
+        window.paymentFee = <?php echo \Zend_Json::encode($block->getPaymentFeeCode())?>;
+    </script>
+</div>

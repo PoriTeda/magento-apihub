@@ -1,0 +1,28 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div data-role="checkout-messages" class="messages" data-bind="visible: isVisible(), click: removeAll">
+    <!-- ko foreach: messageContainer.getErrorMessages() -->
+    <div class="message message-error error">
+        <div data-ui-id="checkout-cart-validationmessages-message-error" data-bind="text: $data"></div>
+    </div>
+    <!--/ko-->
+    <!-- ko foreach: messageContainer.getNoticeMessages() -->
+    <div class="message message-notice notice">
+        <div data-ui-id="checkout-cart-validationmessages-message-notice" data-bind="text: $data"></div>
+    </div>
+    <!--/ko-->
+    <!-- ko foreach: messageContainer.getSuccessMessages() -->
+    <div class="message message-success success">
+        <div data-ui-id="checkout-cart-validationmessages-message-success" data-bind="text: $data"></div>
+    </div>
+    <!--/ko-->
+    <!-- ko if: window.checkoutConfig.existProductHaveQtyMoreThanOneHundred == 1  -->
+    <div class="message message-notice notice">
+        <div data-bind="i18n: '1 is displayed when the quantity of one item is 100 or more, but the actual customer order quantity is recognized correctly by the system side. The order quantity is correctly displayed on the Order details confirmation screen.'"></div>
+    </div>
+    <!--/ko-->
+</div>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="customer_account_navigation">
+            <block class="Riki\ThirdPartyImportExport\Block\View\Element\Html\Link\LegacyOrders" name="customer-account-navigation-orders-legacy-link" after="customer-account-navigation-orders-link">
+                <arguments>
+                    <argument name="path" xsi:type="string">thirdpartyimportexport/order/history</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

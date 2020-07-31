@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+/**
+* @category    MP
+* @package     MP_AutoApplyCoupon
+* @copyright   MagePhobia (http://www.magephobia.com)
+*/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="controller_action_predispatch">
+        <observer name="riki_coupons_controller_action_predispatch_secret_coupon" instance="Riki\Coupons\Observer\SecretUrlCouponObserver" />
+    </event>
+    <event name="sales_quote_collect_totals_after">
+        <observer name="riki_coupons_sales_quote_collect_totals_after" instance="Riki\Coupons\Observer\SalesQuoteCollectTotalsAfter" />
+    </event>
+    <event name="adminhtml_sales_order_create_process_data_before">
+        <observer name="riki_coupons_adminhtml_sales_order_create_process_data_before" instance="Riki\Coupons\Observer\AdminhtmlSalesOrderCreateProcessDataBefore"/>
+    </event>
+    <event name="sales_order_place_after">
+        <observer name="salesrule" disabled="true" />
+        <observer name="amasty_promo_update_coupon_usage" disabled="true" />
+    </event>
+    <event name="checkout_submit_all_after">
+        <observer name="riki_salesrule" instance="Magento\SalesRule\Observer\SalesOrderAfterPlaceObserver" />
+        <observer name="riki_promo_update_coupon_usage"  instance="Amasty\Promo\Observer\FixCouponsUsageObserver"/>
+    </event>
+</config>

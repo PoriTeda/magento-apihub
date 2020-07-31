@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="design" translate="label">
+            <group id="search_engine_robots" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Search Engine Robots</label>
+                <field id="default_robots" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default Robots</label>
+                    <comment>This will be included before head closing tag in page HTML.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Design\Robots</source_model>
+                </field>
+                <field id="custom_instructions" translate="label comment" type="textarea" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Edit custom instruction of robots.txt File</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Admin\Robots</backend_model>
+                </field>
+                <field id="exclude_default_robots" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default Robots Exclude Header</label>
+                    <comment>This will override the meta tag for excluded pages</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Design\Robots</source_model>
+                </field>
+                <field id="exclude_default_robot_urls" translate="label comment" type="textarea" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>List of excluded Url</label>
+                    <comment>Put the urls with coma separator. Ex: 00122413526.html,0009402908.html</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

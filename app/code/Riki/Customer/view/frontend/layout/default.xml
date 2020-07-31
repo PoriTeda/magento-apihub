@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+
+        <referenceBlock name="head.components">
+            <block class="Riki\Customer\Block\Account\ValidateSession" name="riki_customer_validate_session" />
+            <block class="Magento\Framework\View\Element\Template" name="head.taintjson" as="taintjson" template="Riki_Customer::js/taint-json.phtml" />
+        </referenceBlock>
+
+        <referenceBlock name="top.links">
+            <referenceBlock name="authorization-link">
+                <action method="setTemplate">
+                    <argument name="template" xsi:type="string">Riki_Customer::account/link/authorization.phtml</argument>
+                </action>
+            </referenceBlock>
+        </referenceBlock>
+        <referenceBlock name="authorization-link" remove="true"/>
+    </body>
+</page>

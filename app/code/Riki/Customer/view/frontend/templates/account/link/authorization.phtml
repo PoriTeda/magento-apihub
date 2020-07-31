@@ -1,0 +1,49 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Riki\Customer\Block\Account\AuthorizationLink */
+$userUrl = $block->getUserUrl();
+?>
+
+<div id="subnavi_outer" class="d-pc">
+    <div id="header_btn_suvnavi">
+        <?php if (!$block->isLoggedIn()): ?>
+            <!-- login button here -->
+            <div id ="checkLogin" class="login">
+                <a href="<?php echo $userUrl->getLoginUrl() ?>"<?php echo $block->getPostParamsForUrl($userUrl->getLoginUrl(), true); ?>>
+                    <img class="pc_btn_login" src="<?php echo $block->getViewFileUrl('images/header/btn_pc_mypage.jpg') ?>" alt="<?php echo __("Login"); ?>"/>
+                    <img class="sp_btn_login" src="<?php echo $block->getViewFileUrl('images/header/btn_sp_mypage.png') ?>" alt="<?php echo __("Login"); ?>"/>
+                </a>
+            </div>
+            <div id="checkLogout" class="register">
+                <a href="<?php echo $userUrl->getRegisterUrl() ?>">
+                    <img class="pc_btn_register" src="<?php echo $block->getViewFileUrl('images/header/btn_header_newmember.jpg') ?>" alt="<?php echo __('Member Registration (Free)'); ?>"/>
+                </a>
+            </div>
+        <?php else: ?>
+            <!-- logout button here -->
+            <div class="login logout-btn">
+                <a href="<?php echo $userUrl->getLogoutUrl() ?>"<?php echo $block->getPostParamsForUrl($userUrl->getLogoutUrl()); ?>>
+                    <img class="pc_btn_logout" src="<?php echo $block->getViewFileUrl('images/header/btn_pc_logout.jpg') ?>" alt="<?php echo __("Logout"); ?>"/>
+                </a>
+            </div>
+            <div class="register">
+                <a href="<?php echo $userUrl->getAccountUrl();?>">
+                    <img class="pc_btn_acc" src="<?php echo $block->getViewFileUrl('images/header/btn_pc_mypage.jpg') ?>" alt="<?php echo __("My Account"); ?>"/>
+                    <img class="sp_btn_logout" src="<?php echo $block->getViewFileUrl('images/header/btn_sp_mypage.png') ?>" alt="<?php echo __("My Account"); ?>"/>
+                </a>
+            </div>
+        <?php endif; ?>
+    </div>
+    <div id="header_btn_cart">
+        <a href="<?php echo $block->getUrl('checkout/cart') ?>">
+            <img class="pc" src="<?php echo $block->getViewFileUrl('images/header/btn_header_cart.jpg') ?>"/>
+            <img class="sp" src="<?php echo $block->getViewFileUrl('images/header/btn_cart.png') ?>"/>
+        </a>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <referenceContainer name="after.body.start">
+        <block class="Magento\Catalog\Block\Adminhtml\Product\Composite\Configure" template="Magento_Catalog::catalog/product/composite/configure.phtml"/>
+    </referenceContainer>
+    <referenceContainer name="content">
+        <block class="Riki\Subscription\Block\Adminhtml\Profile\AddSpotProduct" name="profile_spot_product"/>
+    </referenceContainer>
+    <referenceContainer name="footer">
+        <block class="Magento\Backend\Block\Template" name="js_check_all_spot_product" template="Riki_Subscription::profile/check_all_spot_product.phtml"/>
+    </referenceContainer>
+</page>

@@ -1,0 +1,310 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/**  @var $block \Magento\Checkout\Block\Cart */
+
+?>
+<?php
+$isSubscriptionHanpukai = $block->getData('is_hanpukai_subscription');
+$hanpukaiFactor = $block->getData('hanpukai_factor');
+$mergedCells = ($this->helper('Magento\Tax\Helper\Data')->displayCartBothPrices() ? 2 : 1);
+$haveAdditionalProduct = $block->getData('have_additional_product');
+$rowspan = $block->getData('total_item')+1;
+$rowspan = ($haveAdditionalProduct) ? $rowspan + 1 : $rowspan;
+?>
+<?php echo $block->getChildHtml('form_before') ?>
+<form action="<?php /* @escapeNotVerified */ if (!$isSubscriptionHanpukai) { echo $block->getUrl('checkout/cart/updatePost'); } else { echo $block->getUrl('riki-checkout/cart/updateHanpukaiCart'); } ?>"
+      method="post"
+      id="form-validate"
+      data-mage-init='{"validation":{}}'
+      class="form form-cart <?php if($block->getData('subscription_name')) echo "has-subscription"?>">
+    <?php echo $block->getBlockHtml('formkey'); ?>
+    <div class="label-cart-clear">
+        <h3 class="cart-title "><?php echo __('Spot purchase goods'); ?></h3>
+        <?php if (!$isSubscriptionHanpukai) : ?>
+            <button type="submit"
+                    name="update_cart_action"
+                    data-cart-empty=""
+                    value="empty_cart"
+                    title="<?php echo __('Clear carts'); ?>"
+                    class="action clear clear_cart_all" id="empty_cart_button"
+                    style="display: block;"
+            >
+                <span><?php echo __('Clear carts'); ?></span>
+            </button>
+        <?php else : ?>
+        <?php endif; ?>
+    </div>
+    <?php if($block->getData('subscription_name')): ?>
+        <?php if (!$isSubscriptionHanpukai) : ?>
+            <div class="sub-name">
+                <p><span><?php echo __("Items")?></span><span class="subscription_name"><?php echo $block->getData('subscription_name'); ?></span> </p>
+                <p><span data-bind="i18n: 'Frequency'"></span><span class="frequency"> <?php echo $block->getData('frequency_text'); ?></span></p>
+            </div>
+        <?php else : ?>
+            <div class="sub-name">
+                <p><span><?php echo __("Subscription Cource")?></span><span class="frequency"><?php echo $block->getData('subscription_name'); ?></span> </p>
+                <p><span class="qty-name" data-bind="i18n: 'Qty'"></span></p>
+                <div class="select-wrapper hanpukai-change-qty-mobile">
+                    <select id="cart-hanpukai-change-all-qty-mb"
+                            class="input-new"
+                            name="cart-hanpukai-change-all-qty"
+                            data-role="cart-item-qty">
+                        <?php for ($i = 1; $i <= 99; $i++) : ?>
+                            <option <?php if($hanpukaiFactor == $i) echo 'selected' ?>><?php echo $i; ?></option>
+                        <?php endfor; ?>
+                    </select>
+                </div>
+            </div>
+        <?php endif; ?>
+    <?php endif; ?>
+
+    <div class="cart table-wrapper<?php echo $mergedCells == 2 ? ' detailed' : ''; ?>">
+        <table id="shopping-cart-table"
+               class="cart items data table"
+               data-mage-init='{"shoppingCart":{"emptyCartButton": "action.clear",
+               "updateCartActionContainer": "#update_cart_action_container"}}'>
+            <caption role="heading" aria-level="2" class="table-caption"><?php /* @escapeNotVerified */ echo __('Shopping Cart Items') ?></caption>
+            <thead>
+            <tr>
+                <th class="col noitem">&nbsp;</th>
+                <th class="col subscription-cource" scope="col">
+                    <span><?php echo __('Subscription Cource'); ?></span>
+                </th>
+                <th class="col name" scope="col">
+                    <span><?php echo __('Product Name'); ?></span>
+                </th>
+                <th class="col item subscription" scope="col" colspan="2">
+                    <?php if ($isSubscriptionHanpukai) : ?>
+                        <span><?php echo __('Subscription detail hanpukai ck'); ?></span>
+                    <?php else : ?>
+                        <span><?php echo __('Subscription detail ck'); ?></span>
+                    <?php endif; ?>
+                </th>
+                <?php if (!$isSubscriptionHanpukai) : ?>
+                <th class="col price right" scope="col">
+                    <span><?php echo __('Item price'); ?></span>
+                </th>
+                <?php endif; ?>
+                <th class="col qty left" scope="col">
+                    <span><?php echo __('Qty ck'); ?></span>
+                </th>
+                <?php if (!$isSubscriptionHanpukai) : ?>
+                <th class="col subtotal right" scope="col">
+                    <span><?php echo __('Items total'); ?></span>
+                </th>
+                <?php endif; ?>
+                <th class="col action" scope="col">
+                    <span>&nbsp;</span>
+                </th>
+            </tr>
+            </thead>
+            <tbody class="cart item">
+            <tr class="parent-item-cart">
+                <td rowspan="<?php echo $rowspan;?>" class="subscription-name">
+                    <?php if (!$isSubscriptionHanpukai): ?>
+                        <p class="sub-course"><?php echo $block->getData('subscription_name'); ?></p>
+                        <p class="frequency">
+                            <strong class="label" data-bind="i18n: 'Frequency'"></strong> <br/>
+                            <?php echo $block->getData('frequency_text'); ?>
+                        </p>
+                    <?php else: ?>
+                        <p class="sub-course"><?php echo $block->getData('subscription_name'); ?></p>
+                        <div class="strong"><?php echo __('Qty'); ?></div>
+                        <div class="select-wrapper">
+                            <select id="cart-hanpukai-change-all-qty-dt"
+                                    class="input-new"
+                                    name="cart-hanpukai-change-all-qty"
+                                    data-role="cart-item-qty">
+                                <?php for ($i = 1; $i <= 99; $i++) : ?>
+                                    <option <?php if($hanpukaiFactor == $i) echo 'selected' ?>><?php echo $i; ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                        <input type="hidden" class="data-remove-qty" value="<?php echo $hanpukaiFactor; ?>" >
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <!--Main items-->
+            <?php foreach ($block->getItems() as $_item): ?>
+                <?php if(!$_item->getData('is_addition')) : ?>
+                <?php echo $block->getItemHtml($_item) ?>
+                <?php endif; ?>
+            <?php endforeach ?>
+            <!--Additional items-->
+            <?php if($haveAdditionalProduct): ?>
+            <tr class="item-info"><td colspan="100" class="additional-bar"></td></tr>
+            <?php endif; ?>
+            <?php foreach ($block->getItems() as $_item): ?>
+                <?php if($_item->getData('is_addition')) : ?>
+                    <?php echo $block->getItemHtml($_item) ?>
+                <?php endif; ?>
+            <?php endforeach ?>
+
+            <?php if ($isSubscriptionHanpukai) : ?>
+                <tr class="new-hanpukai-clear-mb">
+                    <td>
+                        <button type="submit"
+                                name="update_hanpukai_cart_action"
+                                value="empty_cart"
+                                title="<?php echo $block->escapeHtml(__('Remove item')); ?>">
+                            <span><?php /* @escapeNotVerified */ echo __('Remove item'); ?></span>
+                        </button>
+                    </td>
+                </tr>
+            <?php endif; ?>
+            <script  type="text/javascript">
+                require(['jquery','Magento_Catalog/js/price-utils', 'mage/translate'], function($, priceUtils, $t){
+                    var length = window.checkoutConfig.quoteItemData.length;
+                    for (var i = 0; i < length; i++) {
+                        var item = window.checkoutConfig.quoteItemData[i];
+                        if (typeof item.tier_price == 'object') {
+                                $.each(item.tier_price, function(index, tierItem) {
+                                    if('CS' == item.unit_case ){
+                                        var unitQty = (null === item.unit_qty)?1:item.unit_qty;
+                                        var tierBlock = '<p class="item">' +
+                                            $t('%1 ケース:').replace('%1', Math.ceil(tierItem.price_qty/unitQty)) + $t('%2 / ケース')
+                                                .replace('%2', priceUtils.formatPrice(tierItem.price*unitQty, window.checkoutConfig.priceFormat)) + '</p>';
+
+                                    }
+                                    else
+                                    if('EA' == item.unit_case ){
+                                        var tierBlock = '<p class="item">' +
+                                            $t('%1 個セット:').replace('%1', parseInt(tierItem.price_qty)) + $t('%2 / 個')
+                                                .replace('%2', priceUtils.formatPrice(tierItem.price, window.checkoutConfig.priceFormat)) + '</p>';
+
+                                    }
+                                    else{
+                                        var tierBlock = '<p class="item">' +
+                                            $t('Buy %1 or more:').replace('%1', parseInt(tierItem.price_qty)) + $t('%2 / set')
+                                                .replace('%2', priceUtils.formatPrice(tierItem.price, window.checkoutConfig.priceFormat)) + '</p>';
+                                    }
+
+                                    $("#tier-price-" + item.item_id).append(tierBlock);
+                                }
+                            );
+                        }
+                        if (typeof item.delivery_type == 'string') {
+                            $(".delivery_type.item-" + item.item_id).addClass(item.delivery_type);
+                        }
+                    }
+                });
+            </script>
+            </tbody>
+        </table>
+    </div>
+    <div class="cart main actions">
+        <?php if ($block->getContinueShoppingUrl()): ?>
+            <a class="action continue"
+               href="<?php echo $block->escapeUrl($block->getContinueShoppingUrl()) ?>"
+               title="<?php echo $block->escapeHtml(__('Continue Shopping')); ?>">
+                <span><?php /* @escapeNotVerified */ echo __('Continue Shopping') ?></span>
+            </a>
+        <?php endif; ?>
+        <button type="submit"
+                name="update_cart_action"
+                data-cart-item-update=""
+                value="update_qty"
+                title="<?php echo $block->escapeHtml(__('Update Shopping Cart')); ?>"
+                class="action update">
+            <span><?php /* @escapeNotVerified */ echo __('Update Shopping Cart'); ?></span>
+        </button>
+        <input type="hidden" value="" id="update_cart_action_container" data-cart-item-update=""/>
+    </div>
+</form>
+<?php echo $block->getChildHtml('checkout.cart.order.actions') ?>
+<?php echo $block->getChildHtml('shopping.cart.table.after'); ?>
+
+<script type="text/javascript">
+    require([
+        'jquery'
+    ], function ($) {
+        $(window).load(function () {
+
+            $('.item-info .col.qty').each(function () {
+                var add = $(this).find('.add');
+                var subtract = $(this).find('.subtract');
+                var qty = $(this).find('.qty');
+
+                add.click(function () {
+                    //update real qty if it's case
+                    if ($(this).next().attr('id').indexOf("case") >= 0) {
+                        var id_case = '#' + $(this).next().attr('id');
+                        var id_qty = id_case.replace('qty-case', 'qty');
+                        var id_unit_qty_convert = id_case.replace('qty-case', 'unit-qty-convert');
+
+                        var value = $(id_case).val();
+                        var new_value = parseInt(value) + 1;
+
+                        $(id_case).val(new_value);
+                        $(id_qty).val(parseInt($(id_case).val()) * parseInt($(id_unit_qty_convert).val()));
+                    }
+                    else {
+                        var value = $(this).next().val();
+                        var new_value = parseInt(value) + 1;
+                        qty.val(new_value);
+                    }
+                });
+                subtract.click(function () {
+                    //update real qty if it's case
+                    if ($(this).prev().attr('id').indexOf("case") >= 0) {
+                        var id_case = '#' + $(this).prev().attr('id');
+                        var id_qty = id_case.replace('qty-case', 'qty');
+                        var id_unit_qty_convert = id_case.replace('qty-case', 'unit-qty-convert');
+
+                        var value = $(id_case).val();
+                        var new_value = parseInt(value) - 1;
+
+                        if (new_value > 0) {
+                            $(id_case).val(new_value);
+                            $(id_qty).val(parseInt($(id_case).val()) * parseInt($(id_unit_qty_convert).val()));
+                        }
+                    }
+                    else {
+                        var value = $(this).prev().val();
+                        var new_value = parseInt(value) - 1;
+                        if (new_value > 0) {
+                            qty.val(new_value);
+                        }
+                    }
+
+                });
+
+            });
+
+            $('.unit-case').on('change', function () {
+                var id_case = '#' + $(this).attr('id');
+                var id_qty = id_case.replace('qty-case', 'qty');
+                var id_unit_qty_convert = id_case.replace('qty-case', 'unit-qty-convert');
+                $(id_qty).val(parseInt($(this).val()) * parseInt($(id_unit_qty_convert).val()));
+                $(id_qty).trigger('change');
+            });
+
+            setTimeout(function () {
+                // Check Shopping cart is only subscription
+                if ($('.subscription_text_on_cart').length) {
+                    $('.checkout-cart-index .cart-container').addClass('only-subscription');
+                }
+            }, 500);
+        });
+        var check_mb = function () {
+            var inner_width = $('body').innerWidth();
+            if (inner_width < 702) {
+                $('#cart-hanpukai-change-all-qty-dt').attr('disabled', 'disabled');
+                $('#cart-hanpukai-change-all-qty-mb').removeAttr('disabled');
+            } else {
+                $('#cart-hanpukai-change-all-qty-dt').removeAttr('disabled');
+                $('#cart-hanpukai-change-all-qty-mb').attr('disabled', 'disabled');
+            }
+        };
+        check_mb();
+        $(window).resize(function (){
+            check_mb();
+        });
+    });
+</script>

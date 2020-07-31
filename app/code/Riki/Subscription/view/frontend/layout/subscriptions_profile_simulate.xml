@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" layout="2columns-left">
+    <update handle="sales_order_view"/>
+    <body>
+        <referenceBlock name="preorder_warning" remove="true" />
+        <referenceBlock name="sales.order.info.buttons" remove="true"/>
+        <referenceBlock name="order.comments" remove="true" />
+        <referenceBlock name="sales.order.view">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Riki_Subscription::emulator/order/view.phtml</argument>
+            </action>
+        </referenceBlock>
+        <referenceBlock name="order_items">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Riki_Subscription::emulator/order/items.phtml</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

@@ -1,0 +1,206 @@
+<!-- ko foreach:getRegion('basic-information') -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+<!-- /ko -->
+<form data-bind="attr:{
+        action: formPostUrl,
+        method: 'POST',
+        id: 'form-submit-profile',
+        class: 'form form-giftregistry-edit validation'
+     }"
+      data-mage-init='{"validation":{}}'>
+
+    <input type="hidden" name="profile_id" id="profile_id" data-bind="value: profile.getProfileId()"/>
+    <input type="hidden" name="save_profile" id="save_profile" data-bind="value: saveProfileAction"/>
+    <input type="hidden" data-bind="value: rewardUserSettingValue" name="reward_user_setting" id="reward_user_setting_sub"/>
+    <input type="hidden" data-bind="value: rewardUserRedeemValue" name="reward_user_redeem" id="reward_user_redeem_sub"/>
+    <input type="hidden" name="form_key" id="form_key" data-bind="value: formkey"/>
+    <!-- ko if : stockPointDataPost -->
+        <input type="hidden" name="stock_point_data_post" data-bind="value: stockPointDataPost" />
+    <!-- /ko -->
+    <div class="actions-toolbar" data-bind="visible: !confirmAction()">
+
+        <!-- ko if: !wasDisengaged && !isCompleted -->
+        <div class="button">
+            <button data-bind="
+                attr:{
+                    id: 'disengagement_subscription',
+                    value: 'disengage',
+                    title: 'Disengage Subscription'
+                },event: {
+                    click: disengageSubscription
+                }" class="action delete">
+                    <span data-bind="i18n: 'Disengage Subscription'">
+                    </span>
+            </button>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: profileStatus && !wasDisengaged -->
+        <div class="primary button">
+            <button data-bind="attr:{
+                title: 'Save',
+                class: 'action primary save'
+            },event: {
+                    click: updateAllChanges
+            },visible: (!isDisabledAll() || stockPointIsSelected) ">
+                <span data-bind="i18n: 'Update All Changes'">
+                </span>
+            </button>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: profileStatus && !stockPointIsSelected && !isStockPointProfileModel -->
+        <div data-bind="visible:disableGenerateOrderButton" id="manually_create_order" class="primary button">
+            <button data-bind="
+                attr:{
+                    id: 'generate_order',
+                    value: 'generate_order',
+                    title: 'Generate the next order'
+                },event: {
+                    click: generateNextOrder
+                }" class="action primary save">
+                    <span data-bind="i18n: 'Generate the next order'">
+                    </span>
+            </button>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: profileStatus && !disableButtonSP && !wasDisengaged -->
+        <div id="manually_stock_point" class="primary button">
+            <button data-bind="
+                visible: allowSubscriptionStockPoint && !window.subscriptionConfig.disable_button_stock_point,
+                attr:{
+                    id: 'stock_point',
+                    title: 'Choose Stock Point'
+                },event: {
+                    click: redirectUrlStockPoint
+                }" class="action primary save">
+                    <span data-bind="i18n: 'Choose Stock Point'">
+                    </span>
+            </button>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: profileStatus && isStockPointProfile && !disableButtonSP && !wasDisengaged -->
+        <div id="manually_remove_stock_point" class="primary button">
+            <button data-bind="
+                visible: !window.subscriptionConfig.disable_button_stock_point,
+                attr:{
+                    id: 'remove_stock_point',
+                    title: 'Remove Stock Point'
+                },event: {
+                    click: removeStockPoint
+                }" class="action primary save">
+                    <span data-bind="i18n: 'Remove Stock Point'">
+                    </span>
+            </button>
+        </div>
+        <!-- /ko -->
+    </div>
+
+    <fieldset class="fieldset" data-bind="visible: !confirmAction()">
+        <div class="left" >
+            <!-- ko foreach:getRegion('frequency-information') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+            <!-- /ko -->
+        </div>
+        <div class="right" >
+            <!-- ko foreach:getRegion('payment-information') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+            <!-- /ko -->
+        </div>
+    </fieldset>
+
+        <fieldset class="fieldset" data-bind="visible: !confirmAction()">
+            <!-- ko foreach:getRegion('billing-information') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+            <!-- /ko -->
+        </fieldset>
+
+        <fieldset class="fieldset" data-bind="visible: !confirmAction()">
+            <!-- ko foreach:getRegion('items-information') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+            <!-- /ko -->
+        </fieldset>
+
+        <fieldset class="fieldset" data-bind="visible: !confirmAction()">
+            <!-- ko foreach:getRegion('total-information') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!-- /ko -->
+        </fieldset>
+
+        <fieldset class="fieldset" data-bind="visible: confirmAction()">
+            <!-- ko foreach:getRegion('confirmation') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!-- /ko -->
+        </fieldset>
+
+
+    <div class="actions-toolbar" data-bind="visible: !confirmAction() && profileStatus">
+
+        <div class="primary button">
+            <button data-bind="
+                    attr:{
+                        title: 'Add Penalty Fee'
+                     },
+                    event: {
+                        click: addPenaltyFeeProductToCourse
+                    },
+                    visible: wasDisengaged && !isStockPointProfileModel"
+                    type="button"
+                    name="add_product"
+                    id="add_penalty_fee_product"
+                    class="action primary save">
+                <span data-bind="i18n: 'Add Penalty Fee'">
+                </span>
+            </button>
+        </div>
+
+        <div class="primary button">
+            <button data-bind="
+                    attr:{
+                        title: 'Disengage Without Penalty Fee'
+                     },
+                    event: {
+                        click: disengageWithoutPenaltyFee
+                    },visible: wasDisengaged"
+                    type="button"
+                    name="add_product"
+                    id="disengage_without_penalty_fee_product"
+                    class="action primary save">
+                <span data-bind="i18n: 'Disengage Without Penalty Fee'">
+                </span>
+            </button>
+        </div>
+
+        <!-- ko if: profileStatus -->
+        <div class="primary button">
+            <button data-bind="
+                    attr:{
+                        title: 'Delete Product'
+                    },
+                    click: deleteAllProductCart
+                    ,visible: !window.subscriptionConfig.disable_button_stock_point"
+                    type="button"
+                    name="add_product"
+                    id="check_delete_product_checkbox"
+                    class="action primary save">
+                <span data-bind="i18n: 'Delete Product'"></span>
+            </button>
+        </div>
+        <!-- /ko -->
+
+        <div class="primary button">
+            <button data-bind="attr:{
+                title: 'Save',
+                class: 'action primary save'
+            },event: {
+                    click: updateAllChanges
+            },visible: (!isDisabledAll() && !wasDisengaged) || stockPointIsSelected">
+                <span data-bind="i18n: 'Update All Changes'">
+                </span>
+            </button>
+        </div>
+
+    </div>
+</form>

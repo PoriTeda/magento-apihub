@@ -1,0 +1,27 @@
+<?php $order = $block->getOrder();
+$shippings = $order->getShippings();
+?>
+<div class="table-wrapper order-items">
+    <table class="data table table-order-items" id="my-orders-table" summary="<?php /* @escapeNotVerified */ echo __('Items Ordered') ?>">
+        <caption class="table-caption"><?php /* @escapeNotVerified */ echo __('Items Ordered') ?></caption>
+        <thead>
+        <tr>
+            <th class="col name"><?php /* @escapeNotVerified */ echo __('Product Name') ?></th>
+            <th class="col gift"><?php /* @escapeNotVerified */ echo __('Gift Wrapping') ?></th>
+            <th class="col qty"><?php /* @escapeNotVerified */ echo __('Qty') ?></th>
+            <th class="col price"><?php /* @escapeNotVerified */ echo __('Price') ?></th>
+        </tr>
+        </thead>
+        <?php foreach ($shippings as $shipping): ?>
+            <?php $items = $shipping->getItems();?>
+            <?php foreach ($items as $item): ?>
+                <tbody>
+                <td data-th="<?php /* @escapeNotVerified */ echo __('Product Name') ?>" class="col name" ><span><?php echo $item->getCommodityName()  ?></span></td>
+                <td data-th="<?php /* @escapeNotVerified */ echo __('Gift Wrapping') ?>" class="col gift"><span><?php echo $item->getGiftName() ? $item->getGiftName() . ' [' . $order->formatPrice($item->getGiftPrice()) . ']' : '' ?></span></td>
+                <td data-th="<?php /* @escapeNotVerified */ echo __('Qty') ?>" class="col qty"><span><?php echo $item->getPurchasingAmount() ?></span></td>
+                <td data-th="<?php /* @escapeNotVerified */ echo __('Price') ?>" class="col price"><strong><?php echo $item->formatPrice($item->getGrandTotal()) ?></strong></td>
+                </tbody>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+    </table>
+</div>

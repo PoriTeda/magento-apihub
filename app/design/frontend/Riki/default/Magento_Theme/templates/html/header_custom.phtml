@@ -1,0 +1,66 @@
+<?php
+/** @var \Riki\Theme\Block\Html\Header\Menu $block */
+$isLogin = $block->isLoggedIn();
+$canShoShaCodeCEDYNA = $block->canShoShaCodeCEDYNA();
+$isMembershipCncOrCis = $block->isMembershipCncOrCis();
+$isCustomerInvoice = $block->isCustomerInvoice();
+$urlLogo = $this->getViewFileUrl('images/header/header_cwcn.jpg');
+$websiteCode = $block->getWebsiteCode();
+?>
+
+<?php if (!$isLogin) : ?>
+    <div class="cwcn">
+        <p>
+            <img src="<?php echo $urlLogo; ?>" alt="あなたのほっとするひと時と笑顔のために CHOOSE WELLNESS CHOOSE NESTLE"/>
+        </p>
+    </div>
+
+    <div class="navigation">
+        <ul>
+            <li><a href="<?php echo $block->getHomeUrl(); ?>">HOME</a></li>
+            <li><a href="<?php echo $block->getLinkGuideRules();?>">ご利用ガイドと利用規約</a></li>
+            <li><a href="<?php echo $block->getLinkComplianceInformation();?>">特定商取引法に基づく表示</a></li>
+            <li><a href="<?php echo $block->getLinkAddressNoteFunction();?>">アドレス帳機能について</a></li>
+            <li><a href="<?php echo $block->getLinkFAQ();?>">よくある質問</a></li>
+            <li class="last"><a href="<?php echo $block->getLinkToEnquiry() ?>">お問い合わせ</a></li>
+        </ul>
+    </div>
+<?php else : ?>
+
+    <?php if ($isMembershipCncOrCis) :?>
+        <div class="header-custormer-invoice">
+            <strong>お問い合わせ：</strong>
+            <span class="color-green">0120-155-286</span>
+            <span>（土日祝を除く、月～金 9:00～18:00）</span>
+        </div>
+    <?php elseif ($canShoShaCodeCEDYNA) : ?>
+        <div class="header-custormer-invoice">
+            <strong>お問い合わせ：</strong>
+            <span class="color-green">0120-600-868</span>
+            <span>（年中無休　24時間） </span>
+        </div>
+    <?php else : ?>
+        <div class="cwcn">
+            <p>
+                <img src="<?php echo $urlLogo; ?>" alt="あなたのほっとするひと時と笑顔のために CHOOSE WELLNESS CHOOSE NESTLE"/>
+            </p>
+        </div>
+    <?php endif; ?>
+
+    <div class="navigation">
+        <ul>
+            <li><a href="<?php echo $block->getHomeUrl(); ?>">HOME</a></li>
+            <li><a href="<?php echo $block->getLinkGuideRules(); ?>">ご利用ガイドと利用規約</a></li>
+            <li><a href="<?php echo $block->getLinkComplianceInformation()?>">特定商取引法に基づく表示</a></li>
+
+            <?php if ($isCustomerInvoice) : ?>
+            <li class="last"><a href="<?php echo $block->getLinkFAQ(); ?>">よくある質問</a></li>
+            <?php else : ?>
+            <li><a href="<?php echo $block->getLinkAddressNoteFunction();?>">アドレス帳機能について</a></li>
+            <li><a href="<?php echo $block->getLinkFAQ(); ?>">よくある質問</a></li>
+            <li class="last"><a href="<?php echo $block->getLinkToEnquiry();?>">お問い合わせ</a></li>
+            <?php endif; ?>
+
+        </ul>
+    </div>
+<?php endif; ?>

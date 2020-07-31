@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="cedyna_threshold">
+        <job name="cedyna_threshold_reset" instance="Riki\Fraud\Cron\CedynaThresholdReset" method="execute">
+            <config_path>rikifraud/cron/schedule</config_path>
+        </job>
+    </group>
+</config>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <carriers>
+            <!--[Carrier's system identifier]-->
+            <riki_shipping>
+                <!--[Carrier's activate/deactivate flag default value]-->
+                <active>1</active>
+                <!--[Car1ier's title default value]-->
+                <title>Riki Shipping</title>
+                <methodname>Riki Shipping</methodname>
+                <delivery_free_shipping_amount>2000</delivery_free_shipping_amount>
+                <delivery_type_cool_rate>100</delivery_type_cool_rate>
+                <delivery_type_normal_rate>90</delivery_type_normal_rate>
+                <delivery_type_direct_mail_rate>80</delivery_type_direct_mail_rate>
+                <delivery_type_cold_rate>70</delivery_type_cold_rate>
+                <delivery_type_chilled_rate>60</delivery_type_chilled_rate>
+                <delivery_type_cosmetic_rate>50</delivery_type_cosmetic_rate>
+                <!--[Carrier's model class]-->
+                <model>Riki\ShippingProvider\Model\Carrier</model>
+                <!--[Error message displays on storefront if carrier's methods unavailable]-->
+                <specificerrmsg>This shipping method is currently unavailable. If you would like to ship using this shipping method, please contact us.</specificerrmsg>
+            </riki_shipping>
+        </carriers>
+    </default>
+</config>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_quote_address_collect_totals_after">
+        <observer name="riki_promo_admin_address_collect_totals_after" instance="Riki\Promo\Observer\AddressCollectTotalsAfterObserver" />
+    </event>
+    <event name="sales_quote_collect_totals_before">
+        <observer name="riki_promo_admin_collect_totals_before" instance="Amasty\Promo\Observer\FixWholeCartRuleObserver" />
+    </event>
+    <event name="sales_quote_collect_totals_after">
+        <observer name="riki_promo_admin_collect_totals_after" instance="Riki\Promo\Observer\CollectTotalsAfterObserver" />
+    </event>
+    <event name="catalog_product_is_salable_after">
+        <observer name="riki_promo_catalog_product_is_salable_after" instance="Riki\Promo\Observer\CatalogProductIsSalableAfter" />
+    </event>
+</config>

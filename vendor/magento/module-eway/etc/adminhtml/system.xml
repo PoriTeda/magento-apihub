@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="payment">
+            <group id="eway" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>eWAY</label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="connection_type" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Connection Type</label>
+                    <source_model>Magento\Eway\Model\Adminhtml\Source\ConnectionType</source_model>
+                </field>
+                <field id="title" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                </field>
+                <field id="sandbox_flag" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Sandbox Mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="live_api_key" translate="label" type="obscure" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Live API Key</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+                <field id="live_api_password" translate="label" type="obscure" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Live API Password</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <comment>
+                        <![CDATA[<a href="https://myeway.force.com/success/s/article/How-do-I-setup-my-Live-eWAY-API-Key-and-Password" target="_blank">How to generate Live Rapid 3.1 API Key and Password</a>]]>
+                    </comment>
+                </field>
+                <field id="live_encryption_key" translate="label" type="obscure" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Live Client-side Encryption Key</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <depends>
+                        <field id="connection_type">direct</field>
+                    </depends>
+                </field>
+                <field id="sandbox_api_key" translate="label" type="obscure" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Sandbox API Key</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+                <field id="sandbox_api_password" translate="label" type="obscure" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Sandbox API Password</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <comment>
+                        <![CDATA[<a href="https://myeway.force.com/success/s/article/How-do-I-set-up-my-Sandbox-API-Key-and-password" target="_blank">How to generate Sandbox Rapid 3.1 API Key and Password</a>]]>
+                    </comment>
+                </field>
+                <field id="sandbox_encryption_key" translate="label" type="obscure" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Sandbox Client-side Encryption Key</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <depends>
+                        <field id="connection_type">direct</field>
+                    </depends>
+                </field>
+                <field id="payment_action" translate="label" type="select" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Payment Action</label>
+                    <source_model>Magento\Eway\Model\Adminhtml\Source\PaymentAction</source_model>
+                </field>
+                <field id="debug" translate="label" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Debug</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="cctypes" translate="label" type="multiselect" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Credit Card Types</label>
+                    <source_model>Magento\Eway\Model\Adminhtml\Source\Cctype</source_model>
+                </field>
+                <field id="allowspecific" translate="label" type="allowspecific" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Payment from Applicable Countries</label>
+                    <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                </field>
+                <field id="specificcountry" translate="label" type="multiselect" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Payment from Specific Countries</label>
+                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="16" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Sort Order</label>
+                    <frontend_class>validate-number</frontend_class>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

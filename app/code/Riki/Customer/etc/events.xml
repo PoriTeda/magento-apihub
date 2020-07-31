@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="customer_address_save_before">
+        <observer name="riki_customer_address_type" instance="Riki\Customer\Observer\AddressType"/>
+        <observer name="riki_customer_address_save_log_before" instance="Riki\Customer\Observer\AddressBeforeSaveLogger"/>
+    </event>
+    <event name="customer_address_save_after">
+        <observer name="riki_customer_address_save_log_after" instance="Riki\Customer\Observer\AddressAfterSaveLogger"/>
+    </event>
+    <event name="customer_address_delete_before">
+        <observer name="riki_before_delete_customer_address" instance="Riki\Customer\Observer\AddressDelete"/>
+    </event>
+    <event name="customer_save_after_data_object">
+        <observer name="riki_customer_save_after_data_object" instance="Riki\Customer\Observer\CustomerRepositorySaveAfter"/>
+        <observer name="riki_customer_segment_save_after_data_object" instance="Riki\Customer\Observer\CustomProcessCustomerEventObserver"/>
+    </event>
+    <event name="customer_email_duplicate_exception">
+        <observer name="riki_customer_customer_sync_consumer_db_failure" instance="Riki\Customer\Observer\CustomerSyncConsumerDbFailure"/>
+    </event>
+</config>

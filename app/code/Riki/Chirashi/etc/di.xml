@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="riki_chirashiQuoteItemToOrderItem" type="Riki\Chirashi\Plugin\Quote\Item\ToOrderItem"/>
+    </type>
+    <type name="Magento\Sales\Model\Convert\Order">
+        <plugin name="riki_chirashiSalesConvertOrder" type="Riki\Chirashi\Plugin\Sales\Convert\Order"/>
+    </type>
+    <type name="Riki\ShipmentExporter\Helper\Data">
+        <plugin name="riki_chirashiShipmentExporterHelperData" type="Riki\Chirashi\Plugin\ShipmentExporter\Helper\Data"/>
+    </type>
+    <type name="Riki\Subscription\Helper\Order\Data">
+        <plugin name="riki_chirashiSubscriptionHelperOrderData" type="Riki\Chirashi\Plugin\Subscription\Helper\OrderData"/>
+    </type>
+    <type name="Amasty\Promo\Model\Registry">
+        <plugin name="riki_chirashiPromoRegistry" type="Riki\Chirashi\Plugin\Promo\Model\Registry"/>
+    </type>
+    <type name="Riki\AdvancedInventory\Model\Assignation">
+        <plugin name="riki_chirashiAdvancedInventoryModelAssignation" type="Riki\Chirashi\Plugin\AdvancedInventory\Model\Assignation"/>
+    </type>
+    <type name="Riki\AdvancedInventory\Observer\OosCapture">
+        <plugin name="riki_chirashiRikiAdvancedInventoryObserverOosCapture" type="Riki\Chirashi\Plugin\AdvancedInventory\Observer\OosCapture"/>
+    </type>
+    <preference for="Magento\CustomerSegment\Model\Segment\Condition\Product\Attributes" type="Riki\Chirashi\Model\CustomerSegment\Segment\Condition\Product\Attributes" />
+    <preference for="Magento\CustomerSegment\Model\Segment\Condition\Product\Combine\History" type="Riki\Chirashi\Model\CustomerSegment\Segment\Condition\Product\Combine\History" />
+</config>

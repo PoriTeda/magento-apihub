@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Communication/etc/communication.xsd">
+    <topic name="customer.reindex.grid" request="Riki\Customer\Api\GridIndexer\ItemInterface">
+        <handler name="customer.reindex.grid.handler" type="Riki\Customer\Model\ResourceModel\GridIndexerConsumer" method="execute" />
+    </topic>
+
+    <topic name="customer.update.segment" request="Riki\Customer\Model\Queue\SaveAfterCustomerQueueSchemaInterface">
+        <handler name="customer.update.segment.handler" type="Riki\Customer\Model\Queue\UpdateSegment" method="execute" />
+    </topic>
+</config>

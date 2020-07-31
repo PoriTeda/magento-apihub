@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Customer\Block\Adminhtml\Edit\SaveButton">
+        <plugin name="rikiCustomerBlockAdminhtmlEditSaveButton" type="Riki\Customer\Plugin\Customer\Block\Adminhtml\Edit\EditButtons"/>
+    </type>
+    <type name="Magento\Customer\Block\Adminhtml\Edit\SaveAndContinueButton">
+        <plugin name="rikiCustomerBlockAdminhtmlEditSaveAndContinueButton" type="Riki\Customer\Plugin\Customer\Block\Adminhtml\Edit\EditButtons"/>
+    </type>
+    <type name="Magento\Customer\Block\Adminhtml\Edit\SaveButton">
+        <plugin name="rikiCustomerBlockAdminhtmlEditSaveButton" type="Riki\Customer\Plugin\Customer\Block\Adminhtml\Edit\EditButtons"/>
+    </type>
+    <type name="Magento\Customer\Block\Adminhtml\Edit\ResetPasswordButton">
+        <plugin name="rikiCustomerBlockAdminhtmlEditResetPasswordButton" type="Riki\Customer\Plugin\Customer\Block\Adminhtml\Edit\EditButtons"/>
+    </type>
+    <type name="Magento\Customer\Block\Adminhtml\Edit\InvalidateTokenButton">
+        <plugin name="rikiCustomerBlockAdminhtmlEditInvalidateTokenButton" type="Riki\Customer\Plugin\Customer\Block\Adminhtml\Edit\EditButtons"/>
+    </type>
+    <type name="Magento\Customer\Block\Adminhtml\Edit\DeleteButton">
+        <plugin name="rikiCustomerBlockAdminhtmlEditDeleteButton" type="Riki\Customer\Plugin\Customer\Block\Adminhtml\Edit\DeleteButton"/>
+    </type>
+    <type name="Magento\Ui\Component\ExportButton">
+        <plugin name="rikiCustomerUiComponentExportButton" type="Riki\Customer\Plugin\Ui\Component\ExportButton"/>
+    </type>
+    <type name="Magento\Customer\Block\Adminhtml\Edit\OrderButton">
+        <plugin name="rikiCustomerPrepareCreateOrderButton" type="Riki\Customer\Plugin\Customer\Block\Adminhtml\Edit\OrderButton\PrepareCreateOrderButton"/>
+    </type>
+    <preference for="Magento\Customer\Controller\Adminhtml\Index\NewAction" type="Riki\Customer\Controller\Adminhtml\Index\NewAction"/>
+    <preference for="Magento\Customer\Controller\Adminhtml\Index\InlineEdit" type="Riki\Customer\Controller\Adminhtml\Index\InlineEdit"/>
+    <preference for="Magento\Customer\Controller\Adminhtml\Index\MassAssignGroup" type="Riki\Customer\Controller\Adminhtml\Index\MassAssignGroup"/>
+    <preference for="Magento\Customer\Controller\Adminhtml\Index\MassSubscribe" type="Riki\Customer\Controller\Adminhtml\Index\MassSubscribe"/>
+    <preference for="Magento\Customer\Controller\Adminhtml\Index\MassUnsubscribe" type="Riki\Customer\Controller\Adminhtml\Index\MassUnsubscribe"/>
+    <preference for="Magento\Customer\Controller\Adminhtml\Index\Newsletter" type="Riki\Customer\Controller\Adminhtml\Index\Newsletter"/>
+
+    <preference for="\Magento\Customer\Controller\Adminhtml\Index\Edit" type="Riki\Customer\Controller\Adminhtml\Index\Edit"/>
+    <preference for="Magento\Customer\Controller\Adminhtml\Index\Save" type="Riki\Customer\Controller\Adminhtml\Index\Save"/>
+    <preference for="Magento\Customer\Model\Customer" type="Riki\Customer\Model\Customer"/>
+</config>

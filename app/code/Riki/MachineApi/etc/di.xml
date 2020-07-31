@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Step 2 add item cart -->
+    <preference for="Riki\MachineApi\Api\CartItemRepositoryInterface" type="Riki\MachineApi\Model\Quote\Item\Repository" />
+
+    <!-- Step 3 add infomation -->
+    <preference for="Riki\MachineApi\Api\ShippingInformationManagementInterface" type="Riki\MachineApi\Model\ShippingInformationManagement" />
+
+    <!-- step 4  create customter or update-->
+    <preference for="Riki\MachineApi\Api\ApiCustomerRepositoryInterface" type="Riki\MachineApi\Model\ApiCustomerRepository" />
+    <preference for="Riki\MachineApi\Api\Data\ApiCustomerInterface" type="Riki\MachineApi\Model\Data\ApiCustomer" />
+    <preference for="Riki\MachineApi\Api\Data\ApiAddressInterface" type="Riki\MachineApi\Model\Data\ApiAddress" />
+
+    <!--step 5 -->
+    <preference for="Riki\MachineApi\Api\PaymentInformationManagementInterface" type="Riki\MachineApi\Model\PaymentInformationManagement" />
+    <preference for="Riki\MachineApi\Api\BillingAddressManagementInterface" type="Riki\MachineApi\Model\BillingAddressManagement" />
+    <preference for="Riki\MachineApi\Api\CartRepositoryInterface" type="Riki\MachineApi\Model\QuoteRepository" />
+    <preference for="Riki\MachineApi\Api\PaymentMethodManagementInterface" type="\Riki\MachineApi\Model\PaymentMethodManagement" />
+    <preference for="Riki\MachineApi\Api\Data\OrderInterface" type="Riki\MachineApi\Model\Order" />
+
+    <!-- B2C Machine SKUs-->
+    <virtualType name="B2CMachineSkusGirdFilterPool" type="Magento\Framework\Vnhiew\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="B2CMachineSkusGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\MachineApi\Model\ResourceModel\B2CMachineSkus\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">B2CMachineSkusGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Riki\MachineApi\Model\ResourceModel\B2CMachineSkus\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">subscription_course_machine_type</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\MachineApi\Model\ResourceModel\B2CMachineSkus</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="b2c_skus_listing_data_source" xsi:type="string">Riki\MachineApi\Model\ResourceModel\B2CMachineSkus\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--End B2C Machine SKUs-->
+
+    <type name="Riki\MachineApi\Model\ResourceModel\B2CMachineSkus">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+
+    <type name="Riki\MachineApi\Model\ResourceModel\B2CMachineSkus\Product">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+
+    <!-- remove promotion for order machine-->
+    <type name="Amasty\Promo\Model\Registry">
+        <plugin name="riki_PromoPromoModel_Registry_for_Machine" type="Riki\MachineApi\Plugin\Promo\Model\Registry"/>
+    </type>
+
+    <type name="Riki\Rule\Observer\OrderBeforePlaceObserver">
+        <plugin name="riki_machine_api_skip_cumulative_promotion" type="Riki\MachineApi\Plugin\SkipCumulativePromotion"/>
+    </type>
+
+    <preference for="Magento\Quote\Model\Quote\Payment" type="Riki\MachineApi\Model\Quote\DefaultPayment"/>
+
+    <type name="Magento\CatalogRule\Model\ResourceModel\Rule">
+        <plugin name="machine_api_remove_catalog_rule" type="Riki\MachineApi\Plugin\RemoveCatalogRuleForMachineMaintenance"/>
+    </type>
+
+    <type name="Riki\AdvancedInventory\Helper\Assignation">
+        <plugin name="machine_api_assignation_helper" type="Riki\MachineApi\Plugin\AdvancedInventory\Helper\Assignation"/>
+    </type>
+</config>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Riki\Quote\Api\ShippingAddressManagementInterface" type="Riki\Quote\Model\ShippingAddressManagement"/>
+    <preference for="Magento\Quote\Model\Quote\Address" type="Riki\Quote\Model\Quote\Address"/>
+    <preference for="Magento\Quote\Model\CustomerManagement" type="Riki\Quote\Model\CustomerManagement" />
+    <preference for="Magento\Quote\Model\Quote\Address\Total\Subtotal" type="Riki\Quote\Model\Quote\Address\Total\Subtotal"/>
+    <preference for="Magento\Quote\Model\Quote\TotalsCollector" type="Riki\Quote\Model\Quote\TotalsCollector"/>
+    <preference for="Magento\Quote\Model\Quote\Address\Validator" type="\Riki\Quote\Model\Quote\Address\Validator" />
+    <preference for="Riki\Quote\Api\PaymentInformationManagementInterface" type="\Riki\Quote\Model\PaymentInformationManagement" />
+    <type name="Riki\Quote\Logger\LoggerPieceCase">
+        <arguments>
+            <argument name="name" xsi:type="string">Logger check add piece-case product</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Quote\Logger\HandlerPieceCase</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Webapi\Controller\Rest\ParamsOverrider">
+        <arguments>
+            <argument name="paramOverriders" xsi:type="array">
+                <item name="%cart_id%" xsi:type="object">Riki\Quote\Model\Webapi\ParamOverriderCartId\Proxy</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

@@ -1,0 +1,42 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<div class="admin__page-section-title">
+    <span class="title"><?php /* @escapeNotVerified */ echo $block->getHeaderText() ?></span>
+    <?php if( 'sales_order_create_customer' == $block->getId()&& $block->getButtonsSearchConsumerDBHtml()): ?>
+        <div class="actions"><?php echo $block->getButtonsSearchConsumerDBHtml() ?></div>
+    <?php endif; ?>
+    <?php if($block->getButtonsHtml()): ?>
+        <div class="actions"><?php echo $block->getButtonsHtml() ?></div>
+    <?php endif; ?>
+</div>
+
+<?php echo $block->getChildHtml('', true) ?>
+
+<?php if( 'sales_order_create_customer' == $block->getId()): ?>
+<script>
+    require([
+        'jquery'
+    ], function ($) {
+        $(document).ready(function(){
+            var auto_search_customer_id = <?php echo $block->getAutoSearchCustomerId();?>;
+            if(auto_search_customer_id){
+                $('#sales_order_create_customer_grid_filter_entity_id').val(auto_search_customer_id);
+                var checkExist = setInterval(function() {
+                    if (typeof sales_order_create_customer_gridJsObject !== "undefined") {
+                        sales_order_create_customer_gridJsObject.doFilter();
+                        clearInterval(checkExist);
+                    }
+                }, 10);
+            }
+        });
+    });
+</script>
+<?php endif; ?>

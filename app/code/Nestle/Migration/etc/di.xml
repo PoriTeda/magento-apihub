@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="reIndexOnFly" xsi:type="object">Nestle\Migration\Command\ReIndexOnFly</item>
+                <item name="migrationCommand" xsi:type="object">Nestle\Migration\Command\MigrationCommand</item>
+                <item name="productionCommand" xsi:type="object">Nestle\Migration\Command\ProductionCommand</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- fix error 8-->
+    <type name="Magento\Framework\Setup\Declaration\Schema\Operations\AddComplexElement">
+        <plugin name="ignoreAddConstrainCatalogruleProductTable"
+                type="Nestle\Migration\Plugin\Declaration\Schema\Operations\AddComplexElementPlugin"/>
+    </type>
+
+    <preference for="Magento\Sales\Setup\Patch\Data\FillQuoteAddressIdInSalesOrderAddress"
+                type="Nestle\Migration\Preference\Setup\Patch\Data\FillQuoteAddressIdInSalesOrderAddress"/>
+
+    <type name="Magento\SalesRule\Setup\Patch\Data\FillSalesRuleProductAttributeTable">
+        <plugin name="fixRuleConditionData"
+                type="Nestle\Migration\Plugin\Setup\Patch\Data\FillSalesRuleProductAttributeTable\Plugin"/>
+    </type>
+
+    <!--  rm.md - error 12-->
+    <type name="Magento\Framework\DB\Adapter\Pdo\Mysql">
+        <plugin name="fixInsertArray"
+                type="Nestle\Migration\Plugin\DB\Adapter\Pdo\Mysql\Plugin"/>
+    </type>
+
+    <type name="Magento\Framework\Setup\Patch\PatchHistory">
+        <plugin name="insertAliasesNameToPatchList"
+                type="Nestle\Migration\Plugin\Magento\Framework\Setup\Patch\PatchHistory\Plugin"/>
+    </type>
+
+    <!-- rm.md - error 15-->
+    <preference for="Magento\Framework\DB\FieldDataConverter"
+                type="Nestle\Migration\Preference\Magento\Framework\DB\FieldDataConverter"/>
+
+    <!-- fix memory engine doesn't support on aurora-->
+    <preference for="Magento\Framework\Setup\Declaration\Schema\Dto\Table"
+                type="Nestle\Migration\Preference\Magento\Framework\Setup\Declaration\Schema\Dto\Table"/>
+    <preference for="Magento\Framework\Setup\Declaration\Schema\Dto\Index"
+                type="Nestle\Migration\Preference\Magento\Framework\Setup\Declaration\Schema\Dto\Index"/>
+
+</config>

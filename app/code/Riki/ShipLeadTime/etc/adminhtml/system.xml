@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
+    <system>
+        <section id="shipleadtime" translate="label" type="text" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Shipping Buffer Days</label>
+            <tab>bluecom_cronjob</tab>
+            <!-- resource tag name which we have to defined in the acl.xml -->
+            <resource>Riki_ShipLeadTime::config_shipleadtime</resource>
+            <group id="shipping_buffer_days" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Shipping Buffer Days</label>
+                <field id="shipping_couriers_common_buffer" translate="label" type="text"  sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Shipping couriers common buffer (days)</label>
+                    <validate>validate-number validate-greater-than-zero validate-digits</validate>
+                    <comment>Entering the integer number of common buffer days</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

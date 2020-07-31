@@ -1,0 +1,29 @@
+<?php
+    /**
+     * @var \Riki\TagManagement\Block\CartIndex $block
+     */
+    $getItemsCount = $block->getQuote()->getItemsCount();
+    $memberShipId = $block->getMemberShipId();
+?>
+<?php if($getItemsCount) : ?>
+    <!--End google dataLayer tag -->
+    <script type="text/javascript">
+        window.listProductInQuote = [<?php echo $block->getListProductInQuote() ?>];
+        window.memberShipId = '<?php echo $memberShipId; ?>';
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            'event': 'checkout',
+            'membershipID': window.memberShipId,
+            'currencyCode': 'JPY',
+            'checkoutStepName': 'Payment and Address|お届け先とお支払方法の選択',
+            'ecommerce': {
+
+                'checkout': {
+                    'actionField': {'step': 2},
+                    'products': window.listProductInQuote
+                }
+            }
+        });
+    </script>
+    <!--End google dataLayer tag -->
+<?php endif; ?>

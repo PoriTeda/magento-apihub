@@ -1,0 +1,33 @@
+<?php /** @var \Riki\Loyalty\Block\Adminhtml\Sales\Order\Approve $block */?>
+
+<?php $_order = $block->getOrder(); ?>
+<?php if ($_order->getCanShowPointApproval()) : ?>
+    <?php $_urlReject = $block->getUrl('riki_loyalty/reward/reject', ['order_id' => $_order->getId()]);?>
+    <?php $_urlApprove = $block->getUrl('riki_loyalty/reward/approve', ['order_id' => $_order->getId()]);?>
+    <tr>
+        <th><?php /* @escapeNotVerified */ echo __('Shopping points: %1', $_order->getPendingPoint()) ?></th>
+        <td>
+            <button class="button primary actions"
+                    onclick="window.location.href='<?php echo $_urlApprove;?> '">
+                <?php echo __('Approve');?></button>
+            <button id="order_reject_point"
+                    onclick="jQuery('#order_reject_point').approvalPoint(
+                        {message: 'Are you sure? Reject shopping point will not be able to recover?',
+                            url: '<?php echo $_urlReject;?>'}).approvalPoint('showDialog');"
+                    class="button actions" data-mage-init='{"approvalPoint" : {}}'>
+                <?php echo __('Reject');?></button>
+        </td>
+    </tr>
+    <tr class="no-display">
+        <td colspan="2">
+            <div id="frm-point-confirm">
+                <button class="button primary actions"
+                        onclick="window.location.href='<?php echo $_urlApprove;?> '">
+                    <?php echo __('Approve');?></button>
+                <button id="order_reject_point_confirm"
+                        onclick="window.location.href='<?php echo $_urlReject;?> '">
+                    <?php echo __('Reject');?></button>
+            </div>
+        </td>
+    </tr>
+<?php endif;?>

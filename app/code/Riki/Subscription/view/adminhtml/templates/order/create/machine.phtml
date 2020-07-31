@@ -1,0 +1,17 @@
+<?php
+/** @var \Riki\Subscription\Block\Adminhtml\Order\Create\Course\Machine $block */
+$machineOption = $block->getMachineOption();
+$machineSelected = $block->getMachineSelected();
+if ($machineOption):
+?>
+    <div class="admin__field admin__field-option">
+        <select name="machine_course" class="admin__control-select" id="machine_course">
+            <option value=""><?php echo __("Select a machine") ?></option>
+            <?php foreach($machineOption as $product) : ?>
+                <option value="<?php echo $product->getId() ?>" <?php echo $product->getId() == $machineSelected ? 'selected' : '' ?>><?php echo $product->getName() . ', ' . $block->getFullPrice($product); ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+<?php elseif (is_array($machineOption)):// array empty means machines out of stock ?>
+    <input type="hidden" name="machine_not_available" value="1" id="machine_not_available" />
+<?php endif; ?>

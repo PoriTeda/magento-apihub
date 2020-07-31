@@ -1,0 +1,89 @@
+@padding_space_30:30px;
+.page-content{
+  #messages{
+    word-break: break-all;
+  }
+}
+
+
+ul li{
+  list-style: none;
+}
+.questionnaire-questions-edit{
+    #question_options_container{
+      .fieldset-wrapper{
+          .fieldset-wrapper-title{
+             padding-left:@padding_space_30;
+          }
+        .fieldset-wrapper-content{
+            .fieldset-alt{
+              div[class^="field-option-"]{
+                vertical-align: middle;
+              }
+              .field-option-title{
+                width: 60%;
+                padding-left: @padding_space_30;
+                textarea{
+                  width:100%;
+                }
+              }
+              .field-option-input-type{
+                width: 25%;
+              }
+              .field-option-req{
+                padding-top: 50px;
+                .control{
+                  top:0;
+                }
+              }
+            }
+            .data-table{
+                tr{
+                  th{
+                    &.col-actions{
+                      text-align: center;
+                    }
+                  }
+                  td{
+                    padding:10px 7px;
+                    vertical-align: middle;
+                    &.col-draggable{
+                      width:13%;
+                    }
+                    &.col-parent-choice-id{
+                      width: 24%;
+                      vertical-align: top;
+                      position: relative;
+                      .parent-choice-id{
+                        display: block;
+                        position: absolute;
+                        bottom: 15px;
+                      }
+                    }
+                    &.col-delete{
+                      min-width: 125px;
+                    }
+                  }
+                }
+            }
+        }
+      }
+  }
+}
+.questionnaire-answers-detail{
+    #answer_options_container_top{
+      .item-reply{
+        line-height: 1.625;
+        border-bottom: 1px solid #ccc;
+        .question-label{
+          font-weight: 700;
+          background: #f8f8f8;
+          padding: 10px;
+        }
+        .answer-content{
+          padding:10px;
+        }
+      }
+    }
+
+}

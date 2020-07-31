@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Nestle\Gillette\Api\ProductInfoInterface" type="Nestle\Gillette\Model\ProductInfo"/>
+    <preference for="Nestle\Gillette\Api\CartEstimationManagementInterface" type="Nestle\Gillette\Model\CartEstimationManagement"/>
+    <preference for="Nestle\Gillette\Api\Data\ProductInfoInterface" type="Nestle\Gillette\Model\Data\ProductInfo" />
+    <preference for="Nestle\Gillette\Api\Data\CartEstimationInterface" type="Nestle\Gillette\Model\Data\CartEstimation" />
+    <preference for="Nestle\Gillette\Api\Data\CartEstimationResultInterface" type="Nestle\Gillette\Model\Data\CartEstimationResult" />
+    <preference for="Nestle\Gillette\Api\OrderManagementInterface" type="Nestle\Gillette\Model\OrderManagement" />
+    <!--    Initialize new log -->
+</config>

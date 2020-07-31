@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="shipmentimporter_email_template"
+              label="Riki - Shipment Importing email template"
+              file=""
+              type="text"
+              module="Riki_ShipmentImporter" area="frontend"/>
+
+    <template id="shipmentimporter_email_template_tracking"
+              label="Shipment tracking email template"
+              file=""
+              type="text"
+              module="Riki_ShipmentImporter" area="frontend"/>
+    <template id="shipmentimporter_email_template_tracking_spot"
+              label="Shipment tracking email template"
+              file=""
+              type="text"
+              module="Riki_ShipmentImporter" area="frontend"/>
+    <template id="shipmentimporter_email_template_tracking_hanpukai"
+              label="Shipment tracking email template"
+              file=""
+              type="text"
+              module="Riki_ShipmentImporter" area="frontend"/>
+    <template id="shipmentimporter_email_template_tracking_subscription"
+              label="Shipment tracking email template"
+              file=""
+              type="text"
+              module="Riki_ShipmentImporter" area="frontend"/>
+    <template id="shipmentimporter_email_template_error_cod"
+              label="Import COD collection error"
+              file=""
+              type="text"
+              module="Riki_ShipmentImporter" area="frontend"/>
+    <template id="shipmentimporter_email_template_error_cvs"
+              label="Payment collection from Wellnet"
+              file=""
+              type="text"
+              module="Riki_ShipmentImporter" area="frontend"/>
+
+</config>

@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Riki\SapIntegration\Logger\ShipmentLogger">
+        <arguments>
+            <argument name="name" xsi:type="string">sap_shipment_logger</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Riki\SapIntegration\Logger\ShipmentHandle</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\SapIntegration\Logger\RmaLogger">
+        <arguments>
+            <argument name="name" xsi:type="string">sap_rma_logger</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Riki\SapIntegration\Logger\RmaHandle</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\SapIntegration\Logger\ShipmentDebugLogger">
+        <arguments>
+            <argument name="name" xsi:type="string">sap_api_debug</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Riki\SapIntegration\Logger\ShipmentDebugHandle</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Sales\Model\Order\Shipment\Item">
+        <plugin name="riki_sapIntegration_sales_model_order_shipment_item_syncData" type="Riki\SapIntegration\Plugin\Sales\Model\Order\Shipment\Item\SyncData" sortOrder="10" />
+    </type>
+    <type name="Magento\Rma\Model\Item">
+        <plugin name="riki_sapIntegration_rma_model_item_syncData" type="Riki\SapIntegration\Plugin\Rma\Model\Item\SyncData" sortOrder="10" />
+    </type>
+    <!--<type name="Riki\SapIntegration\Cron\Exporter\Orders">-->
+        <!--<plugin name="riki_sapIntegration_afterExportOrders" type="Riki\SapIntegration\Plugin\SapIntegration\Cron\Exporter\Orders\SapTransfer" sortOrder="10" />-->
+    <!--</type>-->
+    <type name="Riki\SapIntegration\Cron\Exporter\Returns">
+        <plugin name="riki_sapIntegration_afterExportReturns" type="Riki\SapIntegration\Plugin\SapIntegration\Cron\Exporter\Returns\SapTransfer" sortOrder="10" />
+    </type>
+
+    <type name="Riki\SapIntegration\Cron\ShipmentV2">
+        <!--<plugin name="riki_sapIntegration_cron_shipment_beforeAfterExecute" type="Riki\SapIntegration\Plugin\SapIntegration\Cron\Shipment\SapTransfer" sortOrder="10" />-->
+        <plugin name="riki_sapIntegration_cron_shipment_emailNotification" type="Riki\SapIntegration\Plugin\SapIntegration\Cron\Shipment\EmailNotification" sortOrder="20" />
+        <plugin name="riki_sap-integration_cron_shipment_lock" type="Riki\SapIntegration\Plugin\SapIntegration\Cron\Shipment\Lock" sortOrder="30" />
+    </type>
+    <type name="Riki\SapIntegration\Cron\RmaV2">
+        <plugin name="riki_sapIntegration_cron_rma_beforeAfterExecute" type="Riki\SapIntegration\Plugin\SapIntegration\Cron\Rma\SapTransfer" sortOrder="10" />
+        <plugin name="riki_sapIntegration_cron_rma_emailNotification" type="Riki\SapIntegration\Plugin\SapIntegration\Cron\Rma\EmailNotification" sortOrder="20" />
+        <plugin name="riki_sap-integration_cron_rma_lock" type="Riki\SapIntegration\Plugin\SapIntegration\Cron\Rma\Lock" sortOrder="30" />
+    </type>
+
+    <type name="Riki\SapIntegration\Model\ResourceModel\ShipmentSapExported">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\ScalableOms\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="riki_shipment_sap_exported" xsi:type="string">riki_shipment_sap_exported</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <preference for="Riki\SapIntegration\Api\ShipmentSapExportedRepositoryInterface" type="Riki\SapIntegration\Model\ShipmentSapExportedRepository"/>
+    <preference for="Riki\SapIntegration\Api\Data\ShipmentSapExportedInterface" type="Riki\SapIntegration\Model\ShipmentSapExported"/>
+    <preference for="Riki\SapIntegration\Api\Data\ShipmentSapExportedSearchResultsInterface" type="Riki\SapIntegration\Model\ResourceModel\ShipmentSapExported\Collection"/>
+
+</config>

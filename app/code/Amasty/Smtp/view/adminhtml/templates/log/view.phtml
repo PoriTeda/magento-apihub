@@ -1,0 +1,40 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2019 Amasty (https://www.amasty.com)
+ * @package Amasty_Smtp
+ */
+?>
+<div style="border:1px solid #ccc;" class="entry-edit">
+    <div style="margin:20px;" class="box">
+        <p class="a-center">
+        <table width="100%">
+            <tr style="padding-bottom: 4px;">
+                <td style="width: 140px; color: #4F4F4F; text-align: right;"><strong><?= __('Date'); ?></strong></td>
+                <td style="width: 30px;"></td>
+                <td><?php echo $this->getDate(); ?></td>
+            </tr>
+            <tr>
+                <td style="width: 140px; color: #4F4F4F; text-align: right;"><strong><?= __('Subject'); ?></strong></td>
+                <td style="width: 30px;"></td>
+                <td><?php echo $this->getSubject(); ?></td>
+            </tr>
+            <tr>
+                <td style="width: 140px; color: #4F4F4F; text-align: right;"><strong><?= __('To'); ?></strong></td>
+                <td style="width: 30px;"></td>
+                <td><?php echo $this->getTo(); ?></td>
+            </tr>
+        </table>
+        </p>
+    </div>
+    <div style="margin:20px;" class="box">
+        <table>
+            <tr style="padding-bottom: 4px;">
+                <td style="width: 140px; color: #4F4F4F; text-align: right;"><strong><?= __('Body'); ?></strong></td>
+                <td style="width: 30px;"></td>
+                <td><?php echo $this->getBody(); ?></td>
+            </tr>
+        </table>
+
+    </div>
+</div>

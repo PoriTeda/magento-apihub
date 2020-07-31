@@ -1,0 +1,26 @@
+<?php /** @var \Riki\SalesRule\Block\Adminhtml\Sales\Order\View\Promotion $block */ ?>
+<?php
+$rules = $block->getPromotionListByCurrentOrder();
+?>
+<div class="admin__page-section-title">
+    <strong class="title"><?php echo __('Promotion List') ?></strong>
+</div>
+
+<div class="admin__page-section-content">
+    <?php if(count($rules)): ?>
+        <table class="admin__table-secondary order-promotions-table">
+            <tbody>
+            <?php foreach($rules as $rule): ?>
+                <tr>
+                    <th><?php echo __('Promotion %1', $rule['salesrule_id']) ?></th>
+                    <td>
+                        <?php echo $rule['description']; ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p><?php echo __('There are not any promotion be applied for this order.') ?></p>
+    <?php endif; ?>
+</div>

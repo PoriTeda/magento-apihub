@@ -1,0 +1,91 @@
+<!--@subject Cancel to your {{var store.getFrontendName()}} order @-->
+
+
+
+
+
+
+
+<table>
+    <tr class="email-intro">
+        <td>
+            <p class="greeting">＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋
+                ネスレ通販
+                オンラインショップからのお知らせです。
+                ＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋
+                ※このメールは配信停止希望のお客様にもお送りしています。
+
+                {{trans "%customer_name," customer_name=$order.getCustomerName()}}
+
+                この度はご利用いただき、誠にありがとうございます。
+                下記のご注文につきまして、キャンセルが完了いたしましたのでご案内いたします。</p>
+            <p>
+                【注文番号】{{var increment_id}}　※注文内容の詳細はマイページからご確認いただけます。
+                【注文受付日時】{{var created_order}}
+                【お支払い合計金額】{{var grand_total_order}}円
+            </p>
+        </td>
+    </tr>
+    <tr class="email-information">
+        <td>
+
+            <table class="message-info">
+                <tr>
+                    <td>
+                        【内　お支払手数料】0円
+                        【使用ポイント】0ポイント
+                        【獲得予定ポイント】130ポイント
+
+                        【ご請求先】
+                        {{var formattedBillingAddressText|raw}}
+
+
+                        ****** ご注文内容およびお届け先 ******
+
+                        【お支払い金額（税込）】
+                        商品合計：{{var total_money_items}}円
+                        有料サービス：0円
+                        送料：{{var shipping_fee}}円
+                        注文合計：{{var grand_total_order}}円
+
+                        {{layout handle="sales_email_order_items_text" order=$order area="frontend"}}
+
+
+                        【お届け先】
+                        {{var formattedShippingAddressText|raw}}
+
+                        【配送方法】宅配便
+
+                        【お支払い方法】{{var payment_method}}
+                        【お支払い手数料】{{var payment_fee}}
+
+
+
+                        今後ともネスレ通販 オンラインショップを
+                        よろしくお願いいたします。
+
+                        ※このメールは自動配信メールです。
+                        このメール送信元にご返信いただいてもご対応しかねますのでご了承ください。
+                        このメールにお心当たりのない方、その他ご不明な点がございましたら、
+                        大変お手数ですが、下記のお問い合わせ先までご連絡ください。
+                        ※表示されている価格は、すべて税込価格です。
+                        ――――――――――――――――――――――――――――――――
+                        ネスレ通販オンラインショップ
+                        【各種お問い合わせは以下からご確認ください】
+                        https://shop.nestle.jp/front/contents/inquiry/
+
+                        [発行] ネスレ日本株式会社
+                        651-0087　兵庫県神戸市中央区御幸通7-1-15
+
+                        @-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-
+                        （C） Nestle Group All Rights Reserved.
+                        許可なく転載することを禁じます。
+                        -@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}

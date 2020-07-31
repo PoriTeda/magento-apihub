@@ -1,0 +1,70 @@
+<!-- Start gaClientID -->
+<input id="tagGaClientID" type="hidden" name="gaClientID">
+<script type="text/javascript">
+    var isLoadGaClient = false;
+    require([
+        'jquery',
+        'mage/url'
+    ], function (jQuery, urlBuilder) {
+        if (!window.isLoadGaClient) {
+            setInterval(function () {
+                if (typeof ga !== "undefined") {
+
+                    var getClientId = function () {
+                        try {
+                            var trackers = ga.getAll();
+                            var i, len;
+                            for (i = 0, len = trackers.length; i < len; i += 1) {
+                                if (trackers[i].get('trackingId') === "UA-18030477-88") {
+                                    return trackers[i].get('clientId');
+                                }
+                            }
+                        } catch (e) {
+                            var name = '_ga';
+                            var nameEQ = name + "=";
+                            var ca = document.cookie.split(';');
+                            for (var i = 0; i < ca.length; i++) {
+                                var c = ca[i];
+                                var gaCookie;
+                                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                                if (c.indexOf(nameEQ) == 0) gaCookie = c.substring(nameEQ.length, c.length);
+                            }
+
+                            try {
+                                pieces = gaCookie.split('.');
+                                cid = pieces[pieces.length - 2] + '.' + pieces[pieces.length - 1];
+                                if (cid) {
+                                    return cid;
+                                } else {
+                                    var clientId = ga.getAll()[0].get('clientId');
+                                    return clientId;
+                                }
+                            } catch (e)
+                            {
+                                return 'false';
+                            }
+                        }
+                        return 'false';
+                    }
+
+                    var gaClientId = getClientId();
+                    if (!window.isLoadGaClient && gaClientId != undefined && gaClientId != '' && gaClientId != false) {
+                        document.getElementById('tagGaClientID').value = gaClientId;
+                        urlBuilder.setBaseUrl('<?php echo $block->escapeUrl($block->getBaseUrl());?>');
+                        jQuery.ajax({
+                            url: urlBuilder.build('rest/V1/googletag/gaclientid'),
+                            dataType: 'json',
+                            method: 'POST',
+                            global: false,
+                            contentType: "application/json;",
+                            data: JSON.stringify({'gaClientId': gaClientId})
+                        });
+                        window.isLoadGaClient = true;
+                    }
+                }
+            }, 500);
+        }
+
+    });
+</script>
+<!-- End gaClientID -->

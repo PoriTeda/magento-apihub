@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="jquery/fileUploader/css/jquery.fileupload-ui.css"/>
+    </head>
+    <update handle="editor"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Riki\ArReconciliation\Block\Adminhtml\Import\Edit\Before" template="import/form/before.phtml" name="riki.arReconciliation.import.form.before" as="form_before"/>
+            <block class="Riki\ArReconciliation\Block\Adminhtml\Import\Edit" name="importcsvpayment_import_container_edit"/>
+            <block class="Riki\ArReconciliation\Block\Adminhtml\Form\After" template="Riki_ArReconciliation::import/form/after.phtml" name="import.form.after" as="form_after"/>
+        </referenceContainer>
+    </body>
+</page>

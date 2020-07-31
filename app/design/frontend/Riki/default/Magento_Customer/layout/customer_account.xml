@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="main.content">
+            <block class="Riki\Customer\Block\Account\Info" name="riki.customer.account.quicklink" template="Magento_Customer::html/quicklink.phtml" before="-"/>
+            <block class="Riki\Customer\Block\Html\Title" name="page.main.title.sub" template="Magento_Customer::html/title.phtml" after="riki.customer.account.quicklink">
+                <action method="setPageTitle">
+                    <argument translate="true" name="title" xsi:type="string">My Dashboard</argument>
+                </action>
+            </block>
+            <container name="commendation.product.list" htmlTag="div" htmlClass="block-additional-products" after="-">
+                <container name="content.bottom" label="Main Content Bottom"/>
+            </container>
+        </referenceContainer>
+        <referenceBlock name="catalog.compare.sidebar" remove="true" />
+        <referenceBlock name="sale.reorder.sidebar" remove="true" />
+        <referenceBlock name="wishlist_sidebar" remove="true" />
+        <referenceBlock name="multiple-wishlist_sidebar" remove="true" />
+        <move element="page.main.title" destination="main" before="-"/>
+        <move element="page.messages" destination="main" after="page.main.title"/>
+        <referenceBlock name="customer-account-navigation-wish-list-link" remove="true"/>
+        <referenceBlock name="customer-account-navigation-billing-agreements-link" remove="true"/>
+        <referenceBlock name="customer-account-navigation-checkout-sku-link" remove="true"/>
+        <referenceBlock name="customer-account-navigation-my-credit-cards" remove="true"/>
+        <referenceBlock name="customer-account-navigation-downloadable-products-link" remove="true"/>
+        <referenceBlock name="customer-account-navigation-magento-invitation-link" remove="true"/>
+        <referenceBlock name="customer-account-navigation-billing-agreements-link" remove="true"/>
+        <referenceBlock name="customer-account-navigation-product-reviews-link" remove="true"/>
+        <referenceBlock name="customer-account-navigation-return-history-link" remove="true"/>
+        <referenceBlock name="customer_account_navigation">
+            <block class="Magento\Framework\View\Element\Html\Link\Current" name="customer-account-navigation-orders-link" after="customer-account-navigation-account-link">
+                <arguments>
+                    <argument name="path" xsi:type="string">sales/order/history</argument>
+                    <argument name="label" xsi:type="string" translate="true">My Orders</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Reward\Block\Customer\AccountLink" name="customer-account-navigation-reward-link" after="customer-account-navigation-address-link">
+                <arguments>
+                    <argument name="path" xsi:type="string">magento_reward/customer/info</argument>
+                    <argument name="label" xsi:type="string">Reward Points</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Framework\View\Element\Html\Link\Current" name="customer-account-navigation-gift-card-link" after="customer-account-navigation-reward-link">
+                <arguments>
+                    <argument name="path" xsi:type="string">magento_giftcardaccount/customer</argument>
+                    <argument name="label" xsi:type="string">Gift Card</argument>
+                </arguments>
+            </block>
+            <block class="Magento\GiftRegistry\Block\Link" name="customer-account-navigation-giftregistry-link" after="customer-account-navigation-gift-card-link">
+                <arguments>
+                    <argument name="path" xsi:type="string">magento_giftregistry</argument>
+                    <argument name="label" xsi:type="string">Gift Registry</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

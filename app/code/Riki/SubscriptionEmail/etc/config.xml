@@ -1,0 +1,17 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <subscriptioncourse>
+            <subscriptionprofile>
+               <enable>1</enable>
+               <email_template>subscriptioncourse_subscriptionprofile_email_template</email_template>
+                <hanpukai_email_template>subscriptioncourse_subscriptionprofile_hanpukai_email_template</hanpukai_email_template>
+            </subscriptionprofile>
+            <replaceproduct>
+                <enable>1</enable>
+                <sender>general</sender>
+                <email_template>subscriptioncourse_replaceproduct_email_template</email_template>
+                <delete_template>subscriptioncourse_replaceproduct_delete_template</delete_template>
+            </replaceproduct>
+        </subscriptioncourse>
+    </default>
+</config>

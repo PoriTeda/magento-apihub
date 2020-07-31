@@ -1,0 +1,29 @@
+<div class="no-display" id="comsumber-customer-grid">
+    <?php echo $block->getChildHtml() ?>
+</div>
+<script>
+    require([
+        'jquery',
+        'uiRegistry',
+        'Magento_Ui/js/modal/modal'
+    ], function ($, registry) {
+        $('#comsumber-customer-grid').modal({
+            title: 'Search Customer ConsumerDB',
+            modalClass: 'magento',
+            type: 'slide',
+            buttons: [],
+            close: function () {
+                self.closeDialogWindow(this);
+            }
+        });
+        $('#search').prop('onclick',null).on('click', function (e) {
+            e.preventDefault();
+            $('#comsumber-customer-grid').modal('openModal');
+        });
+
+        $('.searchconsumerdb').prop('onclick',null).on('click', function (e) {
+            e.preventDefault();
+            $('#comsumber-customer-grid').modal('openModal');
+        });
+    });
+</script>

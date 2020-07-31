@@ -1,0 +1,51 @@
+<?php /** @var \Riki\Sales\Block\Order\PrintOrder\AddressName $block */ ?>
+<?php $data = $block->getDataAddressName() ?>
+<div class="print-order-info">
+    <div class="name field">
+        <p><strong><?php echo __('Name(em)').":"?> </strong>
+            <?php
+            if (isset($data['first-name'])) {
+                echo $data['first-name'] . ' ';
+            }
+            if (isset($data['last-name'])) {
+                echo $data['last-name'];
+            }
+            ?>
+        </p>
+    </div>
+    <div class="nickname field">
+        <p><strong><?php echo __('Nickname').":" ?> </strong>
+            <?php
+            if (isset($data['nickname'])) {
+                echo $data['nickname'];
+            }
+            ?>
+        </p>
+    </div>
+    <div class="postcode field">
+        <p><strong><?php echo __('Postcode').":" ?> </strong>
+            <?php
+            if (isset($data['postcode'])) {
+                echo $data['postcode'] ;
+            }
+            ?>
+        </p>
+    </div>
+    <div class="name field">
+        <p><strong><?php echo __('Representative name').":" ?> </strong>
+            <?php
+            if (isset($data['rep-first-name'])) {
+                echo $data['rep-first-name'] . ' ';
+            }
+            if (isset($data['rep-last-name'])) {
+                echo $data['rep-last-name'] ;
+            }
+            ?>
+        </p>
+    </div>
+</div>
+<script>
+    jQuery(function() {
+        window.print();
+    });
+</script>

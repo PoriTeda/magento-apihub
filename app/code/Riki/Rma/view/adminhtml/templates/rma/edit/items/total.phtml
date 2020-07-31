@@ -1,0 +1,76 @@
+<?php /** @var \Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\Total $block */ ?>
+<div class="admin__fieldset-wrapper" data-bind="scope: 'totalExpr'">
+    <div class="admin__fieldset-wrapper-title">
+        <strong class="title">
+            <span><?php /* @escapeNotVerified */ echo __('Total to Return / Refund') ?></span>
+        </strong>
+    </div>
+    <div class="admin__fieldset-wrapper-content">
+        <fieldset class="admin__fieldset">
+            <?php if(!$block->getRma()->getIsWithoutGoods()): ?>
+            <div class="admin__field" data-bind="scope: 'totalBeforeGlobalAdjExpr'">
+                <label class="admin__field-label">
+                    <span><?php /* @escapeNotVerified */ echo __('Total before global adjustment') ?></span>
+                </label>
+                <div class="admin__field-label" style="width: auto">
+                    <span data-bind="text: result"></span>
+                    <input type="hidden" name="total_return_amount" id="total_return_amount" data-bind="value: result" />
+                </div>
+            </div>
+            <div class="admin__field">
+                <label class="admin__field-label" for="total_return_amount_adj">
+                    <span><?php /* @escapeNotVerified */ echo __('Global adjustment') ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <input class="admin__control-text validate-number" type="text" name="total_return_amount_adj" id="total_return_amount_adj" data-bind="textInput: x" />
+                </div>
+            </div>
+            <?php else: ?>
+                <div class="admin__field">
+                    <label class="admin__field-label">
+                        <span><?php /* @escapeNotVerified */ echo __('Product price adjustment') ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <input class="admin__control-text validate-number" type="text" name="total_return_amount_adj" id="total_return_amount_adj" data-bind="textInput: x" />
+                    </div>
+                </div>
+                <div class="admin__field">
+                    <label class="admin__field-label">
+                        <span><?php /* @escapeNotVerified */ echo __('Refund without product') ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <input class="admin__control-text validate-number" type="text" name="refund_without_product" id="refund_without_product" data-bind="textInput: y" />
+                    </div>
+                </div>
+            <?php endif; ?>
+            <div class="admin__field">
+                <label class="admin__field-label">
+                    <span><?php /* @escapeNotVerified */ echo __('Final return / Refund amount') ?></span>
+                </label>
+                <div class="admin__field-label" style="width: auto">
+                    <span data-bind="text: result"></span>
+                    <input type="hidden" name="total_return_amount_adjusted" id="total_return_amount_adjusted" data-bind="value: result" />
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "totalBeforeGlobalAdjExpr": {
+                        "component": "Riki_Rma/js/view/rma/total-before-global-adj-expr"
+                    },
+                    "totalExpr": {
+                        "component": "Riki_Rma/js/view/rma/total-expr",
+                        "_x": <?php echo $block->getReturnAmountAdj() ?>,
+                        "_y": <?php echo $block->getRefundWithoutProduct() ?>,
+                        "_result": <?php echo $block->getReturnAmountAdjusted() ?>
+                    }
+                }
+            }
+        }
+    }
+</script>

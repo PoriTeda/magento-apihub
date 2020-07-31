@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="subscription_stock_unavailability_email_template" label="Subscription Order Stock Unavailability Email" file="stock_unavailability.txt" type="text" module="Riki_Subscription" area="adminhtml"/>
+    <template id="subcreateorder_outofstock_email_template" label="Subscription Order Stock Unavailability Email" file="stock_unavailability.txt" type="text" module="Riki_Subscription" area="adminhtml"/>
+    <template id="subcreateorder_outofstockadmin_email_template" label="Subscription Order Stock Unavailability Email" file="stock_unavailability_admin.txt" type="text" module="Riki_Subscription" area="adminhtml"/>
+    <template id="subcreateorder_disabledorremoved_email_template" label="Subscription Product Disabled Or Removed Email" file="product_disabled_or_removed.txt" type="text" module="Riki_Subscription" area="adminhtml"/>
+    <template id="subcreateorder_authorizationfailed_email_template" label="Subscription Payment Authorization Fail Email" file="paygent_authorization_fail.txt" type="text" module="Riki_Subscription" area="adminhtml"/>
+    <template id="subcreateorder_payment_method_error_email_template" label="Subscription profile payment method error" file="subscription_profile_payment_method_error.txt" type="text" module="Riki_Subscription" area="adminhtml"/>
+    <template id="subcreateorder_payment_method_error_email_template_business" label="Subscription profile payment method error" file="subscription_profile_payment_method_error.txt" type="text" module="Riki_Subscription" area="adminhtml" />
+</config>

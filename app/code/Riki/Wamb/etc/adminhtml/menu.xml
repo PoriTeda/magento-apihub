@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+	<menu>
+		<add
+			action="riki_wamb/rule/index"
+			id="Riki_Wamb::Rule"
+			module="Riki_Wamb"
+			parent="Magento_Customer::customer"
+			resource="Riki_Wamb::Rule"
+			sortOrder="9999" title="Manage WAMB Rules"/>
+	</menu>
+
+</config>

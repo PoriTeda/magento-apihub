@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="npatobarai">
+        <job name="riki_np_atobarai_transaction_create" instance="Riki\NpAtobarai\Cron\TransactionCreate" method="execute">
+            <config_path>npatobarai/cron_schedule/transaction_creator</config_path>
+        </job>
+        <job name="riki_np_atobarai_transaction_validate" instance="Riki\NpAtobarai\Cron\ValidateStatusTransaction" method="execute">
+            <config_path>npatobarai/cron_schedule/validate_np_transactions</config_path>
+        </job>
+        <job name="riki_np_atobarai_transaction_get_payment_status" instance="Riki\NpAtobarai\Cron\TransactionGetPaymentStatus" method="execute">
+            <config_path>npatobarai/cron_schedule/transaction_get_payment_status</config_path>
+        </job>
+        <job name="riki_np_atobarai_transaction_register" instance="Riki\NpAtobarai\Cron\RegisterTransaction" method="execute">
+            <config_path>npatobarai/cron_schedule/register_transaction_scheduler</config_path>
+        </job>
+        <job name="riki_np_atobarai_transaction_shipped_out_register" instance="Riki\NpAtobarai\Cron\ShippedOutRegister" method="execute">
+            <config_path>npatobarai/cron_schedule/transaction_shipped_out_register</config_path>
+        </job>
+    </group>
+</config>

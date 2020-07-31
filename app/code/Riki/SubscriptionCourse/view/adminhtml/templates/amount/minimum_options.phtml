@@ -1,0 +1,111 @@
+<?php 
+    /** @var $block \Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\AmountRestriction\Option */
+    $customOptionFieldName = 'minimum_amount';
+    $dataGrid = $block->getMinimumAmountRestrictionData();
+?>
+<?php echo $block->getTemplatesHtml() ?>
+<script id="custom-option-base-template-minimum-amount" type="text/x-magento-template">
+    <div class="fieldset-wrapper admin__collapsible-block-wrapper opened" id="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>_option_<%- data.id %>">
+        <div class="fieldset-wrapper-title">
+            <strong
+                    class="admin__collapsible-title"
+                    data-toggle="collapse"
+                    data-target="#<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>-<%- data.id %>-content">
+                <span id="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>_option_<%- data.id %>_header_title"><%- data.title %>From order time: - To order time: </span>
+            </strong>
+            <div class="actions">
+                <button type="button" title="<?php /* @escapeNotVerified */ echo __('Delete Custom Option'); ?>" class="action-delete" id="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>_<%- data.id %>_delete">
+                    <span><?php /* @escapeNotVerified */ echo __('Delete Custom Option'); ?></span>
+                </button>
+            </div>
+            <div id="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>_<%- data.id %>_move" data-role="draggable-handle"
+                 title="<?php /* @escapeNotVerified */ echo __('Sort Custom Options'); ?>"></div>
+        </div>
+        <div class="fieldset-wrapper-content in collapse" id="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>-<%- data.id %>-content">
+            <fieldset class="fieldset">
+                <fieldset class="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>_options admin__fieldset fieldset-alt" id="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>_<%- data.id %>">
+                    <input id="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>_<%- data.id %>_is_delete" name="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>[<%- data.id %>][is_delete]" type="hidden" value=""/>
+                   <input id="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>_<%- data.id %>_id" name="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>[<%- data.id %>][id]" type="hidden" value="<%- data.id %>"/>
+                    <input id="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>_<%- data.id %>_option_id" name="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>[<%- data.id %>][option_id]" type="hidden" value="<%- data.option_id %>"/>
+                    <input name="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>[<%- data.id %>][sort_order]" type="hidden" value="<%- data.sort_order %>"/>
+                    <div class="min_custom_field field required _required"">
+                        <label class="label admin__field-label" for="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>_<%- data.id %>_title">
+                            <span><?php /* @escapeNotVerified */ echo __('From order time') ?></span>
+                        </label>
+                        <div class="admin__field-control control">
+                            <input id="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>_<%- data.id %>_order_from"
+                                   name="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>[<%- data.id %>][order_from]"
+                                   class="required-entry input-text order-from-intput validate-number validate-greater-than-zero validate-sequence-overlap-minimum-amount"
+                                   type="text"
+                                   value="<%- data.order_from %>"
+                                   data-store-label="<%- data.order_from %>" />
+                        </div>
+                    </div>
+                    <div class="min_custom_field field">
+                        <label class="label admin__field-label" for="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>_<%- data.id %>_order_to">
+                            <span><?php /* @escapeNotVerified */ echo __('To order time') ?></span>
+                        </label>
+                        <div class="admin__field-control control">
+                            <input id="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>_<%- data.id %>_order_to"
+                                   name="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>[<%- data.id %>][order_to]"
+                                   class="input-text order-to-intput validate-number validate-greater-than-zero validate-greater-than-min-amount-grid"
+                                   type="text"
+                                   value="<%- data.order_to %>"
+                                   data-store-label="<%- data.order_to %>" />
+                        </div>
+                    </div>
+                    <div class="min_custom_field field required _required"">
+                        <label class="label admin__field-label" for="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>_<%- data.id %>_minimum_amount">
+                            <span><?php /* @escapeNotVerified */ echo __('Minimum order amount threshold') ?></span>
+                        </label>
+                        <div class="admin__field-control control">
+                            <input id="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>_<%- data.id %>_minimum_amount"
+                                   name="<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>[<%- data.id %>][minimum_amount]"
+                                   class="required-entry input-text validate-number validate-greater-than-zero validate-less-than-maximum"
+                                   type="text"
+                                   value="<%- data.minimum_amount %>"
+                                   data-store-label="<%- data.minimum_amount %>" />
+                        </div>
+                    </div>
+                </fieldset>
+            </fieldset>
+        </div>
+    </div>
+</script>
+<script>
+    require([
+        "jquery",
+        "Riki_SubscriptionCourse/js/custom_options"
+    ], function(jQuery){
+
+        jQuery(function ($) {
+            var fieldSet = $('[data-block=subscription-course-custom-options]');
+            fieldSet.SubscriptionCourseOptions(<?php /* @escapeNotVerified */ echo $this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode(
+                [
+                    'fieldId' => [
+                        $customOptionFieldName => count($dataGrid)
+                    ]
+                ]
+            )?>);
+            //adding data to templates
+            <?php if($dataGrid) :?>
+                <?php foreach($dataGrid as $index => $grid):
+                    $data = [
+                        'id' => $index,
+                        'fieldId' => $customOptionFieldName,
+                        'itemCount' => $index,
+                        'from_order_time' => $grid['from_order_time'],
+                        'to_order_time' => $grid['to_order_time'],
+                        'amount' => $grid['amount']
+                    ];
+                ?>
+                    fieldSet.SubscriptionCourseOptions(
+                        'addOption',
+                        <?php /* @escapeNotVerified */ echo \Zend_Json_Encoder::encode($data); ?>,
+                        '<?php /* @escapeNotVerified */ echo $customOptionFieldName ?>'
+                    );
+                <?php endforeach;?>
+            <?php endif;?>
+        });
+    });
+</script>

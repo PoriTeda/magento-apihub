@@ -1,0 +1,306 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <setting_tag>
+            <group_tag>
+                <script_manager_yahoo>
+                    &lt;!-- Yahoo Tag Manager  --&gt;
+                    &lt;script type="text/javascript"&gt;
+                    (function () {
+                    var tagjs = document.createElement("script");
+                    var s = document.getElementsByTagName("script")[0];
+                    tagjs.async = true;
+                    tagjs.src = "//s.yjtag.jp/tag.js#site=B2PHsnr";
+                    s.parentNode.insertBefore(tagjs, s);
+                    }());
+                    &lt;/script&gt;
+                    &lt;noscript&gt;
+                    &lt;iframe src="//b.yjtag.jp/iframe?c=B2PHsnr" width="1" height="1" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"&gt;&lt;/iframe&gt;
+                    &lt;/noscript&gt;
+                    &lt;!--End Yahoo Tag Manager  --&gt;
+                </script_manager_yahoo>
+            </group_tag>
+            <group_order_complete>
+                <script_manager_remarketting>
+                    &lt;!-- Google Code for CV Remarketing List  --&gt;
+
+                    &lt;script type="text/javascript"&gt;
+                    /* &lt;![CDATA[ */
+                    var google_conversion_id = 993999543;
+                    var google_conversion_language = "en";
+                    var google_conversion_format = "3";
+                    var google_conversion_color = "666666";
+                    var google_conversion_label = "uFBxCKGHlwMQt_X82QM";
+                    var google_conversion_value = 0;
+                    /* ]]&gt; */
+                    &lt;/script&gt;
+                    &lt;script type="text/javascript" src="https://www.googleadservices.com/pagead/conversion.js"&gt;
+                    &lt;/script&gt;
+                    &lt;noscript&gt;
+                    &lt;div style="display:inline;"&gt;
+                    &lt;img height="1" width="1" style="border-style:none;" alt="" src="https://www.googleadservices.com/pagead/conversion/993999543/?label=uFBxCKGHlwMQt_X82QM&amp;guid=ON&amp;script=0"/&gt;
+                    &lt;/div&gt;
+                    &lt;/noscript&gt;
+                    &lt;!--End Google Code for CV Remarketing List  --&gt;
+                </script_manager_remarketting>
+                <script_manager_affiliategiftordercompleteec>
+                    &lt;!-- affiliateGiftOrderCompleteEC  --&gt;
+                    &lt;script&gt;
+                    dataLayer = [{
+                    'transactionId': '&lt;%= transactionIds %&gt;',
+                    'transactionAffiliation': 'shop.nestle.jp',
+                    'transactionTotal': '&lt;%= transactionTotal %&gt;',
+                    'transactionTax': '&lt;%= transactionTax %&gt;',
+                    'transactionShipping': '&lt;%= transactionShipping %&gt;',
+                    'transactionProducts': [&lt;%= items %&gt;]
+                    }];
+                    &lt;/script&gt;
+                    &lt;!--End affiliateGiftOrderCompleteEC  --&gt;
+                </script_manager_affiliategiftordercompleteec>
+                <script_manager_ysm>
+                    &lt;!-- 凸版様印刷管理タグ  --&gt;
+                    &lt;SCRIPT language="JavaScript" type="text/javascript"&gt;
+                    &lt;!-- Yahoo Japan Corporation.  --&gt;
+                    window.ysm_customData = new Object();
+                    window.ysm_customData.conversion = "transId=,currency=,amount=";
+                    var ysm_accountid  = "1A3SGM0297PHE4KGQJGMG8V292G";
+                    document.write("&lt;SCR" + "IPT language='JavaScript' type='text/javascript' "
+                    + "SRC=//" + "srv1.wa.marketingsolutions.yahoo.com" + "/script/ScriptServlet" + "?aid=" + ysm_accountid
+                    + "&gt;&lt;/SCR" + "IPT&gt;");
+                    &lt;/SCRIPT&gt;
+                    &lt;!-- End 凸版様印刷管理タグ  --&gt;
+                </script_manager_ysm>
+                <script_manager_webantenna>
+                    &lt;!-- WebAntenna  --&gt;
+                    &lt;script type="text/javascript" src="https://tr.webantenna.info/js/webantenna.js"&gt;&lt;/script&gt;
+                    &lt;script type="text/javascript"&gt;
+                    if ( typeof( webantenna ) == 'function' ) {
+                    _wa.account = 'WAaZT7-1';
+                    _wa.cv = 'nestle_buy_comp';
+                    webantenna();
+                    }
+                    &lt;/script&gt;
+                    &lt;noscript&gt;
+                    &lt;img width="1" height="1" alt="" src="https://tr.webantenna.info/_webantenna.png?ga=WAaZT7-1&amp;jse=0&amp;cv=nestle_buy_comp"&gt;
+                    &lt;/noscript&gt;
+                    &lt;!--End WebAntenna  --&gt;
+                </script_manager_webantenna>
+                <script_manager_affiliateordercompletetag>
+                    &lt;!-- affiliateOrderCompleteTag  --&gt;
+                    &lt;img class="hidden" src="https://tk.jrs5.com/ep?mid=37218&amp;ord=&lt;%= obj.getOrderNo() %&gt;&amp;skulist=&lt;%=skuParam %&gt;&amp;qlist=&lt;%=purchasingAmountParam%&gt;&amp;amtlist=&lt;%=priceParam%&gt;&amp;cur=JPY&amp;namelist=&lt;%=skuParam %&gt;" width="1" height="1" /&gt;
+                    &lt;!--End affiliateOrderCompleteTag  --&gt;
+                </script_manager_affiliateordercompletetag>
+                <script_manager_affiliateordercompleteec>
+                    &lt;!-- affiliateOrderCompleteEC  --&gt;
+                    &lt;script&gt;
+                    var __atw = __atw || [];
+                    __atw.push({ "merchant" : "ccc-764932", "param" : {
+                    "result_id" : "25",
+                    "verify" : "&lt;%= obj.getOrderNo() %&gt;",
+                    }});
+                    (function(a){var b=a.createElement("script");b.src="https://is.accesstrade.net/isatweaselv2.js";b.async=!0;
+                    a=a.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)})(document);
+                    &lt;/script&gt;
+                    &lt;!--End affiliateOrderCompleteEC  --&gt;
+                </script_manager_affiliateordercompleteec>
+
+                <script_manager_affiliateordercompletebeneposite>
+                    <!-- affiliateordercompletebeneposite  -->
+                    <![CDATA[
+                         <img src="https://bs.benefit-one.co.jp/affiliate/affiliate.gif?tid=401&no=<%= obj.getOrderNo() %>&num=<%= quantity %>&total=<%= amount %>&uid=PC">
+                         <img src="https://bs.benefit-one.co.jp/affiliate/affiliate.gif?tid=402&no=<%= obj.getOrderNo() %>&num=<%= quantity %>&total=<%= amount %>&uid=PC">
+                    ]]>
+                    <!-- End affiliateOrderCompleteBeneposite  -->
+                </script_manager_affiliateordercompletebeneposite>
+
+                <script_manager_affiliateordercompletebenefitone>
+                    <!--  AffiliateOrderCompleteBenefitOne -->
+                    <![CDATA[
+                        <img src="https://bs.benefit-one.co.jp/affiliate/affiliate.gif?tid=<%= strTid.get(j) %>&no=<%= obj.getOrderNo() %>&num=<%= quantity.get(j) %>&total=<%= amount.get(j) %>&uid=PC">
+                    ]]>
+                    <!-- End affiliateOrderCompleteBenefitOne  -->
+                </script_manager_affiliateordercompletebenefitone>
+
+                <script_manager_line_tag>
+                    &lt;!--LINE Tag  --&gt;
+                    &lt;script type="text/javascript"&gt;
+                    var freecoins_cvq = [ { "app": "FREECOINS_8151" } ];
+                    &lt;/script&gt;
+                    &lt;script src="https://freecoins.line-apps.com/lfc5.js" async&gt;&lt;/script&gt;
+                    &lt;!--End LINE Tag  --&gt;
+                </script_manager_line_tag>
+                <script_manager_google_remarkting_list>
+                    &lt;!-- Google Code Remarketing List  --&gt;
+                    &lt;script type="text/javascript"&gt;
+                    /* &lt;![CDATA[ */
+                    var google_conversion_id = 1028473621;
+                    var google_conversion_language = "en";
+                    var google_conversion_format = "3";
+                    var google_conversion_color = "ffffff";
+                    var google_conversion_label = "3O48COXP2AIQlYa16gM";
+                    var google_conversion_value = 0;
+                    /* ]]&gt; */
+                    &lt;/script&gt;
+                    &lt;script type="text/javascript" src="https://www.googleadservices.com/pagead/conversion.js"&gt;
+                    &lt;/script&gt;
+                    &lt;!--End Google Code Remarketing List  --&gt;
+                </script_manager_google_remarkting_list>
+                <script_manager_google_toppan>
+                    &lt;!--print management tag for Toppan  --&gt;
+                    &lt;script type="text/javascript"&gt;
+                    /* &lt;![CDATA[ */
+                    var google_conversion_id = 1006510837;
+                    var google_conversion_language = "en";
+                    var google_conversion_format = "3";
+                    var google_conversion_color = "ffffff";
+                    var google_conversion_label = "KwvxCPuhxAIQ9cX43wM";
+                    var google_conversion_value = 0;
+                    /* ]]&gt; */
+                    &lt;/script&gt;
+                    &lt;script type="text/javascript" src="https://www.googleadservices.com/pagead/conversion.js"&gt;
+                    &lt;/script&gt;
+                    &lt;noscript&gt;
+                    &lt;div style="display:inline;"&gt;
+                    &lt;img height="1" width="1" style="border-style:none;" alt="" src="https://www.googleadservices.com/pagead/conversion/1006510837/?value=0&amp;label=KwvxCPuhxAIQ9cX43wM&amp;guid=ON&amp;script=0"/&gt;
+                    &lt;/div&gt;
+                    &lt;/noscript&gt;
+                    &lt;!--End print management tag for Toppan  --&gt;
+                </script_manager_google_toppan>
+                <script_manager_microdanaalyzecv>
+                    <![CDATA[
+                        <!-- Start microAdAnalyzeCV -->
+                           <script type="text/javascript">
+                            <!--
+                             var mad_client_id='12470';
+                             var mad_group_id='convtrack';
+                            -->
+                            </script>
+                            <script src="https://send.microad.jp/js/conv0000.js">
+                            </script>
+                        <!-- End microAdAnalyzeCV -->
+                    ]]>
+                </script_manager_microdanaalyzecv>
+                <ca_reward_nba>
+                    <![CDATA[
+                        <!-- Start CA reward tag/NBA -->
+                            <img src="http://mobadme.jp/ac/action.php?cid=34277&uid=[order number]&pid=1" height="1" width="1">
+                        <!-- End CA reward tag/NBA -->
+                    ]]>
+                </ca_reward_nba>
+                <ca_reward_ndg>
+                    <![CDATA[
+                        <!-- Start CA reward tag/NDG -->
+                         <img src="http://mobadme.jp/ac/action.php?cid=34276&uid=[order number]&pid=1" height="1" width="1">
+                        <!-- End CA reward tag/NDG -->
+                    ]]>
+                </ca_reward_ndg>
+                <ca_reward_spt>
+                    <![CDATA[
+                        <!-- Start CA reward tag/SPT -->
+                            <img src="http://mobadme.jp/ac/action.php?cid=34373&uid=[order number]&pid=1" height="1" width="1">
+                        <!-- End CA reward tag/SPT -->
+                    ]]>
+                </ca_reward_spt>
+                <line_tag_nba>
+                    <![CDATA[
+                        <!-- LINE Free Coins CV Tracking Code Start -->
+                            <script type="text/javascript">
+
+                            var freecoins_cvq = [
+                             {
+                              "app": "FREECOINS_8286",
+                              "cv": [
+                               {
+                                action: "REGISTRATION",
+                                order: "[order number]"
+                               }
+                              ]
+                             }
+                            ];
+
+                            </script>
+                            <script src="https://freecoins.line-apps.com/lfc5.js" async></script>
+                        <!-- LINE Free Coins CV Tracking Code End -->
+                    ]]>
+                </line_tag_nba>
+                <line_tag_ndg>
+                    <![CDATA[
+                        <!-- LINE Free Coins CV Tracking Code Start -->
+                        <script type="text/javascript">
+                        var freecoins_cvq = [
+                         {
+                          "app": "FREECOINS_8296",
+                          "cv": [
+                           {
+                            action: "REGISTRATION",
+                            order: "[order number]"
+                           }
+                          ]
+                         }
+                        ];
+
+                        </script>
+                        <script src="https://freecoins.line-apps.com/lfc5.js" async></script>
+                        <!-- LINE Free Coins CV Tracking Code End -->
+                    ]]>
+                </line_tag_ndg>
+                <line_tag_spt>
+                    <![CDATA[
+                        <!-- LINE Free Coins CV Tracking Code Start -->
+                            <script type="text/javascript">
+
+                            var freecoins_cvq = [
+                             {
+                              "app": "FREECOINS_8151",
+                              "cv": [
+                               {
+                                action: "REGISTRATION",
+                                order: "[order number]"
+                              ]
+                             }
+                            ];
+
+                            </script>
+                            <script src="https://freecoins.line-apps.com/lfc5.js" async></script>
+                        <!-- LINE Free Coins CV Tracking Code End -->
+                    ]]>
+                </line_tag_spt>
+            </group_order_complete>
+            <group_product_detail>
+                <script_manager_product_detail>
+                    &lt;!-- LINE Tag  --&gt;
+                    &lt;script type="text/javascript"&gt;
+                    var freecoins_lpq = [ { "app": "FREECOINS_8151", "expires": 2592000, "domain": ".nestle.jp" } ];
+                    &lt;/script&gt;
+                    &lt;script src="https://freecoins.line-apps.com/lfc5.js" async&gt;&lt;/script&gt;
+                    &lt;!-- LINE Free Coins LP Tracking Code End --&gt;
+                    &lt;!-- End LINE Tag  --&gt;
+                </script_manager_product_detail>
+            </group_product_detail>
+            <group_order_gift_complete>
+                <script_manager_yahoo_conversion>
+                    &lt;!-- Yahoo Conversion Page  --&gt;
+                    &lt;script type="text/javascript"&gt;
+                    /* &lt;![CDATA[ */
+                    var yahoo_conversion_id = 1000002178;
+                    var yahoo_conversion_label = "CJ2jCMvBggMQ3f_tygM";
+                    var yahoo_conversion_value = 0;
+                    /* ]]&gt; */
+                    &lt;/script&gt;
+                    &lt;noscript&gt;
+                    &lt;div style="display:inline;"&gt;
+                    &lt;img height="1" width="1" style="border-style:none;" alt="" src="https://b91.yahoo.co.jp/pagead/conversion/1000002178/?label=CJ2jCMvBggMQ3f_tygM&amp;guid=ON&amp;script=0&amp;disvt=true"/&gt;
+                    &lt;/div&gt;
+                    &lt;/noscript&gt;
+                    &lt;!-- End Yahoo Conversion Page  --&gt;
+                </script_manager_yahoo_conversion>
+            </group_order_gift_complete>
+        </setting_tag>
+        <campaign_subscription_page>
+            <group_url_campaign_page>
+                <url_rt000033s>https://shop.nestle.jp/front/contents/nbarentalline/</url_rt000033s>
+                <url_rt000032s>https://shop.nestle.jp/front/contents/ndgrentalline/</url_rt000032s>
+                <url_rt000034s>https://shop.nestle.jp/front/contents/sptrentalline/</url_rt000034s>
+            </group_url_campaign_page>
+        </campaign_subscription_page>
+    </default>
+</config>

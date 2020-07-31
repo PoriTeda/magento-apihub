@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Theme\Block\Html\Header\Logo"
+                type="Riki\Theme\Block\Html\Header\Logo"/>
+    <type name="Magento\Theme\CustomerData\Messages">
+        <plugin name="riki-theme-customer-data-remove-duplicate-message" type="Riki\Theme\Plugin\RemoveDuplicateMessage"/>
+    </type>
+    <type name="Magento\Framework\Controller\ResultInterface">
+        <plugin name="result-messages" disabled="true"/>
+        <plugin name="riki-theme-result-messages" type="Riki\Theme\Controller\Result\MessagePlugin"/>
+    </type>
+    <type name="Magento\Checkout\CustomerData\Cart">
+        <plugin name="mini-cart_data" type="Riki\Theme\Plugin\Checkout\CustomerData\MiniCart"/>
+    </type>
+</config>
+

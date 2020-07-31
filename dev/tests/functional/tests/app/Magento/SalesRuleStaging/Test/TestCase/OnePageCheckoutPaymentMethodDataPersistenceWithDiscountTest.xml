@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../vendor/magento/mtf/etc/variations.xsd">
+    <testCase name="Magento\SalesRule\Test\TestCase\OnePageCheckoutPaymentMethodDataPersistenceWithDiscountTest" summary="Checkout with Authorize.net credit card on Storefront with discount applied during checkout">
+        <variation name="OnePageCheckoutPaymentMethodDataPersistWithDiscountTest1" summary="Checkout with Authorize.net credit card on Storefront with discount applied during checkout" ticketId="MAGETWO-69657">
+            <data name="issue" xsi:type="string">MQE-1160: Fix MTF skipped tests</data>
+        </variation>
+    </testCase>
+</config>

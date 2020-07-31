@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_Customer::enquiry_category"
+             title="Categories enquiry"
+             module="Riki_Customer"
+             sortOrder="100"
+             parent="Magento_Customer::customer"
+             action="enquiry_category/Categoryenquiry"
+             resource="Riki_Customer::enquiry_category" />
+        <add id="Riki_Customer::shoshacustomer"
+             title="Manage Shosha"
+             module="Riki_Customer"
+             sortOrder="102"
+             parent="Magento_Customer::customer"
+             action="customer/shosha/index"
+             resource="Riki_Customer::shoshacustomer" />
+        <add id="Riki_Customer::enquiryheader"
+             title="Manage Enquiry"
+             module="Riki_Customer"
+             sortOrder="100"
+             parent="Magento_Customer::customer"
+             action="customer/enquiryheader/index"
+             resource="Riki_Customer::enquiryheader" />
+        <add id="Riki_Customer::consumerdb"
+             title="Browse customers from ConsumerDB"
+             module="Riki_Customer"
+             sortOrder="20"
+             parent="Magento_Customer::customer"
+             action="customer/consumerdb/index"
+             resource="Riki_Customer::consumerdb" />
+    </menu>
+</config>

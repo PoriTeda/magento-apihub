@@ -1,0 +1,92 @@
+<?php
+/**
+ * @var $block \Riki\CatalogRule\Block\Adminhtml\Promo\Catalog\Edit\Tab\Main\Js
+ * @var $viewModel \Riki\SalesRule\ViewModel\Rule\FormScript
+ */
+$viewModel = $block->getViewModel();
+?>
+<script>
+    window.courseFrequencyList = <?= /* @escapeNotVerified */ $viewModel->getCourseFrequencyListJson() ?>;
+</script>
+
+<script>
+    require([
+        'jquery',
+        'uiRegistry',
+        'Riki_Rule/js/validation/rules'
+    ], function ($, registry) {
+        var $status = $('#rule_is_active'),
+            $sapConditionType = $('#rule_sap_condition_type');
+
+        window.handleSubscriptionDelivery = function() {
+            var $isSubscription = $("#rule_subscription");
+            var $deliveryType = $("#rule_subscription_delivery");
+            var $deliveryNumber = $("#rule_delivery_n");
+
+            // enable|disable N
+            if ($deliveryType.val() == <?php echo $block->getAllDeliveriesOption() ?>) {
+                $deliveryNumber.attr('disabled', 'disabled');
+            } else {
+                $deliveryNumber.removeAttr('disabled');
+            }
+
+            // show|hide N
+            if ($isSubscription.val() == <?php echo $block->getSubscriptionOnlyOption() ?> || $isSubscription.val() == <?php echo $block->getSpotSubscriptionOption() ?>) {
+                $deliveryNumber.css("display", "");
+                $deliveryNumber.parents("div.field-delivery_n").css("display", "");
+            } else {
+                $deliveryNumber.css("display", "none");
+                $deliveryNumber.parents("div.field-delivery_n").css("display", "none");
+            }
+        };
+
+        window.getFrequencyByCourse = function(el) {
+            var courseId = $(el).val(),
+                data = JSON.parse($("#rule_course_frequency").val()),
+                $frequencyElement = $("#rule_apply_frequency");
+
+            if (courseId) {
+                var listFrequenciesInCourse = [];
+                for (var i = 0; i < courseId.length; i++) {
+                    var id = courseId[i];
+                    if (!data[id]) return;
+                    listFrequenciesInCourse = $.unique(listFrequenciesInCourse.concat(data[id]));
+                    $frequencyElement.find('option').each(function () {
+                        var $option = $(this);
+                        // disable the frequency option if not belong to course
+                        if ($.inArray($option.val(), listFrequenciesInCourse) == -1) {
+                            $option.prop('disabled', true);
+                        } else {
+                            $option.prop('disabled', false);
+                        }
+                    });
+                }
+            }
+        };
+
+        function handleRikiValidation() {
+            if ($status.val() == 1) {
+                $sapConditionType.addClass('required-entry');
+                $sapConditionType.parents('.admin__field').addClass('required _required');
+            } else {
+                $sapConditionType.removeClass('required-entry');
+                $sapConditionType.parents('.admin__field').removeClass('required _required');
+            }
+        }
+
+        /*$(document).on('change', '#rule_is_active', function () {
+            handleRikiValidation();
+        });*/
+
+        window.handleRikiValidation = handleRikiValidation;
+
+        /*$(document).ready(function () {
+            handleRikiValidation();
+        });*/
+
+        registry.get('formDependenceController', function () {
+            window.handleSubscriptionDelivery();
+            window.getFrequencyByCourse(document.getElementById('rule_apply_subscription'));
+        });
+    });
+</script>

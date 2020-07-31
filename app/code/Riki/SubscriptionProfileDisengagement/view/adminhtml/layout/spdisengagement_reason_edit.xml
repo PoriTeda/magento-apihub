@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Subscription Profile Disengagement Reason</title>
+    </head>
+    <body>
+        <referenceBlock name="menu">
+            <action method="setActive">
+                <argument name="itemId" xsi:type="string">Riki_SubscriptionProfileDisengagement::reason</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Riki\SubscriptionProfileDisengagement\Block\Adminhtml\Reason\Edit" name="reason_edit" />
+        </referenceContainer>
+    </body>
+</page>

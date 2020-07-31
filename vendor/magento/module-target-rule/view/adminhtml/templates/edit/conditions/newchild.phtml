@@ -1,0 +1,63 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/**
+ * New child element for conditions widget
+ */
+?>
+
+<?php $element = $block->getElement();?>
+<?php $elementId = $element->getHtmlId();?>
+&nbsp;<span class="rule-param rule-param-new-child" <?php if ($element->getParamId()):  ?> id="<?= /* @escapeNotVerified */ $element->getParamId() ?>" <?php endif; ?> >
+<a href="javascript:void(0)" class="label">
+    <?= /* @escapeNotVerified */ $element->getValueName() ?>
+</a>
+<span class="element">
+    <?= /* @escapeNotVerified */ __('Please choose a condition to add.') ?>
+    <a href="javascript:setValueToElementValueChanger('<?= /* @escapeNotVerified */ $elementId ?>', false);void(0)"><?= /* @escapeNotVerified */ __('Close') ?></a>
+
+    <?= $element->getElementHtml() ?>
+    <?php if ($values = $element->getValues()):?>
+        <?php foreach ($values as $key => $option): ?>
+            <dl>
+                <?php if (is_string($option['value'])):?>
+                        <dt>
+                            <a onclick="javascript:setValueToElementValueChanger('<?= /* @escapeNotVerified */ $elementId ?>', '<?= /* @escapeNotVerified */ $option['value'] ?>');void(0);"><?= /* @escapeNotVerified */ $option['label'] ?></a>
+                        </dt>
+                <?php endif;?>
+                <?php if (is_array($option['value'])):?>
+                    <dt><?= /* @escapeNotVerified */ $option['label'] ?></dt>
+                    <?php foreach ($option['value'] as $item): ?>
+                        <dd>
+                            <a onclick="javascript:setValueToElementValueChanger('<?= /* @escapeNotVerified */ $elementId ?>', '<?= /* @escapeNotVerified */ $item['value'] ?>');void(0);"><?= /* @escapeNotVerified */ $item['label'] ?></a>
+                        </dd>
+                    <?php endforeach; ?>
+                <?php endif;?>
+            </dl>
+        <?php endforeach; ?>
+    <?php endif;?>
+</span></span>&nbsp;
+
+<script>
+require(['prototype'], function(){
+
+//<![CDATA[
+function setValueToElementValueChanger(changerId, value)
+{
+    elementValueChanger = $(changerId);
+    if (!value){
+        value = '';
+    }
+    elementValueChanger.value = value;
+    elementValueChanger.container.rulesObject.hideParamInputField(elementValueChanger.container);
+}
+window.setValueToElementValueChanger = setValueToElementValueChanger;
+//]]>
+
+});
+</script>

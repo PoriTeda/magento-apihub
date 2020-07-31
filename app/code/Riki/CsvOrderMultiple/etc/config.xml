@@ -1,0 +1,9 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <order_import>
+            <import_order_csv_multiple>
+                <setting_crontab>*/30 * * * *</setting_crontab>
+            </import_order_csv_multiple>
+        </order_import>
+    </default>
+</config>

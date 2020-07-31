@@ -1,0 +1,13 @@
+Return order No: {{var return_number}}
+Refund amount:  {{var return_amount}}
+Customer code: {{var consumer_db_id}}
+Reject reason code: {{var paygent_rejection_code}}
+
+
+クレジットカードよる、売上取消（返金）処理ができませんでした。
+
+返品番号: {{var return_number}}
+返金金額: {{var return_amount}}
+顧客ID: {{var consumer_db_id}}
+不可理由コード：{{var paygent_rejection_code}}
+----------------------------------------------------------

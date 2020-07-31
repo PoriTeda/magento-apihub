@@ -1,0 +1,45 @@
+<?php
+/**
+ * @var Riki\Subscription\Block\Disengage\Profile\Confirmation $block
+ */
+$profile = $block->getProfileDisengagementItem(\Riki\Subscription\Model\Profile\Profile::STATUS_DISABLED);
+?>
+<div class="fieldset-wrapper customer-subscription-profile">
+    <!-- disengagement header form -->
+    <div class="disengage-header-information">
+        <div class="disengage-form-title">
+            <span><?php echo __('The cancellation procedure of the following regular flights has been completed.');?></span>
+        </div>
+    </div>
+    <p>----</p>
+    <div class="disengage-profile-information">
+        <div class="profile-course-name">
+            <span><?php echo __('Subscription course name');?></span> : <span><?php echo $profile->getCourseName();?></span>
+        </div>
+        <div class="profile-next-delivery-date">
+            <span><?php echo __('Profile final delivery');?></span> : <span><?php echo $profile->getData('last_shipment_date');?></span>
+        </div>
+        <div class="profile-disengagement-date">
+            <span><?php echo __('Disengagement date');?></span> : <span><?php echo $block->getCurrentDisengagementDate();?></span>
+        </div>
+    </div>
+    <p>----</p>
+    <div class="disengage-machine-noitice">
+        <p><?php echo __('If you have a coffee machine or other tool that needs to be returned, we will send you a guide to the address specified separately.');?></p>
+    </div>
+    <p>----</p>
+    <div class="disengage-email-confirmation">
+        <p><?php echo __('A confirmation message has been sent to your registered email address.');?></p>
+        <p><?php echo __('Thank you for using it.');?></p>
+    </div>
+</div>
+<script>
+    var dataLayer = dataLayer || [];
+    dataLayer.push({
+        'event' : 'UAEvent',
+        'EventCategory' : 'Cancellation',
+        'EventAction' : 'Cancellation',
+        'EventLabel' : '<?php echo $block->getConsumerDbId();?>',
+        'profileID'  : '<?php echo $profile->getProfileId();?>'
+    });
+</script>

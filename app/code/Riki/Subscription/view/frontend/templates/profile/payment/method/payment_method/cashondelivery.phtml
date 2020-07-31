@@ -1,0 +1,6 @@
+<?php
+$paymentMethod = $block->getData();
+?>
+<div data-bind="i18n: 'About COD handling fees'"></div>
+<div><?php echo __('A per-shipment collection handling fee of %1 yen (tax included) applies to all COD orders.', isset($paymentMethod['price']) ? floatval($paymentMethod['price']) : 0) ?></div>
+<div data-bind="i18n: 'There are some items that COD handling fee is free'"></div>

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <preference for="Magento\GiftWrapping\Block\Adminhtml\Giftwrapping\Edit\Form" type="Riki\GiftWrapping\Block\Adminhtml\Edit\Form" />
+    <preference for="Magento\GiftWrapping\Block\Adminhtml\Order\Create\Items" type="Riki\GiftWrapping\Block\Adminhtml\Order\Create\Items" />
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="append_gift_data_to_order" type="Riki\GiftWrapping\Plugin\Quote\GiftItem"/>
+    </type>
+    <type name="Magento\GiftMessage\Api\ItemRepositoryInterface">
+        <plugin name="riki_gift_wrapping_cart_item_repository" type="Riki\GiftWrapping\Plugin\MessageItemRepository" />
+    </type>
+
+    <preference for="Magento\GiftWrapping\Model\ResourceModel\Wrapping\Collection" type="Riki\GiftWrapping\Model\ResourceModel\Wrapping\Collection" />
+    <preference for="Magento\GiftWrapping\Model\ConfigProvider" type="Riki\GiftWrapping\Model\ConfigProvider" />
+    <preference for="Magento\GiftWrapping\Model\Total\Quote\Tax\GiftwrappingAfterTax" type="Riki\GiftWrapping\Model\Total\Quote\Tax\GiftwrappingAfterTax" />
+    <preference for="Magento\GiftWrapping\Model\Total\Quote\Giftwrapping" type="Riki\GiftWrapping\Model\Total\Quote\Giftwrapping" />
+    <preference for="Magento\GiftWrapping\Model\Total\Quote\Tax\Giftwrapping" type="Riki\GiftWrapping\Model\Total\Quote\Tax\Giftwrapping" />
+    <preference for="Magento\GiftWrapping\Controller\Adminhtml\Giftwrapping\Save" type="Riki\GiftWrapping\Controller\Adminhtml\Giftwrapping\Save" />
+    <preference for="Magento\GiftWrapping\Controller\Adminhtml\Giftwrapping\ChangeStatus" type="Riki\GiftWrapping\Controller\Adminhtml\Giftwrapping\ChangeStatus" />
+    <preference for="Magento\GiftWrapping\Controller\Adminhtml\Giftwrapping\MassDelete" type="Riki\GiftWrapping\Controller\Adminhtml\Giftwrapping\MassDelete" />
+    <type name="Riki\GiftWrapping\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Riki\GiftWrapping\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">giftWrapingImportLogger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\GiftWrapping\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+    <preference for="Magento\GiftWrapping\Block\Adminhtml\Order\Create\Totals" type="Riki\GiftWrapping\Block\Adminhtml\Order\Create\Totals" />
+    <preference for="Magento\GiftWrapping\Block\Adminhtml\Sales\Order\Create\Link" type="Riki\GiftWrapping\Block\Adminhtml\Order\Create\Link" />
+    <type name="Magento\GiftWrapping\Helper\Data">
+        <plugin name="riki_gift_wrapping_translate_totals" type="Riki\GiftWrapping\Plugin\Helper\TranslateTotals" />
+    </type>
+
+    <type name="Magento\Sales\Api\OrderRepositoryInterface">
+        <plugin name="save_gift_message" type="Riki\GiftWrapping\Plugin\Model\OrderSave"/>
+    </type>
+    <preference for="Riki\GiftWrapping\Api\WrappingRepositoryInterface" type="Riki\GiftWrapping\Model\WrappingRepository"/>
+</config>

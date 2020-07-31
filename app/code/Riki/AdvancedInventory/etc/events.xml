@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_creditmemo_save_after">
+        <observer name="inventory" disabled="true"/>
+    </event>
+    <event name="sales_order_item_cancel">
+        <observer name="inventory" disabled="true"/>
+    </event>
+    <event name="sales_model_service_quote_submit_failure">
+        <observer name="inventory" disabled="true" />
+        <observer name="riki_advancedinventory_quote_submit_failure" instance="Riki\AdvancedInventory\Observer\RevertAssignationData" />
+    </event>
+    <event name="restore_quote">
+        <observer name="inventory" disabled="true" />
+    </event>
+    <event name="sales_model_service_quote_submit_before">
+        <observer name="inventory" disabled="true"/>
+        <observer name="riki_advancedinventory_set_oos_flag"    instance="Riki\AdvancedInventory\Observer\SetOrderOosFlag"/>
+    </event>
+    <event name="sales_model_service_quote_submit_success">
+        <observer name="inventory" disabled="true"/>
+    </event>
+    <event name="catalog_product_load_after">
+        <observer name="inventory" disabled="true"/>
+    </event>
+    <event name="sales_order_creditmemo_refund">
+        <observer name="wyomind_advancedinventory_sales_order_payment_cancel" disabled="true"/>
+    </event>
+    <event name="sales_order_payment_cancel">
+        <observer name="wyomind_advancedinventory_sales_order_payment_cancel" disabled="true"/>
+    </event>
+    <event name="checkout_cart_update_items_before">
+        <observer name="cart_before_upfate" instance="Riki\AdvancedInventory\Observer\CartBeforeUpdate" />
+    </event>
+    <event name="advanced_inventory_oos_capture">
+        <observer name="advanced_inventory_oos_capture" instance="Riki\AdvancedInventory\Observer\OosCapture" />
+    </event>
+    <event name="checkout_submit_all_after">
+        <observer name="inventory" disabled="true" />
+        <observer name="advanced_inventory_oos_submit_after" instance="Riki\AdvancedInventory\Observer\OosSubmitAfter" />
+        <observer disabled="true" name="wyomind_advancedinventory_checkout_submit_all_after" instance="Wyomind\AdvancedInventory\Observer\CheckoutSubmitAllAfter" />
+        <observer name="riki_advancedinventory_checkout_submit_all_after" instance="Riki\AdvancedInventory\Observer\CheckoutSubmitAllAfter" />
+    </event>
+
+    <event name="order_cancel_after">
+        <observer  name="order_cancel_after_save_config"  instance="Riki\AdvancedInventory\Observer\SalesOrderPaymentCancel"  />
+    </event>
+    <event name="sales_order_place_after">
+        <observer name="advanced_inventory_assignation_register" instance="Riki\AdvancedInventory\Observer\AssignRegister" shared="true"/>
+    </event>
+    <event name="sales_order_process_relation">
+        <observer name="riki_advancedinventory_generate_order_assignation" instance="Riki\AdvancedInventory\Observer\AssignationProcess" />
+    </event>
+    <event name="sales_order_generated_assignation_after">
+        <observer name="advanced_inventory_reassign_check_product" instance="Riki\AdvancedInventory\Observer\ReAssignCheckingProduct" />
+    </event>
+    <event name="paygent_init_authorization_data_after">
+        <observer name="advanced_inventory_paygent_init_authorization_data_after" instance="Riki\AdvancedInventory\Observer\OosOrderPaygentAuthorize" />
+    </event>
+    <event name="riki_salesrule_quote_address_aggregate_item_discount_after">
+        <observer name="riki_advancediventory_revoke_quote_item_discount" instance="Riki\AdvancedInventory\Observer\RevokeQuoteItemDiscount"/>
+    </event>
+    <event name="sales_quote_address_collect_totals_before">
+        <observer name="riki_advancedinventory_inject_out_of_stock_items" instance="Riki\AdvancedInventory\Observer\InjectOutOfStockItems"/>
+    </event>
+    <event name="riki_salesrule_condition_product_validate_before">
+        <observer name="riki_advancedinventory_inject_out_of_stock_items" instance="Riki\AdvancedInventory\Observer\InjectOutOfStockItems" />
+    </event>
+    <event name="riki_order_assignation_update_after">
+        <observer name="riki_advancedinventory_order_assignation_update_after" instance="Riki\AdvancedInventory\Observer\UpdateShipmentAfterUpdateOrderAssignation" />
+    </event>
+    <event name="get_free_item_qty_after_get_quote_item_qty">
+        <observer name="riki_advancedinventory_collect_out_of_stock_qty" instance="Riki\AdvancedInventory\Observer\CollectOutOfStockItemQty" />
+    </event>
+    <event name="sales_order_save_after">
+        <observer name="disable_oos_for_canceled_order" instance="Riki\AdvancedInventory\Observer\DisableOosGeneration" />
+    </event>
+</config>

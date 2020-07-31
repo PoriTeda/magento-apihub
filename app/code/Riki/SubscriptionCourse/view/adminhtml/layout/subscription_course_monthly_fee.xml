@@ -1,0 +1,12 @@
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <update handle="subscription_course_default"/>
+    <referenceBlock name="subscription_course_edit_tabs">
+        <action method="removeTab">
+            <argument name="name" xsi:type="string">machine_section</argument>
+        </action>
+    </referenceBlock>
+    <referenceBlock name="subscription_course_edit_tab_additional_category" remove="true"/>
+    <referenceBlock name="subscription_course_edit_tab_point_for_trial" remove="true"/>
+    <referenceBlock name="subscription_course_edit_tab_merge_profile_to" remove="true"/>
+</layout>

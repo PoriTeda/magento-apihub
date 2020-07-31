@@ -1,0 +1,120 @@
+<div class="label">
+    <h4 data-bind="i18n: 'Payment method'"></h4>
+</div>
+<ul data-bind="foreach: paymentMethod" class="field payment-method required">
+    <li class="control">
+        <!-- ko if: value != 'paygent' -->
+       <input name="payment_method" data-validate="{'required-entry':true}" type="radio"
+              data-bind="
+              value: value,
+              enable: $parent.isAllowChangePaymentMethod && !$parent.isDisabledAll() && !$parent.isStockPoint && !disabled,
+              checked: $parent.selectedPaymentMethod,
+              attr:{
+                id: 'payment_' + value
+              },
+              event: {
+                click: $parent.selectPaymentMethod
+              },
+              clickBubble: false
+        " />
+        <!-- /ko -->
+        <!-- ko if: value == 'cashondelivery' -->
+        <label data-bind="
+            attr:{
+                for: 'payment_' + value},">
+            <span data-bind="text: label"></span>
+            <br>
+            <div data-bind="visible:params.price > 0">
+                <span data-bind="i18n: 'Payment Fee (Tax included)'"></span>
+                :
+                <span data-bind="text: $parent.formatCurrency(params.price)"></span>
+            </div>
+        </label>
+        <!-- /ko -->
+        <!-- ko if: value != 'cashondelivery' -->
+        <label data-bind="
+            attr:{
+                for: 'payment_' + value},">
+            <span data-bind="text: label"></span>
+            <br>
+            <div data-bind="visible:params.price > 0">
+                <span data-bind="i18n: 'Payment Fee (Tax included)'"></span>
+                :
+                <span data-bind="text: $parent.formatCurrency(params.price)"></span>
+            </div>
+        </label>
+        <!-- /ko -->
+
+        <!-- ko if: value == 'paygent' -->
+        <div id="paygent-suboption" data-bind="visible: value == 'paygent'">
+            <!-- ko if: $parent.isUsedPaygent || $parent.selectedPaymentMethod == 'paygent' -->
+            <p class="credit-method">
+                <input name="payment_method" data-validate="{'required-entry':true}" type="radio"
+                       data-bind="
+              value: value,
+              enable: $parent.isAllowChangePaymentMethod && !$parent.isDisabledAll() && !$parent.isStockPoint && !disabled,
+              checked: $parent.selectedPaymentMethod,
+              attr:{
+                id: 'previous_card'
+              },
+              event: {
+                click: $parent.selectPaymentMethod
+              },
+              clickBubble: false
+        " />
+                <label for="previous_card" data-bind="i18n: 'Use previous credit card'">
+                </label>
+            </p>
+            <!-- /ko -->
+            <!-- ko if: $parent.showIvr-->
+            <p class="credit-method">
+                <input name="payment_method" data-validate="{'required-entry':true}" type="radio"
+                       data-bind="
+              value: value,
+              enable: $parent.isAllowChangePaymentMethod && !$parent.isDisabledAll() && !disabled,
+              attr:{
+                id: 'new_paygent'
+              },
+              event: {
+                click: $parent.selectPaymentMethod
+              },
+              clickBubble: false
+        " />
+                <label for="new_paygent" data-bind="i18n: 'Use new credit card (Trigger IVR)'"></label>
+
+                <!-- ko if: !$parent.isTmpProfile || $parent.wasDisengaged-->
+                <button data-bind="
+                attr:{
+                    id: 'ivr_now',
+                    value: 'ivr_now',
+                    title: 'IVR Now'
+                }" class="action primary save" style="display: none;">
+                    <span data-bind="i18n: 'IVR Now'">
+                    </span>
+                </button>
+                <!-- /ko -->
+            </p>
+            <p>
+                <img data-bind="attr:{
+                    src: $parent.paygentImage,
+                    alt: $parent.translate('Image Card Method')
+                }">
+            </p>
+            <!-- /ko -->
+        </div>
+        <!-- ko if : $parent.isStockPoint -->
+            <input type="hidden" name="payment_method" data-bind="value: value" />
+        <!-- /ko -->
+        <input type="hidden" id="new_paygent_ipt" name="new_paygent" value="0" />
+        <!-- /ko -->
+    </li>
+</ul>
+<input data-bind="
+    checked: $parent.profile.paygent_save_prederred,
+    enable: !isDisabledAll() && isAllowChangePaymentMethod && !isStockPoint"
+       type="checkbox"
+       name="save_prederred"
+       id="save_prederred"
+       value="1" />
+<label for="save_prederred" data-bind="i18n: 'Save selected method as your preferred payment method'">
+</label>

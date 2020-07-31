@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!--
+ * Copyright © 2016 Wyomind. All rights reserved.
+ * See LICENSE.txt for license details.
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <!-- Sales > Orders Export Tool -->
+        <add id="Wyomind_AdvancedInventory::stocks" 
+             parent="Magento_Catalog::inventory" 
+             module="Wyomind_AdvancedInventory" 
+             title="Stocks" 
+             sortOrder="30" 
+             resource="Wyomind_AdvancedInventory::stocks"
+             action="advancedinventory/stocks/index" />
+        
+
+        <add id="Wyomind_AdvancedInventory::permissions" 
+             parent="Wyomind_PointOfSale::main" 
+             module="Wyomind_AdvancedInventory" 
+             title="Users permissions"
+             sortOrder="20"  
+             resource="Wyomind_AdvancedInventory::permissions"
+             action="advancedinventory/permissions/index" />
+        
+      
+        <add id="Wyomind_AdvancedInventory::journal" 
+             parent="Wyomind_PointOfSale::main" 
+             module="Wyomind_AdvancedInventory" 
+             title="Stock movement journal"
+             sortOrder="30"  
+             resource="Wyomind_AdvancedInventory::journal"
+             action="advancedinventory/journal/index" />
+        
+       
+       
+       
+    </menu>
+</config>

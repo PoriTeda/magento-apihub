@@ -1,0 +1,34 @@
+<?php
+// @codingStandardsIgnoreFile
+
+/**
+ * @var $block \Magento\Sales\Block\Order\Totals
+ * @see \Magento\Sales\Block\Order\Totals
+ */
+?>
+<table class="data-table admin__table-secondary order-subtotal-table">
+    <tbody>
+    <?php foreach ($block->getTotals() as $_code => $_total): ?>
+        <?php if ($_total->getBlockName()): ?>
+            <?php echo $block->getChildHtml($_total->getBlockName(), false); ?>
+        <?php else:?>
+            <tr class="<?php /* @escapeNotVerified */ echo $_code?>">
+                <td <?php /* @escapeNotVerified */ echo $block->getLabelProperties()?> scope="row">
+                    <?php if ($_total->getStrong()):?>
+                        <?php echo $block->escapeHtml($_total->getLabel());?>
+                    <?php else:?>
+                        <?php echo $block->escapeHtml($_total->getLabel());?>
+                    <?php endif?>
+                </td>
+                <td <?php /* @escapeNotVerified */ echo $block->getValueProperties()?> data-th="<?php echo $block->escapeHtml($_total->getLabel());?>">
+                    <?php if ($_total->getStrong()):?>
+                        <?php /* @escapeNotVerified */ echo $block->formatValue($_total) ?>
+                    <?php else:?>
+                        <?php /* @escapeNotVerified */ echo $block->formatValue($_total) ?>
+                    <?php endif?>
+                </td>
+            </tr>
+        <?php endif?>
+    <?php endforeach?>
+    </tbody>
+</table>

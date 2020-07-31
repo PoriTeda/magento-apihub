@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="data">
+            <block cacheable="false" class="Riki\Loyalty\Block\Adminhtml\Sales\Order\Create\Redeem" name="reward_redeem"/>
+        </referenceBlock>
+        <referenceBlock name="totals">
+            <block class="Riki\Loyalty\Block\Adminhtml\Order\Create\Totals\ApplyPoint" template="Riki_Loyalty::sales/order/create/totals/apply_point.phtml" name="apply_point_total_renderer"/>
+            <block class="Magento\Sales\Block\Adminhtml\Order\Create\Totals\DefaultTotals" template="Riki_Loyalty::sales/order/create/totals/point_earn.phtml" name="earn_point_total_renderer"/>
+        </referenceBlock>
+    </body>
+</page>

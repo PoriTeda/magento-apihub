@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!--
+  ~ Module
+  ~
+  ~ PHP version 7
+  ~
+  ~ @category  RIKI
+  ~ @package   Riki\Module
+  ~ @author    Nestle.co.jp <support@nestle.co.jp>
+  ~ @copyright 2016 Riki
+  ~ @license   https://opensource.org/licenses/MIT MIT License
+  ~ @link      https://github.com/rikibusiness/riki-ecommerce
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <!-- Hide payment method configuration -->
+        <section id="payment">
+            <group id="authorizenet_directpost" showInDefault="0" showInWebsite="0" showInStore="0"/>
+            <group id="braintree_section" showInDefault="0" showInWebsite="0" showInStore="0"/>
+            <group id="cybersource" showInDefault="0" showInWebsite="0" showInStore="0"/>
+            <group id="eway" showInDefault="0" showInWebsite="0" showInStore="0"/>
+            <group id="paypal_notice" showInDefault="0" showInWebsite="0" showInStore="0"/>
+            <group id="worldpay" showInDefault="0" showInWebsite="0" showInStore="0"/>
+        </section>
+        <!-- Hide payment_all_paypal configuration -->
+        <section id="payment_all_paypal" showInDefault="0" showInWebsite="0" showInStore="0"/>
+        <section id="payment_us" showInDefault="0" showInWebsite="0" showInStore="0">
+            <group id="paypal_group_all_in_one" showInDefault="0" showInWebsite="0" showInStore="0"/>
+            <group id="paypal_payment_gateways" showInDefault="0" showInWebsite="0" showInStore="0"/>
+            <group id="paypal_alternative_payment_methods" showInDefault="0" showInWebsite="0" showInStore="0"/>
+        </section>
+
+        <!-- Hide shipment method configuration -->
+        <section id="carriers">
+            <group id="dhl" showInDefault="0" showInWebsite="0" showInStore="0"/>
+            <group id="fedex" showInDefault="0" showInWebsite="0" showInStore="0"/>
+            <group id="ups" showInDefault="0" showInWebsite="0" showInStore="0"/>
+            <group id="usps" showInDefault="0" showInWebsite="0" showInStore="0"/>
+        </section>
+        <!-- Hide catalog configuration -->
+        <section id="catalog">
+            <group id="magento_catalogevent" showInDefault="0" showInWebsite="0" showInStore="0"/>
+            <group id="downloadable" showInDefault="0" showInWebsite="0" showInStore="0"/>
+            <group id="review" showInDefault="0" showInWebsite="0" showInStore="0"/>
+        </section>
+        <!-- Hide giftcard configuration -->
+        <section id="giftcard" showInDefault="0" showInWebsite="0" showInStore="0"/>
+        <!-- Hide gift message configuration -->
+        <!--<section id="sales">-->
+            <!--<group id="gift_options">-->
+                <!--<field id="allow_order" showInDefault="0" showInWebsite="0" showInStore="0"/>-->
+                <!--<field id="allow_items" showInDefault="0" showInWebsite="0" showInStore="0"/>-->
+            <!--</group>-->
+        <!--</section>-->
+        <!-- Hide giftregistry configuration -->
+        <section id="magento_giftregistry" showInDefault="0" showInWebsite="0" showInStore="0"/>
+        <!-- Hide adwords configuration -->
+        <section id="google">
+            <group id="adwords" showInDefault="0" showInWebsite="0" showInStore="0"/>
+        </section>
+        <!-- Hide grouped_product_image configuration -->
+        <section id="checkout">
+            <group id="cart">
+                <field id="grouped_product_image" showInDefault="0" showInWebsite="0" showInStore="0"/>
+            </group>
+        </section>
+        <!-- Hide magento_invitation configuration -->
+        <section id="magento_invitation" showInDefault="0" showInWebsite="0" showInStore="0"/>
+        <!-- Hide persistent configuration -->
+        <section id="persistent" showInDefault="0" showInWebsite="0" showInStore="0"/>
+        <!-- Hide wishlist configuration -->
+        <section id="wishlist" showInDefault="0" showInWebsite="0" showInStore="0"/>
+        <!-- Hide newsletter configuration -->
+        <section id="newsletter" showInDefault="0" showInWebsite="0" showInStore="0"/>
+        <!-- Hide rss configuration -->
+        <section id="rss" showInDefault="0" showInWebsite="0" showInStore="0"/>
+        <!-- Hide weee configuration -->
+        <section id="tax">
+            <group id="weee" showInDefault="0" showInWebsite="0" showInStore="0"/>
+        </section>
+    </system>
+</config>

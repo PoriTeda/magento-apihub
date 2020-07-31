@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <script src="Riki_Subscription::js/action/edit_profile.js"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Riki\Subscription\Block\Adminhtml\Profile\ConfirmSpotProduct" name="profile_confirm_add_spot_product" template="Riki_Subscription::profile/subscription-profile-confirm-spot-product.phtml">
+            </block>
+        </referenceContainer>
+    </body>
+</page>

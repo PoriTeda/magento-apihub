@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Riki\Loyalty\Logger\CronHandler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Loyalty\Logger\Cron">
+        <arguments>
+            <argument name="name" xsi:type="string">cronlog</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Loyalty\Logger\CronHandler</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--Consumer Api Log-->
+    <type name="Riki\Loyalty\Logger\ConsumerLog\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">ConsumerApiPointLog</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Loyalty\Logger\ConsumerLog\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Quote\Model\Cart\CartTotalRepository">
+        <plugin name="riki_loyalty_cart_total" type="Riki\Loyalty\Model\Plugin\CartTotalRepository" />
+    </type>
+    <type name="Magento\Quote\Model\Quote\TotalsCollector">
+        <plugin name="riki_loyalty_reward_updater" type="Riki\Loyalty\Model\Plugin\TotalsCollector" />
+    </type>
+    <type name="Magento\SalesRule\Model\Converter\ToDataModel">
+        <plugin name="riki_loyalty_sales_rule" type="Riki\Loyalty\Model\Plugin\SaleRule\ToDataModel"/>
+    </type>
+    <type name="Magento\Framework\Pricing\Render\RendererPool">
+        <plugin name="riki_loyalty_price_render" type="Riki\Loyalty\Plugin\Pricing\RendererPool"/>
+    </type>
+    <!--<preference for="Magento\Payment\Model\Checks\ZeroTotal" type="Riki\Loyalty\Model\Payment\ZeroTotal" />-->
+    <preference for="Riki\Loyalty\Api\CheckoutRewardPointInterface" type="Riki\Loyalty\Model\CheckoutRewardPoint" />
+    <type name="Riki\Loyalty\Model\ResourceModel\Reward">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Loyalty\Model\ResourceModel\RewardQuote">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">checkout</argument>
+        </arguments>
+    </type>
+    <type name="Magento\ScalableOms\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="riki_reward_point" xsi:type="string">riki_reward_point</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\ScalableCheckout\Console\Command\SplitQuote">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="riki_reward_quote" xsi:type="string">riki_reward_quote</item>
+            </argument>
+        </arguments>
+    </type>
+    <preference for="Riki\Loyalty\Api\RewardPointManagementInterface" type="Riki\Loyalty\Model\RewardPointManagement" />
+</config>

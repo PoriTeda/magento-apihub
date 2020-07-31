@@ -1,0 +1,169 @@
+<?php
+
+$isAllowChangeNextDelivery = $block->getData("isAllowChangeNextDelivery");
+$hanpukaiDeliveryDateAllowed = $block->getData('hanpukai_delivery_date_allowed');
+$addressId              = $block->getData("addressId");
+$arrProductByAddress    = $block->getData("arrProduct");
+$parentBlock            = $block->getData("parentBlock");
+$deliveryType           = $block->getData("deliveryType");
+$hanpukaiDeliveryDateFrom = $block->getData('hanpukaiDeliveryDateFrom');
+$hanpukaiDeliveryDateTo = $block->getData('hanpukaiDeliveryDateTo');
+$isAdmin = $block->getData('isAdmin');
+
+$attrDisableNextDelivery = $isAllowChangeNextDelivery;
+
+$attrDisableTimeslot = $isAllowChangeNextDelivery && $deliveryType !== \Riki\DeliveryType\Model\Delitype::DM ? '' : 'disabled';
+
+$addressOrder           = $block->getData('addressOrder');
+
+$isBtnUpdateAllChangesPressed = $block->getData('isBtnUpdateAllChangesPressed');
+
+$isSubscriptionHanpukai = $block->getData('isSubscriptionHanpukai');
+
+$isDisableDatePicker = false;
+if ($isSubscriptionHanpukai) {
+    if ($isAdmin && $hanpukaiDeliveryDateAllowed == 1 && $isAllowChangeNextDelivery == 1) {
+        $isDisableDatePicker = false;
+    } else {
+        $isDisableDatePicker = true;
+    }
+} else {
+    if ($isAllowChangeNextDelivery == 1) {
+        $isDisableDatePicker = false;
+    } else {
+        $isDisableDatePicker = true;
+    }
+}
+?>
+
+
+<div class="w50 label">
+    <?php echo __("Delivery Date")  ?>
+</div>
+
+<div class="w50">
+    <?php
+
+    ?>
+
+    <?php
+    // Get Calendar Config
+    if(!$isBtnUpdateAllChangesPressed) {
+        $_checkCalendar = $parentBlock->getHelperCalculateDateTime()->getCalendar($addressId, $arrProductByAddress, $deliveryType, null);
+        $calendarPeriod = $parentBlock->getHelperCalculateDateTime()->getCalendarPeriod();
+        if(!$calendarPeriod) {
+            //set default 30days
+            $calendarPeriod = 29;
+        } else {
+            $calendarPeriod = (int)$calendarPeriod + count($_checkCalendar) - 1;
+        }
+    }
+
+
+    ?>
+    <?php if(!$isBtnUpdateAllChangesPressed && (!$isSubscriptionHanpukai || $hanpukaiDeliveryDateAllowed)) : ?>
+        <div style="position: relative">
+            <input name="next_delivery[<?php echo $addressId  ?>][<?php echo $deliveryType  ?>]" id="<?php echo 'calendar_inputField_'. $addressOrder. '_' . $deliveryType ; ?>" class="input-text" type="text" readonly="true" value="<?php echo $arrProductByAddress['delivery_date']['next_delivery_date'] ?>" />
+        </div>
+        <script type="text/javascript">
+            require([
+                "jquery",
+                "mage/calendar"
+            ], function($){
+                var restrictArray = <?php echo json_encode($_checkCalendar); ?>;
+                hanpukaiAllowChangeDeliveryDate = '<?php echo $hanpukaiDeliveryDateAllowed; ?>';
+                minDate = 0;
+                maxDate = "<?php echo '+'.$calendarPeriod.'D'?>";
+
+                if (hanpukaiAllowChangeDeliveryDate == 1) {
+                    var minimumDateFromList = null;
+                    if (typeof restrictArray != 'undefined' && restrictArray.length > 0) {
+                        minimumDateFromList = restrictArray[restrictArray.length - 1];
+                        minimumDateFromList = new Date(minimumDateFromList);
+                    }
+
+                    var minimumDateFromConfig = '<?php echo $hanpukaiDeliveryDateFrom; ?>';
+                    minimumDateFromConfig = new Date(minimumDateFromConfig);
+                    if (minimumDateFromConfig > minimumDateFromList) {
+                        minDate = minimumDateFromConfig;
+                    } else {
+                        minDate = minimumDateFromList;
+                    }
+                    maxDate = new Date('<?php echo $hanpukaiDeliveryDateTo ?>');
+                }
+
+
+                var options = {
+                        dayNames: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+                        dayNamesMin: ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+                        monthNames: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+                        monthNamesShort: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+                        firstDay: 1,
+                        closeText: "Close",
+                        currentText: "Go Today",
+                        prevText: "Previous",
+                        nextText: "Next",
+                        weekHeader: "WK",
+                        timeText: "Time",
+                        hourText: "Hour",
+                        minuteText: "Minute",
+                        dateFormat: "yy-mm-dd",
+                        showOn: "button",
+                        <?php if($isDisableDatePicker): ?>
+                        disabled: true,
+                        <?php endif; ?>
+                        buttonText: "",
+                        showAnim: "",
+                        changeMonth: true,
+                        changeYear: true,
+                        buttonImageOnly: null,
+                        buttonImage: null,
+                        showButtonPanel: false,
+                        showOtherMonths: true,
+                        showWeek: false,
+                        timeFormat: '',
+                        showTime: false,
+                        showHour: false,
+                        showMinute: false,
+                        minDate: minDate,
+                        maxDate: maxDate,
+                        beforeShowDay: function(date, hanpukaiAllowChangeDeliveryDate){
+                            var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+                            return [ restrictArray.indexOf(string) == -1 ]
+                        }
+                    },
+                    calendarPickerObj = $("<?php echo '#calendar_inputField_'. $addressOrder. '_' . $deliveryType ; ?>").datepicker(options);
+                $('.ui-datepicker').addClass('notranslate');
+            });
+        </script>
+    <?php else: ?>
+        <?php echo $arrProductByAddress['delivery_date']['next_delivery_date']; ?>
+    <?php endif; ?>
+
+
+    <?php
+
+    if(!$isBtnUpdateAllChangesPressed) {
+        $allTimeSlot = $parentBlock->getAllTimeSlot();?>
+        <select name="time_slot[<?php echo $addressId  ?>][<?php echo $deliveryType  ?>]" id="time_slot<?php echo $addressId.'_'. $deliveryType ?>" <?php echo $attrDisableTimeslot  ?>
+                data-validate="{required:true}"
+            >
+            <?php foreach($allTimeSlot as $strTime):  ?>
+                <option value="<?php echo $strTime['value']  ?>" <?php echo $strTime['value'] === $arrProductByAddress['delivery_date']['time_slot'] ? 'selected' : ''  ?> > <?php echo $strTime['label']  ?> </option>
+            <?php endforeach;  ?>
+        </select>
+    <?php } else { ?>
+        <br />
+        <?php
+        $allTimeSlot = $parentBlock->getAllTimeSlot();
+        foreach ($allTimeSlot as $timeSlot){
+            if($timeSlot['value'] == $arrProductByAddress['delivery_date']['time_slot']){
+                echo $timeSlot['label'];
+                break;
+            }
+        }
+        ?>
+    <?php } ?>
+
+</div>
+

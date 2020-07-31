@@ -1,0 +1,93 @@
+<?php /** @var $block \Riki\FairAndSeasonalGift\Block\Adminhtml\Fair\Edit\Tab\Related */ ?>
+<?php
+    $relatedFair = $block->getRelatedFairOption();
+    if( !empty( $relatedFair ) ):
+?>
+
+<div>
+    <div class="admin__control-table-wrapper" id="fair_seasonal_related_container">
+        <section class="admin__page-section">
+                <div class="admin__field">
+                    <label class="admin__field-label">
+                        <?php echo __('Choose related fair');?>
+                    </label>
+                    <div class="admin__field-control">
+                        <select class="admin__control-select" name="related_id">
+                            <option value=""><?php echo __("Select Fair");?></option>
+                            <?php foreach ( $block->getRelatedFairOption() as $fair ):?>
+                                <option value="<?php echo $fair['fair_id'];?>" >
+                                    <?php echo  $fair['fair_name'];?>
+                                </option>
+                            <?php endforeach;?>
+                        </select>
+                    </div>
+                </div>
+                <div class="admin__field">
+                    <?php echo $block->getAddButtonHtml();?>
+                </div>
+        </section>
+    </div>
+
+    <?php
+        $relatedFair = $block->getRelatedFair();
+        if( !empty( $relatedFair ) ):
+    ?>
+
+        <section class="admin__page-section">
+            <div class="admin__page-section-title">
+                <span class="title"><?php /* @escapeNotVerified */ echo __('Current Related Fairs') ?></span>
+            </div>
+
+            <div class="admin__control-table-wrapper">
+                <table class="data-table admin__control-table" id="payment_status_log_info">
+                    <thead>
+                    <tr class="headings">
+                        <th class="col-fair-code"><?php /* @escapeNotVerified */ echo __('Fair Code') ?></th>
+                        <th class="col-order"><?php /* @escapeNotVerified */ echo __('Fair Related Order') ?></th>
+                        <th class="col-fair-year"><?php /* @escapeNotVerified */ echo __('Fair Year') ?></th>
+                        <th class="col-fair-type"><?php /* @escapeNotVerified */ echo __('Fair Type') ?></th>
+                        <th class="col-fair-name"><?php /* @escapeNotVerified */ echo __('Fair Name') ?></th>
+                        <th class="col-date last"><?php /* @escapeNotVerified */ echo __('Date') ?></th>
+                    </tr>
+                    </thead>
+                    <tbody id="fair-related-container">
+
+                    <?php foreach ( $relatedFair as $item ):  ?>
+                        <tr class="connection-item" data-connection-fair="<?php echo $item->getFairRelatedId();?>">
+                            <td class="col-fair-code">
+                                <?php echo $item->getFairCode();?>
+                            </td>
+                            <td class="col-order">
+                                <input class="input-text admin__control-text fair-related-order required-entry _required"
+                                       type="text"
+                                       name="related[<?php echo $item->getFairRelatedId()?>][fair_related_order]"
+                                       value="<?php echo $item->getFairRelatedOrder();?>"
+                                />
+                            </td>
+                            <td class="col-fair-year">
+                                <?php echo $item->getFairYear();?>
+                            </td>
+                            <td class="col-fair-type">
+                                <?php echo $block->getFairType($item->getFairType());?>
+                            </td>
+                            <td class="col-fair-name">
+                                <?php echo $item->getFairName();?>
+                            </td>
+                            <td class="col-date last">
+                                <?php echo $item->getStartDate() . ' ~ '. $item->getEndDate() ;?>
+                            </td>
+                            <td class="col-action last">
+                                <button title="Delete" type="button" class="action-save action-secondary" onclick="deleteConfirm('Are you sure you want to do this?', '<?php echo $block->getDeleteUrl($item);?>')" data-ui-id="fair-seasonal-edit-tab-related-detail-delete-button-<?php echo $item->getId()?>">
+                                    <span><?php echo __('Delete');?></span>
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endforeach;?>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    <?php endif;?>
+</div>
+
+<?php endif;?>

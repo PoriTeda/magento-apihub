@@ -1,0 +1,40 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+
+<div class="admin__page-section-title <?php /* @escapeNotVerified */ echo $block->getHeaderCssClass() ?>">
+    <span class="title"><?php /* @escapeNotVerified */ echo $block->getHeaderText() ?></span>
+    <div class="actions"></div>
+</div>
+
+<div id="customer_account_fieds" class="admin__page-section-content">
+    <?php echo $block->getForm()->getHtml() ?>
+</div>
+
+<script>
+    require(["prototype", "Magento_Sales/order/create/form"], function(){
+
+        order.accountFieldsBind($('customer_account_fieds'));
+
+
+        var text_random_email = '<?php echo __('Get Random Email');?>';
+
+        <?php if (!$block->getCustomerId()) {?>
+            if ($('email') != null) {
+                $('email').insert({after: '<div>' +
+                    '<div id="order-fakeemails"></div>'+
+                    '<input id="order_account_isfake" name="order_account_fake" value=1 type="hidden" />'+
+                    '<div id="order-fakeemails-button">' +
+                    '<a href="#" onclick="order.loadFakeEmails();return false">' +
+                    '<span>'+text_random_email+'</span>'+
+                    '</a>' +
+                    '</div>'+
+                    '</div>'}
+                )
+            }
+        <?php }?>
+    });
+</script>

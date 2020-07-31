@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Riki\Sales\Helper\Admin">
+        <plugin name="rikiPromoRikiSalesHelperAdmin" type="Riki\Promo\Plugin\Riki\Sales\Helper\Admin"/>
+    </type>
+    <type name="Magento\Sales\Model\AdminOrder\Create">
+        <plugin name="rikiPromoSalesModelAdminOrderCreate" type="Riki\Promo\Plugin\Sales\Model\AdminOrder\Create"  sortOrder="0"/>
+    </type>
+    <type name="Riki\Sales\Helper\Address">
+        <plugin name="rikiPromoRikiSalesHelperAddress" type="Riki\Promo\Plugin\Riki\Sales\Helper\Address"/>
+    </type>
+    <type name="Amasty\Promo\Observer\CollectTotalsAfterObserver">
+        <arguments>
+            <argument name="promoCartHelper" xsi:type="object">Riki\Promo\Helper\Adminhtml\Cart</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Sales\Block\Adminhtml\Order\Create\Items\Grid">
+        <plugin name="rikiPromoSalesBlockAdminhtmlOrderCreateItemsGrid" type="Riki\Promo\Plugin\Sales\Block\Adminhtml\Order\Create\Items\Grid" />
+    </type>
+</config>

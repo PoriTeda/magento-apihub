@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <tax>
+            <classes>
+                <payment_tax_class>10</payment_tax_class>
+            </classes>
+            <calculation>
+                <round>floor</round>
+            </calculation>
+            <tax_change>
+                <change_date>2019-10-01</change_date>
+                <compare_tax>8</compare_tax>
+            </tax_change>
+        </tax>
+    </default>
+</config>

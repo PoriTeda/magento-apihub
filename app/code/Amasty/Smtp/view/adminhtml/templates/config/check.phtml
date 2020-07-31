@@ -1,0 +1,18 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2019 Amasty (https://www.amasty.com)
+ * @package Amasty_Smtp
+ */
+?>
+<?php /** @var \Magento\Backend\Block\Template $block */ ?>
+
+<div class="amsmtp-buttoned-input"><?= $block->getData('select_html') ?></div>
+<div>
+    <p class="amsmtp-notice message-info info message"><?= __('Please note that "SMTP for E-mail extension" is disabled.') ?></p>
+    <?= $block->getChildHtml('button') ?>
+</div>
+<div class="details collapsed" data-role="details">
+    <div class="toggle" data-role="toggle"><?=__('Debug info')?></div>
+    <div class="error-message" data-role="message"></div>
+</div>

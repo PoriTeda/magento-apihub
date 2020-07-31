@@ -1,0 +1,157 @@
+#ai-overlay{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.2);
+    z-index:1995;
+}
+#ai-details{
+    background: none repeat scroll 0 0 white;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    min-height: 150px;
+    left: 50%;
+    margin-left: -400px;
+    padding: 20px;
+    position: absolute;
+    top: 150px;
+    width: 800px;
+
+}
+
+#ai-details .close{ 
+    background: rgb(65, 54, 47);
+    bottom: 20px;
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    height: 30px;
+    line-height: 31px;
+    padding: 0;
+    position: absolute;
+    right: 3px;
+    text-align: center;
+    top: 3px;
+    width: 30px;
+}
+#ai-details BUTTON{
+    float:right;
+}
+#ai-scroller{
+    margin-left: 1px;
+    overflow: auto;
+    width: 455px;
+}
+.ai-stock-inner{
+    margin-top:20px
+}
+.ai-stock-inner TABLE{
+    border-left: 1px solid #cbd3d4;
+    border-bottom: 1px solid #cbd3d4;
+    border-width: 1px 0 1px 1px;
+    float: left;
+}
+
+.ai-stock-inner TABLE .double-border{
+    border-right-width: 2px;
+}
+
+.ai-stock-inner TABLE TR, .ai-stock-inner TABLE TD, .ai-stock-inner TABLE TH{
+    border:none;
+    margin:0;
+    padding:0;
+    border-right: 1px solid #cbd3d4;
+    border-top: 1px solid #cbd3d4;
+    text-align:center;
+    min-width:35px;
+    height: 20px;
+}
+
+
+.ai-stock-inner TABLE TR:nth-child(odd){
+    background: #f6f6f6;
+}
+
+.ai-stock-inner TABLE TR.headings{
+
+}
+
+.ai-stock-inner TABLE TH{ 
+    font-weight: normal;
+    color: white;
+    background: rgb(65, 54, 47);
+    padding: 2px 4px ;
+    text-decoration: none;
+    font-weight: normal;
+    font-size: 12px;
+}
+
+
+
+.ai-stock-inner TABLE TD{ 
+    padding:1px;
+    position:relative;
+    font-weight: normal;
+    font-size: 12px;
+    height:22px;
+}
+.ai-stock-inner TABLE TD INPUT{ 
+    border: 0px solid white;
+    height: 19px;
+    text-align: center;
+    width: 100%;
+    background:white;
+}
+.ai-stock-inner TABLE TD.grey{
+    color:grey;
+}
+.ai-stock-inner TABLE TD DIV{ 
+
+    background: white;
+    -moz-border-radius: 35px;
+    -webkit-border-radius: 35px;
+    -o-border-radius: 35px;
+    border-radius: 35px;
+    width:10px;
+    height:10px;
+    position: absolute;
+    left:5px;
+    top:5px;
+}
+.ai-stock-inner TABLE TR.alert{
+    background-color:rgba(255, 0, 0, 0.18)!important;
+}
+INPUT.valid{
+    background-color:rgba(0,255, 0, 0.18)!important;
+}
+
+.in_stock{ 
+    color: green;
+}
+.out_of_stock{ 
+    color: red;
+}
+.backorder{ 
+    color:orange;
+}
+.not_managed{ 
+    color:grey;
+}
+.multistock_disabled{ 
+    color: grey;
+    font-size:13px;
+}
+
+#ai-details UL {
+    margin:10px;
+    clear:both;
+    display: inline;
+    list-style-type: none;
+    font-size:12px;
+
+}
+
+
+

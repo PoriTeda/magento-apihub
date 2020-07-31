@@ -1,0 +1,21 @@
+"Notification for Completion of Order Taking (Gift Products)","【ネスレ通販】　ご注文受付完了のお知らせ","order_confirmation_seasonal_gift.txt","",1,1
+"Notification for Completion of Order Taking (PC)","【ネスレ通販】　ご注文受付完了のお知らせ","spot_confirmation_order.txt","sales_email/order/template",1,1
+"Notification for Completion of Hanpukai Order Taking (PC)","【ネスレ通販】　ご注文受付完了のお知らせ","hanpukai_confirmation_order.txt","sales_email/order/hanpukai_order_confirmation",1,1
+"Notification for Cancellation of Order Taking","【ネスレ通販】　ご注文キャンセル完了のお知らせ","spot_cancel_order.txt","riki_email/order_cancel/template",1,1
+"Notification for Completion of Pre-Order Taking","【ネスレ通販】　予約ご注文受付完了のお知らせ","preorder_confirmation_order.txt","rikipreorder/email/confirmation_template",1,1
+"Notification for Cancellation of Pre-Order Taking","【ネスレ通販】　予約ご注文キャンセル完了のお知らせ","preorder_cancellation_order.txt","rikipreorder/email/cancellation_template",1,1
+"Notification of Completion of Shipping Out (SPOT order)","【ネスレ通販】　ご注文商品出荷のお知らせ","spot_shippedout_confirmation.txt","shipmentimporter/email/template_tracking_spot",0,1
+"Notification of Completion of Shipping Out (Subscription order)","【ネスレ通販】　ご注文商品出荷のお知らせ","subscription_shippedout_confirmation.txt","shipmentimporter/email/template_tracking_subscription",0,1
+"Notification of Completion of Shipping Out (Hanpukai order)","【ネスレ通販】　ご注文商品出荷のお知らせ","hanpukai_shippedout_confirmation.txt","shipmentimporter/email/template_tracking_hanpukai",0,1
+"Notification for completion of registering Serial No.","【ネスレ通販】　シリアルコード登録完了のお知らせ","serial_code_registration.txt","riki_loyalty/serial_code/template_confirmation",1,1
+"Order change (Spot)","【ネスレ通販】定期便内容変更完了メール","spot_order_change.txt","sales_email/order/spot_order_change",1,1
+"Order change (Subscription)","【ネスレ通販】定期便内容変更完了メール","subscription_order_change.txt","sales_email/order/subscription_order_change",1,1
+"Cut-off date","ネスレ通販 「定期お届け便」次回お届けＸ日前となりました","subscription_cut_off_date.txt","subscriptioncourse/cutoffdate/email_template",0,1
+"System send email to customer in case of stock unavailability (Subscription order generation)","【ネスレ通販】　ご注文受付完了のお知らせ","subscription_order_stock_unavailability.txt","subcreateorder/outofstock/email_template",0,1
+"Discontinued product","【重要なお知らせ】商品名称変更のご連絡","discontinued_product.txt","subscriptioncourse/replaceproduct/email_template",0,1
+"Inform consumers when product be back","【ネスレ通販】ご注文商品入荷のお知らせ","product_back_to_stock.txt","catalog/productalert/email_stock_template",0,1
+"Stop subscription manually from the backend","【ネスレ通販】「定期お届けコース」の解約手続き完了のご連絡","subscription_profile_disengaged.txt","",0,1
+"Notification for Completion of Order Taking (Multi checkout)","【ネスレ通販】ご注文商品分割配送のお知らせ","spot_confirmation_order_multicheckout.txt","",1,1
+"Credit Card re-authorization - Email to pay again (Subscription)","【ネスレ通販】　お支払い決済再設定のお願い","credit_card_reauthorization_email_pay_again_subscription.txt","paygent_config/authorisation/template_subscription",0,1
+"Credit Card re-authorization - Email to pay again (Not subscription)","【ネスレ通販】　お支払方法（クレジットカード情報）更新のお願い","credit_card_reauthorization_email_pay_again_spot.txt","paygent_config/authorisation/template",0,1
+"Notification for Cancellation of Subscription Taking","【ネスレ通販】　ご注文キャンセル完了のお知らせ","subscription_cancellation_order.txt","subscriptioncourse/cancelsubscription/cancel_template",1,1

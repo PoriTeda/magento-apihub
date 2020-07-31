@@ -1,0 +1,65 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<?php /** @var \Magento\Framework\Pricing\Render\Amount $block */ ?>
+<?php $_pointEarn = $block->getData('point_earn');?>
+<?php
+    $product = $block->getSaleableItem();
+    list($unitQty,$unitCase,$tierCasePrice) = $this->helper('\Riki\Catalog\Helper\Data')->getProductUnitInfo($product,true,$block->getDisplayValue());
+?>
+<span class="price-container <?php /* @escapeNotVerified */ echo $block->getAdjustmentCssClasses() ?>"
+        <?php echo $block->getSchema() ? ' itemprop="offers" itemscope itemtype="http://schema.org/Offer"' : '' ?>>
+    <?php if ($block->getDisplayLabel()): ?>
+        <span class="price-label"><?php /* @escapeNotVerified */ echo $block->getDisplayLabel(); ?></span>
+    <?php endif; ?>
+    <span <?php if ($block->getPriceId()): ?> id="<?php /* @escapeNotVerified */ echo $block->getPriceId() ?>"<?php endif;?>
+        <?php echo($block->getPriceDisplayLabel()) ? 'data-label="(' . $block->getPriceDisplayLabel() . $block->getPriceDisplayInclExclTaxes() . ')"' : '' ?>
+        <?php if (!$block->getPriceDisplayLabel() && $block->getPriceWrapperCss() == 'price-excluding-tax') : ?>
+        data-label="<?php echo __('(Excl. Tax)'); ?>"
+        <?php else : ?>
+        data-label="<?php echo __('(Incl. Tax)'); ?>"
+        <?php endif; ?>
+        <?php if(\Riki\CreateProductAttributes\Model\Product\CaseDisplay::PROFILE_UNIT_CASE == $unitCase): ?>
+            <?php if($tierCasePrice && 'finalPrice' == $block->getPriceType()):?>
+                data-price-amount="<?php /* @escapeNotVerified */ echo floor($tierCasePrice); /** round down the price - ticket JIRA RIKI-1767 */ ?>"
+            <?php else : ?>
+                data-price-amount="<?php /* @escapeNotVerified */ echo floor($block->getDisplayValue())*$unitQty; /** round down the price - ticket JIRA RIKI-1767 */ ?>"
+            <?php endif; ?>
+        <?php else : ?>
+            data-price-amount="<?php /* @escapeNotVerified */ echo floor($block->getDisplayValue()); /** round down the price - ticket JIRA RIKI-1767 */ ?>"
+        <?php endif; ?>
+        data-price-amount="<?php /* @escapeNotVerified */ echo floor($block->getDisplayValue()); /** round down the price - ticket JIRA RIKI-1767 */ ?>"
+        data-price-type="<?php /* @escapeNotVerified */ echo $block->getPriceType(); ?>"
+        class="price-wrapper <?php /* @escapeNotVerified */ echo ($block->getPriceWrapperCss() != NULL) ? $block->getPriceWrapperCss() : 'price-including-tax'; ?>"
+        <?php echo $block->getSchema() ? ' itemprop="price"' : '' ?>>
+        <?php if(\Riki\CreateProductAttributes\Model\Product\CaseDisplay::PROFILE_UNIT_CASE == $unitCase): ?>
+            <?php if($tierCasePrice && 'finalPrice' == $block->getPriceType()):?>
+                <?php /* @escapeNotVerified */ echo $block->formatCurrency(floor($tierCasePrice), (bool)$block->getIncludeContainer()) ?>
+            <?php else : ?>
+                <?php /* @escapeNotVerified */ echo $block->formatCurrency(floor($block->getDisplayValue())*$unitQty, (bool)$block->getIncludeContainer()) ?>
+            <?php endif; ?>
+        <?php else : ?>
+            <?php /* @escapeNotVerified */ echo $block->formatCurrency($block->getDisplayValue(), (bool)$block->getIncludeContainer()) ?>
+        <?php endif; ?>
+
+    </span>
+    <span class="minimal-price-label">~</span>
+    <?php if ($_pointEarn) : ?>
+    <span class="point-to-price">
+        <span class="value"><?php echo $_pointEarn;?></span> <span class="label"><?php echo __('Point'); ?></span>
+    </span>
+    <?php endif;?>
+    <?php if ($block->hasAdjustmentsHtml()): ?>
+        <?php echo $block->getAdjustmentsHtml() ?>
+    <?php endif; ?>
+    <?php if ($block->getSchema()): ?>
+        <meta itemprop="priceCurrency" content="<?php /* @escapeNotVerified */ echo $block->getDisplayCurrencyCode()?>" />
+    <?php endif; ?>
+</span>

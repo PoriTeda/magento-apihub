@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/publisher.xsd">
+    <publisher topic="profile.edited.order">
+        <connection name="amqp" exchange="magento"/>
+    </publisher>
+
+    <publisher topic="profile.generate.order">
+        <connection name="amqp" exchange="magento"/>
+    </publisher>
+
+    <publisher topic="a.profile.generate.order">
+        <connection name="amqp" exchange="magento"/>
+    </publisher>
+    <publisher topic="b.profile.generate.order">
+        <connection name="amqp" exchange="magento"/>
+    </publisher>
+    <publisher topic="c.profile.generate.order">
+        <connection name="amqp" exchange="magento"/>
+    </publisher>
+    <publisher topic="d.profile.generate.order">
+        <connection name="amqp" exchange="magento"/>
+    </publisher>
+    <publisher topic="e.profile.generate.order">
+        <connection name="amqp" exchange="magento"/>
+    </publisher>
+    <publisher topic="f.profile.generate.order">
+        <connection name="amqp" exchange="magento"/>
+    </publisher>
+    <publisher topic="g.profile.generate.order">
+        <connection name="amqp" exchange="magento"/>
+    </publisher>
+    <publisher topic="h.profile.generate.order">
+        <connection name="amqp" exchange="magento"/>
+    </publisher>
+    <publisher topic="i.profile.generate.order">
+        <connection name="amqp" exchange="magento"/>
+    </publisher>
+    <publisher topic="j.profile.generate.order">
+        <connection name="amqp" exchange="magento"/>
+    </publisher>
+
+    <publisher topic="profile.indexer">
+        <connection name="amqp" exchange="magento"/>
+    </publisher>
+</config>

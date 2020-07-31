@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="customer_form">
+            <block class="Riki\Loyalty\Block\Adminhtml\Customer\Edit\Tab\Reward" name="riki_loyalty_reward" />
+            <block class="Riki\Loyalty\Block\Adminhtml\Customer\Edit\Tab\NestlePoint" name="nestle_point" after="riki_loyalty_reward" />
+            <block class="Riki\Loyalty\Block\Adminhtml\Customer\Edit\Tab\NestleCoin" name="nestle_coin" after="nestle_point" />
+        </referenceBlock>
+        <referenceContainer name="before.body.end">
+            <block class="Magento\Framework\View\Element\Template" name="riki_reduce_point_init" template="Riki_Loyalty::reward/script.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

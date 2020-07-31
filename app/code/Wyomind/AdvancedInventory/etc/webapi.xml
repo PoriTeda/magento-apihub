@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright Â© 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <!-- Customer Group -->
+    <route url="/V1/stock/:productId" method="GET">
+        <service class="Wyomind\AdvancedInventory\Api\StockRepositeryInterface" method="getStockByProductId"/>
+        <resources>
+            <resource ref="Wyomind_AdvancedInventory::stocks"/>
+        </resources>
+    </route>  
+    <route url="/V1/pos" method="GET">
+        <service class="Wyomind\AdvancedInventory\Api\StockRepositeryInterface" method="getAllPointOfSaleAndWarehouse"/>
+        <resources>
+            <resource ref="Wyomind_AdvancedInventory::stocks"/>
+        </resources>
+    </route>  
+    <route url="/V1/posbystoreid/:storeId" method="GET">
+        <service class="Wyomind\AdvancedInventory\Api\StockRepositeryInterface" method="getPointOfSaleAndWarehouseByStoreId"/>
+        <resources>
+            <resource ref="Wyomind_AdvancedInventory::stocks"/>
+        </resources>
+    </route>  
+    
+    <route url="/V1/stockbyproductidandplaceids" method="POST">
+        <service class="Wyomind\AdvancedInventory\Api\StockRepositeryInterface" method="getStockByProductIdAndPlaceIds"/>
+        <resources>
+            <resource ref="Wyomind_AdvancedInventory::stocks"/>
+        </resources>
+    </route>  
+    <route url="/V1/stockbyproductidandstoreids" method="POST">
+        <service class="Wyomind\AdvancedInventory\Api\StockRepositeryInterface" method="getStockByProductIdAndStoreIds"/>
+        <resources>
+            <resource ref="Wyomind_AdvancedInventory::stocks"/>
+        </resources>
+    </route>  
+    <route url="/V1/updatestock" method="POST">
+        <service class="Wyomind\AdvancedInventory\Api\StockRepositeryInterface" method="updateStock"/>
+        <resources>
+            <resource ref="Wyomind_AdvancedInventory::stocks"/>
+        </resources>
+    </route>  
+    <route url="/V1/updateinventory" method="POST">
+        <service class="Wyomind\AdvancedInventory\Api\StockRepositeryInterface" method="updateInventory"/>
+        <resources>
+            <resource ref="Wyomind_AdvancedInventory::stocks"/>
+        </resources>
+    </route>  
+</routes>

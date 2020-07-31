@@ -1,0 +1,78 @@
+<?php /** @var \Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\PointCancel $block */ ?>
+<div class="admin__fieldset-wrapper" data-bind="scope: 'pointCancelExpr'">
+    <div class="admin__fieldset-wrapper-title">
+        <strong class="title">
+            <span><?php /* @escapeNotVerified */ echo __('Points to cancel') ?></span>
+        </strong>
+    </div>
+    <div class="admin__fieldset-wrapper-content">
+        <fieldset class="admin__fieldset">
+            <div class="admin__field">
+                <label class="admin__field-label">
+                    <span><?php /* @escapeNotVerified */ echo __('Points not retractable') ?></span>
+                </label>
+                <div class="admin__field-label" style="width: auto">
+                    <span><?php echo $block->getNotRetractablePoint() ?></span>
+                </div>
+            </div>
+            <div class="admin__field">
+                <label class="admin__field-label">
+                    <span><?php /* @escapeNotVerified */ echo __('Points retractable') ?></span>
+                </label>
+                <div class="admin__field-label" style="width: auto">
+                    <span><?php echo $block->getRetractablePoint() ?></span>
+                </div>
+            </div>
+            <div class="admin__field">
+                <label class="admin__field-label">
+                    <span><?php /* @escapeNotVerified */ echo __('Points to cancel: Earned points') ?></span>
+                </label>
+                <div class="admin__field-label" style="width: auto">
+                    <span><?php echo $block->getTotalCancelPoint() ?></span>
+                    <input type="hidden" name="earned_point" id="earned_point" value="<?php echo $block->getTotalCancelPoint() ?>" />
+                </div>
+            </div>
+            <div class="admin__field">
+                <label class="admin__field-label">
+                    <span><?php /* @escapeNotVerified */ echo __('Points to cancel: Points to cancel') ?></span>
+                </label>
+                <div class="admin__field-label" style="width: auto">
+                    <span data-bind="text: x"></span>
+                    <input type="hidden" name="total_cancel_point" id="total_cancel_point" data-bind="value: x" />
+                </div>
+            </div>
+            <div class="admin__field">
+                <label class="admin__field-label" for="total_cancel_point_adj">
+                    <span><?php /* @escapeNotVerified */ echo __('Points to cancel: Adjustment') ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <input class="admin__control-text validate-number" type="text" name="total_cancel_point_adj" id="total_cancel_point_adj" data-bind="textInput: y">
+                </div>
+            </div>
+            <div class="admin__field">
+                <label class="admin__field-label">
+                    <span><?php /* @escapeNotVerified */ echo __('Points to cancel: Final points to cancel') ?></span>
+                </label>
+                <div class="admin__field-label" style="width: auto">
+                    <span data-bind="text: result"></span>
+                    <input type="hidden" name="total_cancel_point_adjusted" id="total_cancel_point_adjusted"  data-bind="value: result" />
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "pointCancelExpr": {
+                        "component": "Riki_Rma/js/view/rma/lib/sum-expr",
+                        "_x": <?php echo $block->getPointToCancel() ?>,
+                        "_y": <?php echo $block->getTotalCancelPointAdj() ?>
+                    }
+                }
+            }
+        }
+    }
+</script>

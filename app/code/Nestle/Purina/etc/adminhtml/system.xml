@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+<system>
+        <tab id="nestle" translate="label" sortOrder="200">
+            <label>Nestle Config</label>
+        </tab>
+        <section id="purina" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Purina Config</label>
+            <tab>nestle</tab>
+            <resource>Nestle_Purina::purina_config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Paygent Configuration</label>
+                <field id="return_url" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Paygent Return URL</label>
+                    <comment>Paygent success return url</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

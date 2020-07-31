@@ -1,0 +1,24 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php if ($block->getTotal()->getValue()): ?>
+    <tr class="totals ballance">
+        <th colspan="<?= /* @escapeNotVerified */ $block->getColspan() ?>" style="<?= /* @escapeNotVerified */ $block->getTotal()->getStyle() ?>" class="mark" scope="row">
+            <?php $_title = __('Remove'); ?>
+            <?php $_url = $block->getUrl('magento_customerbalance/cart/remove'); ?>
+            <a href="<?= /* @escapeNotVerified */ $_url ?>" title="<?= /* @escapeNotVerified */ $_title ?>" class="action delete"><span><?= /* @escapeNotVerified */ $_title ?></span></a>
+
+            <?= /* @escapeNotVerified */ $block->getTotal()->getTitle() ?>
+        </th>
+        <td style="<?= /* @escapeNotVerified */ $block->getTotal()->getStyle() ?>" class="amount"
+            data-th="<?= $block->escapeHtml($block->getTotal()->getTitle()) ?>">
+            <span class="discount"><?= /* @escapeNotVerified */ $this->helper('Magento\Checkout\Helper\Data')->formatPrice($block->getTotal()->getValue()) ?></span>
+        </td>
+    </tr>
+<?php endif; ?>

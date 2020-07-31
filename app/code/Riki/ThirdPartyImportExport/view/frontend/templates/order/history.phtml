@@ -1,0 +1,39 @@
+<?php $orders = ($block->getOrders() instanceof \Riki\ThirdPartyImportExport\Model\ResourceModel\Order\Collection)
+    ? $block->getOrders()->getItems()
+    : []
+?>
+<?php if ($orders): ?>
+    <div class="order-products-toolbar toolbar toolbar-products top"><?php echo $block->getPagerHtml(); ?></div>
+    <div class="table-wrapper">
+        <table class="data table table-order-items history">
+            <caption class="table-caption"><?php /* @escapeNotVerified */ echo __('Orders') ?></caption>
+            <thead>
+            <tr>
+                <th scope="col" class="col id"><?php /* @escapeNotVerified */ echo __('Order #') ?></th>
+                <th scope="col" class="col order-date"><?php /* @escapeNotVerified */ echo __('Order Date') ?></th>
+                <th scope="col" class="col payment-date"><?php /* @escapeNotVerified */ echo __('Payment Date') ?></th>
+                <th scope="col" class="col shipping-status"><?php /* @escapeNotVerified */ echo __('Shipping Status') ?></th>
+                <th scope="col" class="col subscription-status"><?php /* @escapeNotVerified */ echo __('Subscription Type') ?></th>
+                <th scope="col" class="col total"><?php /* @escapeNotVerified */ echo __('Order Total') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($orders as $order): ?>
+                <tr>
+                    <td data-th="<?php echo $block->escapeHtml(__('Order #')) ?>" class="col id">
+                        <a href="<?php /* @escapeNotVerified */ echo $order->getViewUrl($order) ?>" class="action view">
+                            <span><?php /* @escapeNotVerified */ echo $order->getId() ?></span>
+                        </a>
+                    </td>
+                    <td data-th="<?php echo $block->escapeHtml(__('Order Date')) ?>" class="col order-date"><?php /* @escapeNotVerified */ echo $block->formatDateNotUseTimezone($order->getOrderDatetime()) ?></td>
+                    <td data-th="<?php echo $block->escapeHtml(__('Payment Date')) ?>" class="col payment-date"><?php /* @escapeNotVerified */ echo $block->formatDateNotUseTimezone($order->getPaymentDate()) ?></td>
+                    <td data-th="<?php echo $block->escapeHtml(__('Shipping Status')) ?>" class="col shipping-status"><?php /* @escapeNotVerified */ echo $order->getShippingStatusLabel() ?></td>
+                    <td data-th="<?php echo $block->escapeHtml(__('Subscription Type')) ?>" class="col  subscription-status"><span><?php /* @escapeNotVerified */ echo $order->getSubscriptionTypeLabel() ?> <span class="order-status"><?php /* @escapeNotVerified */ echo $order->getStatusLabel() ?></span></span></td>
+                    <td data-th="<?php echo $block->escapeHtml(__('Order Total')) ?>" class="col total"><?php /* @escapeNotVerified */ echo $order->formatPrice($order->getGrandTotal()) ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
+<?php else: ?>
+    <div class="message info empty"><span><?php /* @escapeNotVerified */ echo __('You have placed no orders.'); ?></span></div>
+<?php endif; ?>

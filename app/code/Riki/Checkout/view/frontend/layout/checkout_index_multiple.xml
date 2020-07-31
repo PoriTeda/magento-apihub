@@ -1,0 +1,97 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="checkout_index_index"/>
+    <body>
+        <referenceBlock name="catalog.compare.sidebar" remove="true" />
+        <referenceBlock name="checkout.root">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Riki_Checkout::checkout/multiple/onepage.phtml</argument>
+            </action>
+            <arguments>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="components" xsi:type="array">
+                        <item name="checkout" xsi:type="array">
+                            <item name="children" xsi:type="array">
+                                <item name="steps" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+
+                                        <!-- Override shipping.js -->
+                                        <item name="shipping-step" xsi:type="array">
+                                            <item name="sortOrder" xsi:type="string">1</item>
+                                            <item name="children" xsi:type="array">
+                                                <item name="shippingAddress" xsi:type="array">
+                                                    <item name="component" xsi:type="string">Riki_Checkout/js/view/multiple/shipping</item>
+                                                </item>
+                                            </item>
+                                        </item>
+
+                                        <item name="billing-step" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="payment" xsi:type="array">
+                                                    <item name="component" xsi:type="string">Magento_Checkout/js/view/payment-in-shipping</item>
+                                                    <item name="children" xsi:type="array">
+                                                        <item name="rewardPoints" xsi:type="array">
+                                                            <item name="config" xsi:type="array">
+                                                                <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                            </item>
+                                                        </item>
+                                                        <item name="afterMethods" xsi:type="array">
+                                                            <item name="children" xsi:type="array">
+                                                                <item name="discount" xsi:type="array">
+                                                                    <item name="config" xsi:type="array">
+                                                                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                                    </item>
+                                                                </item>
+                                                                <item name="giftCardAccount" xsi:type="array">
+                                                                    <item name="config" xsi:type="array">
+                                                                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                                    </item>
+                                                                </item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+
+                                        <!-- Order confirm step -->
+                                       <!-- <item name="multiple-checkout-order-confirmation" xsi:type="array">
+                                            <item name="component" xsi:type="string">Riki_Checkout/js/view/multiple/multiple-order-confirm</item>
+                                            <item name="sortOrder" xsi:type="string">5</item>
+                                            <item name="children" xsi:type="array">
+
+                                            </item>
+                                        </item>-->
+                                    </item>
+                                </item>
+                                <item name="sidebar" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="rewardPoints" xsi:type="array">
+                                            <item name="component" xsi:type="string">Riki_Loyalty/js/view/reward-point</item>
+                                            <item name="displayArea" xsi:type="string">reward-points</item>
+                                        </item>
+                                        <!--<item name="afterRewardPoints" xsi:type="array">
+                                            <item name="component" xsi:type="string">uiComponent</item>
+                                            <item name="displayArea" xsi:type="string">afterRewardPoints</item>
+                                            <item name="children" xsi:type="array">
+                                                <item name="discount" xsi:type="array">
+                                                    <item name="component" xsi:type="string">Amasty_Coupons/js/view/payment/discount</item>
+                                                    <item name="children" xsi:type="array">
+                                                        <item name="errors" xsi:type="array">
+                                                            <item name="sortOrder" xsi:type="string">0</item>
+                                                            <item name="component" xsi:type="string">Magento_SalesRule/js/view/payment/discount-messages</item>
+                                                            <item name="displayArea" xsi:type="string">messages</item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>-->
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>

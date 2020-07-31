@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_Prize::prize" title="Winner and Prize"
+             module="Riki_Prize" sortOrder="120" parent="Magento_Customer::customer"
+             action="prize/index" resource="Riki_Prize::prize"/>
+    </menu>
+</config>

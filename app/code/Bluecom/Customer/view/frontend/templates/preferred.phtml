@@ -1,0 +1,30 @@
+<?php
+$preferred = $block->getListPaymentActive();
+$preferredPayment = $block->getPreferredPaymentMethod();
+?>
+<form class="form form-save-preferred" action="<?php /* @escapeNotVerified */ echo $block->getUrl('customer/preferred/save') ?>" method="post" id="form-validate" enctype="multipart/form-data" data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>" autocomplete="off">
+    <fieldset class="fieldset info">
+        <?php echo $block->getBlockHtml('formkey')?>
+    <fieldset class="fieldset">
+        <div class="field required">
+            <label class="label" for="preferred_payment"><span><?php /* @escapeNotVerified */ echo __('Please, Select your preferred payment method.') ?></span></label>
+            <div class="control">
+                <select name="preferred_payment" id="preferred_payment">
+                    <option value="" selected="<?php echo ($preferredPayment)?'':'selected'?>"><?php echo _('Please, Select your preferred payment method.')?></option>
+                    <?php
+                    foreach($preferred as $method):
+                    ?>
+                        <option value="<?php echo $method['value']?>" <?php echo ($preferredPayment==$method['value'])? 'selected="selected"':''?>>
+                            <?php echo $method['label']?>
+                        </option>
+                    <?php endforeach?>
+                </select>
+            </div>
+        </div>
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" class="action save primary" title="<?php /* @escapeNotVerified */ echo __('Save') ?>"><span><?php /* @escapeNotVerified */ echo __('Save') ?></span></button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Quote\Model\QuoteRepository">
+        <plugin name="CheckGetActiveCart" type="Riki\SpotOrderApi\Model\QuoteRepository\Plugin\CheckGetActiveCart" />
+    </type>
+    <type name="Magento\Bundle\Model\CartItemProcessor">
+        <plugin name="checkOptionBundleProduct" type="Riki\SpotOrderApi\Plugin\Bundle\CartItemProcessor" />
+    </type>
+    <!-- overwrite discount -->
+    <type name="Magento\SalesRule\Model\Validator">
+        <plugin name="riki_create_spot_api_discount_amount" type="Riki\SpotOrderApi\Plugin\Validator"/>
+    </type>
+
+    <preference for="Riki\SpotOrderApi\Api\CartItemRepositoryInterface" type="Riki\SpotOrderApi\Model\Quote\Item\Repository" />
+    <preference for="Riki\SpotOrderApi\Api\PaymentInformationManagementInterface" type="Riki\SpotOrderApi\Model\PaymentInformationManagement" />
+    <preference for="Riki\SpotOrderApi\Api\ShippingInformationManagementInterface" type="Riki\SpotOrderApi\Model\ShippingInformationManagement" />
+
+    <type name="Riki\ShippingProvider\Model\Carrier">
+        <plugin name="rikiSpotApiShippingProviderModelCarrier" type="Riki\SpotOrderApi\Plugin\RikiShippingProvider\Model\Carrier" />
+    </type>
+
+</config>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="admin_user_authenticate_after">
+        <observer name="xtento_twofactorauth_admin_user_authenticate_after" instance="Xtento\TwoFactorAuth\Observer\AdminUserAuthenticateAfterObserver"/>
+    </event>
+    <event name="admin_user_save_after">
+        <observer name="xtento_twofactorauth_admin_user_save_after" instance="Xtento\TwoFactorAuth\Observer\AdminUserSaveAfterObserver" />
+    </event>
+</config>
+<!--
+/**
+ * Product:       Xtento_TwoFactorAuth (2.1.5)
+ * ID:            %!uniqueid!%
+ * Packaged:      %!packaged!%
+ * Last Modified: 2017-08-17T20:34:31+00:00
+ * File:          etc/adminhtml/events.xml
+ * Copyright:     Copyright (c) 2017 XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

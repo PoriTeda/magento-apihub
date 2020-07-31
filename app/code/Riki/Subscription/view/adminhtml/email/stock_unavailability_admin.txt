@@ -1,0 +1,5 @@
+＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋
+List of product out of stock.
+
+{{layout handle="profile_product_unavailability" product=$product area="adminhtml" }}
+EMAIL-FOOTER

@@ -1,0 +1,14 @@
+# Copyright © Magento, Inc. All rights reserved.
+# See COPYING.txt for license details.
+
+interface ProductInterface {
+    is_returnable: String @doc(description: "Indicates whether the product can be returned")
+}
+
+input ProductFilterInput {
+    is_returnable: FilterTypeInput @doc(description: "Indicates whether the product can be returned")
+}
+
+input ProductSortInput {
+    is_returnable: SortEnum @doc(description: "Indicates whether the product can be returned")
+}

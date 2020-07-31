@@ -1,0 +1,70 @@
+<?php
+/**
+ * @var $block \Riki\Preorder\Block\Adminhtml\Product\Edit\Tab\Inventory\PreOrderJs
+ */
+?>
+<script type="text/javascript">
+    require([
+            'jquery'
+        ],
+        function($) {
+
+            var preorderId = <?=$block->getPreorderId();?>;
+            var $preorderTab = $('div.fieldset-wrapper[data-index="riki_preorder_fieldset"]');
+
+            if($('[name="product[stock_data][backorders]"]').val() != preorderId){
+                $preorderTab.hide();
+                pre_order_validate_field(false);
+            }else{
+                pre_order_validate_field(true);
+            }
+
+            $('[name="product[stock_data][backorders]"]').first().change(function() {
+                if(this.value == preorderId) {
+                    $preorderTab.show();
+                    pre_order_validate_field(true);
+                } else {
+                    $preorderTab.hide();
+                    pre_order_validate_field(false);
+                }
+            });
+
+            if( $('[name="product[inventory][multistock]"]').length > 0 )
+            {
+                if($('[name="product[inventory][multistock]"]').first().val() == 1){
+                    pre_order_validate_field(false);
+                    $('fieldset[data-index="container_backorders"]').hide();
+                }else{
+                    if($('[name="product[inventory][multistock]"]').first().val() == 0){
+                        $('fieldset[data-index="container_backorders"]').show();
+                        $('div.fieldset-wrapper[data-index="wyomind_advanced_inventory"]').find('div.admin__field[data-index!="inventory][multistock"]').hide();
+                    }
+                    $('[name="product[stock_data][backorders]"]').trigger("change");
+                }
+
+                $('[name="product[inventory][multistock]"]').first().change(function(){
+                    if(this.value == 1) {
+                        $preorderTab.hide();
+                        $('fieldset[data-index="container_backorders"]').hide();
+                        $('div.fieldset-wrapper[data-index="wyomind_advanced_inventory"]').find('div.admin__field[data-index!="inventory][multistock"]').show();
+                        pre_order_validate_field(false);
+                    } else {
+                        $('fieldset[data-index="container_backorders"]').show();
+                        $('div.fieldset-wrapper[data-index="wyomind_advanced_inventory"]').find('div.admin__field[data-index!="inventory][multistock"]').hide();
+                        $('[name="product[stock_data][backorders]"]').trigger("change");
+                    }
+                });
+            }
+
+            function pre_order_validate_field( validate ){
+                if( validate == true ){
+                    $('[name="product[fulfilment_date]"]').addClass('required-entry');
+                    $('[name="product[fulfilment_date]"]').parents('.admin__field').addClass('required _required');
+                }else{
+                    $('[name="product[fulfilment_date]"]').removeClass('required-entry');
+                    $('[name="product[fulfilment_date]"]').parents('.admin__field').removeClass('required _required');
+                }
+            }
+        }
+    );
+</script>

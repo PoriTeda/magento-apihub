@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+   * Copyright © Magento, Inc. All rights reserved.
+   * See COPYING.txt for license details.
+   */
+-->
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="AdminScheduledChangesSection">
+        <element name="scheduleStartDate" type="text" selector="//tr['schedule-start']//time[text()='{{var1}}']" parameterized="true"/>
+        <element name="scheduleEndDate" type="text" selector="//tr['schedule-end']//time[text()='{{var1}}']" parameterized="true"/>
+        <element name="scheduleStartTime" type="text" selector="//tr['schedule-start']//td['schedule-time']//time[text()='{{var1}}']" parameterized="true"/>
+        <element name="scheduleEndTime" type="text" selector="//tr['schedule-end']//td['schedule-time']//time[text()='{{var1}}']" parameterized="true"/>
+        <element name="scheduleLabel" type="text" selector="//tr['schedule-start']//td[text()='{{dateOrTime}}']" parameterized="true"/>
+        <element name="scheduleDetails" type="text" selector="//tr['schedule-start']//div[text()='{{scheduleName}}']" parameterized="true"/>
+        <element name="scheduleActions" type="button" selector="//tbody['schedule-item']//td['schedule-details']//div[text()='{{var1}}']/parent::div/parent::td/parent::tr/td['schedule-actions']//a[text()='{{var2}}']" parameterized="true" timeout="20"/>
+    </section>
+</sections>

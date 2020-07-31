@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <paygent>
+                <debug>1</debug>
+                <active>0</active>
+                <model>Bluecom\Paygent\Model\Paygent</model>
+                <title>Credit Card With Paygent</title>
+                <payment_action>order</payment_action>
+                <merchant_id>34579</merchant_id>
+                <connect_id>test34579</connect_id>
+                <connect_password>98TK7V64IEDFD8I</connect_password>
+                <hash_key>yAfH0C7PR4</hash_key>
+                <use_cvv>1</use_cvv>
+                <use_3dsecure>0</use_3dsecure>
+                <!--<use_stock_card>0</use_stock_card>-->
+                <paymentclass>0</paymentclass>
+                <use_http_inform>1</use_http_inform>
+                <connect_url>https://sandbox.paygent.co.jp/v/u/request</connect_url>
+                <test_connect_url>https://sandbox.paygent.co.jp/v/u/request</test_connect_url>
+                <telegram_version>1.0</telegram_version>
+                <sandbox_flag>1</sandbox_flag>
+                <sort_order>99</sort_order>
+            </paygent>
+        </payment>
+        <paygent_config>
+            <generalconfig>
+                <active>0</active>
+                <active_send_email>1</active_send_email>
+                <cancellation_exp>0 12 * * *</cancellation_exp>
+                <cancelhours>36</cancelhours>
+            </generalconfig>
+            <ivr>
+                <active>1</active>
+                <registration_request>https://dhkdemo.spv.jp/nestle/payment/regist</registration_request>
+                <request_data>https://dhkdemo.spv.jp/nestle/payment/result</request_data>
+                <cron_exp>*/5 * * * *</cron_exp>
+            </ivr>
+            <authorisation>
+                <cron_exp>0 0 * * *</cron_exp>
+                <active>1</active>
+                <afterdays>45</afterdays>
+                <afterdays_preorder>3</afterdays_preorder>
+                <afterdays_again>7</afterdays_again>
+            </authorisation>
+            <delete_fail>
+                <cron_exp>15 0 * * *</cron_exp>
+                <active>1</active>
+            </delete_fail>
+            <refund>
+                <email_enable>1</email_enable>
+                <identity>sales</identity>
+                <email_emplate></email_emplate>
+            </refund>
+            <refund>
+                <email_enable>1</email_enable>
+                <identity>sales</identity>
+                <email_emplate></email_emplate>
+            </refund>
+        </paygent_config>
+    </default>
+</config>

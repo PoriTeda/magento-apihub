@@ -1,0 +1,31 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Create account form template
+ *
+ * @see \Magento\CustomerCustomAttributes\Block\Form
+ */
+/* @var $block \Magento\CustomerCustomAttributes\Block\Form */
+?>
+<?php if ($block->hasUserDefinedAttributes()): ?>
+    <?php if ($block->isShowContainer()): ?>
+    <fieldset class="fieldset">
+    <?php endif;?>
+    <?php foreach ($block->getUserDefinedAttributes() as $attribute):?>
+        <?php $attributeContent = $block->getAttributeHtml($attribute);?>
+        <?php if ($attributeContent): ?>
+            <?= /* @escapeNotVerified */ $attributeContent ?>
+        <?php endif;?>
+    <?php endforeach;?>
+    <?php if ($block->isShowContainer()): ?>
+    </fieldset>
+    <?php endif;?>
+<?php endif; ?>

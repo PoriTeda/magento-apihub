@@ -1,0 +1,335 @@
+<?php
+    /* @var $block Riki\Subscription\Block\Frontend\Profile\EditHanpukai */
+    $courseSettings = $block->getCourseSetting();
+    if (array_key_exists('is_allow_change_payment_method', $courseSettings)) {
+        $isAllowChangePaymentMethod = $courseSettings['is_allow_change_payment_method'];
+    } else {
+        $isAllowChangePaymentMethod = false;
+    }
+    $profileModel = $block->loadCurrentProfileModel();
+    $arrPaymentMethod = $block->getListPaymentMethod();
+    $isBtnUpdateAllChangesPressed = false;
+    $profileId = $block->getProfileId();
+    $lastUsedCC = $block->getCcLastUsedDate($profileModel->getData('customer_id'));
+    $profileTypeInSession = 'type_2'; // Default
+    $isDisableInScope = false;
+    $htmlListCouponApplied = $block->getHtmlListCouponApplied($profileModel);
+?>
+<script>
+    var FORM_KEY = FORM_KEY || '<?php /* @escapeNotVerified */ echo $this->getLayout()->createBlock("Magento\Framework\View\Element\FormKey")->getFormKey() ?>';
+</script>
+
+<form action="<?php /* @escapeNotVerified */ echo $block->getUrl('*/*/confirmEditHanpukai'); ?>"
+      method="post"
+      id="form-submit-profile"
+      class="form form-giftregistry-edit validation"
+      data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>"
+      data-mage-init='{"validation":{}}'
+    >
+    <?php echo $block->getBlockHtml('formkey')?>
+    <input type="hidden" name="profile_id" id="profile_id" value="<?php /* @escapeNotVerified */ echo $profileId; ?>" />
+    <input type="hidden" name="save_profile" id="save_profile"/>
+    <!-- Payment Method -->
+    <fieldset class="fieldset panel">
+
+        <div class="label">
+            <h4><?php echo __("Payment method")  ?></h4>
+        </div>
+        <div class="payment-method-block">
+            <table class="payment-method required">
+                <?php
+                $pmDisabled =  $isAllowChangePaymentMethod ? "" : "disabled";
+                $currentPaymentMethod = $profileModel->getData("payment_method");
+                $isCheckedNewPaygent = $profileModel->getData("new_paygent");
+                ?>
+                <?php foreach($arrPaymentMethod as $_arrPInfo){ ?>
+
+                    <!-- make radio payment button-->
+                    <?php if ($_arrPInfo['value'] != 'paygent') { ?>
+                        <tr>
+                            <td>
+                                <input <?php if($isBtnUpdateAllChangesPressed) {echo 'disabled';} ?>
+                                    type="radio" id="payment_<?php echo $_arrPInfo['value']  ?>"
+                                    name="payment_method" <?php echo $currentPaymentMethod == $_arrPInfo['value'] ? 'checked' :''  ?>
+                                    value="<?php echo $_arrPInfo['value']  ?>" <?php echo $pmDisabled ?>
+                                    <?php echo (isset($_arrPInfo['disabled']) and $_arrPInfo['disabled'])?'disabled':''; ?>
+                                    class="radio"
+                                    />
+                                <label for="payment_<?php echo $_arrPInfo['value']  ?>">
+                                    <?php echo __($_arrPInfo['label']); ?>
+                                </label>
+                            </td>
+                            <td>
+                                <?php if($_arrPInfo['value'] == 'cashondelivery') { ?>
+                                    <div data-bind="i18n: 'About COD handling fees'"></div>
+                                    <div><?php echo __('A per-shipment collection handling fee of %1 yen (tax included) applies to all COD orders.', isset($_arrPInfo['params']['price']) ? floatval($_arrPInfo['params']['price']) : 0) ?></div>
+                                    <div data-bind="i18n: 'There are some items that COD handling fee is free'"></div>
+                                <?php } elseif($_arrPInfo['value'] == 'cvspayment'){ ?>
+                                    <div class="cvspayment-mess-left">
+                                        <div data-bind="i18n: 'We send you a transfer form before shipping out your order. Please pay at convenience store within the period.'"></div>
+                                        <div data-bind="i18n: 'The transfer form will be delivered after 4 days from order complete.'"></div>
+                                        <div data-bind="i18n: 'The due date will be 10 days after issuing date.'"></div>
+                                        <div data-bind="i18n: 'Also, please make sure to finish your payment in 30 days, otherwise your order will be cancelled.'"></div>
+                                    </div>
+                                    <div class="cvspayment-mess-right">
+                                        <img alt="cvs-payment-form" src="<?php echo $block->getViewFileUrl('images/cvs-payment-form.jpg') ?>" />
+                                    </div>
+                                <?php } elseif ($_arrPInfo['value'] == 'npatobarai') { ?>
+                                    <a href="http://www.np-atobarai.jp/about/" target="_blank">
+                                        <img src="<?= $block->getViewFileUrl('images/np_atobarai_payment.png') ?>" alt="Np Atobarai Payment">
+                                    </a><br />
+                                    <span data-bind="i18n: 'Details of this payment method'"></span><br>
+                                    <div data-bind="i18n: 'After confirming the arrival of the product, at \'Convenience Store\' \'Post Office\' \'Bank\' \'LINE Pay\''"></div>
+                                    <div data-bind="i18n: 'This is a simple and easy way to pay later. Invoice is separate from the product'"></div>
+                                    <div data-bind="i18n: 'Payment will be made within 14 days after issuance.'"></div><br>
+                                    <span data-bind="i18n: 'please note'"></span><br>
+                                    <span data-bind="i18n: 'Postpay fee:'"></span> <span data-bind="style: { 'color': 'red', 'font-weight': 'bold' }"><?= $block->formatCurrency($_arrPInfo['params']['price'])  ?></span><br>
+                                    <span data-bind="i18n: 'For postpay orders,'"></span><a href="https://www.netprotections.com/" target="_blank"><span data-bind="i18n: 'Net Protections Inc.'"></span></a><span data-bind="i18n: 'Provided by'"></span><br>
+                                    <div data-bind="i18n: 'NP postpaid service is applied, providing personal information within the scope of the service,'"></div>
+                                    <div>
+                                        <span data-bind="i18n: 'Transfer the price receivable.'"></span><span data-bind="i18n: 'The maximum usage limit is 55,000 yen (tax included).', style: { 'color': 'red' } "></span>
+                                    </div>
+                                    <div data-bind="i18n: 'Click on the banner for details.'"></div>
+                                    <div data-bind="i18n: 'If you are a minor, please use it with the consent of a legal representative.'"></div>
+                                <?php } else { ?>
+                                    <?php if ($_arrPInfo['value'] != 'paygent') { ?>
+                                        <?php echo __("Surcharge Fee");  ?>: <?php echo $block->formatCurrency($_arrPInfo['params']['price']); ?>
+                                    <?php } ?>
+                                <?php } ?>
+                                <?php if($_arrPInfo['value'] == 'paygent' ):?>
+                                    <?php if($block->getAppState()->getAreaCode() === "adminhtml"): ?>
+                                        <?php $tradingId = $block->getEntity()->getData('trading_id'); ?>
+                                        <p class="credit-method">
+                                            <input type="radio" name="new_paygent" id="previous_card" value="0"
+                                                <?php
+                                                echo $currentPaymentMethod != 'paygent' || $tradingId == NULL ? '' : 'checked';
+                                                echo $pmDisabled;
+                                                echo (isset($_arrPInfo['disabled']) and $_arrPInfo['disabled'])?' disabled':'';
+                                                echo $tradingId != NULL ? '' : ' disabled';
+                                                echo $isBtnUpdateAllChangesPressed ? ' disabled':'';
+                                                ?>/>
+                                            <label for="previous_card"><?php echo __('Use previous credit card') ?></label>
+                                        </p>
+                                        <p class="credit-method">
+                                            <input type="radio" name="new_paygent" id="new_paygent" value="1"
+                                                <?php
+                                                echo $isCheckedNewPaygent && $tradingId == NULL ? 'checked' : '';
+                                                echo $pmDisabled;
+                                                echo (isset($_arrPInfo['disabled']) and $_arrPInfo['disabled']) ? ' disabled':'';
+                                                echo $isBtnUpdateAllChangesPressed ? ' disabled':'';
+                                                ?>/>
+
+                                            <label for="new_paygent"><?php echo __('Use new credit card (Trigger IVR)') ?></label>
+
+                                            <?php if ($isBtnUpdateAllChangesPressed && $isCheckedNewPaygent):?>
+                                                &nbsp;
+                                                <?php if ($tradingId): ?>
+                                                    <button id="get_update" class="action-scalable primary"
+                                                            onclick="IvrManager.getUpdateIvr('<?php echo $block->getUrl("subscription/paygent/getupdate", ["id" => $profile_id]); ?>', '<?php echo $profile_id; ?>'); return false;">
+                                                        <?php echo __('Update IVR')?>
+                                                    </button>&nbsp;
+                                                    <span class="result-data"><?php echo __('IVR Transaction Id : ') . $tradingId ?></span>
+                                                <?php else: ?>
+                                                    <button id="connect_to_ivr" class="action-scalable primary connectIVR"
+                                                            onclick="IvrManager.connectToIvr('<?php echo $block->getUrl("subscription/paygent/ivr", ["id" => $profile_id]); ?>', '<?php echo $profile_id; ?>'); return false;">
+                                                        <?php echo __('Connect to IVR')?>
+                                                    </button>&nbsp;
+                                                    <button id="get_update" style="display:none;" class="action-scalable primary"
+                                                            onclick="IvrManager.getUpdateIvr('<?php echo $block->getUrl("subscription/paygent/getupdate", ["id" => $profile_id]); ?>', '<?php echo $profile_id; ?>'); return false;">
+                                                        <?php echo __('Update IVR')?>
+                                                    </button>
+                                                    <span id="transaction_ivr" style="display:none">
+                                                <?php echo __('Register successful , IVR Transaction Id : ')?> <span id="response_detail"></span>
+                                            </span>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                        </p>
+                                        <p><img src="<?php echo $block->getViewFileUrl('images/credit_card_method.png'); ?>" alt=" Image Card Method"></p>
+                                        <script>
+                                            require(
+                                                [
+                                                    'jquery'
+                                                ],
+                                                function( $ ) {
+                                                    var $paygent = $('#payment_paygent'),
+                                                        $paygentCard = $('#previous_card'),
+                                                        $paymentIVR = $('#new_paygent');
+
+                                                    $('#payment_cashondelivery, #payment_npatobarai').on('click', function() {
+                                                        $paygentCard.prop('checked', false);
+                                                        $paymentIVR.prop('checked', false);
+                                                    });
+                                                    $paygent.on('click', function() {
+                                                        $('input[name="new_paygent"]:not(:disabled):first').prop('checked', true);
+                                                    });
+                                                    $paygentCard.add($paymentIVR).on('click', function() {
+                                                        $paygent.prop('checked', true);
+                                                    });
+                                                }
+                                            );
+                                        </script>
+                                    <?php else: ?>
+
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php } else { ?>
+                        <!-- show last case used -->
+                        <?php if ($lastUsedCC != false || $currentPaymentMethod == $_arrPInfo['value']) { ?>
+                            <tr>
+                                <td>
+                                    <input <?php if($isBtnUpdateAllChangesPressed) {echo 'disabled';} ?>
+                                        type="radio" id="payment_<?php echo $_arrPInfo['value']  ?>"
+                                        name="payment_method" <?php echo $currentPaymentMethod == $_arrPInfo['value'] ? 'checked' :''  ?>
+                                        value="<?php echo $_arrPInfo['value']  ?>" <?php echo $pmDisabled ?>
+                                        <?php echo (isset($_arrPInfo['disabled']) and $_arrPInfo['disabled'])?'disabled':''; ?>
+                                        class="radio"
+                                        />
+                                    <label for="payment_<?php echo $_arrPInfo['value']  ?>">
+                                        <?php echo __($block->getSystemConfig('payment/paygent/title')); ?>
+                                        <?php echo __('(used before)'); ?>
+                                    </label>
+                                </td>
+                                <td>
+                                    <?php echo __('前回使用したクレジットカードでお支払いの方はこちら'); ?> <br />
+                                    <?php echo __('ご利用日時：').$lastUsedCC ;?> <br />
+                                    <?php echo __('有効期限切れ等でクレジット情報を変更する場合は、[クレジット支払]を選択してください
+'); ?>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                        <!-- show new paygent card -->
+                        <tr>
+                            <td>
+                                <input <?php if($isBtnUpdateAllChangesPressed) {echo 'disabled';} ?>
+                                    type="radio" id="payment_new_paygent"
+                                    name="payment_method" <?php echo ($currentPaymentMethod == 'new_paygent') ? 'checked' :''  ?>
+                                    value="new_paygent" <?php echo $pmDisabled ?>
+                                    <?php echo (isset($_arrPInfo['disabled']) and $_arrPInfo['disabled'])?'disabled':''; ?>
+                                    class="radio"
+                                    />
+                                <label for="payment_new_paygent">
+                                    <?php echo __($block->getSystemConfig('payment/paygent/title')); ?>
+                                </label>
+                            </td>
+                            <td>
+                                <p class="method-notice"><?php echo __('Please enter card information from the Go to Enter Card Information on the next page') ?></p>
+                                <p><img src="<?php echo $block->getViewFileUrl('images/credit_card_method.png'); ?>" alt=" Image Card Method"></p>
+                                <div><?php echo __('Points to remember about credit card with debit function'); ?></div>
+                                <div><?php echo __('Credit card with debit function will be withdrawn when card information is entered.~'); ?></div>
+                            </td>
+                        </tr>
+                        <!-- end show new paygent card -->
+                    <?php } ?>
+                    <!-- end make radio payment button -->
+                <?php } ?> <!-- end foreach payment method -->
+            </table>
+        </div>
+    </fieldset>
+    <!-- End Payment Method -->
+
+    <!-- Coupon code area -->
+    <div class="subscription-profile-discount" data-bind="scope: 'couponCode'">
+        <div class="block discount" id="block-discount">
+            <div class="content">
+                <div <?php echo ($htmlListCouponApplied!=null) ? ' style="display:none; "' : ""; ?> id="showHidenCouponInput" class="fieldset coupon">
+                    <div class="field">
+                        <label for="coupon_code" class="label"><span><?php echo __('Coupon use') ?></span></label>
+                        <div class="control">
+                            <input type="text" class="input-text" data-bind="event: {keypress: checkKeyPress}"  id="coupon_code_fake" name="coupon_code_fake"  placeholder="<?php echo $block->escapeHtml(__('Enter your code'));?>" />
+                        </div>
+                        <div id="messageAppliedCouponError"></div>
+                    </div>
+                    <div class="actions-toolbar-coupon">
+                        <div class="primary">
+                            <button data-bind="click: function() {applyCoupon('<?php echo  $block->getProfileId(); ?>')}" class="action apply primary applyCoupon" type="button" value="<?php echo __('Apply Coupon') ?>">
+                                <span><?php echo __('Apply Coupon') ?></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <?php /** Applied coupon area */ ?>
+                <div id="listCouponApplied"><?php echo $htmlListCouponApplied; ?></div>
+                <div id="messageAppliedCouponSuccess"></div>
+            </div>
+        </div>
+    </div>
+    <script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "couponCode": {
+                        "component": "Riki_Subscription/js/view/couponCodeHanpukai"
+                    }
+                }
+            }
+        }
+    }
+    </script>
+
+    <!-- Change delivery type -->
+    <fieldset class="fieldset panel change-delivery-option no-display">
+        <div class="delivery-option">
+            <ul class="control">
+                <li class="item">
+                    <input type="radio" name="profile_type" id="change_profile_type_2" value="type_2" checked class="input-text radio" <?php echo $isDisableInScope ? 'disabled' : '' ?> />
+                </li>
+            </ul>
+        </div>
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="check-offset"></div>
+        <div class="actions-toolbar-floating">
+            <div class="action-left">
+                <a class="tracking_floating_button" data-action-event="Edit Subscription Profile Pages - Floating Buttons" data-title="<?php echo __('前に戻る | Go Back to Previous Page') ?>" href="#" onclick="window.history.go(-1); return false;"><span><?php echo __('Go back') ?></span></a>
+            </div>
+            <div class="secondary enter-coupon-container">
+                <a data-action-event="Edit Subscription Profile Pages - Floating Buttons"  data-title="<?php echo __('クーポンを利用する | Use Coupon') ?>" href="#" class="tracking_floating_button_coupon enter-coupon" title="<?php echo __("Enter Coupon") ?>">
+                    <span><?php echo __("Enter Coupon") ?></span>
+                </a>
+            </div>
+            <div class="total-amount-block"></div>
+            <div class="action-right">
+                <button onclick="return submitForm(this , 'form-submit-profile');"   class="flat-button yellow-subs" id="confirm.change">
+                    <span><?php /* @escapeNotVerified */ echo __('Proceed to the next') ?></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    require(
+        ['jquery'], function ($) {
+            window.changeProgressBar = function(payment) {
+                if(payment == 'new_paygent') {
+                    $('.purchase-process-bar.has-no-new-paygent').hide();
+                    $('.purchase-process-bar.has-new-paygent').show();
+                }else {
+                    $('.purchase-process-bar.has-no-new-paygent').show();
+                    $('.purchase-process-bar.has-new-paygent').hide();
+                }
+            };
+            <?php if($currentPaymentMethod == 'new_paygent'): ?>
+            changeProgressBar('new_paygent');
+            <?php endif; ?>
+            $('input[name="payment_method"]').on('change', function () {
+                changeProgressBar($(this).val());
+            })
+        });
+</script>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Catalog/js/unsticky-cart": {}
+        }
+    }
+</script>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Riki_Subscription/js/focus-content": {}
+        }
+    }
+</script>

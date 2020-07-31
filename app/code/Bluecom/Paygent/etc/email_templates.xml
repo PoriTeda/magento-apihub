@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="paygent_config_refund_email_template" label="Paygent Refund Failure" file="refund_fail.html" type="html" module="Bluecom_Paygent" area="frontend"/>
+    <template id="paygent_config_paygent_fail_template" label="Paygent Authorize or Capture Failure" file="failure.txt" type="text" module="Bluecom_Paygent" area="frontend"/>
+    <template id="paygent_config_authorisation_template" label="Paygent Re-Authorize Failure" file="re-auth-failure.txt" type="text" module="Bluecom_Paygent" area="frontend"/>
+    <template id="paygent_config_authorisation_template_subscription" label="Paygent Re-Authorize Failure" file="re-auth-failure.txt" type="text" module="Bluecom_Paygent" area="frontend"/>
+    <template id="paygent_config_authorisation_template_business" label="Paygent Re-Authorize Failure Business" file="re-auth-failure-business.txt" type="text" module="Bluecom_Paygent" area="frontend"/>
+    <template id="paygent_config_generalconfig_template_pending_payment" label="Cancel Pending CC" file="cancel-pending-cc.txt" type="text" module="Bluecom_Paygent" area="frontend"/>
+</config>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" layout="1column">
+    <head>
+        <script src="Riki_Subscription::js/edit/edit_profile.js"/>
+    </head>
+    <body>
+        <referenceContainer name="main.content">
+            <block class="Riki\Customer\Block\Account\Info" name="riki.customer.account.quicklink" template="Magento_Customer::html/quicklink.phtml" before="-"/>
+            <block class="Riki\Subscription\Block\Html\Title" name="page.main.title" template="html/title.phtml" after="riki.customer.account.quicklink">
+                <action method="setPageTitle">
+                    <argument translate="true" name="title" xsi:type="string">Subscription Course Change</argument>
+                </action>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Riki\Subscription\Block\Frontend\Profile\ConfirmSpotProduct" name="subscription_confirm_spot_product" template="subscription-profile-confirm-spot-product.phtml" cacheable="false">
+            </block>
+        </referenceContainer>
+    </body>
+</page>

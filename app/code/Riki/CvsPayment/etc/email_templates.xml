@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="riki_cvspayment_cancel_order_email_log" label="Riki CvsPayment - Cancel Order Log" file="cancel_order.html" type="text" module="Riki_CvsPayment" area="frontend"/>
+</config>

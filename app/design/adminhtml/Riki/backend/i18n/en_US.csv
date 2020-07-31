@@ -1,0 +1,3 @@
+"Ongoing","Active",
+"COMPLETE_STOCKPOINT","COMPLETE"
+"Are you sure you want to cancel this processing order?","This order is in processing.<br/>Contact to the manager to stop transfering to warehouse, and you try to cancel this order again if it is OK to stop this shipping.<br/>In addition, you can NOT cancel for LOHACO order if this order status is ""IN_PROCESSING""."

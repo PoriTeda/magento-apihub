@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Riki\MessageQueue\Api\FailureItemInterface" type="Riki\MessageQueue\Model\FailureItem"/>
+    <preference for="Magento\Framework\MessageQueue\CallbackInvoker" type="Riki\MessageQueue\CallbackInvoker"/>
+    <preference for="Magento\Framework\Amqp\Queue" type="Riki\MessageQueue\Queue"/>
+
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="flagQueueCommand" xsi:type="object">Riki\MessageQueue\Command\FlagQueueCommand</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\MessageQueue\Consumer">
+        <plugin name="forceRunningMode" type="Riki\MessageQueue\Plugin\ForceQueueRunningMode" sortOrder="1"
+                disabled="false"/>
+    </type>
+    <type name="Riki\AdvancedInventory\Model\Queue\Consumer">
+        <plugin name="forceRunningModeForCustomConsumer" type="Riki\MessageQueue\Plugin\ForceQueueRunningMode" sortOrder="1"
+                disabled="false"/>
+    </type>
+    <type name="Magento\Framework\MessageQueue\BatchConsumer">
+        <plugin name="forceRunningModeForBatch" type="Riki\MessageQueue\Plugin\ForceQueueRunningMode" sortOrder="1"
+                disabled="false"/>
+    </type>
+    <type name="Magento\AsynchronousOperations\Model\MassConsumer">
+        <plugin name="forceRunningModeForMass" type="Riki\MessageQueue\Plugin\ForceQueueRunningMode" sortOrder="1"
+                disabled="false"/>
+    </type>
+    <type name="Riki\Sales\Model\CaptureOrder\ConsumerExecutor\OrderCaptureConsumer">
+        <plugin name="forceRunningModeForOrderCapture" type="Riki\MessageQueue\Plugin\ForceQueueRunningMode" sortOrder="1"
+                disabled="false"/>
+    </type>
+    <type name="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer">
+        <plugin name="forceRunningModeForReindexProfile" type="Riki\MessageQueue\Plugin\ForceQueueRunningMode" sortOrder="1"
+                disabled="false"/>
+    </type>
+</config>

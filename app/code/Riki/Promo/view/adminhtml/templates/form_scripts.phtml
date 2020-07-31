@@ -1,0 +1,17 @@
+<script>
+    require([
+        'jquery',
+        'Amasty_Promo/js/form',
+        'domReady!'
+    ], function($, form) {
+        form.update();
+
+        $('#rule_simple_action').change(function(){
+            form.update();
+        });
+
+        $('#rule_ampromo_type').change(function(){
+            form.update();
+        });
+    });
+</script>

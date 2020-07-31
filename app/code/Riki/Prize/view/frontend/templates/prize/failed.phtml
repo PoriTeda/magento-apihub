@@ -1,0 +1,2 @@
+<?php /** @var \Riki\Prize\Block\Prize\Failed $block */ ?>
+<?php foreach ($block->getPrizes() as $prize): ?><?php echo __('Product Sku: %1', $prize->getData('sku')) ?>, <?php echo __('Winning date: %1', $prize->getData('winning_date')) ?>, <?php echo __('Consumer DB code: %1', $prize->getData('consumer_db_id')) ?>, <?php echo __('We are out of stock.') . "\n" ?><?php endforeach; ?>

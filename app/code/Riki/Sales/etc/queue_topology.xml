@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
+    <exchange name="magento" type="topic" connection="amqp">
+        <binding id="rikiSalesOrderCapture" topic="sales.order.capture" destinationType="queue" destination="sales_order_capture_queue" />
+    </exchange>
+</config>

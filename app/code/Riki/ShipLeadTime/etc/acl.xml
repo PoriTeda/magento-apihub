@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Riki_ShipLeadTime::config_shipleadtime" title="Manage Shipping Lead Time" sortOrder="200" >
+                                <resource id="Riki_ShipLeadTime::shipleadtime_view" title="Shipping Lead Time View" sortOrder="201" />
+                                <resource id="Riki_ShipLeadTime::shipleadtime_edit" title="Shipping Lead Time Edit" sortOrder="202" />
+                                <resource id="Riki_ShipLeadTime::shipleadtime_add_new" title="Shipping Lead Time Add New" sortOrder="203" />
+                            </resource>
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

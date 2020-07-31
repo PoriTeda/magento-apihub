@@ -1,0 +1,41 @@
+<?php /** @var \Riki\SubscriptionPage\Block\SubscriptionView $block */
+
+?>
+<input type="hidden" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[product_id]' ?>" value="<?php echo $product->getId(); ?>">
+<div class="product-item-name">
+    <span  <?php if ($block->isHanpukai()): ?> style="margin-bottom: 10px;" <?php endif; ?>><?php echo mb_strimwidth(trim($product->getName()), 0, 70, "..."); ?></span>
+    <?php if (!$block->isHanpukai()): ?>
+        <div class="notification-qty <?php echo $classMessage;?>">
+            <span><?php echo $textMessage;?></span>
+        </div>
+    <?php endif; ?>
+</div>
+
+<?php if($block->getProductType($product) == 'configurable'): ?>
+    <input type="hidden" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[product_type]' ?>" value="<?php echo $block->getProductType($product); ?>">
+    <div class="swatch-opt<?php echo $product->getId() ?>"></div>
+    <script type="text/javascript">
+        require(["jquery", "jquery/ui", "Riki_SubscriptionPage/js/SwatchRendererCustom"], function ($) {
+            $('.swatch-opt<?php echo $product->getId() ?>').SwatchRenderer({
+                jsonConfig: <?php /* @escapeNotVerified */ echo $swatchOptions = $block->getJsonConfig($product)->getJsonConfig(); ?>,
+                jsonSwatchConfig: <?php /* @escapeNotVerified */ echo $swatchOptions = $block->getJsonConfig($product)->getJsonSwatchConfig(); ?>,
+                selectorProduct: '.subscription-info-price<?php echo $product->getId() ?>',
+                productId: <?php echo $product->getId() ?>
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        require([
+            'jquery',
+            'Magento_Catalog/js/price-box'
+        ], function ($) {
+            var priceBoxes<?php echo $product->getId() ?> = $('.subscription-info-price<?php echo $product->getId() ?> .price-box');
+            priceBoxes<?php echo $product->getId() ?>.priceBox({'priceConfig': <?php /* @escapeNotVerified */ echo $block->getJsonPriceConfig($product)->getJsonConfig() ?>});
+        });
+    </script>
+    <?php $block->deleteRegister('product'); endif; ?>
+<?php if($block->getProductType($product) == 'bundle'): ?>
+    <input type="hidden" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[product_type]' ?>" value="<?php echo $block->getProductType($product); ?>">
+    <div class="no-display"><?php echo $block->getLayout()->getBlock('product.info.bundle.options')->setProduct($product)->setCategoryId($categoryId)->toHtml() ?></div>
+
+<?php endif; ?>

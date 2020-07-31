@@ -1,0 +1,19 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/**
+ * @see \Magento\Reward\Block\Customer\Reward
+ */
+?>
+<?= $block->getChildHtml('', true) ?>
+<div class="actions-toolbar">
+    <div class="secondary">
+        <a class="action back" href="<?= $block->escapeUrl($block->getBackUrl()) ?>">
+            <span><?= /* @escapeNotVerified */ __('Back') ?></span>
+        </a>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @package Amasty_Coupons
+ */
+-->
+<!--
+/**
+ * Copyright © 2015 Amasty. All rights reserved.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="checkout.cart.coupon" remove="true"/>
+        <block class="Amasty\Coupons\Block\Coupon" name="checkout.cart.coupon2" as="coupon2" template="coupon.phtml"/>
+        <move element="checkout.cart.coupon2" destination="cart.summary" after="cart.summary"/>
+    </body>
+</page>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="AdminCreateCustomerNewAttribute">
+        <arguments>
+            <argument name="defaultLabel" type="string"/>
+            <argument name="attributeCode" type="string"/>
+            <argument name="inputType" type="string" defaultValue="TextField"/>
+            <argument name="values" type="string" defaultValue="Yes"/>
+            <argument name="sortOrder" type="string" defaultValue="0"/>
+            <argument name="formToUse" type="string" defaultValue="Customer Account Address"/>
+            <argument name="formToUse1" type="string" defaultValue="Customer Address Registration"/>
+            <argument name="message" type="string" defaultValue="You saved the customer address attribute."/>
+        </arguments>
+        <click selector="{{CustomerAccountSection.newAttribute}}" stepKey="clickToCreateAttribute"/>
+        <waitForPageLoad stepKey="waitForNewAttributePageLoaded"/>
+        <fillField selector="{{CustomerAccountSection.label}}" userInput="{{defaultLabel}}" stepKey="TypeDefaultLabel"/>
+        <fillField selector="{{CustomerAccountSection.code}}" userInput="{{attributeCode}}" stepKey="TypeAttributeCode"/>
+        <selectOption selector="{{CustomerAccountSection.inputType}}" userInput="{{inputType}}" stepKey="selectInputType"/>
+        <selectOption selector="{{CustomerAccountSection.valuesRequired}}" userInput="No" stepKey="setValuesRequired" />
+        <selectOption selector="{{CustomerAccountSection.showInSF}}" userInput="Yes" stepKey="setSFOption" />
+        <fillField selector="{{CustomerAccountSection.sortOrder}}" userInput="{{sortOrder}}" stepKey="TypeSortOrder"/>
+        <click selector="{{CustomerAccountSection.formToUse(formToUse)}}" stepKey="setFormsToUse"/>
+        <click selector="{{CustomerAccountSection.formToUse(formToUse1)}}" stepKey="setFormsToUse1"/>
+        <click selector="{{CustomerAccountSection.save}}" stepKey="saveAttribute"/>
+        <waitForPageLoad stepKey="WaitForAttributeSaved"/>
+        <waitForText userInput="{{message}}" stepKey="waitForAttributeCreated" time="30" />
+        <see userInput="{{message}}" stepKey="verifyAttributeCreated"/>
+    </actionGroup>
+
+    <actionGroup name="AdminCreateCustomerNewAttributeWithoutFormsSelected" extends="AdminCreateCustomerNewAttribute">
+        <remove keyForRemoval="setFormsToUse"/>
+        <remove keyForRemoval="setFormsToUse1"/>
+    </actionGroup>
+
+    <actionGroup name="AdminAddOptionsCustomerAttribute" extends="AdminCreateCustomerNewAttribute">
+        <arguments>
+            <argument name="firstOption" type="string"/>
+            <argument name="secondOption" type="string"/>
+        </arguments>
+        <!--Go to Manage Label / Options -->
+        <scrollTo selector="{{AdminCustomerAddressAttributeSection.pageHeader}}" stepKey="scrollToPageTitle" after="setFormsToUse1"/>
+        <waitForElementVisible selector="{{AdminCustomerAddressAttributeSection.options}}" stepKey="waitForOptionsBeVisible" after="scrollToPageTitle"/>
+        <click stepKey="clickToOptionsItem" selector="{{AdminCustomerAddressAttributeSection.options}}" after="waitForOptionsBeVisible"/>
+        <waitForPageLoad stepKey="waitForOptionsPageOpened" after="clickToOptionsItem"/>
+        <click stepKey="clickToAddOptions" selector="{{AdminCustomerAddressAttributeSection.addOptionsButton}}" after="waitForOptionsPageOpened"/>
+        <waitForElementVisible selector="{{AdminCustomerAddressAttributeSection.addOptionsField('0')}}" stepKey="waitForFirstOptionsBeVisible" after="clickToAddOptions"/>
+        <fillField stepKey="fillFirstOptionsName" userInput="{{firstOption}}" selector="{{AdminCustomerAddressAttributeSection.addOptionsField('0')}}" after="waitForFirstOptionsBeVisible"/>
+
+        <click stepKey="clickToAddSecondOptions" selector="{{AdminCustomerAddressAttributeSection.addOptionsButton}}" after="fillFirstOptionsName"/>
+        <waitForElementVisible selector="{{AdminCustomerAddressAttributeSection.addOptionsField('1')}}" stepKey="waitForSecondOptionsBeVisible" after="clickToAddSecondOptions"/>
+        <fillField stepKey="fillSecondOptionsName" userInput="{{secondOption}}" selector="{{AdminCustomerAddressAttributeSection.addOptionsField('1')}}" after="waitForSecondOptionsBeVisible"/>
+    </actionGroup>
+
+    <actionGroup name="AdminDeleteCustomerAttribute">
+        <arguments>
+            <argument name="defaultLabel" type="string"/>
+        </arguments>
+        <amOnPage url="{{CustomerAddressAttributesPage.url}}" stepKey="navigateToCustomerAddress"/>
+        <waitForPageLoad stepKey="waitForCustomerAttributePageLoaded"/>
+        <fillField selector="{{CustomerAccountSection.defaultLabel}}" userInput="{{defaultLabel}}" stepKey="TypeAttributeName"/>
+        <click selector="{{CustomerAccountSection.search}}" stepKey="clickToSearchButton"/>
+        <waitForPageLoad stepKey="waitForResult"/>
+        <click selector="{{AdminCustomerAddressAttributeSection.firstAttribute}}" stepKey="clickToSelectAttribute"/>
+        <waitForPageLoad stepKey="waitForAttributePageLoaded"/>
+        <click selector="{{CustomerAccountSection.delete}}" stepKey="ClickOnDeleteButton"/>
+        <waitForElementVisible selector="{{CustomerAccountSection.confirm}}" stepKey="waitForDialogVisible"/>
+        <click selector="{{CustomerAccountSection.confirm}}" stepKey="clickToConfirm"/>
+        <waitForPageLoad stepKey="waitAttributeDeleted"/>
+        <waitForElementVisible selector="{{CustomerAccountSection.reset}}" time="10" stepKey="waitForResetVisible"/>
+        <click selector="{{CustomerAccountSection.reset}}" stepKey="clickToResetFilters"/>
+        <waitForPageLoad stepKey="waitForFiltersReset" time="10"/>
+    </actionGroup>
+
+    <actionGroup name="DeleteCustomerAttribute" extends="AdminDeleteCustomerAttribute">
+        <remove keyForRemoval="navigateToCustomerAddress"/>
+        <remove keyForRemoval="TypeAttributeName"/>
+        <remove keyForRemoval="clickToSelectAttribute"/>
+        <fillField selector="{{AdminCustomerAttributeSection.searchDefaultLabel}}" userInput="{{defaultLabel}}" stepKey="TypeDefaultAttributeName" after="waitForCustomerAttributePageLoaded"/>
+        <click selector="{{AdminCustomerAttributeSection.firstAttribute}}" stepKey="clickSelectAttribute" after="waitForResult"/>
+    </actionGroup>
+</actionGroups>

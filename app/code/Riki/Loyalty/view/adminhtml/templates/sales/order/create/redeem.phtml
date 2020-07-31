@@ -1,0 +1,33 @@
+<?php use Riki\Loyalty\Model\RewardQuote; ?>
+<?php /** @var \Riki\Loyalty\Block\Adminhtml\Sales\Order\Create\Redeem $block */ ?>
+<div class="admin__page-section-title">
+    <span class="title"><?php /* @escapeNotVerified */ echo __('Please choose a usage point') ?></span>
+</div>
+<script type="text/javascript">
+    window.pointBalance = <?php echo \Zend_Json::encode($block->getPointBalance());?>;
+    window.pointBalanceFormatted = <?php echo \Zend_Json::encode($block->getPointBalanceFormatted());?>;
+    window.cartTotal = <?php echo \Zend_Json::encode($block->getCartTotal());?>;
+    window.cartTotalFormatted = <?php echo \Zend_Json::encode($block->getCartTotalFormatted());?>;
+</script>
+<div class="admin__page-section-content">
+    <div class="available-point">
+        <?php echo __('Available point balance');?>: <?php echo $block->getPointBalance();?> <?php echo __('point');?>
+    </div>
+    <dl class="select-point">
+        <?php foreach ($block->getPointUseOptions() as $option => $label) : ?>
+        <dt class="admin__field-option">
+            <input onchange="order.redeemPoint(<?php echo $option;?>, <?php echo $block->getQuote()->getId(); ?>)" <?php if ($block->getRewardUserSetting() == $option) : ?> checked="checked"<?php endif;?> class="admin__control-radio" type="radio" name="select-point" id="select-point-<?php echo $option;?>" value="<?php echo $option;?>"/>
+            <label for="select-point-<?php echo $option;?>" class="admin__field-label"><?php echo $label;?></label>
+            <?php if ($option == RewardQuote::USER_USE_SPECIFIED_POINT) : ?>
+            <div id="point-redeem-amount" <?php if ($block->getRewardUserSetting() != RewardQuote::USER_USE_SPECIFIED_POINT) :?> style="display: none" <?php endif;?>>
+                <input <?php if ($block->getRewardUserSetting() != RewardQuote::USER_USE_SPECIFIED_POINT) :?> disabled="disabled" <?php endif;?> type="text" name="select-point-amount" value="<?php echo $block->getRewardUserRedeem();?>" class="admin__control-text input-text"
+                    data-validate="{'required-entry':true}"
+                    onchange="order.redeemPoint(<?php echo $option;?>, <?php echo $block->getQuote()->getId();?>)"
+                />
+                <label style="display: none;" id="reward-point-error" class="mage-error"></label>
+            </div>
+            <?php endif;?>
+        </dt>
+        <?php endforeach;?>
+    </dl>
+</div>

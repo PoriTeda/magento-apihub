@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="promotionfilter" translate="label" type="text" sortOrder="162000" showInDefault="1" showInWebsite="1" showInStore="1">
+            <resource>Riki_Rule::config</resource>
+            <class>separator-top</class>
+            <label>Promotion Filter</label>
+            <tab>bluecom_cronjob</tab>
+            <group id="filter" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Threshold Rule</label>
+                <field id="filter_threshold" translate="label" type="text" sortOrder="20" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Threshold</label>
+                </field>
+                <field id="filter_part_sku" translate="label" type="text" sortOrder="30" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Free SKU</label>
+                </field>
+                <field id="filter_wbs" translate="label" type="text" sortOrder="40" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <validate>required-entry validate-wbs-code</validate>
+                    <label>WBS</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

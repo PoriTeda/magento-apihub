@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <web>
+            <page_reloading>
+                <default_interval>1200</default_interval>
+                <extra_interval>300</extra_interval>
+            </page_reloading>
+        </web>
+    </default>
+</config>

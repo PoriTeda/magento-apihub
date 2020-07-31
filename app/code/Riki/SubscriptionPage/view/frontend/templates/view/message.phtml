@@ -1,0 +1,35 @@
+<?php if (!$block->isEnabled()): ?>
+    <?php if (!$block->isCourseActive()): ?>
+        <div class="message error empty">
+            <div><?php echo __('This page is disable.') ?></div>
+            <div><a href="/"><?php echo __('Home page') ?></a></div>
+        </div>
+    <?php elseif (!$block->isCourseVisibility()): ?>
+        <div class="message error empty">
+            <div><?php echo __('This page is not visibility.') ?></div>
+            <div><a href="/"><?php echo __('Home page') ?></a></div>
+        </div>
+    <?php elseif (!$block->isCourseAvailableInCurrentWebsite()): ?>
+        <div class="message error empty">
+            <div><?php echo __('This page is not available in website.') ?></div>
+            <div><a href="/"><?php echo __('Home page') ?></a></div>
+        </div>
+    <?php elseif (!$block->getAccessSubscriptionPage()): ?>
+        <div class="message error empty">
+            <div><?php echo __('This product can only be purchased by customers who applied for a specific program.') ?></div>
+        </div>
+        <div class=""><a href="/" ><?php echo __("Home page") ?></a></div>
+    <?php elseif (!$block->isHanpukaiAvailableBetweenLaunchAndCloseTime()): ?>
+        <div class="message error empty">
+            <div><?php echo __('This subscription is out of date') ?></div>
+        </div>
+    <?php elseif ($block->getHaveProductOutOfStockInHanpukai() == true): ?>
+        <div class="message error empty">
+            <div><?php echo __('This Hanpukai course is out of stock') ?></div>
+        </div>
+    <?php else: ?>
+        <div class="message error empty">
+            <div><?php echo __('This page is not longer exists.') ?></div>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>

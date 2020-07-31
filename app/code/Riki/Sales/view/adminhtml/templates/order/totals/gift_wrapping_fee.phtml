@@ -1,0 +1,12 @@
+
+<?php $_source  = $block->getSource() ?>
+<?php $block->setPriceDataObject($_source) ?>
+
+<tr>
+    <td class="label"><?php /* @escapeNotVerified */
+        echo __('Wrapping Fee') ?></td>
+    <td>
+        <?php /* @escapeNotVerified */
+        echo $block->displayPrices($_source->getGwItemsBasePriceInclTax(), $_source->getGwItemsPriceInclTax()); ?>
+    </td>
+</tr>

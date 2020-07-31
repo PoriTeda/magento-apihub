@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::system">
+                    <resource id="Xtento_XtCore::extensions">
+                        <resource id="Xtento_TwoFactorAuth::configuration" title="Two-Factor Authentication" sortOrder="30"/>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>
+<!--
+/**
+ * Product:       Xtento_TwoFactorAuth (2.1.5)
+ * ID:            %!uniqueid!%
+ * Packaged:      %!packaged!%
+ * Last Modified: 2016-02-25T18:51:51+00:00
+ * File:          etc/acl.xml
+ * Copyright:     Copyright (c) 2017 XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

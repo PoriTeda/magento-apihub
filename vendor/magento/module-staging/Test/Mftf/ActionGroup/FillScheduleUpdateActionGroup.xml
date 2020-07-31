@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="FillScheduleUpdateActionGroup">
+        <arguments>
+            <argument name="staging"/>
+        </arguments>
+        <fillField selector="{{AdminStagingSlideOutSection.updateName}}" userInput="{{staging.updateName}}" stepKey="fillUpdateName"/>
+        <fillField selector="{{AdminStagingSlideOutSection.updateDescription}}" userInput="{{staging.updateDescription}}" stepKey="fillDescription"/>
+        <fillField selector="{{AdminStagingSlideOutSection.startDate}}" userInput="{{staging.startDate}}" stepKey="fillStartDate"/>
+        <fillField selector="{{AdminStagingSlideOutSection.endDate}}" userInput="{{staging.endDate}}" stepKey="fillEndDate"/>
+        <fillField selector="{{AdminCatalogStagingSlideOutSection.productPrice}}" userInput="{{staging.productPrice}}" stepKey="fillProductPrice"/>
+        <click selector="{{AdminStagingSlideOutSection.save}}" stepKey="clickSave"/>
+        <waitForPageLoad time="30" stepKey="waitForPageLoad2"/>
+        <see selector="{{AdminScheduledChangesSection.scheduleStartDate(staging.scheduleStartDate)}}" userInput="{{staging.scheduleStartDate}}" stepKey="seeStartDate"/>
+        <see selector="{{AdminScheduledChangesSection.scheduleEndDate(staging.scheduleEndDate)}}" userInput="{{staging.scheduleEndDate}}" stepKey="seeEndDate"/>
+        <see selector="{{AdminScheduledChangesSection.scheduleStartDate(staging.scheduleStartTime)}}" userInput="{{staging.scheduleStartTime}}" stepKey="seeStartTime1"/>
+        <see selector="{{AdminScheduledChangesSection.scheduleEndDate(staging.scheduleEndTime)}}" userInput="{{staging.scheduleEndTime}}" stepKey="seeEndTime1"/>
+        <see selector="{{AdminScheduledChangesSection.scheduleLabel(staging.start)}}" userInput="{{staging.start}}" stepKey="seeStart"/>
+        <see selector="{{AdminScheduledChangesSection.scheduleLabel(staging.end)}}" userInput="{{staging.end}}" stepKey="seeEnd"/>
+        <see selector="{{AdminScheduledChangesSection.scheduleDetails(staging.updateName)}}" userInput="{{staging.updateName}}" stepKey="seeUpdateName"/>
+        <see selector="{{AdminScheduledChangesSection.scheduleDetails(staging.updateDescription)}}" userInput="{{staging.updateDescription}}" stepKey="seeDescription"/>
+        <see selector="{{AdminScheduledChangesSection.scheduleActions(staging.updateName, staging.viewedit)}}" userInput="{{staging.viewedit}}" stepKey="seeViewAneEdit"/>
+        <see selector="{{AdminScheduledChangesSection.scheduleActions(staging.updateName, staging.preview)}}" userInput="{{staging.preview}}" stepKey="seePreview"/>
+    </actionGroup>
+</actionGroups>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../../../../../../dev/tests/acceptance/vendor/magento/magento2-functional-testing-framework/src/Magento/FunctionalTestingFramework/DataGenerator/etc/dataProfileSchema.xsd">
+    <entity name="Attribute" type="data">
+        <data key="label" unique="suffix">CustomAttribute</data>
+        <data key="code">customcode</data>
+        <data key="sortOrder">1</data>
+    </entity>
+    <entity name="CustomerData" extends="Simple_US_Customer">
+        <data key="address">customcode</data>
+        <data key="password">myStrong_pass</data>
+    </entity>
+    <entity name="AttributeDropdownData" type="data">
+        <data key="label">Test Dropdown</data>
+        <data key="code" unique="suffix">test_dropdown</data>
+        <data key="inputType">Dropdown</data>
+        <data key="sortOrder">10</data>
+        <data key="firstOption">dropdown_option_1</data>
+        <data key="secondOption">dropdown_option_2</data>
+    </entity>
+    <entity name="AttributeMultipleData" type="data">
+        <data key="label"> Test Multiple select</data>
+        <data key="code" unique="suffix">test_multiple_select</data>
+        <data key="inputType">Multiple Select</data>
+        <data key="sortOrder">20</data>
+        <data key="firstOption">multiple_option_1</data>
+        <data key="secondOption">multiple_option_2</data>
+    </entity>
+</entities>

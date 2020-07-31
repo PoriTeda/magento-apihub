@@ -1,0 +1,23 @@
+<?php
+/** @var \Magento\GoogleTagManager\Block\Ga $block */
+
+$accountType = $block->getConfig(\Magento\GoogleTagManager\Helper\Data::XML_PATH_TYPE);
+$gtmAccountId = $block->getConfig(\Magento\GoogleTagManager\Helper\Data::XML_PATH_CONTAINER_ID);
+$allowSaveCookie = $block->isUserNotAllowSaveCookie();
+$src =  '//www.googletagmanager.com/ns.html?id='.$gtmAccountId;
+?>
+<?php
+if (!$allowSaveCookie
+    && $accountType ==\Magento\GoogleTagManager\Helper\Data::TYPE_TAG_MANAGER
+    && !empty($gtmAccountId)
+) {
+    ?>
+    <!-- GOOGLE TAG MANAGER -->
+    <noscript>
+        <iframe src="<?php echo $src;?>" height="0" width="0"
+                style="display:none;visibility:hidden" ></iframe>
+    </noscript>
+    <!-- END GOOGLE TAG MANAGER -->
+
+<?php }
+?>

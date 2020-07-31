@@ -1,0 +1,73 @@
+<script>
+    require([
+        'jquery',
+        'Magento_Ui/js/modal/confirm',
+        'Magento_Ui/js/modal/alert',
+        'Bluecom_PaymentFee/js/order/create/scripts'
+    ], function ($, confirm, alert) {
+        AdminOrder.prototype.loadProductCourseByUrl = function (url, data) {
+            data = data || {};
+            jQuery.ajax({
+                url: url,
+                dataType: 'json',
+                data: $.extend({form_key: window.FORM_KEY}, data),
+                type: 'POST',
+                showLoader: true
+            }).done(function (data) {
+                if(data.success == true){
+                    var inputCourse = $('#course_id'),
+                        orderCourse = $('#order-course'),
+                        orderProductCourse = $('#order-product_course'),
+                        isLoadMachine = $('#is_load_machine');
+
+                    if (inputCourse.length && data.hasOwnProperty('course_id')) {
+                        inputCourse.val(data.course_id);
+                    }
+                    if (orderCourse.length && data.hasOwnProperty('message')) {
+                        if (orderProductCourse.length) {
+                            orderProductCourse.remove();
+                        }
+                        orderCourse.after(data.message);
+                        orderCourse.hide();
+                    }
+                } else {
+                    if (data.hasOwnProperty('message')) {
+                        alert({content:data.message});
+                    }
+                }
+                if (window.productGridCheckboxChecked) {
+                    window.productGridCheckboxChecked.each(function () {
+                        $('#sales_order_create_product_course_grid_table').find('#' + $(this).attr('id')).prop('checked', true);
+                    })
+                }
+                if (window.additionalProductGridCheckboxChecked) {
+                    window.additionalProductGridCheckboxChecked.each(function () {
+                        $('#sales_order_create_additional_product_course_grid_table').find('#' + $(this).attr('id')).prop('checked', true);
+                    })
+                }
+                if (window.machineSelected) {
+                    $('#machine_course').val(window.machineSelected);
+                }
+            });
+        };
+        var frequencyCourse = $('#frequency_course');
+        if (frequencyCourse.length && window.order) {
+            frequencyCourse.on('change', function () {
+                var frequencyId = $(this).val(),
+                    courseId = $('#course_id').val(),
+                    limit = $('#sales_order_create_product_course_grid_page-limit').val();
+                if (!frequencyId) {
+                    return false;
+                }
+                if (!limit) {
+                    limit = 20;
+                }
+
+                window.machineSelected = $('#machine_course').val();
+                window.productGridCheckboxChecked = $('#sales_order_create_product_course_grid_table').find('input:checkbox:checked');
+                window.additionalProductGridCheckboxChecked = $('#sales_order_create_additional_product_course_grid_table').find('input:checkbox:checked');
+                window.order.loadProductCourseByUrl('<?php echo $block->getProductReloadUrl() ?>' + '/id/' + courseId + '/course_id/' + courseId + '/frequency_id/' + frequencyId + '/limit/' + limit);
+            });
+        }
+    });
+</script>

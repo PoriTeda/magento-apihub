@@ -1,0 +1,13 @@
+<script type="text/javascript">
+    require(['jquery'], function ($) {
+        $.ajaxSetup({
+            dataFilter: function (data, type) {
+                var taint = "for(;;);";
+                if (data.lastIndexOf(taint, 0) === 0) {
+                    return data.substr(taint.length);
+                }
+                return data;
+            }
+        });
+    });
+</script>

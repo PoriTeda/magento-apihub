@@ -1,0 +1,32 @@
+<?php /** @var \Riki\SubscriptionPage\Block\SubscriptionView $block */ ?>
+<div class="field required subscription-content">
+    <label class="label" for="machine"><?php echo __('Machine') ?></label>
+    <div class="control select">
+        <select name="machine"
+                id="machine"
+                class="validate-select-sub-page-machine required-entry rk-single-machine"
+                data-default-value="<?php echo $block->getSelectedMachineId() ?>"
+                <?php if ($isHanpukaiOutOfStock){ ?> disabled <?php   } ?>
+                data-bind=" options: machineOptions,
+                            optionsText: 'label',
+                            optionsValue: 'id',
+                            optionsCaption: '<?php echo __('Please select one'); ?>',
+                            value: machineSelected
+                            ">
+            <?php foreach ($machineOption as $machine): ?>
+                <?php
+                    $amount = floor($machine->getPriceInfo()
+                        ->getPrice('final_price')
+                        ->getAmount()
+                        ->getValue());
+                ?>
+                <option value="<?php echo $machine->getId() ?>"
+                        data-final-price="<?php echo $amount ?>"
+                        data-image-url="<?php echo $block->getImage($machine, 'cart_page_product_thumbnail')->getImageUrl() ?>"
+                >
+                    <?php echo $machine->getName() ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+</div>

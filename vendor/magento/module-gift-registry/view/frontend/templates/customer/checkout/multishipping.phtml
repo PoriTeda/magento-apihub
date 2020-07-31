@@ -1,0 +1,38 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<?php if ($block->getEnabled() && $block->getItems()) :?>
+<script id="address-option-tmpl" type="text/x-magento-template">
+    <option value="<%- data._value_ %>"><%- data._text_ %></option>
+</script>
+
+<script type="text/x-magento-init">
+    <?php $selectedGrAddressesIndexes = $block->getGiftregistrySelectedAddressesIndexes(); ?>
+    <?php $selectedGrAddressesIndexesJson = '[' . implode(',', $selectedGrAddressesIndexes) . ']'; ?>
+
+    <?php $registryItems = []; ?>
+    <?php foreach ($block->getItems() as $itemId => $registryItem): ?>
+        <?php $wrappedRegistryItem = '{"item": ' . (string)$itemId . ', "address":' . (string)$registryItem['item_id'] . '}'; ?>
+        <?php array_push($registryItems, $wrappedRegistryItem); ?>
+    <?php endforeach ?>
+    <?php $registryItemsJson = '[' . implode(',', $registryItems) . ']'; ?>
+
+    {
+        "#multiship-addresses-table": {
+            "addressOption": {
+                "registryItems": <?= /* @escapeNotVerified */ $registryItemsJson ?>,
+                "addressItemPrefix": "<?= /* @escapeNotVerified */ $block->getAddressIdPrefix() ?>",
+                "selectedAddressIndices": <?= /* @escapeNotVerified */ $selectedGrAddressesIndexesJson ?>
+            }
+        }
+    }
+</script>
+
+<?php endif; ?>

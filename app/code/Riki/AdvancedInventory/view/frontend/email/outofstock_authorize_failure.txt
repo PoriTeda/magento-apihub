@@ -1,0 +1,10 @@
+<!--@subject Out of stock order authorize failed  @-->
+---------------------------------------------
+システム名　　　　:EC
+ジョブ名　　　　　:ReAuthonlyJob
+バッチ処理名　　　：再与信
+バッチ処理日時　　：{{var date}}
+エラー内容:
+
+{{block class="Magento\Framework\View\Element\Template" template="Riki_AdvancedInventory::email/out-of-stock-reauthorize-fail-business.phtml" area="frontend" items=$items}}
+---------------------------------------------

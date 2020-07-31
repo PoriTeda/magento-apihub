@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/consumer.xsd">
+    <consumer name="startGenerateOrderOos" queue="oos_generate_order" connection="amqp"
+              handler="Riki\AdvancedInventory\Model\Queue\OosConsumer::execute"
+              consumerInstance="Riki\AdvancedInventory\Model\Queue\Consumer" />
+</config>

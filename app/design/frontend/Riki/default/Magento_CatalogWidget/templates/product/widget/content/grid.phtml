@@ -1,0 +1,193 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Template for displaying products list widget
+ *
+ * @var $block \Magento\CatalogWidget\Block\Product\ProductsList
+ */
+?>
+<?php if ($exist = ($block->getProductCollection() && $block->getProductCollection()->getSize())):?>
+<?php
+    $type = 'widget-product-grid';
+    $mode = 'grid';
+    $image = 'new_products_content_widget_grid';
+    $title = $block->getTitle() ? __($block->getTitle()) : '';
+    $items = $block->getProductCollection()->getItems();
+
+    $showWishlist = true;
+    $showCompare = true;
+    $showCart = true;
+    $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::DEFAULT_VIEW;
+    $description = false;
+    $showOwlCarousel = true;
+?>
+    <!-- dataLayer marked at product widget -->
+    <div class="block<?php if(!($showOwlCarousel)): ?> widget<?php endif ?> block-products-list <?php /* @escapeNotVerified */ echo $mode; ?>">
+        <?php if ($title):?>
+        <div class="block-title">
+            <strong><?php /* @escapeNotVerified */ echo $title; ?></strong>
+        </div>
+        <?php endif ?>
+        <div class="block-content">
+            <?php /* @escapeNotVerified */ echo '<!-- ' . $image . '-->' ?>
+            <div class="products-<?php /* @escapeNotVerified */ echo $mode; ?> <?php /* @escapeNotVerified */ echo $mode; ?>">
+                <ol class="products list items product-items <?php /* @escapeNotVerified */ echo $type; ?><?php if ($showOwlCarousel): ?> owl-carousel <?php endif; ?>">
+                    <?php $iterator = 1; ?>
+                    <?php foreach ($items as $_item): ?>
+                        <?php if($_item->isSaleable()) : ?>
+
+                        <?php /* @escapeNotVerified */ echo($iterator++ == 1) ? '<li class="item product product-item">' : '</li><li class="item product product-item">' ?>
+                        <div class="product-item-info" data-item-id="<?php echo $_item->getSku();?>">
+                            <a layer-item-id="<?php echo $_item->getId();?>" href="<?php /* @escapeNotVerified */ echo $block->getProductUrl($_item) ?>" class="product-item-photo">
+                                <?php echo $block->getImage($_item, $image)->toHtml(); ?>
+                            </a>
+                            <div class="product-item-details">
+                                <strong class="product-item-name">
+                                    <a layer-item-id="<?php echo $_item->getId();?>" title="<?php echo $block->escapeHtml($_item->getName()) ?>"
+                                       href="<?php /* @escapeNotVerified */ echo $block->getProductUrl($_item) ?>"
+                                       class="product-item-link">
+                                        <?php echo $block->escapeHtml($_item->getName()) ?>
+                                    </a>
+                                </strong>
+                                <?php
+                                echo $block->getProductPriceHtml($_item, $type);
+                                ?>
+
+                                <?php if ($templateType): ?>
+                                    <?php echo $block->getReviewsSummaryHtml($_item, $templateType) ?>
+                                <?php endif; ?>
+
+                                <?php if ($showWishlist || $showCompare || $showCart): ?>
+                                    <div class="product-item-actions">
+                                        <?php if ($showCart): ?>
+                                            <div class="actions-primary">
+                                                <?php if ($_item->isSaleable()): ?>
+                                                    <?php if ($_item->getTypeInstance()->hasRequiredOptions($_item)): ?>
+                                                        <input type="number" name="qty" maxlength="3" value="1" class="input-text qty" />
+                                                        <button class="action tocart primary"
+                                                                data-mage-init='{"redirectUrl":{"url":"<?php /* @escapeNotVerified */ echo $block->getAddToCartUrl($_item) ?>"}}'
+                                                                type="button" title="<?php /* @escapeNotVerified */ echo __('Add to Cart') ?>">
+                                                            <span><?php /* @escapeNotVerified */ echo __('Add to Cart') ?></span>
+                                                        </button>
+                                                    <?php else: ?>
+                                                        <?php
+                                                            $postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
+                                                            $postData = $postDataHelper->getPostData($block->getAddToCartUrl($_item), ['product' => $_item->getEntityId()])
+                                                        ?>
+                                                        <input type="number" name="qty" maxlength="3" value="1" class="input-text qty" />
+                                                        <button class="action tocart primary"
+                                                                data-post='<?php /* @escapeNotVerified */ echo $postData; ?>'
+                                                                type="button" title="<?php /* @escapeNotVerified */ echo __('Add to Cart') ?>">
+                                                            <span><?php /* @escapeNotVerified */ echo __('Add to Cart') ?></span>
+                                                        </button>
+                                                    <?php endif; ?>
+                                                <?php else: ?>
+                                                    <?php if ($_item->getIsSalable()): ?>
+                                                        <input type="number" name="qty" maxlength="3" value="1" class="input-text qty" />
+                                                        <div class="stock available"><span><?php /* @escapeNotVerified */ echo __('In stock') ?></span></div>
+                                                    <?php else: ?>
+                                                        <input type="number" name="qty" maxlength="3" value="1" class="input-text qty" />
+                                                        <div class="stock unavailable"><span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span></div>
+                                                    <?php endif; ?>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if ($showWishlist || $showCompare): ?>
+                                            <div class="actions-secondary" data-role="add-to-links">
+                                                <?php if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow() && $showWishlist): ?>
+                                                    <a href="#"
+                                                       data-post='<?php /* @escapeNotVerified */ echo $block->getAddToWishlistParams($_item); ?>'
+                                                       class="action towishlist" data-action="add-to-wishlist"
+                                                       title="<?php /* @escapeNotVerified */ echo __('Add to Wish List') ?>">
+                                                        <span><?php /* @escapeNotVerified */ echo __('Add to Wish List') ?></span>
+                                                    </a>
+                                                <?php endif; ?>
+                                                <?php if ($block->getAddToCompareUrl() && $showCompare): ?>
+                                                    <?php $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');?>
+                                                    <a href="#" class="action tocompare"
+                                                       data-post='<?php /* @escapeNotVerified */ echo $compareHelper->getPostDataParams($_item);?>'
+                                                       title="<?php /* @escapeNotVerified */ echo __('Add to Compare') ?>">
+                                                        <span><?php /* @escapeNotVerified */ echo __('Add to Compare') ?></span>
+                                                    </a>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <?php echo($iterator == count($items)+1) ? '</li>' : '' ?>
+
+                        <?php endif; ?>
+
+                    <?php endforeach ?>
+                </ol>
+            </div>
+            <?php echo $block->getPagerHtml() ?>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        require([
+            'jquery',
+            'Magento_Catalog/js/owl.carousel'
+        ], function($) {
+            $(document).ready(function () {
+                var inputQtyAddCart = $('.block-additional-products .qty'),
+                    addButton = $('.block-additional-products .action.tocart');
+                inputQtyAddCart.on('change',function () {
+                    var qty = $(this).val();
+                    var dataPost = JSON.parse($(this).next('.tocart').attr('data-post'));
+                    dataPost.data.qty = qty;
+                    $(this).next('.tocart').attr('data-post', JSON.stringify(dataPost));
+                });
+                addButton.on('click', function () {
+                    var _this = $(this),
+                        qty = _this.prev('.qty').val();
+                    if(isNaN(qty) || qty <= 0)
+                        return false;
+                });
+
+            <?php if ($showOwlCarousel): ?>
+                var owl = $(".owl-carousel");
+                owl.owlCarousel({
+                    items: 5,
+                    mouseDrag: true,
+                    touchDrag: true,
+                    margin: 15,
+                    nav: false,
+                    dots: false,
+                    responsiveClass:true,
+                    responsive: {
+                        0: {
+                            items: 1
+                        },
+                        360: {
+                            items: 2,
+                            margin: 5
+                        },
+                        510: {
+                            items: 3,
+                            margin: 5
+                        },
+                        680: {
+                            items: 4
+                        },
+                        880: {
+                            items: 5
+                        }
+                    }
+                });
+            <?php endif; ?>
+            });
+        });
+    </script>
+<?php endif;?>

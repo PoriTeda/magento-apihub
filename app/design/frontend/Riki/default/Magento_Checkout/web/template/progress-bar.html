@@ -1,0 +1,19 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<ul class="opc-progress-bar">
+    <li class="opc-progress-bar-item _complete">
+        <span data-bind="i18n: 'Cart', attr: {onclick: redirectCartPage}"></span>
+    </li>
+    <!-- ko foreach: { data: steps().sort(sortItems), as: 'item' } -->
+        <li class="opc-progress-bar-item" data-bind="css: item.isVisible() ? '_active' : ($parent.isProcessed(item) ? '_complete' : '')">
+            <span data-bind="text: item.title, click: $parent.navigateTo"></span>
+        </li>
+    <!-- /ko -->
+    <li class="opc-progress-bar-item">
+        <span data-bind="i18n: 'Order Complete'"></span>
+    </li>
+</ul>

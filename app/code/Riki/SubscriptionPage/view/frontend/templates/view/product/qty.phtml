@@ -1,0 +1,161 @@
+<?php
+/** @var \Riki\SubscriptionPage\Block\Catalog\Product\View\Qty $block */
+
+$product = $block->getData("product");
+$categoryId = $block->getData("category_id");
+$isSpotOrder = $block->isSpotOrder();
+$isAllowSpotOrder = $block->isAllowSpotOrder();
+
+$isInStock = $product->getIsSalable();
+$minimalQty = $block->getViewModel()->getMinimalQty($product);
+$maximumQty = $block->getViewModel()->getMaximumQty($product);
+$maximumQty = ($maximumQty > 99) ? 99 : $maximumQty;
+$_unitdisplays = $block->getViewModel()->getUnitDisplay($product);
+$unitDisplay = $block->getViewModel()->getUnitDisplay($product);
+$unitQty = $block->getViewModel()->getUnitQty($product);
+
+$idKey = (int)$product->getId() . '_' . (int)$categoryId;
+$isAddition = !!$block->getData("is_addition");
+
+?>
+<div data-bind="scope: 'product_view_qty_<?php echo $product->getId() . '_' . $categoryId ?>'">
+    <div class="block_quantity">
+        <?php if (!$block->isHanpukai()) : ?>
+            <!--                        click button addtocart add css display block on div buttons_added and add css display none on button class addToCart-->
+            <button data-bind="click: function(){mbAddToCart()}, touchstart:function(){mbAddToCart()},css: { hidden: getCurrentQty()  > 0}" <?php if (!$isInStock) { echo 'disabled';} ?>
+                    id="<?php echo 'mb_bt_input_' . $idKey; ?>"
+                    class="addToCart"
+                    type="button" title="addToCart">
+                <span><?php echo __('Add to Cart') ?></span></button>
+            <div class="quantity buttons_added hidden"
+                 data-bind="css: { hidden: getCurrentQty()  < 1}"
+                 id="<?php echo 'mb_qty_group_bt' . $idKey; ?>">
+            <span data-bind="click: function(){mbChangeQty(-1)}, touchstart:function(){mbChangeQty(-1)}, css: { hidden: getProduct().qtySelected()  != 1}"
+                  class="minus delete"
+                  id="<?php echo 'mb_qty_bt_delete_' . $idKey; ?>">  <span><?php echo __('Delete') ?></span></span>
+                <span data-bind="click: function(){mbChangeQty(-1)}, touchstart:function(){mbChangeQty(-1)}, , css: { hidden: getProduct().qtySelected()  == 1}"
+                      class="minus" id="<?php echo 'mb_qty_bt_minus_' . $idKey; ?>">
+                <i class="fa fa-minus" aria-hidden="true"></i>
+            </span>
+
+                <input data-bind="value: getProduct().qtySelected" <?php if (!$isInStock || ($isSpotOrder && !$isAllowSpotOrder)) {echo 'disabled';} ?>
+                       id="<?php echo 'mb_qty_input_' . $idKey; ?>"
+                       type="number" step="1" min="0" max="" name="quantity"
+                       value="0" title="Qty"
+                       class="hidden input-text qty text" size="4" pattern=""
+                       inputmode="" data-render="0"
+                       data-quantity="<?php echo $maximumQty ?>"
+                       data-minimum="<?php echo $minimalQty ?>"/>
+
+                <select data-bind="value: getProduct().qtySelected" <?php if (!$isInStock || ($isSpotOrder && !$isAllowSpotOrder)) {echo 'disabled';} ?>
+                        id="<?php echo 'qty_select_' . $idKey; ?>"
+                        data-render="0"
+                        data-quantity="<?php echo $maximumQty ?>"
+                        data-minimum="<?php echo $minimalQty ?>">
+                    <option value="0" hidden disabled>0</option>
+                    <option value="1">1</option>
+                </select>
+
+
+                <span data-bind="click: function(){mbChangeQty(1)}, touchstart:function(){mbChangeQty(1)},css: { disabled: getCurrentQty()  >= getProduct().maxQty}" class="plus"
+                      id="<?php echo 'mb_qty_bt_plus_' . $idKey; ?>">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </span>
+            </div>
+        <?php else: ?>
+        <div>
+            <span><?php echo __('Qty') ?></span>
+            <span id="<?php echo 'qty_select_' . $idKey; ?>">
+            <?php
+            echo ($block->getViewModel()->getQty($product) === $block->getViewModel()->getQtyCase($product))
+                ? (int)$block->getViewModel()->getQty($product)
+                : (int)$block->getViewModel()->getQtyCase($product);
+            ?>
+            </span>
+            <span> <?php foreach ($unitDisplay as $label) { ?>
+                    <?php echo $label; ?>
+                <?php } ?>
+            </span>
+        </div>
+        <?php endif; ?>
+    </div>
+    <div class="hidden">
+        <label class="label no-display" for="<?php echo 'qty_' . $product->getId(); ?>">
+            <?php echo __('Qty') ?>
+        </label>
+
+        <!-- is_additional -->
+        <input type="hidden" id="is_addition_<?php echo $idKey ?>"
+               name="<?php echo 'data[product][' . $idKey . '][is_addition]' ?>" value="<?php echo $isAddition ?>">
+
+        <!-- qty_case -->
+        <input type="hidden" id="qty_case_<?php echo $idKey ?>"
+               name="<?php echo 'data[product][' . $idKey . '][qty_case]' ?>"
+               value="<?php echo $block->getViewModel()->getQtyCase($product) ?>">
+
+        <!-- unit_qty -->
+        <input type="hidden" id="unit_qty_<?php echo $idKey ?>"
+               name="<?php echo 'data[product][' . $idKey . '][unit_qty]' ?>"
+               value="<?php echo $block->getViewModel()->getUnitCaseQty($product) ?>">
+
+        <!-- case_display -->
+        <input type="hidden" id="case_display_<?php echo $idKey ?>"
+               name="<?php echo 'data[product][' . $idKey . '][case_display]' ?>"
+               value="<?php echo $block->getViewModel()->getCaseDisplay($product) ?>">
+        <!-- gift_wrapping -->
+        <input type="hidden" id="gift_wrapping_<?php echo $idKey ?>"
+               name="<?php echo 'data[product][' . $idKey . '][gift_wrapping]' ?>"
+               value="<?php echo $block->getViewModel()->getGiftWrappingSelected($product) ?>">
+
+        <!-- qty -->
+        <input type="hidden" class="riki_qty_selected" id="qty_<?php echo $idKey ?>" name="<?php echo 'data[product][' . $idKey . '][qty]' ?>"
+               value="<?php echo $isInStock ? $block->getViewModel()->getQty($product) : 0 ?>">
+        <?php if ($block->isHanpukai()): ?>
+            <?php $block->addToHanpukaiCart([
+                'product_id' => $product->getId(),
+                'qty' => (int)$block->getViewModel()->getQty($product),
+                'qty_case' => (int)$block->getViewModel()->getQtyCase($product),
+                'case_display' => $block->getViewModel()->getCaseDisplay($product),
+                'unit_qty' => $block->getViewModel()->getUnitCaseQty($product),
+                'product_type' => $product->getTypeId()
+            ]); ?>
+        <?php endif; ?>
+        <div class="unit-label"><?php echo $block->getViewModel()->getCaseDisplayLabel($product) ?></div>
+
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+        {
+            "*": {
+                "Magento_Ui/js/core/app": {
+                   "components": {
+                        "product_view_qty_<?php echo $product->getId() . '_' . $categoryId ?>": {
+                            "component": "Riki_SubscriptionPage/js/view/qty",
+                            "qtyData" : <?php echo $block->getProductQtyJsData(); ?>
+                        }
+                   }
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

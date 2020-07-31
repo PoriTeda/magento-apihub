@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Nestle\Purina\Api\ShippingInformationManagementInterface" type="Nestle\Purina\Model\ShippingInformationManagement" />
+    <preference for="Nestle\Purina\Api\PaymentInformationManagementInterface" type="Nestle\Purina\Model\PaymentInformationManagement" />
+    <!-- declare plugin -->
+    <type name="Magento\Sales\Model\Order\Payment">
+        <plugin name="NestlePurinaPluginAfterGetMethodInstance" type="Nestle\Purina\Plugin\Model\Order\Payment" />
+    </type>
+    <type name="Nestle\Purina\Model\PaymentInformationManagement">
+        <plugin name="NestlePurinaAfterPlaceOrder" type="Nestle\Purina\Plugin\Model\PaymentInformationManagement" />
+    </type>
+</config>

@@ -1,0 +1,17 @@
+<?php /** @var $block \Riki\Sales\Block\Adminhtml\Order\Create\Billing\FreeFlag */ ?>
+
+<div class="admin__field admin__field-option">
+    <input id="p_method_set_free_surcharge"
+           value="1"
+           <?php if(!$block->isEnabled()): ?>disabled="disabled"<?php endif; ?>
+           class="admin__control-checkbox"
+           name="set_free_surcharge"
+           type="checkbox"
+           title="<?php /* @escapeNotVerified */
+           echo __('Free Surcharge') ?>"
+           <?php if($block->isSelectedFree()): ?>checked="checked" <?php endif; ?>
+           onchange="order.setFreeSurcharge()" />
+    <label class="admin__field-label" for="p_method_set_free_surcharge">
+        <?php /* @escapeNotVerified */
+        echo __('Free Surcharge') ?></label>
+</div>

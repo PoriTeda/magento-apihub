@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Rma\Block\Adminhtml\Rma">
+        <plugin name="riki_rmaWgRmaBlockAdminhtmlRma" type="Riki\RmaWithoutGoods\Plugin\Rma\Block\Adminhtml\Rma" />
+    </type>
+    <type name="Magento\Rma\Block\Adminhtml\Rma\Create\Order\Grid">
+        <plugin name="riki_rmaWgRmaCreateOrderGrid" type="Riki\RmaWithoutGoods\Plugin\Rma\Block\Adminhtml\Rma\Create\Order\Grid\CreateReturnWithoutGood" />
+        <plugin name="riki_rmaWgRmaChangeSearchCondition" type="Riki\RmaWithoutGoods\Plugin\Rma\Block\Adminhtml\Rma\Create\Order\Grid\ChangeSearchCondition" />
+    </type>
+    <type name="Magento\Rma\Block\Adminhtml\Rma\NewRma">
+        <plugin name="riki_rmaWgAdminRmaNewRma" type="Riki\RmaWithoutGoods\Plugin\Rma\Block\Adminhtml\Rma\NewRma" />
+    </type>
+    <type name="Magento\Rma\Block\Adminhtml\Rma\Edit\Tabs">
+        <plugin name="riki_rmaWgAdminRmaEditTabs" type="Riki\RmaWithoutGoods\Plugin\Rma\Block\Adminhtml\Rma\Edit\Tabs" />
+    </type>
+    <type name="Magento\Rma\Model\Rma\RmaDataMapper">
+        <plugin name="riki_rma_without_goods_filter_save_request_set_items" type="Riki\RmaWithoutGoods\Plugin\Rma\Adminhtml\RmaDataMapperPrepareData" />
+    </type>
+    <type name="Magento\Rma\Block\Adminhtml\Rma\Edit\Tab\Items">
+        <plugin name="riki_rmaWgRmaAdminhtmlEditTabItems" type="Riki\RmaWithoutGoods\Plugin\Rma\Block\Adminhtml\Rma\Edit\Tab\Items" />
+    </type>
+    <type name="Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\Warning">
+        <plugin name="riki_rmaWgRikiRmaBlockAdminhtmlRmaEditTabItemsWarning" type="Riki\RmaWithoutGoods\Plugin\RikiRma\Block\Adminhtml\Rma\Edit\Tab\Items\Warning" />
+    </type>
+    <type name="Riki\Rma\Observer\ValidateData">
+        <plugin name="riki_rmaWgRikiRmaObserverValidateData" type="Riki\RmaWithoutGoods\Plugin\RikiRma\Observer\ValidateData" />
+    </type>
+    <type name="Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\TotalBeforePointAdjustment">
+        <plugin name="rikiRmaRikiRmaBlockAdminhtmlRmaEditTabItemsTotalBefore" type="Riki\RmaWithoutGoods\Plugin\RikiRma\Block\Adminhtml\Rma\Edit\Tab\Items\TotalBefore" />
+    </type>
+</config>

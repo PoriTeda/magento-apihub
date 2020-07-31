@@ -1,0 +1,34 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+?>
+<?php
+/** @var \Magento\GoogleTagManager\Block\ListJson $block */
+$item = $block->getFpcBlock()->getItem();
+?>
+
+<?php if (is_object($item)) { ?>
+    <script>
+        updatedImpressions = updatedImpressions || [];
+        updatedImpressions['<?= /* @escapeNotVerified */ $block->getBlockName() ?>'] = updatedImpressions[
+            '<?= /* @escapeNotVerified */ $block->getBlockName() ?>'
+            ] || [];
+        updatedImpressions['<?= /* @escapeNotVerified */ $block->getBlockName() ?>'] =
+            updatedImpressions['<?= /* @escapeNotVerified */ $block->getBlockName() ?>'].concat([
+                {
+                    "id": "<?= $block->escapeJs($item->getSku()) ?>",
+                    "type": "<?= /* @escapeNotVerified */ $item->getTypeId() ?>",
+                    "name": "<?= $block->escapeJs($item->getName()) ?>",
+                    "category": "<?= $block->escapeJs($block->getCurrentCategoryName()) ?>",
+                    "list": "<?= $block->escapeJs($block->getCurrentListName()) ?>",
+                    "position": updatedImpressions['<?= /* @escapeNotVerified */ $block->getBlockName() ?>'].length + 1,
+                    "listPosition": updatedImpressions['<?= /* @escapeNotVerified */ $block->getBlockName() ?>'].length
+                }
+            ]);
+    </script>
+    <?php
+}

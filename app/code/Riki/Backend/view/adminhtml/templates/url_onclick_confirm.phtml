@@ -1,0 +1,18 @@
+<script>
+    window.handleUrlOnclickEvent = function (url) {
+        if(localStorage.getItem('number_create_order_tab') > 0
+            && (url.indexOf('sales/order_create/start') !== -1
+                || url.indexOf('riki_sales/order_create/multipleAddress') !== -1
+                || url.indexOf('riki_sales/order_create/freeOrder') !== -1
+                || url.indexOf('sales/order_create/reorder') !== -1
+            )
+        ) {
+            confirmSetLocation(
+                '<?php echo __('You are creating order in another tab. Do you want to clear old data and create again?') ?>',
+                url
+            );
+        } else {
+            setLocation(url);
+        }
+    }
+</script>

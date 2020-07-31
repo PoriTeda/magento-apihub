@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="rikifraud_email_fraud_notification" label="Fraud Notification Email" file="fraud_notification.html" type="html" module="Riki_Fraud" area="adminhtml"/>
+    <template id="rikifraud_email_cedyna_threshold_notification" label="Cedyna threshold exceed notification" file="cedyna_threshold_notification.html" type="html" module="Riki_Fraud" area="adminhtml"/>
+    <template id="rikifraud_email_blacklist_notification" label="Black list notification" file="blacklist_notification.html" type="html" module="Riki_Fraud" area="adminhtml"/>
+</config>

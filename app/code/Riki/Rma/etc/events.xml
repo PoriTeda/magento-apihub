@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_receive_cvs_payment_update_after">
+        <observer name="riki_rma_order_update_payment" instance="Riki\Rma\Observer\SalesOrderReceiveCvsPaymentUpdateAfter"/>
+    </event>
+    <event name="refund_reject_adjust_data_mail_notify">
+        <observer name="riki_rma_adjust_data_email_notify" instance="Riki\Rma\Observer\SendMailNotify"/>
+    </event>
+    <event name="rma_save_before">
+        <observer name="riki_rma_process_additional_data" instance="Riki\Rma\Observer\ProcessAdditionalData"/>
+        <observer name="riki_rma_validate_data" instance="Riki\Rma\Observer\ValidateData"/>
+        <observer name="riki_rma_validate_reason_data" instance="Riki\Rma\Observer\ValidateReason"/>
+        <observer name="riki_rma_process_refund_data" instance="Riki\Rma\Observer\PrepareRefundData"/>
+        <observer name="riki_rma_init_completed_data" instance="Riki\Rma\Observer\InitCompletedData"/>
+    </event>
+    <event name="rma_save_after">
+        <observer name="riki_rma_add_carrier_data" instance="Riki\Rma\Observer\AddCarrierDataAfterSaveReturn"/>
+        <observer name="riki_rma_log_completed_return_history" instance="Riki\Rma\Observer\LogCompletedReturnChangedHistory"/>
+    </event>
+    <event name="riki_rma_process_additional_data_before">
+        <observer name="riki_rma_process_post_data" instance="Riki\Rma\Observer\ProcessPostData"/>
+    </event>
+    <event name="riki_rma_process_additional_data_after">
+        <observer name="riki_rma_set_point_flag" instance="Riki\Rma\Observer\SetTriggerCancelPointFlag"/>
+        <observer name="riki_rma_edit_rma_set_need_save_again_flag" instance="Riki\Rma\Observer\EditRmaSetNeedSaveAgainFlag"/>
+    </event>
+</config>

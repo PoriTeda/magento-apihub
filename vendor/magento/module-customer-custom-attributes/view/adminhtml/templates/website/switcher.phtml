@@ -1,0 +1,48 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php $websites = $block->getWebsites(); ?>
+<?php if ($websites): ?>
+<div class="field field-store-switcher">
+    <label class="label" for="website_switcher"><?= /* @escapeNotVerified */ __('Choose Website:') ?></label>
+    <div class="control">
+        <select name="website_switcher" id="website_switcher" onchange="return switchWebsite(this);">
+        <?php if ($block->hasDefaultOption()): ?>
+            <option value=""><?= /* @escapeNotVerified */ $block->getDefaultStoreName() ?></option>
+        <?php endif; ?>
+            <?php foreach ($websites as $website): ?>
+                <option value="<?= /* @escapeNotVerified */ $website->getId() ?>"<?php if ($block->getStoreId() == $website->getId()): ?> selected="selected"<?php endif; ?>><?= /* @escapeNotVerified */ $website->getName() ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <?= $block->getHintHtml() ?>
+</div>
+<script>
+    require(['prototype'], function(){
+        window.switchWebsite = function(obj){
+            var storeParam = obj.value ? 'website/'+obj.value + '/' : '';
+            if(obj.switchParams){
+                storeParam+= obj.switchParams;
+            }
+        <?php if ($block->getUseConfirm()): ?>
+            if(confirm("<?= /* @escapeNotVerified */ __('Please confirm site switching. All data that hasn\'t been saved will be lost.') ?>")){
+                setLocation('<?= /* @escapeNotVerified */ $block->getSwitchUrl() ?>'+storeParam);
+                return true;
+            }
+            else {
+                obj.value = '<?= /* @escapeNotVerified */ $block->getStoreId() ?>';
+            }
+            return false;
+        <?php else: ?>
+            setLocation('<?= /* @escapeNotVerified */ $block->getSwitchUrl() ?>'+storeParam);
+        <?php endif; ?>
+        }
+    });
+</script>
+<?php endif; ?>

@@ -1,0 +1,10 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <consumer_db_api_url>
+            <customer_wamb_setting>
+                <WAMB_enable_cron>1</WAMB_enable_cron>
+                <WAMB_cron_setting>0 1 * * *</WAMB_cron_setting>
+            </customer_wamb_setting>
+        </consumer_db_api_url>
+    </default>
+</config>

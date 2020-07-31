@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/publisher.xsd">
+    <!--<publisher name="customer_reindex" connection="amqp" exchange="magento"/>-->
+    <publisher topic="customer.reindex.grid">
+        <connection name="amqp" exchange="magento" disabled="false"/>
+    </publisher>
+
+    <publisher topic="customer.update.segment">
+        <connection name="amqp" exchange="magento" disabled="false"/>
+    </publisher>
+</config>

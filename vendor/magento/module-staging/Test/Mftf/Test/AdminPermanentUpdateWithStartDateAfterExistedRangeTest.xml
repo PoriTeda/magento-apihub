@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+ <tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../../../../../../dev/tests/acceptance/vendor/magento/magento2-functional-testing-framework/src/Magento/FunctionalTestingFramework/Test/etc/testSchema.xsd">
+    <test name="AdminPermanentUpdateWithStartDateAfterExistedRangeTest">
+        <annotations>
+            <features value="Staging"/>
+            <stories value="Permanent Update with start date after existed range"/>
+            <title value="Permanent Update with start date after existed range"/>
+            <description value="Permanent Update with start date after existed range"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="MAGETWO-55019"/>
+            <group value="staging"/>
+        </annotations>
+        <before>
+            <!--Create Simple Product and Category-->
+            <createData entity="_defaultCategory" stepKey="createCategory"/>
+            <createData entity="ApiProductWithDescription" stepKey="createProduct">
+                <requiredEntity createDataKey="createCategory"/>
+                <field key="price">10</field>
+            </createData>
+            <actionGroup ref="LoginAsAdmin" stepKey="loginAsAdmin"/>
+            <!-- Create storeView -->
+            <actionGroup ref="AdminCreateStoreViewActionGroup" stepKey="createStoreView"/>
+        </before>
+        <after>
+            <deleteData createDataKey="createProduct" stepKey="deleteProduct"/>
+            <deleteData createDataKey="createCategory" stepKey="deleteCategory"/>
+            <actionGroup ref="AdminDeleteStoreViewActionGroup" stepKey="deleteStoreView"/>
+            <actionGroup ref="AdminClearFiltersActionGroup" stepKey="clearProductFilters"/>
+            <actionGroup ref="logout" stepKey="logout"/>
+        </after>
+        <!-- Open Product Grid, Filter product and open -->
+        <amOnPage url="{{AdminProductIndexPage.url}}" stepKey="amOnProductGridPage"/>
+        <waitForPageLoad time="30" stepKey="waitForPageLoad"/>
+
+        <actionGroup ref="filterProductGridBySku" stepKey="filterGroupedProductOptions">
+            <argument name="product" value="ApiProductWithDescription"/>
+        </actionGroup>
+        <click selector="{{AdminProductGridSection.productGridXRowYColumnButton('1', '2')}}" stepKey="openProductForEdit"/>
+        <!-- Create Schedule New Update -->
+        <click selector="{{AdminStagingSlideOutSection.scheduleNewUpdateBtn}}" stepKey="clickButtonSheduleNewUpdate"/>
+        <click selector="{{AdminStagingSlideOutSection.changeStoreButton}}" stepKey="clickStoreSwitcher"/>
+        <click selector="{{AdminStagingSlideOutSection.selectStoreView(customStore.name)}}" stepKey="clickStoreView"/>
+        <click selector="{{AdminConfirmationModalSection.ok}}" stepKey="acceptMessage"/>
+        <actionGroup ref="FillScheduleUpdateActionGroup" stepKey="createScheduleUpdate">
+            <argument name="staging" value="S5UpdateNameStaging"/>
+        </actionGroup>
+        <!-- Create Schedule New Update1 -->
+        <click selector="{{AdminStagingSlideOutSection.scheduleNewUpdateBtn}}" stepKey="clickButtonSheduleNewUpdate1"/>
+        <fillField selector="{{AdminStagingSlideOutSection.updateName}}" userInput="S9.6UpdateName" stepKey="fillUpdateName"/>
+        <fillField selector="{{AdminStagingSlideOutSection.updateDescription}}" userInput="S9.6Description" stepKey="fillDescription"/>
+        <fillField selector="{{AdminStagingSlideOutSection.startDate}}" userInput="07/15/2020 8:00 AM" stepKey="fillStartDate"/>
+        <fillField selector="{{AdminCatalogStagingSlideOutSection.productPrice}}" userInput="15" stepKey="fillProductPrice"/>
+        <click selector="{{AdminStagingSlideOutSection.save}}" stepKey="clickSave"/>
+        <waitForPageLoad time="30" stepKey="waitForPageLoad4"/>
+        <see selector="{{AdminScheduledChangesSection.scheduleStartDate('Jul 15, 2020')}}" userInput="Jul 15, 2020" stepKey="seeStartDate"/>
+        <see selector="{{AdminScheduledChangesSection.scheduleStartDate('8:00 AM')}}" userInput="8:00 AM" stepKey="seeStartTime1"/>
+        <see selector="{{AdminScheduledChangesSection.scheduleLabel('Start')}}" userInput="Start" stepKey="seeStart"/>
+        <see selector="{{AdminScheduledChangesSection.scheduleDetails('S9.6UpdateName')}}" userInput="S9.6UpdateName" stepKey="seeUpdateName"/>
+        <see selector="{{AdminScheduledChangesSection.scheduleDetails('S9.6Description')}}" userInput="S9.6Description" stepKey="seeDescription"/>
+        <see selector="{{AdminScheduledChangesSection.scheduleActions('S9.6UpdateName', 'View/Edit')}}" userInput="View/Edit" stepKey="seeViewAneEdit"/>
+        <see selector="{{AdminScheduledChangesSection.scheduleActions('S9.6UpdateName', 'Preview')}}" userInput="Preview" stepKey="seePreview"/>
+        <click selector="{{AdminScheduledChangesSection.scheduleActions('S9.6UpdateName', 'Preview')}}" stepKey="clickPreview"/>
+        <switchToNextTab stepKey="switchToNextTab"/>
+        <waitForPageLoad time="30" stepKey="waitForPageLoad5"/>
+        <!--Set frame id because switchToIFrame requires ID as parameter-->
+        <executeJS function="jQuery('[data-role=\'preview-iframe\']').attr('id', 'preview-iframe')" stepKey="setPreviewFrameId"/>
+        <switchToIFrame userInput="preview-iframe" stepKey="switchToPreviewFrame"/>
+        <waitForPageLoad time="30" stepKey="waitForPageLoad6"/>
+        <see selector="{{StorefrontProductInfoMainSection.productPrice}}" userInput="$15.00" stepKey="seeProductPrice"/>
+        <closeTab stepKey="closeTab"/>
+    </test>
+</tests>

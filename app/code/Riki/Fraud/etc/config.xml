@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <rikifraud>
+            <general>
+                <cedyna_threshold>800000</cedyna_threshold>
+            </general>
+            <cron>
+                <schedule>0 0 1 * *</schedule>
+            </cron>
+            <email>
+                <cedyna_threshold_notification>rikifraud_email_cedyna_threshold_notification</cedyna_threshold_notification>
+            </email>
+        </rikifraud>
+        <fraud_check>
+            <threshold>
+                <cedyna_threshold>700000</cedyna_threshold>
+                <order_threshold>300000</order_threshold>
+            </threshold>
+        </fraud_check>
+    </default>
+</config>

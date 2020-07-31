@@ -1,0 +1,293 @@
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <!-- Integration -->
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <!-- we define a provider -->
+            <item name="provider" xsi:type="string">timeslots_listing.timeslots_listing_data_source</item>
+            <!-- same string as above -->
+            <item name="deps" xsi:type="string">timeslots_listing.timeslots_listing_data_source</item>
+        </item>
+        <!-- define column type -->
+        <item name="spinner" xsi:type="string">timeslots_columns</item>
+        <!-- Button to add new item -->
+        <item name="buttons" xsi:type="array">
+            <item name="add" xsi:type="array">
+                <item name="name" xsi:type="string">add</item>
+                <item name="label" xsi:type="string" translate="true">Add New Time Slot</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/new</item>
+            </item>
+        </item>
+
+    </argument>
+
+    <!-- Data source -->
+    <dataSource name="timeslots_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">TimeSlotsGridDataProvider</argument> <!-- Data provider class -->
+            <argument name="name" xsi:type="string">timeslots_listing_data_source</argument> <!-- provider defined above -->
+            <argument name="primaryFieldName" xsi:type="string">id</argument> <!-- Primary key -->
+            <argument name="requestFieldName" xsi:type="string">id</argument> <!-- URL name parameter -->
+
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <!-- Primary key column name -->
+                        <item name="indexField" xsi:type="string">id</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+
+    <!-- Container Listing Top -->
+    <container name="listing_top">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="template" xsi:type="string">ui/grid/toolbar</item>
+            </item>
+        </argument>
+        <!-- Button to manage views -->
+        <bookmark name="bookmarks">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/bookmarks/bookmarks</item>
+                    <item name="displayArea" xsi:type="string">dataGridActions</item>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="saveUrl" xsi:type="url" path="mui/bookmark/save"/>
+                        <item name="deleteUrl" xsi:type="url" path="mui/bookmark/delete"/>
+                        <item name="namespace" xsi:type="string">timeslots_listing</item>
+                    </item>
+                </item>
+            </argument>
+        </bookmark>
+        <!-- Button to manage columns -->
+        <container name="columns_controls">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsData" xsi:type="array">
+                        <item name="provider" xsi:type="string">timeslots_listing.timeslots_listing.timeslots_columns</item>
+                    </item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
+                    <item name="displayArea" xsi:type="string">dataGridActions</item>
+                </item>
+            </argument>
+        </container>
+
+        <!-- Filters -->
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">timeslots_listing.timeslots_listing.listing_top.bookmarks</item>
+                        <item name="namespace" xsi:type="string">current.filters</item>
+                    </item>
+                    <item name="childDefaults" xsi:type="array">
+                        <item name="provider" xsi:type="string">timeslots_listing.timeslots_listing.listing_top.listing_filters</item>
+                        <item name="imports" xsi:type="array">
+                            <item name="visible" xsi:type="string">timeslots_listing.timeslots_listing.listing_top.bookmarks:current.columns.${ $.index }.visible</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+
+            <filterRange name="timeslots_id">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataScope" xsi:type="string">id</item> <!-- Column name in DB -->
+                        <item name="label" xsi:type="string" translate="true">ID</item> <!-- Label on grid -->
+                        <item name="childDefaults" xsi:type="array">
+                            <item name="provider" xsi:type="string">timeslots_listing.timeslots_listing.listing_top.listing_filters</item>
+                        </item>
+                    </item>
+                </argument>
+                <filterInput name="from">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="dataScope" xsi:type="string">from</item>
+                            <item name="label" xsi:type="string" translate="true">from</item>
+                            <item name="placeholder" xsi:type="string" translate="true">From</item>
+                        </item>
+                    </argument>
+                </filterInput>
+                <filterInput name="to">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="dataScope" xsi:type="string">to</item>
+                            <item name="label" xsi:type="string" translate="true">to</item>
+                            <item name="placeholder" xsi:type="string" translate="true">To</item>
+                        </item>
+                    </argument>
+                </filterInput>
+            </filterRange>
+
+            <!-- Slot Name Filter -->
+            <filterInput name="timeslots_slotname">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataScope" xsi:type="string">slot_name</item> <!-- Column name in DB -->
+                        <item name="label" xsi:type="string" translate="true">Slot Name</item> <!-- Label on grid -->
+                    </item>
+                </argument>
+            </filterInput>
+
+            <!-- Appointed Time Slots -->
+            <filterInput name="timeslots_appointed_time_slot">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataScope" xsi:type="string">appointed_time_slot</item> <!-- Column name in DB -->
+                        <item name="label" xsi:type="string" translate="true">Appointed Time Slots</item> <!-- Label on grid -->
+                    </item>
+                </argument>
+            </filterInput>
+
+            <!-- From Filter -->
+            <filterInput name="timeslots_from">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataScope" xsi:type="string">from</item> <!-- Column name in DB -->
+                        <item name="label" xsi:type="string" translate="true">From</item> <!-- Label on grid -->
+                    </item>
+                </argument>
+            </filterInput>
+
+            <!-- To Filter -->
+            <filterInput name="timeslots_to">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataScope" xsi:type="string">to</item> <!-- Column name in DB -->
+                        <item name="label" xsi:type="string" translate="true">To</item> <!-- Label on grid -->
+                    </item>
+                </argument>
+            </filterInput>
+
+        </filters>
+
+        <!-- Mass action -->
+        <massaction name="listing_massaction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">timeslots_listing.timeslots_listing.timeslots_columns.ids</item>
+                    <item name="indexField" xsi:type="string">id</item>
+                </item>
+            </argument>
+            <action name="delete">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">delete</item>
+                        <item name="label" xsi:type="string" translate="true">Delete</item>
+                        <item name="url" xsi:type="url" path="timeslots/index/massDelete"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Delete items</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you wan't to delete selected items?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
+
+        <!-- Paging -->
+        <paging name="listing_paging">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">timeslots_listing.timeslots_listing.listing_top.bookmarks</item>
+                        <item name="namespace" xsi:type="string">current.paging</item>
+                    </item>
+                    <item name="selectProvider" xsi:type="string">timeslots_listing.timeslots_listing.timeslots_columns.ids</item>
+                    <item name="displayArea" xsi:type="string">bottom</item>
+                </item>
+            </argument>
+        </paging>
+
+    </container>
+
+    <columns name="timeslots_columns">
+        <!-- Add columns with checkboxes -->
+        <selectionsColumn name="ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="resizeEnabled" xsi:type="boolean">false</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">55</item>
+                    <item name="indexField" xsi:type="string">id</item>
+                </item>
+            </argument>
+        </selectionsColumn>
+        <!-- ID Column -->
+        <column name="id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="sorting" xsi:type="string">asc</item>
+                    <item name="label" xsi:type="string" translate="true">ID</item>
+                </item>
+            </argument>
+        </column>
+
+        <!-- Position Id Column -->
+        <column name="position">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortable" xsi:type="boolean">true</item>
+                    <item name="label" xsi:type="string" translate="true">Position</item>
+                </item>
+            </argument>
+        </column>
+
+        <!-- Slot Name Column -->
+        <column name="slot_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="sortable" xsi:type="boolean">true</item>
+                    <item name="label" xsi:type="string" translate="true">Slot name</item>
+                </item>
+            </argument>
+        </column>
+
+        <!-- From Column -->
+        <column name="from">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortable" xsi:type="boolean">true</item>
+                    <item name="label" xsi:type="string" translate="true">From</item>
+                </item>
+            </argument>
+        </column>
+
+        <!-- To Column -->
+        <column name="to">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortable" xsi:type="boolean">true</item>
+                    <item name="label" xsi:type="string" translate="true">To</item>
+                </item>
+            </argument>
+        </column>
+
+        <!-- Appointed Time Slot Column -->
+        <column name="appointed_time_slot">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="sortable" xsi:type="boolean">true</item>
+                    <item name="label" xsi:type="string" translate="true">Appointed Time Slot</item>
+                </item>
+            </argument>
+        </column>
+
+        <!-- Action columns -->
+        <actionsColumn name="actions" class="Riki\TimeSlots\Ui\Component\Listing\Columns\TimeSlotsActions">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="resizeEnabled" xsi:type="boolean">false</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">107</item>
+                    <item name="indexField" xsi:type="string">id</item>
+                </item>
+            </argument>
+        </actionsColumn>
+
+    </columns>
+</listing>

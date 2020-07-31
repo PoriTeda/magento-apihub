@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
+    <system>
+        <section id="loggersetting">
+            <group id="quote_logger" translate="label" type="text" sortOrder="500" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Quote</label>
+                <field id="logger_quote_delete_enable_status" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable logger info when quote delete</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>File name: Riki_Quote/yyyy/mm/dd/quote_delete.log</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

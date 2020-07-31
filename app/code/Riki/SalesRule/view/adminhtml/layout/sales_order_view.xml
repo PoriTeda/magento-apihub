@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="order_tab_info">
+            <block class="Riki\SalesRule\Block\Adminhtml\Sales\Order\View\Promotion" name="promotions" template="Riki_SalesRule::sales/order/view/promotions.phtml" />
+        </referenceBlock>
+    </body>
+</page>

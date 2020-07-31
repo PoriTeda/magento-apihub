@@ -1,0 +1,5 @@
+"Attention","注意"
+"Are you sure you want to delete all products?","商品をすべて削除してもよろしいですか？"
+"Unable to save address. Please, check input data.",アドレスを保存することができません 入力データを確認してください
+"Carrier with such method not found: %1, %2",見つからないような方法でのキャリア：%1%2
+Shipping method is not applicable for empty cart,発送方法は空のカートには適用されません

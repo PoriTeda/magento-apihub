@@ -1,0 +1,86 @@
+<?php
+/** @var \Magento\Sales\Block\Adminhtml\Order\Totals $block */
+$order = $block->getOrder();
+$hasPointForTrial = $order->getData('point_for_trial') > 0 ? true : false;
+?>
+<table class="data-table admin__table-secondary order-subtotal-table">
+    <?php $_totals = $block->getTotals('footer')?>
+
+    <?php if ($_totals):?>
+        <tfoot>
+            <?php foreach ($block->getTotals('footer') as $_code => $_total): ?>
+                <?php if ($_total->getBlockName()): ?>
+                    <?php echo $block->getChildHtml($_total->getBlockName(), false); ?>
+                <?php else:?>
+                <tr class="col-<?php /* @escapeNotVerified */ echo $_code?>">
+                    <td <?php /* @escapeNotVerified */ echo $block->getLabelProperties()?> class="label">
+                        <strong><?php echo $block->escapeHtml($_total->getLabel()); ?></strong>
+                    </td>
+                    <td <?php /* @escapeNotVerified */ echo $block->getValueProperties()?>>
+                        <strong><?php /* @escapeNotVerified */ echo $block->formatValue($_total) ?></strong>
+                    </td>
+                </tr>
+                <?php endif?>
+            <?php endforeach?>
+            <?php if (!$block->getSource() instanceof \Magento\Sales\Model\Order\Creditmemo): ?>
+            <tr>
+                <td class="label">
+                    <strong><?php echo __('Shopping Point Information') ?></strong>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <?php if ($hasPointForTrial) : ?>
+                    <?php echo __('Shopping Point Trial') ?>
+                    <?php else : ?>
+                    <?php echo __('Used Points') ?>
+                    <?php endif; ?>
+                </td>
+                <td>
+                    <?php echo $block->getSource()->getUsedPoint() . __('point(s)'); ?>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    <?php echo __('Total Earned Point for this Order') ?>
+                </td>
+                <td>
+                    <?php echo $block->getSource()->getBonusPointAmount() . __('point(s)'); ?>
+                </td>
+            </tr>
+            <?php endif;?>
+        </tfoot>
+    <?php endif?>
+
+    <?php $_totals = $block->getTotals('')?>
+    <?php if ($_totals):?>
+        <tbody>
+            <?php foreach ($_totals as $_code => $_total): ?>
+                <?php if ($_total->getBlockName()): ?>
+                    <?php echo $block->getChildHtml($_total->getBlockName(), false); ?>
+                <?php else:?>
+                    <tr class="col-<?php /* @escapeNotVerified */ echo $_code?>">
+                        <td <?php /* @escapeNotVerified */ echo $block->getLabelProperties()?> class="label">
+                            <?php if ($_total->getStrong()):?>
+                            <strong><?php echo $block->escapeHtml($_total->getLabel()); ?></strong>
+                            <?php else:?>
+                            <?php echo $block->escapeHtml($_total->getLabel()); ?>
+                            <?php endif?>
+                        </td>
+
+                        <?php if ($_total->getStrong()):?>
+                            <td <?php /* @escapeNotVerified */ echo $block->getValueProperties()?>>
+                                <strong><?php /* @escapeNotVerified */ echo $block->formatValue($_total) ?></strong>
+                            </td>
+                        <?php else:?>
+                            <td <?php /* @escapeNotVerified */ echo $block->getValueProperties()?>>
+                                <span><?php /* @escapeNotVerified */ echo $block->formatValue($_total) ?></span>
+                            </td>
+                        <?php endif?>
+                    </tr>
+                <?php endif?>
+            <?php endforeach?>
+        </tbody>
+    <?php endif?>
+</table>

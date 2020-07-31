@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<update handle="styles"/>
+<body>
+    <referenceContainer name="content">
+        <block class="Riki\User\Block\Adminhtml\Password\Import\Before" template="import/before.phtml" name="riki.user.import.before" as="form_before"/>
+        <block class="Riki\User\Block\Adminhtml\Password\Import" name="user_password_import"/>
+        <block class="Riki\User\Block\Adminhtml\Password\Import\Before" template="import/after.phtml" name="riki.user.import.after" as="form_after"/>
+    </referenceContainer>
+</body>
+</page>

@@ -1,0 +1,113 @@
+<?php
+/* @var \Riki\Subscription\Block\Frontend\Profile\Payment\Method\PaymentMethod $block */
+/* @var \Riki\Subscription\Block\Frontend\Profile\Edit $parentBlock */
+
+$parentBlock = $block->getParentBlock();
+$profileData = $parentBlock->getEntity();
+$courseSettings = $parentBlock->getCourseSetting();
+
+$isAllowChangePaymentMethod = $courseSettings['is_allow_change_payment_method'];
+
+$methodsInfo = $parentBlock->isChangePaymentMethod();
+$originProfileData = $parentBlock->loadOriginData();
+$lastUsedCC = $parentBlock->getCcLastUsedDate($profileData->getCustomerId());
+$isBtnUpdateAllChangesPressed = $parentBlock->checkBtnUpdateAllChangePressed();
+/* @var \Riki\StockPoint\Helper\ValidateStockPointProduct $stockPointHelper */
+$stockPointHelper = $this->helper('Riki\StockPoint\Helper\ValidateStockPointProduct');
+?>
+<fieldset class="fieldset panel">
+
+    <div class="label">
+        <h4><?php echo __("Payment method")  ?></h4>
+    </div>
+    <div class="payment-method-block">
+        <table class="payment-method required">
+            <?php
+            $pmDisabled =  $isAllowChangePaymentMethod ? "" : "disabled";
+            $currentPaymentMethod = $parentBlock->getEntity()->getData("payment_method");
+            $isCheckedNewPaygent = $parentBlock->getEntity()->getData("new_paygent");
+            $isSavePreferred = $parentBlock->getEntity()->getData('paygent_save_prederred');
+            ?>
+            <?php foreach($methodsInfo as $methodInfo){ ?>
+
+                <!-- make radio payment button-->
+                <?php if ($methodInfo['value'] != 'paygent') { ?>
+                    <?php
+                        if ($stockPointHelper->checkProfileExistStockPoint($profileData)) {
+                            $methodInfo['disabled'] = true;
+                        }
+                    ?>
+                    <tr>
+                        <td>
+                            <input <?php if($isBtnUpdateAllChangesPressed) {echo 'disabled';} ?>
+                                    type="radio" id="payment_<?php echo $methodInfo['value']  ?>"
+                                    name="payment_method" <?php echo $currentPaymentMethod == $methodInfo['value'] ? 'checked' :''  ?>
+                                    value="<?php echo $methodInfo['value']  ?>" <?php echo $pmDisabled ?>
+                                <?php echo (isset($methodInfo['disabled']) and $methodInfo['disabled'])?'disabled':''; ?>
+                                    class="radio"
+                            />
+                            <label for="payment_<?php echo $methodInfo['value']  ?>">
+                                <?php echo __($methodInfo['label']); ?>
+                            </label>
+                        </td>
+                        <td>
+                            <?php
+                                if ($childBlock = $block->getChildBlock('profile_payment_method.' . $methodInfo['value'])) {
+                                    echo $childBlock->addData($methodInfo['params'])->toHtml();
+                                }
+                            ?>
+                        </td>
+                    </tr>
+                <?php } else { ?>
+                    <!-- show last case used -->
+                    <?php if ($lastUsedCC != false || $originProfileData->getData('payment_method') == $methodInfo['value']) { ?>
+                        <tr>
+                            <td>
+                                <input <?php if($isBtnUpdateAllChangesPressed) {echo 'disabled';} ?> type="radio" id="payment_<?php echo $methodInfo['value']  ?>"
+                                                                                                     name="payment_method" <?php echo $currentPaymentMethod == $methodInfo['value'] && $parentBlock->getEntity()->getData('is_new_paygent_method') == false ? 'checked' :''  ?>
+                                                                                                     value="<?php echo $methodInfo['value']  ?>" <?php echo $pmDisabled ?>
+                                    <?php echo (isset($methodInfo['disabled']) and $methodInfo['disabled'])?'disabled':''; ?>
+                                                                                                     class="radio" />
+                                <label for="payment_<?php echo $methodInfo['value']  ?>">
+                                    <?php echo __('クレジット支払い（前回使用）'); ?>
+                                </label>
+                            </td>
+                            <td>
+                                <?php echo __('前回使用したクレジットカードでお支払いの方はこちら'); ?> <br />
+                                <?php echo __('ご利用日時：').$lastUsedCC ;?> <br />
+                                <?php echo __('有効期限切れ等でクレジット情報を変更する場合は、[クレジット支払]を選択してください
+'); ?>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                    <!-- show new paygent card -->
+                    <tr>
+                        <td>
+                            <input <?php if($isBtnUpdateAllChangesPressed) {echo 'disabled';} ?> type="radio" id="payment_new_paygent"
+                                                                                                 name="payment_method" <?php echo ($parentBlock->getEntity()->getData('is_new_paygent_method') == true) ? 'checked' :''  ?>
+                                                                                                 value="new_paygent" <?php echo $pmDisabled ?>
+                                <?php echo (isset($methodInfo['disabled']) and $methodInfo['disabled'])?'disabled':''; ?>
+                                                                                                 class="radio" />
+                            <label for="payment_new_paygent">
+                                <?php echo __('クレジット支払い'); ?>
+                            </label>
+                        </td>
+                        <td>
+                            <p class="method-notice"><?php echo __('Please enter card information from the Go to Enter Card Information on the next page') ?></p>
+                            <p><img src="<?php echo $block->getViewFileUrl('images/credit_card_method.png'); ?>" alt=" Image Card Method"></p>
+                            <div><?php echo __('Points to remember about credit card with debit function'); ?></div>
+                            <div><?php echo __('Credit card with debit function will be withdrawn when card information is entered.~'); ?></div>
+                        </td>
+                    </tr>
+                    <!-- end show new paygent card -->
+                <?php } ?>
+                <!-- end make radio payment button -->
+            <?php } ?> <!-- end foreach payment method -->
+            <tr class="check-error no-display">
+                <td colspan="2">
+                    <div for="" generated="true" class="mage-error" id="-error"><?php echo __('Please choose a payment method.');?></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</fieldset>

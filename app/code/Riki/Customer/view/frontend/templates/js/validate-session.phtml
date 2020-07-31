@@ -1,0 +1,15 @@
+<?php
+/**
+ * @var $block \Riki\Customer\Block\Account\ValidateSession
+ */
+?>
+<script type="text/x-magento-init">
+<?php
+    echo $this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode([
+        '*' => ['Riki_Customer/js/session-validator' => [
+            'sessionValidationUrl' => $block->getSessionValidationUrl(),
+            'currentUrl' => $block->escapeUrl($block->getCurrentUrl())
+        ]],
+    ]);
+    ?>
+</script>

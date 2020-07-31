@@ -1,0 +1,37 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <riki_order>
+            <order>
+                <order_visibility>12</order_visibility>
+            </order>
+            <order_customer>
+                <order_random_email_domain>@example.com</order_random_email_domain>
+            </order_customer>
+            <free_payment_shipment_fee_email>
+                <identity>sales</identity>
+                <template>riki_email_order_cancel_template</template>
+            </free_payment_shipment_fee_email>
+        </riki_order>
+        <riki_email>
+            <order_cancel>
+                <enable_send_mail>0</enable_send_mail>
+                <identity>sales</identity>
+                <template>riki_email_order_cancel_template</template>
+                <cvs_template>riki_email_order_cancel_cvs_template</cvs_template>
+            </order_cancel>
+        </riki_email>
+        <cataloginventory>
+            <order_options>
+                <allow_create_order_out_of_stock>0</allow_create_order_out_of_stock>
+            </order_options>
+        </cataloginventory>
+        <paygent_config>
+            <capture>
+                <publish_cron_exp>0 2 * * *</publish_cron_exp>
+                <trigger_capture_consumer_cron_exp>0 2 * * *</trigger_capture_consumer_cron_exp>
+                <capture_consumer_number>5</capture_consumer_number>
+                <max_capture_consumer_message_number>100</max_capture_consumer_message_number>
+            </capture>
+        </paygent_config>
+    </default>
+</config>

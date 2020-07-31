@@ -1,0 +1,178 @@
+<?php /** @var $block \Riki\FairAndSeasonalGift\Block\Adminhtml\Fair\Edit\Tab\Items */ ?>
+
+<div>
+    <div class="admin__control-table-wrapper" id="fair_seasonal_item_container">
+        <section class="admin__page-section">
+            <div class="admin__field">
+                <div class="admin__field-control">
+                    <?php echo $block->getAddButtonHtml();?>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <section class="admin__page-section">
+        <div class="admin__page-section-title">
+            <span class="title"><?php /* @escapeNotVerified */ echo __('Fair items') ?></span>
+        </div>
+
+        <div class="admin__control-table-wrapper">
+            <table class="data-table admin__control-table">
+                <thead>
+                <tr class="headings">
+                    <th class="col-serial-no"><?php /* @escapeNotVerified */ echo __('Serial No') ?></th>
+                    <th class="col-product-sku"><?php /* @escapeNotVerified */ echo __('Product SKU') ?></th>
+                    <th class="col-product-name"><?php /* @escapeNotVerified */ echo __('Product name') ?></th>
+                    <th class="col-recommend"><?php /* @escapeNotVerified */ echo __('Recommend product') ?></th>
+                </tr>
+                </thead>
+                <tbody id="fair_detail_item_container">
+
+                <?php
+                    $fairProduct = $block->getFairProduct();
+                    if( !empty( $fairProduct ) ):
+                        foreach ( $fairProduct as $item ):
+                            $product = $block->getProduct($item->getProductId());
+                                if($product):
+                ?>
+
+                    <tr class="current-fair-product" data-detail-id="<?php echo $item->getId();?>">
+                        <td class="col-serial-no">
+                            <input class="input-text admin__control-text fair-detail-serial-no required-entry _required"
+                                   type="text"
+                                   name="detail[<?php echo $item->getProductId()?>][serial_no]"
+                                   value="<?php echo $item->getSerialNo();?>"
+                            />
+
+                        </td>
+                        <td class="col-product-sku">
+                            <?php echo $product->getSku();?>
+                        </td>
+                        <td class="col-product-name">
+                            <?php echo $product->getName();?>
+                        </td>
+                        <td class="col-recommend">
+                            <input class="input-radio fair-detail-recommend"
+                                   type="radio"
+                                   name="detail[<?php echo $item->getProductId()?>][is_recommend]"
+                                   <?php echo $item->getIsRecommend() == 1 ? 'checked' : '';?>
+                                value="1"
+                            />
+                        </td>
+                        <td class="col-action last">
+                            <span title="Delete Row">
+                                <button title="Delete" type="button" class="action-default scalable action-delete fair-item-delete" data-ui-id="fair-seasonal-edit-tab-fair-detail-delete-button-<?php echo $item->getId()?>">
+                                    <span>Delete</span>
+                                </button>
+                                <input type="hidden" class="delete-item-flag" name="detail[<?php echo $item->getProductId()?>][is_deleted]" value="0">
+                            </span>
+                        </td>
+                    </tr>
+                <?php
+                            endif;
+                        endforeach;
+                    endif;
+                ?>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+
+
+<div id="fair_item_modal" style="display:none;">
+</div>
+
+<script>
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal'
+        ],
+        function(
+            $,
+            modal
+        ) {
+            var options = {
+                type: 'slide',
+                modalClass: 'mage-new-rewards-dialog form-inline',
+                title: $.mage.__('Add Product To Fair'),
+                buttons: [{
+                    text: $.mage.__('Add Product'),
+                    'class': 'action-primary action-add',
+                    click: function () {
+                        if( !$('input[name=selected-product]').is(':checked') ){
+                            this.closeModal();
+                        } else {
+                            addProductToFair();
+                        }
+                    }
+                }]
+            };
+
+            var popup = modal(options, $('#fair_item_modal'));
+
+            /*show product grid*/
+            $("#add_item_button").on('click',function(){
+                var gridItemUrl = '<?=$block->getItemGridUrl();?>';
+                $.ajax({
+                    url: gridItemUrl,
+                    data: {
+                        form_key: FORM_KEY
+                    },
+                    dataType: 'html',
+                    success: function(data) {
+                        $("#fair_item_modal").html(data);
+                        $("#fair_item_modal").modal('openModal');
+                    },
+                    context: $('body'),
+                    showLoader: true
+                });
+            });
+
+            $(document).on('change', '.fair-detail-recommend', function(){
+                if($(this).is(':checked')){
+                    $('.fair-detail-recommend').prop('checked', false);
+                    $(this).prop('checked', true);
+                }
+            });
+
+            $(document).on('click', '.fair-detail-delete-new-item', function(){
+                $(this).parents('tr').remove();
+            });
+
+            $(document).on('click', '.fair-item-delete', function(){
+                $(this).parents('td').find('.delete-item-flag').val(1);
+                $(this).parents('tr').hide();
+            });
+
+            function addProductToFair(){
+
+                var productList = [];
+
+                $.each( $('input[name=selected-product]:checked'), function(){
+                    productList.push($(this).val());
+                });
+
+                $.ajax({
+                    url: '<?php echo $block->getAddProductUrl();?>',
+                    data: {
+                        form_key: FORM_KEY,
+                        productList: JSON.stringify(productList)
+                    },
+                    context: $('body'),
+                    showLoader: true,
+                    dataType: 'html',
+                    success: function(data) {
+                        $("#fair_item_modal").modal('closeModal');
+                        $('#fair_detail_item_container').prepend(data);
+                        if( !$('.fair-detail-recommend').is(':checked')){
+                            $('#fair_detail_item_container').find('tr:first-child').find('.fair-detail-recommend').prop('checked', true);
+                        }
+                    }
+                });
+            }
+        }
+    );
+</script>

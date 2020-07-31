@@ -1,0 +1,41 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+ ?>
+<script>
+require([
+    "prototype",
+    "Magento_Sales/order/create/form",
+    "Magento_Catalog/catalog/product/composite/configure"
+], function(){
+
+    order.sidebarHide();
+    
+    function addMainCompositeListType() {
+        productConfigure.addListType('product_to_add', {
+            urlFetch: '<?php /* @escapeNotVerified */ echo $block->getUrl('sales/order_create/configureProductToAdd') ?>'
+        });
+        productConfigure.addListType('quote_items', {
+            urlFetch: '<?php /* @escapeNotVerified */ echo $block->getUrl('sales/order_create/configureQuoteItems') ?>'
+        });
+    }
+
+    if (typeof(mainListTypeWorkedOn) == 'undefined') {
+        mainListTypeWorkedOn = false;
+    }
+    if (!mainListTypeWorkedOn) {
+        if (typeof(productConfigure) == 'undefined') {
+            Event.observe(window, 'load',  function(){
+                setTimeout(addMainCompositeListType, 10);
+            })
+        } else {
+            addMainCompositeListType();
+        }
+        mainListTypeWorkedOn = true;
+    }
+});
+</script>

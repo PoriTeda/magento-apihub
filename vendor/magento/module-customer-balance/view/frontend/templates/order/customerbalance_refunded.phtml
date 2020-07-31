@@ -1,0 +1,21 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+    $_order  = $block->getOrder();
+    $_source = $block->getSource();
+?>
+<?php if ($_source->getCustomerBalTotalRefunded()): ?>
+<tr>
+    <td <?= /* @escapeNotVerified */ $block->getLabelProperties() ?> class="col name">
+        <?= /* @escapeNotVerified */ __('Refunded to Store Credit') ?>
+    </td>
+    <td <?= /* @escapeNotVerified */ $block->getValueProperties() ?> class="col price"><?= /* @escapeNotVerified */ $_order->formatPrice($_source->getCustomerBalTotalRefunded()) ?></td>
+</tr>
+<?php endif; ?>

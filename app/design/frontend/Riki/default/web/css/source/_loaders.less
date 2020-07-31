@@ -1,0 +1,97 @@
+// /**
+//  * Copyright © 2016 Magento. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//    Common
+//--------------------------------------
+
+& when (@media-common = true) {
+
+    .load.indicator {
+        .lib-loader();
+        position: absolute;
+        > span {
+            display: none;
+        }
+    }
+
+    .loading-mask {
+        .lib-loading-mask();
+        background: rgba(255, 255, 255, .5);
+        .loader {
+            > .fa-spinner {
+                font-size: 3.2rem;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin-top: -16px;
+                margin-left: -16px;
+            }
+            > img {
+                display: none;
+            }
+            > p {
+                display: none;
+                color: #777777;
+                position: absolute;
+                z-index: 99;
+                top: 50%;
+                margin-top: 20px;
+                text-align: center;
+                width: 100%;
+                font-weight: bold;
+                padding: 0 6%;
+                .lib-css(box-sizing, border-box, 1);
+            }
+        }
+        &#checkout-loader {
+            .loader > p {
+                margin-top: 36px;
+            }
+        }
+    }
+
+    body {
+        > .loading-mask {
+            background: rgba(255, 255, 255, .5);
+            z-index: @loader-overlay__z-index;
+            > .loader {
+                img {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    ._block-content-loading {
+        position: relative;
+    }
+}
+
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .loading-mask {
+        .loader {
+            > p {
+                top: auto;
+                left: auto;
+                right: 65px;
+                bottom: 40px;
+                width: 210px;
+                color: #00b050;
+                border: solid 1px #d9d9d9;
+                padding: 15px 10px;
+                font-weight: normal;
+                margin-top: 0;
+                text-align: left;
+                background-color: #f7f7f7;
+            }
+        }
+    }
+}

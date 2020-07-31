@@ -1,0 +1,11 @@
+<?php $product = $block->getProduct(); ?>
+<?php if (is_array($product)) : ?>
+<?php foreach ($product as $address => $item) :?>
+<?php  echo __('お届け先').": ".$address."\n" ?>
+<?php foreach ($item as $value) :?>
+<?php echo __('商品名').": ".$value['name']."\n" ?>
+<?php echo __('商品価格').": ".$value['price'].'円'.__('数量')."： ".$value['qty']."\n" ?>
+<?php echo __('有料サービス')."： ".$value['wrapping_name']." ".__('有料サービス価格')."： ".$value['wrapping_price'].__('円'); ?>
+<?php endforeach; ?>
+<?php endforeach; ?>
+<?php endif; ?>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 MagePal. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="head.additional">
+          <block class="Riki\GoogleTagManager\Block\TagManager" name="riki_tag_manager_data_layer" template="data_layer.phtml" />
+        </referenceBlock>
+        <move element="google_analyticsuniversal"  destination="head.additional" after="riki_tag_manager_data_layer"/>
+        <referenceContainer name="after.body.start">
+            <block class="Magento\GoogleTagManager\Block\Ga" name="google_analyticsuniversal_noscript" as="google_analyticsuniversal_noscript"
+                   template="Riki_GoogleTagManager::noscript_ga.phtml" />
+            <block class="Magento\Framework\View\Element\Template" name="ga_client_hidden_field" as="ga_client_hidden_field"
+                   template="Riki_GoogleTagManager::ga_client_id.phtml" />
+
+        </referenceContainer>
+        <!-- referenceBlock name="head.additional" -->
+        <referenceBlock name="before.body.end">
+            <block class="Riki\GoogleTagManager\Block\ProductClick"
+                   name="riki_tag_manager_product_click" template="product_click.phtml"
+            />
+            <block class="Magento\Framework\View\Element\Template"
+                   name="riki_tag_manager_tracking_floating_button"
+                   template="Riki_GoogleTagManager::tracking_floating_button.phtml"/>
+        </referenceBlock>
+    </body>
+</page>

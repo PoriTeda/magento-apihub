@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="GiftCardNotificationTest">
+        <annotations>
+            <features value="GiftMessage"/>
+            <stories value="MAGETWO-60846 - Checkout - Add notification when removing applied gift card"/>
+            <title value="System shows notification if GiftCard is added/removed"/>
+            <description value="System shows notification if GiftCard is added/removed"/>
+            <testCaseId value="MAGETWO-93688"/>
+            <group value="giftCard"/>
+            <skip>
+                <issueId value="MQE-1187" />
+            </skip>
+            <severity value="AVERAGE"/>
+        </annotations>
+
+        <!--Login as admin-->
+        <actionGroup ref="LoginAsAdmin" stepKey="loginMagentoAsAdmin"/>
+
+        <!--Create new product-->
+        <actionGroup ref="GoToProductPage" stepKey="goToProductPage"/>
+        <actionGroup ref="AdminCreateSimpleProduct" stepKey="adminCreateSimpleProduct"/>
+
+        <!--Create Gift Card -->
+        <actionGroup ref="AddGiftCardAccountActionGroup" stepKey="createGiftCard"/>
+        <!--Get Gift Card Code-->
+        <grabTextFrom selector="{{GetGiftCardCode.code}}" stepKey="getCardCode"/>
+        <waitForPageLoad stepKey="waitForGettingCode"/>
+        <!--Create Card Price Rule-->
+        <actionGroup ref="CreateCardPriceRule" stepKey="CreateDiscount"/>
+
+        <!--Go to Storefront and add product to card-->
+        <actionGroup ref="AddSimpleProductToCart" stepKey="AddProductToCard">
+            <argument name="product" value="SimpleProduct5"/>
+        </actionGroup>
+
+        <!--Proceed to shipment-->
+        <click selector="{{ProductCardSection.showCard}}" stepKey="clickToOpenCard"/>
+        <click selector="{{ProductCardSection.proceed}}" stepKey="clickToProceedToCheckout"/>
+        <waitForPageLoad time="5" stepKey="waitForTheFormIsOpened"/>
+
+        <!--Fill shipping form-->
+        <actionGroup ref="ShipmentFormActionGroup" stepKey="fillShipmentForm"/>
+
+        <!--Apply gift card code-->
+        <click selector="{{ProductCardSection.addCard}}" stepKey="clickToAddGiftCard"/>
+        <fillField selector="{{ProductCardSection.enterCode}}" userInput="$getCardCode" stepKey="TypeGiftCardCode"/>
+        <click selector="{{ProductCardSection.apply}}" stepKey="clickToApply"/>
+        <waitForPageLoad stepKey="WaitForCardToBeAdded" time="2"/>
+
+        <!--Make sure that appropriate message is displayed-->
+        <grabTextFrom selector="{{ProductCardSection.verificationMsg}}" stepKey="applyMessage"/>
+        <assertEquals stepKey="checkGiftCardIsAdded">
+            <expectedResult type="string">Gift Card $getCardCode was added.</expectedResult>
+            <actualResult type="variable">$applyMessage</actualResult>
+        </assertEquals>
+
+        <!--Remove gift card code-->
+        <waitForElementNotVisible selector="{{ProductCardSection.verificationMsg}}" stepKey="waitForMessageDisappears"/>
+        <click selector="{{ProductCardSection.remove}}" stepKey="clickToRemoveGiftCard"/>
+
+
+        <!--Make sure that appropriate message is displayed-->
+        <waitForPageLoad stepKey="WaitForCardToBeRemoved" time="2"/>
+        <grabTextFrom selector="{{ProductCardSection.verificationMsg}}" stepKey="removeMessage"/>
+        <assertEquals stepKey="checkGiftCardIsRemoved">
+            <expectedResult type="string">Gift Card $getCardCode was removed.</expectedResult>
+            <actualResult type="variable">$removeMessage</actualResult>
+        </assertEquals>
+
+        <!--Apply coupon-->
+        <click selector="{{ProductCardSection.addCoupon}}" stepKey="clickToAddDiscount"/>
+        <fillField selector="{{ProductCardSection.addCode}}" userInput="{{cardCode.priceCard}}" stepKey="TypeDiscountCode"/>
+        <click selector="{{ProductCardSection.applyDiscount}}" stepKey="clickToApplyDiscount"/>
+        <waitForPageLoad stepKey="WaitForDiscountToBeAdded" time="2"/>
+
+        <!--Make sure that appropriate message is displayed-->
+        <grabTextFrom selector="{{ProductCardSection.discountVerificationMsg}}" stepKey="discountApplyMessage"/>
+        <assertEquals stepKey="checkDiscountIsAdded">
+            <expectedResult type="string">Your coupon was successfully applied.</expectedResult>
+            <actualResult type="variable">$discountApplyMessage</actualResult>
+        </assertEquals>
+
+        <!--Remove Coupon-->
+        <click selector="{{ProductCardSection.cancel}}" stepKey="clickToCancelDiscount"/>
+        <waitForPageLoad stepKey="WaitForDiscountToBeRemoved" time="2"/>
+
+        <!--Make sure that appropriate message is displayed-->
+        <grabTextFrom selector="{{ProductCardSection.discountVerificationMsg}}" stepKey="discountRemoveMessage"/>
+        <assertEquals stepKey="checkDiscountIsRemoved">
+            <expectedResult type="string">Your coupon was successfully removed.</expectedResult>
+            <actualResult type="variable">$discountRemoveMessage</actualResult>
+        </assertEquals>
+
+        <!--Go back admin page-->
+        <amOnPage url="admin/dashboard" stepKey="LoginBackToAdmin"/>
+
+        <!--Remove discount-->
+        <actionGroup ref="RemoveCardPriceRule" stepKey="RemoveCardPriceRule"/>
+        <waitForPageLoad stepKey="waitForardPriceRuleDeleted" time="3"/>
+
+        <!--Remove created gift card-->
+        <actionGroup ref="DeleteGiftCardAccountActionGroup" stepKey="removeCreatedGiftCard">
+            <argument name="giftCardAccountCode" value="$getCardCode"/>
+        </actionGroup>
+
+        <!--Delete product-->
+        <actionGroup ref="GoToProductPage" stepKey="GoToProductPage1"/>
+        <actionGroup ref="DeleteProduct" stepKey="deleteCreatedProduct"/>
+
+    </test>
+</tests>

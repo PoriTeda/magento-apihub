@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Magento_Catalog::catalog/category-selector.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Riki\Subscription\Block\Adminhtml\Multiple\Category\Campaign\Edit" name="subscription_campaign_edit"/>
+        </referenceContainer>
+        <referenceContainer name="left">
+            <block class="Riki\Subscription\Block\Adminhtml\Multiple\Category\Campaign\Edit\Tabs" name="subscription_campaign_edit_tabs">
+                <block class="Riki\Subscription\Block\Adminhtml\Multiple\Category\Campaign\Edit\Tab\Main" name="subscription_campaign_edit_tab_main"/>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">main_section</argument>
+                    <argument name="block" xsi:type="string">subscription_campaign_edit_tab_main</argument>
+                </action>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

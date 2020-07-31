@@ -1,0 +1,28 @@
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td style="width:50%;"><h3 class="icon-head head-products"><?php echo __('Manage Stocks') ?></h3></td>
+            <td class="a-right">
+                <?php echo $block->getButtonsHtml() ?>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<?php if (!$block->isSingleStoreMode()) : ?>
+    <?php echo $block->getChildHtml('store_switcher'); ?>
+<?php endif; ?>
+
+<script>
+    InventoryManager.disableMsg = "<?php echo __("Disable local stocks") ?>";
+    InventoryManager.enableMsg = "<?php echo __("Enable local stocks") ?>";
+    InventoryManager.autoUpdateStockStatus = <?php echo $block->getHelperCore()->getStoreConfig("advancedinventory/settings/auto_update_stock_status"); ?>;
+    InventoryManager.nd = "<?php echo __('-'); ?>";
+    InventoryManager.void = "<?php echo __('X'); ?>";
+</script>
+
+<form id="localStocks_form" method='post' action=''>
+    <?php echo $block->getGridHtml() ?>
+</form>
+
+

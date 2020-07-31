@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_Rma::reason" title="Return Reason" module="Riki_Rma" action="riki_rma/reason" sortOrder="1000" parent="Riki::sales_operation_extend" resource="Riki_Rma::reason" />
+        <add id="Riki_Rma::refunds" title="Refunds" module="Riki_Rma" sortOrder="1010" action="riki_rma/refund/index" resource="Riki_Rma::rma_refund" parent="Riki::sales_operation_extend"/>
+        <add id="Riki_Rma::mass_action_return" title="Mass Action Returns" module="Riki_Rma" sortOrder="1030" action="riki_rma/massAction/index" resource="Magento_Rma::magento_rma" parent="Riki::sales_operation_extend"/>
+    </menu>
+</config>

@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route method="POST" url="/V1/sap/products">
+        <service class="Riki\Catalog\Api\SapProductRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Magento_Catalog::products"/>
+        </resources>
+    </route>
+    <route url="/V1/categories/:categoryId/products/:subprofileID" method="GET">
+        <service class="Riki\Catalog\Api\CategoryLinkManagementInterface" method="getAssignedProducts" />
+        <resources>
+            <resource ref="Magento_Catalog::categories" />
+        </resources>
+    </route>
+    <route method="POST" url="/V1/catalog/pricebox">
+        <service class="Riki\Catalog\Api\PriceBoxRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+</routes>

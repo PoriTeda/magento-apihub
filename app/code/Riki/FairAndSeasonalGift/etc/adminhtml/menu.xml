@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_FairAndSeasonalGift::fair_seasonal" module="Riki_FairAndSeasonalGift" resource="Riki_FairAndSeasonalGift::fair_seasonal"
+             sortOrder="50" title="Fair And Seasonal Gift" parent="Magento_Catalog::catalog"/>
+
+        <add id="Riki_FairAndSeasonalGift::fair_management" title="Fair Management" module="Riki_FairAndSeasonalGift"
+             sortOrder="10" action="fair_seasonal/fair/index" resource="Riki_FairAndSeasonalGift::fair_seasonal"
+             parent="Riki_FairAndSeasonalGift::fair_seasonal"/>
+        <add id="Riki_FairAndSeasonalGift::fair_import" title="Fair Import" module="Riki_FairAndSeasonalGift"
+             sortOrder="10" action="fair_seasonal/import/edit" resource="Riki_FairAndSeasonalGift::fair_import"
+             parent="Riki_FairAndSeasonalGift::fair_seasonal"/>
+    </menu>
+</config>

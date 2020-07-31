@@ -1,0 +1,41 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php if ($block->canShow() && $block->getEvents() && count($block->getEvents())): ?>
+<div class="block block-balance-history">
+    <div class="block-title">
+        <strong><?= /* @escapeNotVerified */ __('Balance History') ?></strong>
+    </div>
+    <div class="block-content">
+        <div class="table-wrapper balance-history">
+            <table id="customerbalance-history" class="data table table-balance-history">
+                <caption class="table-caption"><?= /* @escapeNotVerified */ __('Balance History') ?></caption>
+                <thead>
+                    <tr>
+                        <th scope="col" class="col actions"><?= /* @escapeNotVerified */ __('Action') ?></th>
+                        <th scope="col" class="col change"><?= /* @escapeNotVerified */ __('Balance Change') ?></th>
+                        <th scope="col" class="col balance"><?= /* @escapeNotVerified */ __('Balance') ?></th>
+                        <th scope="col" class="col date"><?= /* @escapeNotVerified */ __('Date') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($block->getEvents() as $event): ?>
+                    <tr>
+                        <td data-th="<?= $block->escapeHtml(__('Action')) ?>" class="col actions"><?= /* @escapeNotVerified */ $block->getActionLabel($event->getAction()) ?></td>
+                        <td data-th="<?= $block->escapeHtml(__('Balance Change')) ?>" class="col change"><?= /* @escapeNotVerified */ $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($event->getBalanceDelta()) ?></td>
+                        <td data-th="<?= $block->escapeHtml(__('Balance')) ?>" class="col balance"><?= /* @escapeNotVerified */ $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($event->getBalanceAmount()) ?></td>
+                        <td data-th="<?= $block->escapeHtml(__('Date')) ?>" class="col date"><?= /* @escapeNotVerified */ $block->formatDate($event->getUpdatedAt(), \IntlDateFormatter::SHORT, true) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<?php endif; ?>

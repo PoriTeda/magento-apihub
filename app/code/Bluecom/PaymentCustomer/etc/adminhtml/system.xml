@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="payment">
+            <group id="cvspayment">
+                <field id="customergroup" translate="label" type="multiselect" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Customer Group</label>
+                    <source_model>Bluecom\PaymentCustomer\Model\Source\Config\Customer\Group</source_model>
+                </field>
+            </group>
+            <group id="paygent">
+                <field id="customergroup" translate="label" type="multiselect" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Customer Group</label>
+                    <source_model>Bluecom\PaymentCustomer\Model\Source\Config\Customer\Group</source_model>
+                </field>
+            </group>
+            <group id="invoicedbasedpayment">
+                <field id="customergroup" translate="label" type="multiselect" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Customer Group</label>
+                    <source_model>Bluecom\PaymentCustomer\Model\Source\Config\Customer\Group</source_model>
+                </field>
+            </group>
+            <group id="cashondelivery">
+                <field id="customergroup" translate="label" type="multiselect" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Customer Group</label>
+                    <source_model>Bluecom\PaymentCustomer\Model\Source\Config\Customer\Group</source_model>
+                </field>
+            </group>
+            <!--<group id="shoppingpoint">-->
+                <!--<field id="customergroup" translate="label" type="multiselect" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="0">-->
+                    <!--<label>Customer Group</label>-->
+                    <!--<source_model>Bluecom\PaymentCustomer\Model\Source\Config\Customer\Group</source_model>-->
+                <!--</field>-->
+            <!--</group>-->
+        </section>
+    </system>
+</config>

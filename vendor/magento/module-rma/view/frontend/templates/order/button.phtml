@@ -1,0 +1,13 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Rma\Block\Order\Button */
+?>
+<?php if ($this->helper('Magento\Rma\Helper\Data')->canCreateRma($block->getOrder())): ?>
+    <a href="<?= /* @escapeNotVerified */ $this->helper('Magento\Rma\Helper\Data')->getReturnCreateUrl($block->getOrder()) ?>" class="action return"><span><?= /* @escapeNotVerified */ __('Return') ?></span></a>
+<?php endif;?>

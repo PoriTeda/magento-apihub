@@ -1,0 +1,25 @@
+<?php
+/** @var \Riki\Loyalty\Block\Reward $block */
+$_descriptionUrl = $block->pointSettingPageUrl();
+?>
+<div id="reward-point-message">
+
+</div>
+<div class="block points info">
+    <div class="block left holding-point">
+        <div class="label"> <?php echo __("Current holding point");?></div>
+        <div class="points">
+            <h2><?php echo $block->getPointBalance();?> <?php echo __("point")?></h2>
+            <div class="point-information">
+                <div class="p-left">
+                    <div><?php echo __('Earning tentative points');?></div>
+                    <div><?php echo $block->getTentativePoint();?><?php echo __("point")?></div>
+                </div>
+                <div class="p-right">
+                    <div><?php echo __('Points that will expire in next two months');?></div>
+                    <div><?php echo $block->totalPointExpired(2);?><?php echo __("point")?></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

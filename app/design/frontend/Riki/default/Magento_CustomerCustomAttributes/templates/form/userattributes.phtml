@@ -1,0 +1,32 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Create account form template
+ *
+ * @see \Magento\CustomerCustomAttributes\Block\Form
+ */
+/* @var $block \Magento\CustomerCustomAttributes\Block\Form */
+?>
+<?php if ($block->hasUserDefinedAttributes()): ?>
+    <?php if ($block->isShowContainer()): ?>
+    <fieldset class="fieldset">
+    <?php endif;?>
+    <?php foreach ($block->getUserDefinedAttributes() as $attribute):?>
+        <?php if (preg_match('/(.*kana|riki_nickname)/', $attribute->getAttributeCode())) continue; ?>
+        <?php $attributeContent = $block->getAttributeHtml($attribute);?>
+        <?php if ($attributeContent): ?>
+            <?php /* @escapeNotVerified */ echo $attributeContent;?>
+        <?php endif;?>
+    <?php endforeach;?>
+    <?php if ($block->isShowContainer()): ?>
+    </fieldset>
+    <?php endif;?>
+<?php endif; ?>

@@ -1,0 +1,31 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<?php $_item = $block->getItem() ?>
+<tr class="giftwrapping-info">
+    <td class="col-name">
+        <span><?= /* @escapeNotVerified */ __('Gift Wrapping') ?></span>
+    </td>
+    <td class="col-price" colspan="6">
+        <?php if ($this->helper('Magento\GiftWrapping\Helper\Data')->displayCartWrappingBothPrices($block->getStore()) || $this->helper('Magento\GiftWrapping\Helper\Data')->displayCartWrappingExcludeTaxPrice($block->getStore())): ?>
+            <?php if ($this->helper('Magento\GiftWrapping\Helper\Data')->displayCartWrappingBothPrices($block->getStore())): ?>
+                <span class="label"><?= /* @escapeNotVerified */ __('Excl. Tax') ?>:</span>
+            <?php endif; ?>
+            <?= /* @escapeNotVerified */ $block->formatPrice($_item->getGwPrice()) ?>
+        <?php endif; ?>
+        <?php if ($this->helper('Magento\GiftWrapping\Helper\Data')->displayCartWrappingBothPrices($block->getStore()) || $this->helper('Magento\GiftWrapping\Helper\Data')->displayCartWrappingIncludeTaxPrice($block->getStore())): ?>
+            <?php if ($this->helper('Magento\GiftWrapping\Helper\Data')->displayCartWrappingBothPrices($block->getStore())): ?>
+                <br />
+                <span class="label"><?= /* @escapeNotVerified */ __('Incl. Tax') ?>:</span>
+            <?php endif; ?>
+            <?= /* @escapeNotVerified */ $block->formatPrice($_item->getGwPrice() + $_item->getGwTaxAmount()) ?>
+        <?php endif; ?>
+    </td>
+</tr>

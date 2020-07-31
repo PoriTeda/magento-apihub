@@ -1,0 +1,344 @@
+<?php
+use Riki\Questionnaire\Model\Config\Source\Questions\Options\Type as QuestionType;
+/**
+ * @var Riki\Subscription\Block\Disengage\Profile\Questionnaire $block
+ */
+    $questionnaires = $block->getQuestionnaires();
+    $reasons = $block->getDisengagementReason();
+    $selectedReasons = $block->getSelectedReasons();
+    $selectedQuestionnaireAnswers = $block->getSelectedQuestionnaireAnswers();
+?>
+<div class="fieldset-wrapper customer-subscription-profile">
+    <!-- disengagement header form -->
+    <div class="disengage-header-information">
+        <?php echo $block->getChildHtml('disengagement_navigation');?>
+        <div class="disengage-form-title">
+            <span><?php echo __('Regular flight cancellation questionnaire');?></span>
+        </div>
+    </div>
+    <form action="<?php echo $block->getQuestionnaireValidationUrl();?>" id="questionnaire-form" data-mage-init='{"validation":{}}' method="post">
+    <div class="questionnaire-return-warning">
+        <h4><span><?php echo __('If you have a machine or tool that needs to be returned, please enter the type and number of machines and tools (mandatory, multiple answers)');?></span></h4>
+    </div>
+    <div class="disengagement-profile-questionnaire-wrapper">
+        <?php if($questionnaires):?>
+        <div class="questionnaire-wrapper">
+            <?php foreach($questionnaires as $questionnaireId => $questionnaire) : ?>
+            <div class="disengagement-profile-questionnaire" id="questionnaire_<?php echo $questionnaireId;?>">
+                <?php foreach ($questionnaire['questions'] as $key=> $questionRaw) : ?>
+                <?php
+                $question = $questionRaw['question'];
+                $choices = $questionRaw['choices'];
+                $childrenItems = [];
+                $requiredField = '';
+                if($question->getData('is_required')) {
+                    $requiredField = 'required';
+                }
+                $questionnaireReplyId = 'questionnaire_reply_'.$questionnaireId.'_'.$question->getQuestionId();
+                $childQuestionnaireReplyId = 'questionnaire_reply_'.$questionnaireId.'_'.$question->getQuestionId().'_child';
+                ?>
+                <div class="question-item <?php echo $requiredField;?>">
+                    <div class="question-container">
+                        <div class="question-title"><?php echo $block->escapeHtml($question->getTitle());?></div>
+                            <?php switch ($question->getData('type')):
+                                case QuestionType::TYPE_DROP_DOWN: ?>
+                                <div class="wrapper">
+                                    <?php if($choices):?>
+                                    <div class="level1 middle">
+                                        <div class="select-wrapper">
+                                            <select id="<?php echo $questionnaireReplyId;?>" name ="<?php echo $questionnaireReplyId;?>"
+                                                    class="input-new select-box element-validator has-children input-questionnaire <?php echo $requiredField;?>">
+                                                    <option value=""><?php echo __('Please Select');?></option>
+                                                    <?php foreach($choices as $choiceRaw) :
+                                                        $choice = '';
+                                                        if(array_key_exists('choice', $choiceRaw)) {
+                                                            $choice = $choiceRaw['choice'];
+                                                        }
+                                                        if(array_key_exists('children', $choiceRaw)) {
+                                                            if ($choice && $choiceRaw['children']) {
+                                                                $childrenItems[$choice->getChoiceId()] = $choiceRaw['children'];
+                                                            }
+                                                        }
+                                                        ?>
+                                                        <?php if($choice instanceof \Riki\Questionnaire\Model\Choice):?>
+                                                        <option value="<?php echo $choice->getChoiceId();?>" <?php if (array_key_exists($questionnaireReplyId, $selectedQuestionnaireAnswers) && $selectedQuestionnaireAnswers[$questionnaireReplyId] == $choice->getChoiceId()):?> selected="selected"<?php endif;?>><?php echo $block->escapeHtml($choice->getLabel());?></option>
+                                                    <?php endif;?>
+                                                    <?php endforeach;?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="level2">
+                                        <div class="level2-content">
+                                        <?php if($childrenItems):?>
+                                            <?php foreach($childrenItems as $childId=> $childChoices):?>
+                                                <div class="select-wrapper child-select hidden <?php echo $questionnaireReplyId;?>" id="<?php echo $questionnaireReplyId;?>_<?php echo $childId;?>">
+                                                    <select disabled="disabled" id="<?php echo $childQuestionnaireReplyId;?>_<?php echo $childId;?>"
+                                                            name ="<?php echo $childQuestionnaireReplyId;?>_<?php echo $childId;?>"
+                                                            class="input-new select-box <?php echo $requiredField;?> <?php echo $childQuestionnaireReplyId;?>">
+                                                        <option value=""><?php echo __('Please Select');?></option>
+                                                        <?php foreach($childChoices as $choice): ?>
+                                                            <?php if($choice instanceof \Riki\Questionnaire\Model\Choice):?>
+                                                                <option value="<?php echo $choice->getChoiceId();?>"><?php echo $block->escapeHtml($choice->getLabel());?></option>
+                                                            <?php endif;?>
+                                                        <?php endforeach;?>
+                                                    </select>
+                                                </div>
+                                            <?php endforeach;?>
+                                        <?php endif;?>
+                                        </div>
+                                    </div>
+                                    <?php endif;?>
+                                </div>
+                                <?php break;?>
+                                <?php case QuestionType::TYPE_TEXT: ?>
+                                <div class="wrapper">
+                                    <div class="level1">
+                                        <?php if (array_key_exists($questionnaireReplyId, $selectedQuestionnaireAnswers)) {
+                                            $inputTextValue =  $block->escapeHtml($selectedQuestionnaireAnswers[$questionnaireReplyId]);
+                                        } else {
+                                            $inputTextValue =  '';
+                                        }
+                                        ?>
+                                        <input type="text"
+                                               value="<?php echo $inputTextValue;?>"
+                                               id="<?php echo $questionnaireReplyId;?>"
+                                               name="<?php echo $questionnaireReplyId;?>"
+                                               class="input-text input-questionnaire element-validator <?php echo $requiredField;?>"
+                                               <?php if($requiredField):?>data-validate="{required:true}"<?php endif;?>
+                                        />
+                                    </div>
+                                    <div class="level2"></div>
+                                </div>
+                                <?php break;?>
+                                <?php case QuestionType::TYPE_RADIO: ?>
+                                <?php default: ?>
+                                    <?php if($choices):
+                                        foreach($choices as $choiceRaw) :
+                                            if(array_key_exists('choice', $choiceRaw)) {
+                                                $choice = $choiceRaw['choice'];
+                                            }
+                                            if(array_key_exists('children', $choiceRaw)) {
+                                                $childrenItems = $choiceRaw['children'];
+                                            }
+                                            ?>
+                                            <div class="wrapper">
+                                                <?php if($choice instanceof \Riki\Questionnaire\Model\Choice):?>
+                                                <div class="level1 mage-error-inline">
+                                                    <input <?php if (array_key_exists($questionnaireReplyId, $selectedQuestionnaireAnswers) && $selectedQuestionnaireAnswers[$questionnaireReplyId] == $choice->getChoiceId()):?> checked="checked"<?php endif;?>
+                                                            type="radio" <?php if($requiredField):?>data-validate="{'validate-one-required-by-name':true}"<?php endif;?>
+                                                            class="element-validator has-children input-questionnaire <?php echo $requiredField;?>"
+                                                            name="<?php echo $questionnaireReplyId;?>"
+                                                            id="<?php echo $questionnaireReplyId;?>_<?php echo $choice->getChoiceId();?>"
+                                                            value="<?php echo $choice->getChoiceId();?>" children="<?php echo $question->getQuestionId();?>"/>
+                                                    <label for="<?php echo $questionnaireReplyId;?>_<?php echo $choice->getChoiceId();?>"><span><?php echo $block->escapeHtml($choice->getLabel());?></span></label>
+                                                </div>
+                                                <?php endif;?>
+                                                <div class="level2">
+                                                    <?php if($childrenItems):?>
+                                                        <?php
+                                                        if(isset($selectedQuestionnaireAnswers[$questionnaireReplyId]) && $selectedQuestionnaireAnswers[$questionnaireReplyId] == $choice->getChoiceId()) {
+                                                            $selectedChildrenChoice = true;
+                                                        } else {
+                                                            $selectedChildrenChoice = false;
+                                                        }
+                                                        ?>
+                                                    <div class="level2-content">
+                                                        <div class="select-wrapper child-select">
+                                                            <select <?php if (!$selectedChildrenChoice): ?>disabled="disabled"<?php endif;?>
+                                                                    id="<?php echo $childQuestionnaireReplyId;?>_<?php echo $choice->getChoiceId();?>"
+                                                                    name ="<?php echo $childQuestionnaireReplyId;?>_<?php echo $choice->getChoiceId();?>"
+                                                                    class="input-new select-box <?php echo $requiredField;?> <?php echo $childQuestionnaireReplyId;?>">
+                                                                <option value=""><?php echo __('Please Select');?></option>
+                                                                <?php foreach($childrenItems as $choice): ?>
+                                                                    <?php if($choice instanceof \Riki\Questionnaire\Model\Choice):
+                                                                        if(isset($selectedQuestionnaireAnswers[$questionnaireReplyId]) &&
+                                                                            $selectedQuestionnaireAnswers[$questionnaireReplyId.'_child_'.$selectedQuestionnaireAnswers[$questionnaireReplyId]] == $choice->getChoiceId()) {
+                                                                            $selectChildOption = true;
+                                                                        } else {
+                                                                            $selectChildOption = false;
+                                                                        }
+                                                                        ?>
+                                                                        <option value="<?php echo $choice->getChoiceId();?>" <?php if($selectChildOption):?>selected="selected"<?php endif;?>><?php echo $block->escapeHtml($choice->getLabel());?></option>
+                                                                    <?php endif;?>
+                                                                <?php endforeach;?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <?php endif;?>
+                                                </div>
+                                                <br clear="all" />
+                                            </div>
+                                        <?php endforeach;?>
+                                    <?php endif;?>
+                                    <?php break;?>
+                                <?php endswitch;?>
+                    </div>
+                </div>
+            <?php endforeach;?>
+        </div>
+    <?php endforeach;?>
+        </div>
+        <?php endif;?>
+    </div>
+    <div class="disengagement-profile-reason">
+        <div class="disengagement-profile-reason-title">
+            <h3><span><?php echo __('Please tell me the reason for canceling the regular flight. (Multiple answers allowed) * Required items');?></span></h3>
+        </div>
+        <div class="disengagement-profile-reason-content">
+        <?php if($reasons):?>
+            <?php foreach($reasons as $reason) : ?>
+                <div class="reason-item field required mage-error-inline">
+                    <input type="checkbox" value="<?php echo $reason->getId();?>"
+                           name="reasons[]"
+                           <?php if(in_array($reason->getId(), $selectedReasons)) :?>
+                                checked="checked"
+                            <?php endif;?>
+                           data-validate="{'validate-one-required-by-name':true}"
+                           id="disengagement_reason_<?php echo $reason->getId();?>" class="input-checkbox-reason element-validator" />
+                    <label for="disengagement_reason_<?php echo $reason->getId();?>"><span><?php echo $block->escapeHtml($reason->getTitle());?></span></label>
+                </div>
+            <?php endforeach;?>
+        <?php endif;?>
+        </div>
+    </div>
+    <div class="not-restore-warning-message a-right">
+        <?php echo __('This operation can not be restored');?>
+    </div>
+    <div class="actions-toolbar-disengagement">
+        <button type="button" id="back_to_list" title="<?php echo __('Previous Step') ?>">
+            <span><?php echo __('Previous Step') ?></span>
+        </button>
+        <button type="submit" id="submit_to_disengagement" class="action submit primary" disabled="disabled" title="<?php echo __('Disengagement Profile') ?>" >
+            <span><?php echo __('Disengagement Profile') ?></span>
+        </button>
+    </div>
+    <?php echo $block->getBlockHtml('formkey');?>
+    </form>
+</div>
+<script>
+    var dataLayer = dataLayer || [];
+    dataLayer.push({
+        'event' : 'UAEvent',
+        'EventCategory' : 'Cancellation',
+        'EventAction' : 'Cancellation - Step3',
+        'EventLabel' : '<?php echo $block->getConsumerDbId();?>',
+        'profileID'  : '<?php echo $block->getProfileDisengagement();?>'
+    });
+</script>
+<script>
+    /**
+     * Validate form in each element
+     */
+    require([
+        "jquery",
+        'mage/translate',
+        "mage/validation"
+    ], function($, $t){
+        $('#back_to_list').click(function(){
+            window.location.href = '<?php echo $block->getAttentionUrl();?>';
+        });
+        hideSelectBoxElementFromRadio = function(elementId) {
+            $(elementId).attr('disabled', true);
+            $(elementId).removeClass('required');
+            $(elementId).find('option:first').attr('selected', 'selected');
+        };
+        showSelectBoxElementFromRadio = function(elementId, hasRequired) {
+            $(elementId).removeAttr('disabled');
+            if(hasRequired) {
+                $(elementId).addClass('required');
+            }
+            $(childEl).find('option:first').attr('selected', 'selected');
+        };
+
+        $('.input-questionnaire').click(function(){
+            if ($(this).attr('type') == 'radio') {
+                if($(this).hasClass('required')) {
+                    hasRequired = true;
+                } else {
+                    hasRequired = false;
+                }
+                //disable other children
+                hideSelectBoxElementFromRadio('.' + $(this).attr('name') + '_child');
+                //enable its child
+                showSelectBoxElementFromRadio('#' + $(this).attr('name') + '_child_' + $(this).attr('value'), hasRequired);
+            }
+        });
+        $('.input-questionnaire').change(function(){
+            if ($(this).prop('nodeName').toLowerCase() == 'select') {
+                if($(this).hasClass('required')) {
+                    hasRequired = true;
+                } else {
+                    hasRequired = false;
+                }
+                //disable other children
+                hideChildSelectElement('.' + $(this).attr('name'));
+                //enable its child
+                showChildSelectElement('#' + $(this).attr('name') + '_' + $(this).val(), hasRequired);
+            }
+        });
+        hideChildSelectElement = function(element){
+            $(element).hide();
+            $(element).addClass('hidden');
+            $(element).find('select').attr('disabled', true);
+        }
+        showChildSelectElement = function(element, hasRequired){
+            $(element).show();
+            $(element).removeClass('hidden');
+            $(element).find('select').removeAttr('disabled');
+            if(hasRequired) {
+                $(element).find('select').addClass('required');
+            }
+        }
+        $('.element-validator').each(function(){
+            $(this).change(function(){
+                enableSubmitForm();
+            });
+        });
+        enableSubmitForm = function() {
+            if (isCheckedQuestionnaires() && isCheckedReasons()) {
+                $('#submit_to_disengagement').removeAttr('disabled');
+            } else {
+                $('#submit_to_disengagement').attr('disabled', true);
+            }
+        };
+        isCheckedReasons = function() {
+            var result = false;
+            $('.input-checkbox-reason').each(function(){
+                if($(this).is(":checked")) {
+                    result = true;
+                }
+            });
+            return result;
+        }
+        isCheckedQuestionnaires = function() {
+            var validResult = false;
+            if ($('.input-questionnaire.required').length > 0 ) {
+                $('.input-questionnaire.required').each(function(){
+                    var elementType = $(this).prop('nodeName').toLowerCase();
+                    switch (elementType) {
+                        case 'select':
+                            if($(this).val().trim()) {
+                                validResult = true;
+                            }
+                            break;
+                        default:
+                            if ($(this).attr('type') == 'text') {
+                                if($(this).val().trim()) {
+                                    validResult = true;
+                                }
+                            } else {
+                                if($(this).is(":checked")) {
+                                    validResult = true;
+                                }
+                            }
+                            break;
+                    }
+                });
+            } else {
+                validResult = true;
+            }
+            return validResult;
+        }
+        enableSubmitForm();
+    });
+</script>

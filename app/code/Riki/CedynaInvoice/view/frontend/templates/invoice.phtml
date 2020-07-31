@@ -1,0 +1,70 @@
+<?php
+    /** @var \Riki\CedynaInvoice\Block\Invoice $block */
+    $businessCode = $block->getCustomerBusinessCode();
+    $invoices = $block->getCustomerInvoices();
+?>
+
+<div class="cedyna-invoice-summary">
+    <div class="cedyna-invoice-header">
+        <div class="cedyna-invoice-header-left">
+            <?php echo __('CEDYNA INVOICE SUMMARY HEADER TITLE');?>
+        </div>
+        <div class="cedyna-invoice-header-right">
+            <?php echo __('CEDYNA INVOICE SUMMARY HEADER BUSINESS CODE');?>: <?php echo $businessCode;?>
+        </div>
+    </div>
+    <div class="cedyna-invoice-content">
+        <div class="cedyna-invoice-monthly">
+            <?php echo __('It will be updated on the 3rd of every month');?>
+        </div>
+
+        <div class="cedyna-invoice-total">
+            <?php echo __('Invoice total : %1 (tax include)', $block->getTotalInvoice($invoices)); ?>
+        </div>
+
+        <div class="cedyna-invoice-list">
+            <?php if ($invoices) :?>
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th class="invoice-target-month"></th>
+                        <th class="invoice-total-amount"><?php echo __('CEDYNA INVOICE HEADER TOTAL AMOUNT');?></th>
+                        <th class="invoice-posting-date"><?php echo __('CEDYNA INVOICE HEADER POSTING DATE');?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($invoices as $invoice) : ?>
+                        <tr>
+                            <td>
+                                <a href="<?php echo $block->getUrl(
+                                    'cedyna_invoice/invoice/view/target/'.
+                                    $invoice['target_month'].'/'
+                                );?>">
+                                    <?php echo $block->formatInvoiceDate($invoice);?>
+                                </a>
+                            </td>
+                            <td>
+                                <?php echo $block->formatPrice($invoice['total']);?>
+                                <?php echo __('(Tax included)');?>
+                            </td>
+                            <td><?php echo $block->formatDate(
+                                $invoice['import_date'],
+                                \IntlDateFormatter::MEDIUM
+                            );?>
+                            </td>
+                        </tr>
+                    <?php endforeach;?>
+                    </tbody>
+                </table>
+            <?php endif;?>
+        </div>
+    </div>
+</div>
+<div class="cedyna-invoice-footer">
+    <span>
+        <a href="<?php echo $block->getUrl('customer/account/');?>"
+           title="<?php echo __('Back to Top page');?>">
+            <?php echo __('Back to Top page');?>
+        </a>
+    </span>
+</div>

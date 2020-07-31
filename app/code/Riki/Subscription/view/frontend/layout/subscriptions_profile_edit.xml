@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" layout="1column">
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="main.content">
+            <block class="Riki\Customer\Block\Account\Info" name="riki.customer.account.quicklink" template="Magento_Customer::html/quicklink.phtml" before="-"/>
+            <block class="Riki\Subscription\Block\Html\Title" name="page.main.title" template="html/title.phtml" after="riki.customer.account.quicklink">
+                <action method="setPageTitle">
+                    <argument translate="true" name="title" xsi:type="string">Subscription Page</argument>
+                </action>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="columns">
+            <!--<block class="Magento\Framework\View\Element\Template" before="-" name="subscription.profile.step" template="Riki_Subscription::purchase_process.phtml" />-->
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Riki\Subscription\Block\Frontend\Profile\Edit" template="Riki_Subscription::profile/subscription-profile-edit.phtml" name="subscription_profile_edit">
+                <block cacheable="false" class="Riki\Subscription\Block\Frontend\Profile\Payment\Method\PaymentMethod" name="profile_payment_method" template="Riki_Subscription::profile/edit/payment_method.phtml">
+                    <block class="Magento\Framework\View\Element\Template" name="profile_payment_method.cashondelivery" template="Riki_Subscription::profile/edit/payment_method/cashondelivery.phtml" />
+                    <block class="Magento\Framework\View\Element\Template" name="profile_payment_method.cvspayment" template="Riki_Subscription::profile/edit/payment_method/cvspayment.phtml" />
+                    <block class="Magento\Framework\View\Element\Template" name="profile_payment_method.npatobarai" template="Riki_Subscription::profile/edit/payment_method/npatobarai.phtml" />
+                </block>
+                <block class="Riki\SubscriptionPage\Block\Catalog\Product\View\Type\Bundle" name="product.info.bundle.options" as="type_bundle_options" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/options.phtml">
+                    <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Select" name="product.info.bundle.options.select" as="select" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/select.phtml" />
+                    <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Multi" name="product.info.bundle.options.multi" as="multi" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/multi.phtml"/>
+                    <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Radio" name="product.info.bundle.options.radio" as="radio" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/radio.phtml"/>
+                    <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Checkbox" name="product.info.bundle.options.checkbox" as="checkbox" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/checkbox.phtml"/>
+                </block>
+                <block class="Riki\Subscription\Block\Frontend\Profile\Catalog\ProductList" name="catalog_product_list" template="Riki_Subscription::profile/edit/catalog/product_list.phtml">
+                    <block class="Riki\SubscriptionPage\Block\Catalog\Product\View\Type\Bundle" name="product_list.product.info.bundle.options" as="type_bundle_options" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/options.phtml">
+                        <block class="Riki\SubscriptionPage\Block\Catalog\Product\View\Type\Bundle\Option\Select" name="product_list.product.info.bundle.options.select" as="select" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/select.phtml" />
+                        <block class="Riki\SubscriptionPage\Block\Catalog\Product\View\Type\Bundle\Option\Multi" name="product_list.product.info.bundle.options.multi" as="multi" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/multi.phtml"/>
+                        <block class="Riki\SubscriptionPage\Block\Catalog\Product\View\Type\Bundle\Option\Radio" name="product_list.product.info.bundle.options.radio" as="radio" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/radio.phtml"/>
+                        <block class="Riki\SubscriptionPage\Block\Catalog\Product\View\Type\Bundle\Option\Checkbox" name="product_list.product.info.bundle.options.checkbox" as="checkbox" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/checkbox.phtml"/>
+                    </block>
+                </block>
+                <block class="Magento\Framework\View\Element\Template" name="other_course_component" template="Riki_Subscription::profile/edit/catalog/other_course_component.phtml" >
+                    <arguments>
+                        <argument name="viewModel" xsi:type="object">Riki\Subscription\ViewModel\OtherCourseComponent</argument>
+                    </arguments>
+                </block>
+
+                <block class="Magento\Cms\Block\Block" name="about-selectable-date">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">about-selectable-date</argument>
+                    </arguments>
+                </block>
+
+                <block class="Magento\Cms\Block\Block" name="stock_point_delivery_explanation" >
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">stock_point_delivery_explanation</argument>
+                    </arguments>
+                </block>
+
+                <block class="Magento\Cms\Block\Block" name="stock_point_delivery_explanation_not_allowed" >
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">stock_point_delivery_explanation_not_allowed</argument>
+                    </arguments>
+                </block>
+
+                <block class="Magento\Cms\Block\Block" name="stock_point_delivery_explanation_oos" >
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">stock_point_delivery_explanation_oos</argument>
+                    </arguments>
+                </block>
+
+                <block class="Magento\Framework\View\Element\Template" name="delivery-stock-point" template="Riki_Subscription::profile/edit/render_delivery_date_stock_point.phtml" />
+            </block>
+        </referenceContainer>
+        <block class="Magento\Framework\Pricing\Render" name="product.price.render.default">
+            <arguments>
+                <argument name="price_render_handle" xsi:type="string">catalog_subscription_product_prices</argument>
+                <argument name="use_link_for_as_low_as" xsi:type="boolean">true</argument>
+                <!-- set "override" configuration settings here -->
+            </arguments>
+        </block>
+    </body>
+</page>

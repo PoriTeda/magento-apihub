@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <free>
+                <payment_action>make_free_payment_method_default_to_not_shipped</payment_action>
+            </free>
+        </payment>
+    </default>
+</config>

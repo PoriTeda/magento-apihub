@@ -1,0 +1,46 @@
+<?php
+/**
+* @var \Riki\Sales\Block\Adminhtml\Order\View\Items\Renderer\Addresses $block
+*/
+?>
+
+<?php $_item = $block->getItem(); ?>
+
+<?php
+/** @var \Riki\Sales\Helper\Admin $helper */
+$helper = $this->helper('Riki\Sales\Helper\Admin');
+
+/** @var \Riki\Promo\Helper\Data $_promoHelper */
+$_promoHelper = $this->helper('Riki\Promo\Helper\Data');
+
+$selectedAddressId = $block->getAddressId();
+?>
+
+<?php if($block->allowToEditShippingAddress()): ?>
+    <?php if(count($block->getAddressCollection())): ?>
+
+        <div class="admin__field-control">
+
+            <select name="address[<?php echo $_item->getId() ?>][]" class="admin__control-select" <?php if($_promoHelper->isPromoOrderItem($_item)): ?>disabled="disabled" <?php endif; ?>>
+                <option value=""><?php echo __('Select an address') ?></option>
+                <?php foreach ($block->getAddressCollection() as $_address): ?>
+
+                    <?php if($_address->getId() == $selectedAddressId): ?>
+                        <option value="<?php echo $_address->getId() ?>" selected="selected">
+                            <?php echo $block->getAddressAsString($_address) ?>
+                        </option>
+                    <?php else: ?>
+                        <option value="<?php echo $_address->getId() ?>">
+                            <?php echo $block->getAddressAsString($_address) ?>
+                        </option>
+                    <?php endif; ?>
+
+                <?php endforeach; ?>
+            </select>
+        </div>
+    <?php else: ?>
+        <span><?php echo __('No Address') ?></span>
+    <?php endif; ?>
+<?php endif; ?>
+
+

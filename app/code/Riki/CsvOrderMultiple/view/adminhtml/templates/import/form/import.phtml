@@ -1,0 +1,24 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<div class="import-export-tax-rates">
+    <div class="import-tax-rates">
+        <form id="import-form" class="admin__fieldset" action="<?php /* @escapeNotVerified */ echo $block->getUrl('rikiship/shipment/importPost') ?>" method="post" enctype="multipart/form-data">
+            <?php echo $block->getBlockHtml('formkey')?>
+            <div class="admin__field field field-payment_type  required _required">
+                <label for="import_csv" class="admin__field-label">
+                    <span ><?php /* @escapeNotVerified */ echo __('Select File to Import') ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <input type="file" id="import_csv" name="import_csv" class="input-file"/>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

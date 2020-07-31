@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="riki_send_cut_off_email">
+        <job name="cron_send_cutoff_email" instance="Riki\SubscriptionCutOffEmail\Cron\SendCutOffEmail" method="execute">
+            <config_path>subscriptioncourse/cutoffdate/expression</config_path>
+        </job>
+    </group>
+</config>

@@ -1,0 +1,6 @@
+<div id="product_price_<?php echo $product->getId() ?>">
+    <?php echo $this->getLayout()->getBlock('product.price.render.default')->render('final_price', $product,[]); ?>
+</div>
+<div class="product-tier-price-<?= $product->getId() ?>"><?php echo $this->getLayout()->getBlock('product.price.render.default')->render('tier_price', $product, []); ?></div>
+<!--<div class="custom-price">
+--><?php /*echo $this->getLayout()->getBlock('product.price.render.default')->render('tier_price', $product,[]); */?>

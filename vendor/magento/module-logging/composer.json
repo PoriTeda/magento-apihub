@@ -1,0 +1,32 @@
+{
+    "name": "magento/module-logging",
+    "description": "N/A",
+    "config": {
+        "sort-packages": true
+    },
+    "require": {
+        "magento/framework": "102.0.*",
+        "magento/module-backend": "101.0.*",
+        "magento/module-catalog": "103.0.*",
+        "magento/module-config": "101.1.*",
+        "magento/module-store": "101.0.*",
+        "magento/module-user": "101.1.*",
+        "php": "~7.1.3||~7.2.0"
+    },
+    "suggest": {
+        "magento/module-asynchronous-operations": "100.3.*"
+    },
+    "type": "magento2-module",
+    "license": [
+        "proprietary"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Magento\\Logging\\": ""
+        }
+    },
+    "version": "101.1.0"
+}

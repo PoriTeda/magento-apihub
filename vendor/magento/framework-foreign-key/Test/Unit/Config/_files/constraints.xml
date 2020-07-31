@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-foreign-key:etc/constraints.xsd">
+    <!-- Comment inside config node -->
+    <entity name="entity_name_1" resource="resource_1">
+        <constraint name="constraint_1" referenceEntity="entity_name_3">
+            <field name="field_1" reference="field_2"/>
+        </constraint>
+    </entity>
+    <entity name="entity_name_2" resource="resource_2">
+        <!-- Comment inside entity node -->
+        <constraint name="constraint_2" onDelete="CASCADE" referenceEntity="entity_name_4" active="false">
+            <field name="field_3" reference="field_4"/>
+        </constraint>
+        <constraint name="constraint_3" onDelete="SET NULL" referenceEntity="entity_name_1">
+            <!-- Comment inside constraint node -->
+            <field name="field_4" reference="field_5" />
+        </constraint>
+    </entity>
+</config>

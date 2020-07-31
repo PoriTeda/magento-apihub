@@ -1,0 +1,65 @@
+<!-- ko if: (isSubscription != null && !(window.checkoutConfig.isSubHanpukai && window.checkoutConfig.hanpukaiMaximumOrderTimes == 1)) -->
+<div class="opc-single-sub">
+    <div class="opc-sub-title" data-bind="i18n: 'Subscription course detail'" data-role="title"></div>
+    <div class="checkout-step-confirm" class="step-content" data-role="content">
+        <div class="block-content">
+            <div class="opc-block-summary opc-block-simulation">
+                <table class="data table table-totals">
+                    <tbody>
+                    <tr class="totals">
+                        <th class="mark"><span data-bind="i18n: 'Course Name'"/> </th>
+                        <td class="course-name">
+                            <span data-bind="text: courseName"></span>
+                        </td>
+                    </tr>
+                    <!-- ko if: (!window.checkoutConfig.isSubHanpukai || (window.checkoutConfig.isSubHanpukai && window.checkoutConfig.hanpukaiMaximumOrderTimes != 1))-->
+                    <tr>
+                        <th class="mark"><span data-bind="i18n: 'Frequency'"/> </th>
+                        <td class="amount" data-bind="text: frequency"></td>
+                    </tr>
+                    <!-- /ko -->
+                    <!-- ko if: (courseMinimumOrderTimes() != '') -->
+                    <tr>
+                        <th class="mark"><span data-bind="i18n: 'Min order times'"/> </th>
+                        <td class="amount"><span  data-bind="text: courseMinimumOrderTimes"></span> <span data-bind="i18n: 'times'"></span></td>
+                    </tr>
+                    <!-- /ko -->
+                    <!-- ko if: (checkOrderTotalMinimumAmountArr()) -->
+                    <!-- ko foreach: {data: orderTotalMinimumAmountArr, as: 'item'} -->
+                    <tr class="totals">
+                        <th class="mark"><span data-bind="i18n: 'Min order amount'"></span><span data-bind="text: item.from_order_time"></span><span data-bind="i18n: 'to'"></span><span data-bind="text: item.to_order_time"></span><span data-bind="i18n: 'to'"></span></th>
+                        <td class="amount" data-bind="text: $parent.formatPrice(item.amount)"></td>
+                    </tr>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: (!checkOrderTotalMinimumAmountArr()) -->
+                    <!-- ko if: (orderTotalMinimumAmountString != '') -->
+                    <tr>
+                        <th class="mark"><span data-bind="i18n: 'Min order amount'"/> </th>
+                        <td class="amount" data-bind="text: orderTotalMinimumAmountString"></td>
+                    </tr>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: (cartSimulation().length) -->
+                    <tr class="totals opc-sub-title">
+                        <th class="mark"><strong><span data-bind="i18n: 'Delivery simulation'"/></strong></th>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <!-- ko foreach: {data: cartSimulation, as: 'item'} -->
+                    <tr class="totals">
+                        <th class="mark"><span data-bind="text: item.order_times"></span><span data-bind="i18n: 'Simulated grand total for N time delivery'"></span></th>
+                        <td class="amount" data-bind="text: $parent.formatPrice(item.grand_total)"></td>
+                    </tr>
+                    <!-- /ko -->
+                    <tr class="totals">
+                        <th class="mark"><span data-bind="i18n: '1~'"></span><span data-bind="text: simulationTimes"></span><span data-bind="i18n: 'Payment total amount of delivery for the 1st to Nth times (tax included)[schedule]'"></span></th>
+                        <td class="amount" data-bind="text: grandTotalSimulation"></td>
+                    </tr>
+                    <!-- /ko -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /ko -->

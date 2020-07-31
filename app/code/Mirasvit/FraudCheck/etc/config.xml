@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <fraud_check>
+            <authorization>
+                <google_api_key>AIzaSyCZmQwD0Q9CDMmUMZU6YOqd-m1veDz_ZgI</google_api_key>
+            </authorization>
+        </fraud_check>
+    </default>
+</config>

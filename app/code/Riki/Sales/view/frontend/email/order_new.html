@@ -1,0 +1,95 @@
+
+＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋<br>
+ネスレ通販<br>
+オンラインショップからのお知らせです。<br>
+＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋<br>
+※このメールは配信停止希望のお客様にもお送りしています。<br>
+
+<p class="greeting">{{var order.getCustomerName()}}</p>様
+<br>
+この度はご注文いただき、誠にありがとうございます。<br>
+<br>
+<br>
+お客様からのご注文内容は以下の通りとなりますので、ご確認ください。<br>
+商品の発送手配をさせていただきますので、商品が届くまで今しばらくお待ちください。<br>
+<br>
+※コンビニ支払（前払い）をご希望いただきましたお客様に関しましては、<br>
+4～5日でお振込み用紙を送付させていただきます。　今しばらく<br>
+お待ちください。　お振込み完了後、商品の発送手配をさせていただきます。<br>
+<br>
+こちらのメールはお取引が完了するまで大切に保管ください。<br>
+<br>
+<br>
+【注文番号】{{var order.increment_id |raw}}　※注文内容の詳細はマイページからご確認いただけます。<br>
+【注文受付日時】{{var order.getCreatedAtFormatted(2) |raw}}<br>
+【お支払い合計金額】{{var price_obj.grand_total|raw}}<br>
+<br>
+【内　お支払手数料】{{var price_obj.payment_fee|raw}}<br>
+【使用ポイント】{{var price_obj.used_point |raw}}ポイント<br>
+【獲得予定ポイント】{{var price_obj.bonus_point_amount |raw}}ポイント<br>
+<br>
+【ご請求先】<br>
+{{var billing.lastname|raw}} {{var billing.firstname|raw}}　様<br>
+〒{{var billing.postcode|raw}}<br>
+{{var billing.region|raw}} {{var billing.city|raw}} {{var billing.street1|raw}}<br>
+電話番号：{{var billing.telephone|raw}}<br>
+<br>
+<br>
+****** ご注文内容およびお届け先 ******<br>
+<br>
+【お支払い金額（税込）】<br>
+商品合計：{{var price_obj.sub_total|raw}}<br>
+有料サービス：{{var price_obj.gw_total|raw}}<br>
+送料：{{var price_obj.shipping_amount|raw}}<br>
+注文合計：{{var price_obj.grand_total|raw}}<br>
+<br>
+【商品明細】<br>
+{{layout handle="riki_sales_email_order_items" order=$order area="frontend"}}<br>
+
+
+
+
+【お届け先】<br>
+{{var shipping.lastname|raw}} {{var shipping.firstname|raw}}　様<br>
+〒{{var shipping.postcode|raw}}<br>
+{{var shipping.region|raw}} {{var shipping.city|raw}} {{var shipping.street1|raw}}<br>
+電話番号：{{var shipping.telephone|raw}}<br>
+
+【配送方法】{{var order.getShippingDescription()}}<br>
+<br>
+<br>
+<br>
+【お支払い方法】{{var price_obj.payment_method|raw}}<br>
+【お支払い手数料】{{var price_obj.payment_fee|raw}}<br>
+<br>
+<br>
+<br>
+<br>
+商品が到着するまで今しばらくお待ちください。<br>
+<br>
+※コンビニ支払（前払い）をご希望いただきましたお客様に関しましては、<br>
+4～5日でお振込み用紙を送付させていただきます。　今しばらく<br>
+お待ちください。　お振込み完了後、商品の発送手配をさせていただきます。<br>
+<br>
+<br>
+今後ともネスレ通販 オンラインショップを<br>
+よろしくお願いいたします。<br>
+<br>
+※このメールは自動配信メールです。<br>
+このメール送信元にご返信いただいてもご対応しかねますのでご了承ください。<br>
+このメールにお心当たりのない方、その他ご不明な点がございましたら、<br>
+大変お手数ですが、下記のお問い合わせ先までご連絡ください。<br>
+※表示されている価格は、すべて税込価格です。<br>
+――――――――――――――――――――――――――――――――<br>
+<br>
+ネスレ通販オンラインショップ<br>
+【各種お問い合わせは以下からご確認ください】<br>
+https://shop.nestle.jp/front/contents/inquiry/<br>
+<br>
+[発行] ネスレ日本株式会社<br>
+651-0087　兵庫県神戸市中央区御幸通7-1-15<br>
+<br>
+@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-<br>
+（C） Nestle Group All Rights Reserved.<br>
+許可なく転載することを禁じます。<br>
+-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@<br>

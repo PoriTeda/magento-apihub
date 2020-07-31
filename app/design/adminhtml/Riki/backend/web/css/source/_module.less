@@ -1,0 +1,23 @@
+// Fix IE 11 modal-popup can scroll y
+html[class*="ie"] {
+  .modal-popup {
+    &._inner-scroll {
+      .modal-inner-wrap {
+        height: 90%;
+      }
+    }
+  }
+}
+
+.advancedinventory-stocks-index .admin__data-grid-toolbar .admin__data-grid-header-row button {
+  margin-left: 60px;
+  margin-top: 8px;
+}
+
+@media screen and (max-width: 1199px){
+  .catalog-product-view{
+    .box-tocart .actions .action{
+      font-size: 1.4rem;
+    }
+  }
+}

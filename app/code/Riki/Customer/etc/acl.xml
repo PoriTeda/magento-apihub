@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!--
+/**
+* Copyright © 2015 Magento. All rights reserved.
+* See COPYING.txt for license details.
+*/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Customer::customer">
+                    <resource id="Magento_Customer::manage">
+                        <resource id="Riki_Customer::view" title="Customer View" sortOrder="99" />
+                        <resource id="Riki_Customer::new" title="Customer Create" sortOrder="100" />
+                        <resource id="Riki_Customer::edit" title="Customer Edit" sortOrder="101" />
+                        <resource id="Riki_Customer::delete" title="Customer Delete" sortOrder="102" />
+                        <resource id="Riki_Customer::create_shosha_customer" title="Create Shosha Customer" sortOrder="201" />
+                        <resource id="Riki_Customer::viewpoint" title="Point - History" sortOrder="202" />
+                        <resource id="Riki_Customer::addpoint" title="Point - Add point on customer complain" sortOrder="203" />
+                        <resource id="Riki_Customer::export" title="Export" sortOrder="204" />
+                    </resource>
+                </resource>
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Riki_Customer::config_customer_kss_link_edit" title="Kss link edit customer" sortOrder="100" />
+                            <resource id="Riki_Customer::mypage_subscriber_block" title="Config Xday and Yday for Mypage Topright" sortOrder="200" />
+                            <resource id="Riki_Customer::config_thank_you_page_link_to_top_page" title="Thank you page link to TOP page" sortOrder="300" />
+                            <resource id="Riki_Customer::sso_login_setting" title="SSO Login Setting" sortOrder="400" />
+                            <resource id="Riki_Customer::config_customer_group" title="Config Ambassador" sortOrder="1007" />
+                            <resource id="Riki_Customer::cedyna_customer_hold" title="Cedyna Customer Hold" sortOrder="1008" />
+                        </resource>
+                    </resource>
+                </resource>
+                <resource id="Magento_Backend::content">
+                    <resource id="Riki_Customer::enquiry_category" title="Category Enquiry" sortOrder="10">
+                        <resource id="Riki_Customer::category_save" title="Save" sortOrder="10" />
+                        <resource id="Riki_Customer::category_delete" title="Delete" sortOrder="20" />
+                    </resource>
+                    <resource id="Riki_Customer::enquiryheader" title="Manage Enquiry" sortOrder="10">
+                        <resource id="Riki_Customer::enquiryheader_save" title="Save" sortOrder="10" />
+                        <resource id="Riki_Customer::enquiryheader_delete" title="Delete" sortOrder="10" />
+                    </resource>
+                    <resource id="Riki_Customer::shoshacustomer" title="Manage Shosha" sortOrder="10">
+                        <resource id="Riki_Customer::shoshacustomer_save" title="Save" sortOrder="10" />
+                        <resource id="Riki_Customer::shoshacustomer_delete" title="Delete" sortOrder="10" />
+                    </resource>
+                    <resource id="Riki_Customer::consumerdb" title="Browse customers from ConsumerDB" sortOrder="10" />
+                </resource>
+
+            </resource>
+        </resources>
+    </acl>
+</config>

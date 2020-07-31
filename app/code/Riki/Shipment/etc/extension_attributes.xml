@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
+    <extension_attributes for="Magento\Sales\Api\Data\ShipmentInterface">
+        <attribute code="shipped_out_date" type="string">
+            <resources>
+                <resource ref="Magento_Sales::sales"/>
+            </resources>
+        </attribute>
+        <attribute code="delivery_completion_date" type="string">
+            <resources>
+                <resource ref="Magento_Sales::sales"/>
+            </resources>
+        </attribute>
+    </extension_attributes>
+</config>

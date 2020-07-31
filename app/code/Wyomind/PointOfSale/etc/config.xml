@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Core/etc/config.xsd">
+    <default>
+        <pointofsale>
+            <license>
+                <extension_label>Point Of Sale</extension_label>
+                <extension_version>6.3.0</extension_version>
+                <extension_code>pos</extension_code>
+                <get_online_license>1</get_online_license>
+            </license>
+            <settings>
+                <pattern>  <![CDATA[{{image}}
+{{address_1}}
+{{address_2}}
+{{zipcode}} {{city}}
+{{country}} {{state}}
+☎ {{phone}}
+✉ {{email}}
+<p style="margin-top:10px">{{hours}}</p>]]></pattern>
+                <time>h:i A</time>
+            </settings>
+        </pointofsale>
+    </default>
+</config>

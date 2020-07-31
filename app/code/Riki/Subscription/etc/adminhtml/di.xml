@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!--<preference for="Magento\Sales\Controller\Adminhtml\Order\Create" type="Riki\Subscription\Controller\Adminhtml\Order\Create" />-->
+
+    <type name="Magento\Sales\Controller\Adminhtml\Order\Create\LoadBlock">
+        <plugin name="Riki_Subscription_AddToCart::execute" type="Riki\Subscription\Plugin\Adminhtml\ValidateSubscriptionProduct"/>
+    </type>
+    <type name="Magento\Sales\Controller\Adminhtml\Order\Create\Save">
+        <plugin name="Riki::overrideSave" type="Riki\Subscription\Plugin\Adminhtml\Order\Create\ValidateBeforeSaveOrder" />
+    </type>
+    <type name="Amasty\Promo\Model\Rule\Action\Discount\AbstractDiscount">
+        <arguments>
+            <argument name="promoRegistry" xsi:type="object">Riki\Subscription\Model\Promotion\Registry</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Helper\Order\Data">
+        <arguments>
+            <argument name="promoRegistry" xsi:type="object">Riki\Subscription\Model\Promotion\Registry</argument>
+        </arguments>
+    </type>
+<!--    <type name="Magento\Catalog\Model\Indexer\Product\Price\Action\Row">-->
+<!--        <plugin name="catalog_product_price_indexer_row" type="Riki\Subscription\Plugin\Adminhtml\CatalogProductPriceIndexerRow"/>-->
+<!--    </type>-->
+    <type name="Riki\Sales\Block\Adminhtml\Order\Create\Delivery">
+        <plugin name="salesOrderCreateDelivery" type="Riki\Subscription\Plugin\Riki\Sales\Block\Adminhtml\Order\Create\Delivery"/>
+    </type>
+    <type name="Riki\Rule\Observer\OrderBeforePlaceObserver">
+        <plugin name="rikiSubscriptionCumulativeOrderBeforePlaceObserver" type="Riki\Subscription\Plugin\Riki\Rule\Observer\OrderBeforePlaceObserver\Adminhtml"/>
+    </type>
+    <type name="Riki\Promo\Helper\Adminhtml\Cart">
+        <plugin name="rikiSubscriptionPromoHelperAdminCart" type="Riki\Subscription\Plugin\Promo\Helper\Adminhtml\Cart" />
+    </type>
+    <type name="Riki\Subscription\Model\Rule\Action\Discount\AbstractDiscount">
+        <plugin name="rikiSubscriptionRuleActionDiscountAbstractDiscount" type="Riki\Subscription\Plugin\Subscription\Model\Rule\Action\Discount\AbstractDiscount" />
+    </type>
+</config>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Riki\SubscriptionPage\Api\CartRepositoryInterface" type="Riki\SubscriptionPage\Model\CartRepository" />
+    <preference for="Riki\SubscriptionPage\Api\PriceBoxInterface" type="Riki\SubscriptionPage\Model\PriceBox" />
+    <type name="Riki\Catalog\Api\PriceBoxRepositoryInterface">
+        <plugin name="riki_subscriptionPage_catalog_api_priceBoxRepository_applyPromotion" type="Riki\SubscriptionPage\Plugin\Catalog\Api\PriceBoxRepositoryInterface\ApplyPromotion" sortOrder="10" />
+    </type>
+</config>

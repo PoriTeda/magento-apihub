@@ -1,0 +1,12 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="head.components">
+            <block class="Magento\Framework\View\Element\Template" template="Riki_SalesRule::promo/salesrulejs.phtml" name="riki_salesrule_quote_edit_jsinit">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Riki\SalesRule\ViewModel\Rule\FormScript</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

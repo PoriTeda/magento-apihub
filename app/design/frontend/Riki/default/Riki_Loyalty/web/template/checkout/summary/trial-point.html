@@ -1,0 +1,8 @@
+<!-- ko if: hasPointForTrial() -->
+<tr class="totals rewards trial-point" style="border-top: 1px solid #ccc;">
+    <th class="mark" colspan="1" scope="row" data-bind="text: title"></th>
+    <td class="amount" colspan="1">
+        <span class="price" data-bind="text: trialPointAmount()"></span><span data-bind="i18n: 'Point'"></span>
+    </td>
+</tr>
+<!-- /ko -->

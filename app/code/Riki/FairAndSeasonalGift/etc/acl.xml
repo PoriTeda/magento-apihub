@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::system">
+                    <resource id="Riki_FairAndSeasonalGift::fair_seasonal" title="Fair and Seasonal Gift" sortOrder="20">
+                        <resource id="Riki_FairAndSeasonalGift::fair_management" title="Fair Management" sortOrder="10"/>
+                        <resource id="Riki_FairAndSeasonalGift::fair_import" title="Fair Import" sortOrder="10"/>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

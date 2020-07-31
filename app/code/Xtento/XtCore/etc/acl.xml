@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::system">
+                    <resource id="Xtento_XtCore::extensions" title="XTENTO Extensions - Configuration">
+                        <resource id="Xtento_XtCore::configuration" title="General Configuration" sortOrder="10"/>
+                        <resource id="Xtento_XtCore::store" title="XTENTO Store" sortOrder="20"/>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>
+<!--
+/**
+ * Product:       Xtento_XtCore (2.1.0)
+ * ID:            %!uniqueid!%
+ * Packaged:      %!packaged!%
+ * Last Modified: 2017-08-16T08:52:13+00:00
+ * File:          app/code/Xtento/XtCore/etc/acl.xml
+ * Copyright:     Copyright (c) 2017 XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

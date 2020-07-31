@@ -1,0 +1,40 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /* @var $block \Magento\AdvancedCheckout\Block\Adminhtml\Sku\Errors\AbstractErrors */ ?>
+<div class="fieldset-wrapper admin__fieldset-wrapper">
+    <div class="fieldset-wrapper-title admin__fieldset-wrapper-title">
+        <span class="title"><?= /* @escapeNotVerified */ $block->getHeaderText() ?></span>
+        <div class="actions">
+            <?= $block->getButtonHtml($block->getAddButtonTitle(), 'addBySku.submitConfigured()', 'action-add') ?>
+            <?= $block->getButtonsHtml() ?>
+        </div>
+    </div>
+    <?= $block->getChildHtml() ?>
+</div>
+<script>
+require([
+    'jquery',
+    'prototype',
+    'Magento_Catalog/catalog/product/composite/configure'
+], function(jQuery){
+
+    function checkoutSkuErrorsInit()
+    {
+        productConfigure.addListType('<?= /* @escapeNotVerified */ $block->getListType() ?>', {urlFetch: '<?= /* @escapeNotVerified */ $block->getConfigureUrl() ?>'});
+        <?= /* @escapeNotVerified */ $block->getAdditionalJavascript() ?>
+    }
+
+    if (jQuery(document).data('productConfigureInited')) {
+        checkoutSkuErrorsInit()
+    } else {
+        jQuery(document).on('productConfigure:inited', checkoutSkuErrorsInit);
+    }
+});
+</script>

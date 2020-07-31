@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Amasty\Promo\Observer\CollectTotalsAfterObserver" type="Riki\Promo\Observer\CollectTotalsAfterObserver" />
+    <preference for="Amasty\Promo\Observer\AddressCollectTotalsAfterObserver" type="Riki\Promo\Observer\AddressCollectTotalsAfterObserver" />
+    <preference for="Amasty\Promo\Helper\Cart" type="Riki\Promo\Helper\Cart" />
+    <preference for="Amasty\Promo\Helper\Item" type="Riki\Promo\Helper\Item" />
+    <preference for="Amasty\Promo\Helper\Messages" type="Riki\Promo\Helper\Messages" />
+    <preference for="Amasty\Promo\Model\Rule\Action\Discount\SameProduct" type="Riki\Promo\Model\Rule\Action\Discount\SameProduct"/>
+    <preference for="Amasty\Promo\Model\Rule\Action\Discount\Spent" type="Riki\Promo\Model\Rule\Action\Discount\Spent"/>
+    <preference for="Amasty\Promo\Model\Rule\Action\Discount\Product" type="Riki\Promo\Model\Rule\Action\Discount\Product"/>
+    <preference for="Amasty\Promo\Model\Rule\Action\Discount\Cart" type="Riki\Promo\Model\Rule\Action\Discount\Cart"/>
+    <type name="Magento\Quote\Model\Quote">
+        <plugin name="riki_promoQuote" type="Riki\Promo\Plugin\Quote" />
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item">
+        <plugin name="riki_promoQuoteItemInitPromoData" type="Riki\Promo\Plugin\Quote\Item\InitPromoData" />
+    </type>
+    <type name="Magento\Sales\Model\Order">
+        <plugin name="riki_promoOrder" type="Riki\Promo\Plugin\Order" />
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="riki_promoQuoteItemToOrderItem" type="Riki\Promo\Plugin\Quote\Item\ToOrderItem"/>
+    </type>
+    <type name="Magento\Sales\Model\Convert\Order">
+        <plugin name="riki_promoSalesConvertOrder" type="Riki\Promo\Plugin\Sales\Convert\Order"/>
+    </type>
+    <type name="Magento\Sales\Model\Order\ShipmentFactory">
+        <plugin name="riki_promoSalesOrderShipmentFactory" type="Riki\Promo\Plugin\Sales\ShipmentFactory"/>
+    </type>
+    <type name="Amasty\Promo\Observer\Admin\UpdateRuleDataObserver">
+        <plugin name="riki_promoAdminUpdateRuleDataObserver" type="Riki\Promo\Plugin\Promo\Admin\UpdateRuleDataObserver"/>
+    </type>
+    <type name="Riki\Checkout\Model\DefaultConfigProvider">
+        <plugin name="rikiPromorikiCheckoutModelDefaultConfigProvider" type="Riki\Promo\Plugin\Riki\Checkout\Model\DefaultConfigProvider"/>
+    </type>
+    <type name="Riki\Subscription\Model\Profile\FreeGift">
+        <plugin name="rikiPromoSubscriptionModelProfileFreeGift" type="Riki\Promo\Plugin\Riki\Subscription\Model\Profile\FreeGift"/>
+    </type>
+    <type name="Magento\SalesRule\Model\Quote\Discount">
+        <plugin name="riki-promo-register-subtotal" type="Riki\Promo\Model\Plugin\Quote\Discount\RegisterSubtotal"/>
+        <plugin name="rikiPromoResetFlagBeforeDiscountCollect" type="Riki\Promo\Plugin\ResetFlagBeforeDiscountCollect" />
+    </type>
+    <type name="Riki\Sales\Model\CatalogInventory\Quote\Item\QuantityValidator\Initializer\StockItem">
+        <plugin name="rikiPromoRikiSalesModelCatalogInventoryQuoteItemQuantityValidatorInitializerStockItem" type="Riki\Promo\Plugin\Riki\Sales\Model\CatalogInventory\Quote\Item\QuantityValidator\Initializer\StockItem"/>
+    </type>
+    <type name="Riki\Sales\Block\Adminhtml\Order\Create\Items\Grid">
+        <plugin name="rikiPromoRikiSalesBlockAdminhtmlOrderCreateItemsGrid" type="Riki\Promo\Plugin\Riki\Sales\Block\Adminhtml\Order\Create\Items\Grid"/>
+    </type>
+    <type name="Riki\PurchaseRestriction\Helper\Data">
+        <plugin name="rikiPromoRikiPurchaseRestrictionHelperData" type="Riki\Promo\Plugin\Riki\PurchaseRestriction\Helper\Data"/>
+    </type>
+    <type name="Riki\Quote\Helper\Data">
+        <plugin name="rikiPromoQuoteHelperData" type="Riki\Promo\Plugin\Riki\Quote\Helper\Data"/>
+    </type>
+
+    <type name="Riki\Promo\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Promo\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">promoLogger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Promo\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\SalesRule\Model\Validator">
+        <plugin name="rikiPromoSetFlagSkipFreeItem" type="Riki\Promo\Plugin\SetFlagSkipFreeItem" />
+        <plugin name="rikiPromoConvertAddressItemToQuoteItem" type="Riki\Promo\Plugin\ConvertAddressItemToQuoteItem"/>
+    </type>
+    <type name="Riki\StockSpotOrder\Observer\CheckSpotOrder">
+        <plugin name="rikiPromoStockSpotOrderObserverCheckSpotOrder" type="Riki\Promo\Plugin\Riki\StockSpotOrder\Observer\CheckSpotOrder"/>
+    </type>
+    <type name="Amasty\Promo\Model\Rule\Action\Discount\AbstractDiscount">
+        <plugin name="rikiPromoPromoModelAbstractDiscount" type="Riki\Promo\Plugin\Promo\Model\Rule\Action\Discount\AbstractDiscount"  sortOrder="1"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote">
+        <plugin name="rikiPromoRemoveFreeGiftAfterChangeShippingAddress" type="Riki\Promo\Plugin\Quote\Model\Quote\RemoveFreeGiftAfterShippingAddressChanged"/>
+    </type>
+    <type name="Magento\SalesRule\Model\Utility">
+        <plugin name="rikiPromoSalesRuleModelUtility" type="Riki\Promo\Plugin\RemoveFreeProductQtyBeforeRuleValidation"/>
+    </type>
+    <type name="Magento\Bundle\Model\Product\Price">
+        <plugin name="rikiPromoSetPriceBundleOption" type="Riki\Promo\Plugin\Bundle\Model\Product\Price\SetPriceBundleOption"/>
+    </type>
+    <type name="Riki\Rma\Helper\Amount">
+        <plugin name="rikiPromoSetRmaBundleItemTotal" type="Riki\Promo\Plugin\Rma\Helper\Amount\SetRmaBundleItemTotal"/>
+    </type>
+</config>

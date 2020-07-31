@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Riki_SubscriptionFrequency::subscription" title="Subscription" sortOrder="45">
+                    <resource id="Riki_SubscriptionFrequency::frequency" title="Frequency" sortOrder="10">
+                        <!--<resource id="Riki_SubscriptionFrequency::new" title="New Frequency" sortOrder="10" />-->
+                        <resource id="Riki_SubscriptionFrequency::save" title="Save Frequency" sortOrder="20" />
+                        <resource id="Riki_SubscriptionFrequency::delete" title="Delete Frequency" sortOrder="30" />
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

@@ -1,0 +1,2 @@
+<?php // Security reload page ?>
+<meta http-equiv="refresh" content="<?php echo $block->getInterval() ?>; URL=<?php echo $block->escapeXssInUrl($block->getReloadingUrl()) ?>"/>

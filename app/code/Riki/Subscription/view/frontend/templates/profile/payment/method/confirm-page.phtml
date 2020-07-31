@@ -1,0 +1,188 @@
+<?php
+/* @var $parentBlock \Riki\Subscription\Block\Frontend\Profile\Edit */
+$parentBlock = $block->getData('parentBlock');
+
+$frequencyUnit = $parentBlock->getEntity()->getData('frequency_unit');
+$frequencyInterval = $parentBlock->getEntity()->getData('frequency_interval');
+$nextDeliveryDate = $parentBlock->getEntity()->getData('next_delivery_date');
+$addInfoWithAddressAndDL = $block->getData('addInfoWithAddressAndDL');
+$isAllowChangeProduct = $block->getData('isAllowChangeProduct');
+$allAddress = $block->getData('allAddress');
+$isAllowChangeAddress = $block->getData('isAllowChangeAddress');
+$isAllowChangeQty = $block->getData('isAllowChangeQty');
+$isBtnUpdateAllChangesPressed = $block->getData('isBtnUpdateAllChangesPressed');
+$isSubscriptionHanpukai = $block->getData('isSubscriptionHanpukai');
+
+$dataFromSession = $parentBlock->getProfileCache();
+/* @var $orderSimulator \Magento\Sales\Model\Order */
+if(!is_null($block->getData('order_simulate'))) {
+    $orderSimulator = $block->getData('order_simulate');
+}else{
+    $dataFromSession = $parentBlock->getProfileCache();
+    $orderSimulator = $parentBlock->simulatorOrderWithData($dataFromSession);
+}
+$tentativePoints = 0;
+$totalAmount = 0;
+$shippingFee = 0;
+$wrappingFee = 0;
+$paymentFee = 0;
+$discountAmount = 0;
+if ($orderSimulator !== null && $orderSimulator !== false) {
+    $tentativePoints = $orderSimulator->getData('bonus_point_amount');
+    $totalAmount = $orderSimulator->getGrandTotal();
+    $wrappingFee =$orderSimulator->getData('gw_items_base_price_incl_tax');
+    $shippingFee = $parentBlock->getShippingFeeIncludeTax($orderSimulator->getShippingInclTax());
+    $paymentFee = $orderSimulator->getFee();
+    $discountAmount = $orderSimulator->getData('discount_amount');
+}
+$arrPaymentMethod = $block->getData('arrPaymentMethod');
+
+
+?>
+<fieldset class="fieldset panel" xmlns="http://www.w3.org/1999/html">
+    <div class="label">
+        <h4><?php echo __("Payment method")  ?></h4>
+    </div>
+    <div class="payment-method-block-text">
+        <?php foreach ($arrPaymentMethod as $arrInfo) {
+            if ($arrInfo['value'] == $dataFromSession->getData('payment_method')) {
+                ?>
+                <?php if ($dataFromSession->getData('payment_method') == 'paygent'
+                    && $dataFromSession->getData('is_new_paygent_method') == false
+                ) { ?>
+                    <span><?php echo __("Credit card(used before)"); ?></span>
+                <?php } else { ?>
+                    <span><?php echo __($arrInfo['label']); ?></span>
+                <?php }
+                break;
+            }
+        } ?>
+    </div>
+</fieldset>
+<fieldset class="fieldset panel">
+    <div class="label">
+        <h4><?php echo __("お届けコース")  ?></h4>
+    </div>
+    <div class="payment-method-block-text">
+        <span><?php echo $dataFromSession->getData('course_name'); ?></span>
+    </div>
+</fieldset>
+
+<fieldset class="fieldset panel table">
+    <div class="table-wrapper">
+        <?php
+        $i = 0;
+
+        $arrDeliveryType = $block->getArrDeliveryType();
+        foreach($addInfoWithAddressAndDL as $addressId =>  $arrInfoWithDL):  ?>
+            <?php $arrAddressInfoNewDesign = $parentBlock->getAddressDetail($addressId) ?>
+            <?php $totalDeliveryType = count($arrInfoWithDL) - 1; $countDeliveryType = 0; ?>
+            <?php
+            $lastName = $firstName = '';
+            if (array_key_exists('riki_lastname', $arrAddressInfoNewDesign)) {
+                $lastName = $arrAddressInfoNewDesign['riki_lastname'];
+            }
+
+            if (array_key_exists('riki_firstname', $arrAddressInfoNewDesign)) {
+                $firstName = $arrAddressInfoNewDesign['riki_firstname'];
+            }
+            ?>
+            <div class="table table list">
+                <?php
+                foreach($arrInfoWithDL as $deliveryType => $arrDetailDL):
+                    $addressNameOfDeliveryType = $arrDetailDL['name'];
+                    $deliveryLabel = isset ( $arrDeliveryType[$deliveryType] ) ?
+                        $arrDeliveryType[$deliveryType] :  $deliveryType;
+                    ?>
+
+                    <!-- Header Info -->
+                    <div class="label">
+                        <h4><?php echo __("Address") ?>：<?php echo isset($arrAddressInfoNewDesign['riki_nickname'])?$arrAddressInfoNewDesign['riki_nickname']:''; ?></h4>
+                    </div>
+                    <div class="current-shipping-address">
+                        <div class="wrapper">
+                            <table>
+                                <tr class="header">
+                                    <td><strong><?php echo __('Name'); ?></strong></td>
+                                    <td><strong><?php echo __('Address'); ?></strong></td>
+                                    <td><strong><?php echo __('Phone number'); ?></strong></td>
+                                </tr>
+                                <tr>
+                                    <td data-th="<?php echo __('Name'); ?>"><?php echo $lastName.$firstName;  ?></td>
+                                    <td data-th="<?php echo __('Address'); ?>"><?php echo $parentBlock->getCustomerAddressByText($addressId); ?></td>
+                                    <td data-th="<?php echo __('Phone number'); ?>"><?php echo $arrAddressInfoNewDesign['telephone']; ?></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <?php
+                    // Show delivery date
+                    echo $this->getLayout()->createBlock("\Magento\Framework\View\Element\Template")->setData([
+                        'arrProduct' => $arrDetailDL,
+                        'addressId' => $addressId,
+                        'isAllowChangeAddress' => $isAllowChangeAddress,
+                        'addressOrder' => $i,
+                        'parentBlock' => $parentBlock,
+                        'store_id' => $parentBlock->getEntity()->getData('store_id'),
+                        'deliveryType' => $deliveryType,
+                        'frequency_unit' => $frequencyUnit,
+                        'frequency_interval' => $frequencyInterval,
+                        'next_delivery_date' => $nextDeliveryDate
+                    ])
+                        ->setData('area', 'frontend')
+                        ->setTemplate("Riki_Subscription::profile/payment/method/_render_delivery_date.phtml")->toHtml();
+                    ?>
+                    <!-- End Header Info -->
+                    <div class="label">
+                        <h4><?php echo __("お届け予定商品") ?></h4>
+                    </div>
+                    <!-- Show address + delivery type -->
+                    <div class="table block">
+
+                        <!-- Show list product -->
+                        <!-- Detail -->
+                        <?php
+                        /** Get product by address and delivery type */
+
+                        echo $this->getLayout()->createBlock("\Magento\Framework\View\Element\Template")->setData([
+                            'arrProduct' => $arrDetailDL['product'],
+                            'isAllowChangeProduct' => $isAllowChangeProduct,
+                            'allAddress' => $allAddress,
+                            'addressId' => $addressId,
+                            'isAllowChangeAddress' => $isAllowChangeAddress,
+                            'isAllowChangeQty' => $isAllowChangeQty,
+                            'addressOrder' => $i,
+                            'parentBlock' => $parentBlock,
+                            'deliveryType' => $deliveryType,
+                            'isBtnUpdateAllChangesPressed' => $isBtnUpdateAllChangesPressed,
+                            'isHanpukaiSubscription' => $isSubscriptionHanpukai,
+                            'dataFromSession' => $dataFromSession,
+                            'tentativePoints' => $tentativePoints,
+                            'totalAmount' => $totalAmount,
+                            'wrappingFee' => $wrappingFee,
+                            'shippingFee' => $shippingFee,
+                            'paymentFee' => $paymentFee,
+                            'discountAmount' => $discountAmount,
+                            'totalDeliveryType' => $totalDeliveryType,
+                            'countDeliveryType' => $countDeliveryType,
+                            'orderSimulator'=>$orderSimulator
+
+                        ])
+                            ->setData('area', 'frontend')
+                            ->setTemplate("Riki_Subscription::profile/payment/method/list_product_cart_by_address_by_delivery_type_total_amount.phtml")->toHtml(); ?>
+
+                    </div>
+                    <?php $countDeliveryType++; endforeach;  ?>
+            </div>
+            <?php
+            $i++;
+        endforeach;  ?>
+    </div>
+</fieldset>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Riki_Subscription/js/view/confirmPage": {}
+        }
+    }
+</script>

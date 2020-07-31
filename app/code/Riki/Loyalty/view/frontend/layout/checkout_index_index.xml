@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="checkout.root">
+            <arguments>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="components" xsi:type="array">
+                        <item name="checkout" xsi:type="array">
+                            <item name="children" xsi:type="array">
+                                <item name="steps" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="billing-step" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="payment" xsi:type="array">
+                                                    <item name="children" xsi:type="array">
+                                                        <item name="rewardPoints" xsi:type="array">
+                                                            <item name="component" xsi:type="string">Riki_Loyalty/js/view/reward-point</item>
+                                                            <item name="displayArea" xsi:type="string">reward-points</item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                                <item name="sidebar" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="summary" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="totals" xsi:type="array">
+                                                    <item name="children" xsi:type="array">
+                                                        <!--<item name="total-not-apply-point" xsi:type="array">
+                                                            <item name="component"  xsi:type="string">Riki_Loyalty/js/view/checkout/summary/total-not-apply-point</item>
+                                                            <item name="config" xsi:type="array">
+                                                                <item name="title" xsi:type="string" translate="true">Total amount of payment (Tax included)</item>
+                                                            </item>
+                                                        </item>
+                                                        <item name="total-not-apply-payment-fee" xsi:type="array">
+                                                            <item name="component"  xsi:type="string">Riki_Loyalty/js/view/checkout/summary/total-not-apply-payment-fee</item>
+                                                            <item name="config" xsi:type="array">
+                                                                <item name="title" xsi:type="string" translate="true">Total amount of payment (Tax included)</item>
+                                                            </item>
+                                                        </item>-->
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>
+

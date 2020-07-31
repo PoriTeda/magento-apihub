@@ -1,0 +1,32 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Create account form template
+ */
+/* @var $block \Magento\CustomAttributeManagement\Block\Form\Renderer\Multiselect */
+?>
+<?php
+$fieldCssClass = 'field field-' . $block->getHtmlId();
+$fieldCssClass .= $block->isRequired() ? ' required' : '';
+?>
+<div class="<?= /* @escapeNotVerified */ $fieldCssClass ?>">
+    <label class="label" for="<?= $block->getHtmlId() ?>"><span><?= /* @escapeNotVerified */ $block->getLabel() ?></span></label>
+    <div class="control">
+        <select multiple="multiple" id="<?= $block->getHtmlId() ?>" name="<?= $block->getFieldName('') ?>"<?php if ($block->getHtmlClass()):?> class="select <?= $block->getHtmlClass() ?>"<?php endif;?>>
+        <?php foreach ($block->getOptions() as $option):?>
+        <option value="<?= /* @escapeNotVerified */ $option['value'] ?>"<?php if ($block->isValueSelected($option['value'])):?> selected="selected"<?php endif;?>><?= $block->escapeHtml($option['label']) ?></option>
+        <?php endforeach;?>
+        </select>
+        <?php if ($_message = $block->getAdditionalDescription()) : ?>
+        <div class="note"><?= /* @escapeNotVerified */ $_message ?></div>
+        <?php endif; ?>
+    </div>
+</div>

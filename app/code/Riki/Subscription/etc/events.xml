@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="simulator_checkout_submit_all_after">
+        <observer name="simulator_checkout_submit" instance="Riki\Subscription\Observer\Emulator\CheckoutSubmitAllAfter" />
+    </event>
+    <event name="after_save_subscription_profile">
+        <observer name="reindex_update_on_save_simulate_subscription_profile" instance="Riki\Subscription\Observer\ReindexSimulateSubscription" />
+    </event>
+    <event name="sales_order_generated_assignation_after">
+        <observer name="logging_product_cannot_assign" instance="Riki\Subscription\Observer\Assignation" />
+    </event>
+    <event name="sales_model_service_quote_submit_before">
+        <observer name="subscription_init_data_subscription_order" instance="Riki\Subscription\Observer\InitDataSubscriptionOrder" />
+    </event>
+    <event name="order_cancel_after">
+        <observer name="after_canceled_order_revert_subscription_order_times" instance="Riki\Subscription\Observer\RevertSubscriptionOrderTimes" />
+    </event>
+    <event name="update_subscription_profile_after_authorized">
+        <observer name="riki_subscription_update_subscription_profile_after_authorized" instance="Riki\Subscription\Observer\UpdateSubscriptionProfileAfterAuthorized" />
+    </event>
+    <event name="checkout_submit_all_after">
+        <observer name="riki_subscription_update_subscription_profile_after_checkout_submit_all_after" instance="Riki\Subscription\Observer\UpdateSubscriptionProfileAfterAuthorized" />
+    </event>
+    <event name="paygent_capture_failed_after">
+        <observer name="riki_subscription_process_paygent_capture_failed_delay_payment" instance="Riki\Subscription\Observer\HandleDelayPaymentCaptureFail" />
+    </event>
+    <event name="subscription_profile_save_before">
+        <observer name="riki_subscription_check_maximum_order_times" instance="Riki\Subscription\Observer\CheckProfileMaximumOrderTimes" />
+    </event>
+    <event name="sales_quote_add_item">
+        <observer name="riki_subscription_init_quote_item_data" instance="Riki\Subscription\Observer\InitQuoteItemData" />
+    </event>
+</config>

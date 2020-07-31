@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <subscriptioncourse>
+            <profile_disengagement_email>
+                <identity>sales</identity>
+                <template>subscriptioncourse_profile_disengagement_email_template</template>
+                <template_to_business>subscriptioncourse_profile_disengagement_email_template_to_business</template_to_business>
+            </profile_disengagement_email>
+        </subscriptioncourse>
+    </default>
+</config>

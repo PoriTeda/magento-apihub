@@ -1,0 +1,41 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var \Magento\Support\Block\Adminhtml\Report\View\Tab $block */
+?>
+<script>
+//<![CDATA[
+    require(["prototype", "mage/adminhtml/tools"], function(){});
+//]]>
+</script>
+<style>
+    .file-path {font-size: 80%}
+</style>
+<div class="accordion">
+    <div class="entry-edit form-inline">
+<?php foreach ($block->getGrids() as $title => $gridData): ?>
+    <div class="section-config" style="overflow: auto">
+        <div class="entry-edit-head admin__collapsible-block">
+            <span id="grid_fieldset_<?= $block->escapeHtmlAttr($gridData->getTitleHash()) ?>-link" class="entry-edit-head-link"></span>
+            <a id="grid_fieldset_<?= $block->escapeHtmlAttr($gridData->getTitleHash()) ?>-head" href="#grid_fieldset_<?= $block->escapeUrl($gridData->getTitleHash()) ?>-link" onclick="Fieldset.toggleCollapse('grid_fieldset_<?= $block->escapeJs($gridData->getTitleHash()) ?>'); return false;"><?= $block->escapeHtml(__($title) . ($gridData->getDataCount() > 0 ? ' (' . $gridData->getDataCount() . ')' : '')) ?></a>
+        </div>
+        <input id="grid_fieldset_<?= $block->escapeHtmlAttr($gridData->getTitleHash()) ?>-state" name="grid_fieldset[<?= $block->escapeHtmlAttr($gridData->getTitleHash()) ?>]" type="hidden" value="0" />
+        <fieldset class="fieldset admin__collapsible-block" id="grid_fieldset_<?= $block->escapeHtmlAttr($gridData->getTitleHash()) ?>" style="display: none">
+            <?php
+            if ($gridData->hasError()) {
+                echo $block->escapeHtml($gridData->getError());
+            } else {
+                echo $gridData->getGridObject()->getHtml();
+            }
+            ?>
+        </fieldset>
+        <input id="grid_fieldset_<?= $block->escapeHtmlAttr($gridData->getTitleHash()) ?>-state" name="grid_fieldset[<?= $block->escapeHtmlAttr($gridData->getTitleHash()) ?>]" type="hidden" value="0" />
+    </div>
+<?php endforeach; ?>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Ui\Component\MassAction\Filter" type="Riki\Base\Component\MassAction\Filter"/>
+    <type name="Monolog\Logger">
+        <!-- Core bug https://github.com/magento/magento2/issues/19084-->
+        <!--<plugin name="rikiBaseLogger" type="Riki\Base\Plugin\Logger\Monolog" />-->
+        <arguments>
+            <argument name="processors" xsi:type="array">
+                <item name="addFormatDateProcessor" xsi:type="string">Riki\Base\Logger\Monolog\Processor::addFormatDateProcessor</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Ui\Model\Bookmark">
+        <plugin name="riki_refactor_search_keyword_length_magento_ui" type="Riki\Base\Plugin\Bookmark" />
+    </type>
+</config>

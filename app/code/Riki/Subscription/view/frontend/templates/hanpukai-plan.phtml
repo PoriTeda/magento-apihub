@@ -1,0 +1,166 @@
+<?php
+/* @var Riki\Subscription\Block\Frontend\Profile\HanpukaiPlan $block */
+$arrInfo = $block->getArrDataShow();
+?>
+<div class="hanpukai-history-title"><?php echo __('For products delivered, <a href="%1">please check</a> the order history.', $block->getUrl('sales/order/history')) ?></div>
+<div class="fieldset-wrapper customer-subscription-profile">
+    <div class="customer-subscription-profile-info">
+        <div class="customer-subscription-profile">
+            <table class="data table-list-sub-profile hanpukai plan-desktop">
+                <colgroup>
+                    <col width="10%">
+                    <col width="45%">
+                    <col width="20%">
+                    <col width="10%">
+                    <col width="15%">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th><?php echo __('Times');?></th>
+                    <th><?php echo __('Product');?></th>
+                    <th><?php echo __('Delivery day');?></th>
+                    <th><?php echo __('Qty ck');?></th>
+                    <th class="a-right"><?php echo __('Sales price (tax included)');?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach($arrInfo as $key => $arrDataItem) { ?>
+                    <?php $isShowDeliveryNumber = false; $isShowTotalAmount = false; $isShowDeliveryDate = false; ?>
+                    <?php $orderSimulateObj = $arrDataItem[$block::ARR_INFO_ORDER_OBJECT]; ?>
+                    <?php $arrHanpukaiProductConfig = $arrDataItem[$block::ARR_INFO_KEY_PRODUCT_COLLECTION]; ?>
+                    <?php if (count($orderSimulateObj) > 0) { ?>
+                        <?php foreach($orderSimulateObj['items'] as $itemId => $itemValue) {
+                            $buyRequest = $itemValue['buy_request'];
+                            $profileProductInfo = $block->getProfileProductInfo($arrHanpukaiProductConfig, $itemValue['product_id']);
+                            ?>
+                            <tr>
+                                <td data-th="<?php echo __('Times');?>">
+                                    <?php
+                                    if (isset($buyRequest['options']['ampromo_rule_id'])) {
+                                        // promotion product
+                                    } else {
+                                    ?>
+                                    <span><?php
+                                        if (!$isShowDeliveryNumber) {
+                                            echo $arrDataItem[$block::ARR_INFO_KEY_ORDER_TIMES] . __('A second visit');
+                                            $isShowDeliveryNumber = true;
+                                        }
+                                        ?>
+                                    </span>
+                                        <?php } ?>
+                                </td>
+                                <td data-th="<?php echo __('Product');?>">
+                                    <span><?php echo $itemValue['product_name']; ?></span>
+                                    <?php if (isset($buyRequest['options']['ampromo_rule_id'])) : ?>
+                                        <br>
+                                        <span class="free-gift-message"><?php echo $block->getMessageFreeGift() ?></span>
+                                    <?php endif; ?>
+                                </td>
+                                <td data-th="<?php echo __('Delivery day');?>">
+                                    <?php if (isset($buyRequest['options']['ampromo_rule_id'])) { ?>
+                                    <span><?php echo $arrDataItem[$block::ARR_INFO_KEY_DELIVERY_DATE]; ?></span>
+                                    <?php } else { ?>
+                                    <span><?php
+                                            if($profileProductInfo){
+                                                if (!$isShowDeliveryDate) {
+                                                    echo $profileProductInfo->getData('delivery_date');
+                                                    $isShowDeliveryDate = true;
+                                                }
+                                            }
+                                        ?></span>
+                                        <?php } ?>
+                                </td>
+                                <td data-th="<?php echo __('Qty ck');?>">
+                                    <span>
+                                        <?php if (strtoupper($itemValue['unit_case']) == \Riki\CreateProductAttributes\Model\Product\CaseDisplay::PROFILE_UNIT_CASE){ ?>
+                                            <?php echo $itemValue['qty_ordered']/$itemValue['unit_qty']; ?>
+                                            <?php echo __('CS'); ?>
+                                        <?php } else {  ?>
+                                            <?php echo $itemValue['qty_ordered']; ?>
+                                            <?php echo __('EA'); ?>
+                                        <?php } ?>
+                                    </span>
+                                </td>
+                                <td data-th="<?php echo __('Sales price (tax included)');?>">
+                                    <span>
+                                        <?php if (!$isShowTotalAmount): $isShowTotalAmount = true; ?>
+
+                                        <?php echo $block->formatCurrency(
+                                            $orderSimulateObj['total_amount'], $orderSimulateObj['website_id']);
+                                        ?>
+                                        <?php endif; ?>
+                                    </span>
+                                </td>
+                            </tr>
+                            <?php } ?>
+                        <?php } ?>
+                <?php }; ?>
+                </tbody>
+            </table>
+
+            <div class="hanpukai plan-mobile">
+                <?php foreach($arrInfo as $key => $arrDataItem) { ?>
+                <?php $isShowTotalAmountMobile = false; ?>
+                <?php $orderSimulateObj = $arrDataItem[$block::ARR_INFO_ORDER_OBJECT]; ?>
+                <?php $arrHanpukaiProductConfig = $arrDataItem[$block::ARR_INFO_KEY_PRODUCT_COLLECTION]; ?>
+                    <div class="item">
+                        <div class="times">
+                            <div class="left">
+                                <?php echo __('Times');?>
+                                <strong><?php echo $arrDataItem[$block::ARR_INFO_KEY_ORDER_TIMES].__('A second visit'); ?></strong>
+                            </div>
+                            <div>
+                                <?php echo __('Delivery day');?>
+                                <strong>
+                                <?php echo $arrDataItem[$block::ARR_INFO_KEY_DELIVERY_DATE]; ?>
+                                </strong>
+                            </div>
+                        </div>
+                        <?php if (count($orderSimulateObj) > 0) { ?>
+                            <?php foreach($orderSimulateObj['items'] as $itemId => $itemValue) {
+                                $buyRequest = $itemValue['buy_request'];
+                                $profileProductInfo = $block->getProfileProductInfo($arrHanpukaiProductConfig, $itemValue['product_id']);
+                                ?>
+                                <div class="detail">
+                                    <div class="left">
+                                        <?php echo __('Qty ck');?>
+                                        <strong>
+                                            <?php if (strtoupper($itemValue['unit_case']) == \Riki\CreateProductAttributes\Model\Product\CaseDisplay::PROFILE_UNIT_CASE){ ?>
+                                                <?php echo $itemValue['qty_ordered']/$itemValue['unit_qty']; ?>
+                                                <?php echo __('CS'); ?>
+                                            <?php } else {  ?>
+                                                <?php echo $itemValue['qty_ordered']; ?>
+                                                <?php echo __('EA'); ?>
+                                            <?php } ?>
+                                        </strong>
+                                    </div>
+                                    <div>
+                                        <?php echo __('Sales price (tax included)');?>
+                                    </div>
+                                    <div class="price">
+                                        <?php if (!$isShowTotalAmountMobile): $isShowTotalAmountMobile = true; ?>
+                                        <?php echo $block->formatCurrency(
+                                            $orderSimulateObj['total_amount'], $orderSimulateObj['website_id']);
+                                        ?>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="product">
+                                        <?php echo $itemValue['product_name']; ?>
+                                        <?php if (isset($buyRequest['options']['ampromo_rule_id'])) : ?>
+                                            <br>
+                                            <span class="free-gift-message"><?php echo $block->getMessageFreeGift() ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                        <?php } ?>
+                    </div>
+                <?php } ?>
+            </div>
+
+            <a href="<?php echo $block->getUrl('subscriptions/profile/hanpukai') ?>" class="list-sub-profile--button__back">
+                <span><?php echo __("Go back") ?></span>
+            </a>
+        </div>
+    </div>
+</div>

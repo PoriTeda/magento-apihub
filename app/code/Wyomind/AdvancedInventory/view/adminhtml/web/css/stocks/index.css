@@ -1,0 +1,48 @@
+/**
+ * Copyright © 2016 Wyomind. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+
+/****** Messages ******/
+.ai-msg{
+    font-size:10px;
+    text-align: center;
+    color:white;
+    width: 169px
+}
+
+.ai-msg.warning{ 
+    background-color:orange;
+}
+.ai-msg.alert{ 
+    background-color: red;
+}
+.ai-msg.notif{ 
+    background-color: green;
+}
+
+/****** Marker ******/
+.ai-marker{
+    width:8px;
+    height:8px;
+    float: right;
+    opacity:0.5;
+    border-radius:20px;
+}
+
+.ai-marker.in_stock{ 
+    background-color: green;
+}
+.ai-marker.out_of_stock{ 
+    background-color: red;
+}
+.ai-marker.backorder{ 
+    background-color:orange;
+}
+.ai-marker.not_managed{ 
+    background-color:grey;
+}
+.ai-marker.multistock_disabled{ 
+    background-color: grey;
+
+}

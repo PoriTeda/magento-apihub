@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="sales_order_shipment.grid.container">
+            <block class="Magento\Backend\Block\Widget\Grid" name="sales.order_shipment.grid" as="grid">
+
+                <block class="Magento\Backend\Block\Widget\Grid\ColumnSet" as="grid.columnSet" name="sales.order_shipment.grid.columnSet">
+                    <block class="Magento\Backend\Block\Widget\Grid\Column" as="shipping_name_kana">
+                        <arguments>
+                            <argument name="id" xsi:type="string">shipping_name_kana</argument>
+                            <argument name="header" xsi:type="string" translate="true">Ship-to Name Kana</argument>
+                            <argument name="index" xsi:type="string">shipping_name_kana</argument>
+                            <argument name="header_css_class" xsi:type="string">col-name</argument>
+                            <argument name="column_css_class" xsi:type="string">col-name</argument>
+                        </arguments>
+                    </block>
+                </block>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

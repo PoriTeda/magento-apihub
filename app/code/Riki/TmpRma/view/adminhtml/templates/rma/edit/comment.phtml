@@ -1,0 +1,11 @@
+<div id="tmprma_comments" style="display: none">
+    <ul class="note-list">
+        <?php foreach ($block->getComments() as $comment): ?>
+            <li>
+                <span class="note-list-date"><?php /* @escapeNotVerified */ echo $block->formatDate($comment->getCreatedAt(), \IntlDateFormatter::MEDIUM) ?></span>
+                <span><?php /* @escapeNotVerified */ echo $block->formatTime($comment->getCreatedAt(), \IntlDateFormatter::MEDIUM) ?></span>
+                <div class="note-list-comment"><?php echo $block->escapeHtml($comment->getComment(), ['b', 'br', 'strong', 'i', 'u', 'a']) ?></div>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</div>

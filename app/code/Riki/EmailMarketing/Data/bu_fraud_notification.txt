@@ -1,0 +1,10 @@
+クレジットカード支払いで検知対象の受注が作成されました。
+ 
+【検知チェック内容】：1日間で{{var base_grand_total}}を超えるクレジットカードでの受注が発生しました
+ 
+【受注番号】：{{var order_increment_id}}
+【出荷番号】：{{var shipment_increment_id}}
+【顧客ID】  : {{var customer_db_id}}
+【顧客情報】: {{var customer_membership}}
+【決済金額】：{{var current_grand_total}}
+【検知日時】：{{var order_date}}

@@ -1,0 +1,128 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+?>
+<?php
+/**
+ * catalog search layered navigation
+ *
+ * @var $block \Riki\Catalog\Block\Search\Navigation
+ */
+?>
+
+<?php if ($block->canShowBlock()): ?>
+
+    <div class="block filter" id="layered-filter-block" data-mage-init='{"collapsible":{"openedState": "active", "collapsible": true, "active": false, "collateral": { "openedState": "filter-active", "element": "body" } }}'>
+
+        <?php
+            $activeFilter = $block->getLayer()->getState()->getFilters();
+        ?>
+
+        <div class="block-title filter-title" data-count="<?php /* @escapeNotVerified */ echo count($activeFilter); ?>">
+            <strong data-role="title">
+                <?php /* @escapeNotVerified */ echo __('Shop By') ?>
+            </strong>
+        </div>
+
+        <div class="block-content filter-content">
+
+            <?php //echo $block->getChildHtml('state') ?>
+
+            <?php $wrapOptions = false; ?>
+
+            <?php foreach ($block->getFilters() as $filter): ?>
+
+                <?php
+                    if ($block->getItemsCount($filter)):
+                        $filterData = $block->getFilterData($filter, $activeFilter);
+                ?>
+
+                    <?php if (!$wrapOptions): ?>
+
+                        <div class="filter-options" id="narrow-by-list" data-role="content" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": false, "multipleCollapsible": false}}'>
+
+                    <?php  $wrapOptions = true; endif; ?>
+
+                            <div data-role="collapsible" class="filter-options-item">
+
+                                <strong>
+                                    <?php echo __($filter->getName()) ?>
+                                </strong>
+                                <div data-role="title" class="filter-options-title">
+                                    <?php
+                                        /* @escapeNotVerified */
+                                        echo $filterData['activeLabel'];
+                                    ?>
+                                </div>
+                                <div data-role="content" class="filter-options-content">
+                                    <ol class="items">
+                                        <?php foreach ($filterData['items'] as $filterItem): ?>
+                                            <li class="item">
+                                                <?php
+                                                    $totalFilterItems = $filterItem['count'];
+                                                    if ($totalFilterItems > 0):
+                                                ?>
+                                                    <a href="<?php echo $block->escapeUrl($filterItem['url']); ?>">
+                                                        <?php /* @escapeNotVerified */ echo $filterItem['label']; ?>
+                                                        <?php if ($this->helper('\Magento\Catalog\Helper\Data')->shouldDisplayProductCountOnLayer()): ?>
+                                                            <span class="count">
+                                                                <?php /* @escapeNotVerified */ echo $totalFilterItems;?>
+                                                                <span class="filter-count-label">
+                                                                    <?php echo $totalFilterItems == 1 ? __('item') : __('items');?>
+                                                                </span>
+                                                            </span>
+                                                        <?php endif; ?>
+                                                    </a>
+                                                <?php else:?>
+                                                    <?php /* @escapeNotVerified */ echo $filterItem['label']; ?>
+                                                    <?php if ($this->helper('\Magento\Catalog\Helper\Data')->shouldDisplayProductCountOnLayer()): ?>
+                                                        <span class="count">
+                                                            <?php /* @escapeNotVerified */ echo $totalFilterItems;?>
+                                                            <span class="filter-count-label">
+                                                                <?php echo $totalFilterItems == 1 ? __('item') : __('items');?>
+                                                            </span>
+                                                        </span>
+                                                    <?php endif; ?>
+                                                <?php endif; ?>
+                                            </li>
+                                        <?php endforeach ?>
+                                    </ol>
+                                </div>
+                            </div>
+                <?php endif; ?>
+
+            <?php endforeach; ?>
+
+            <?php if ($wrapOptions): ?>
+
+                        </div> <!-- class="filter-options" id="narrow-by-list" -->
+
+            <?php else: ?>
+
+                <script>
+                    require([
+                        'jquery'
+                    ], function ($) {
+                        $('#layered-filter-block').addClass('filter-no-options');
+                    });
+                </script>
+
+            <?php endif; ?>
+
+            <?php if ($activeFilter): ?>
+
+            <div class="block-actions filter-actions">
+                <a href="<?php /* @escapeNotVerified */ echo $block->getClearUrl() ?>" class="action clear filter-clear">
+                    <span><?php /* @escapeNotVerified */ echo __('Clear All') ?></span>
+                </a>
+            </div>
+
+            <?php endif; ?>
+
+        </div>
+    </div>
+<?php endif; ?>

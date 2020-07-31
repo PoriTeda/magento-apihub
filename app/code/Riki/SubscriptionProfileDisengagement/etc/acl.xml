@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Riki_SubscriptionFrequency::subscription" title="Subscription">
+                    <resource id="Riki_SubscriptionProfileDisengagement::reason" title="Subscription Profile Disengagement Reason" sortOrder="1000">
+                       <!-- <resource id="Riki_SubscriptionProfileDisengagement::reason_view" title="View" sortOrder="0" />-->
+                        <resource id="Riki_SubscriptionProfileDisengagement::reason_save" title="Save" sortOrder="1" />
+                        <resource id="Riki_SubscriptionProfileDisengagement::reason_delete" title="Delete" sortOrder="2" />
+                    </resource>
+                    <resource id="Riki_SubscriptionProfileDisengagement::profile_disengage" title="Disengage Profile" sortOrder="0" />
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

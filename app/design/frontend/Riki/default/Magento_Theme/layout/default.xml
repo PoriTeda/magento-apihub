@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Magento_Catalog::css/source/plugin/owl.carousel.css"/>
+        <css src="Magento_Catalog::css/source/plugin/owl.theme.default.min.css"/>
+    </head>
+    <body>
+        <referenceBlock name="top.search" remove="true"/>
+        <referenceBlock name="catalog.topnav" remove="true"/>
+        <referenceBlock name="header.panel" remove="true"/>
+        <referenceBlock name="compare-link-wrapper" remove="true"/>
+        <referenceBlock name="minicart" remove="true"/>
+        <referenceBlock name="top.links" remove="true"/>
+        <referenceBlock name="header-custom-block" remove="true"/>
+        <referenceBlock name="header-block" remove="true"/>
+        <referenceBlock name="header-block-cnc" remove="true"/>
+        <referenceBlock name="header-block-cis" remove="true"/>
+
+        <referenceBlock name="footer" remove="true"/>
+        <move element="top.search" destination="page.top" before="-"/>
+        <move element="catalog.topnav" destination="header-wrapper" after="-"/>
+        <move element="authorization-link" destination="header-wrapper" after="logo"/>
+        <referenceContainer name="header.container" htmlId="header"/>
+
+        <move element="header.search" destination="header.container" after="header-wrapper"/>
+        <referenceContainer name="header-wrapper">
+            <block class="Riki\Theme\Block\Html\Header\Menu" name="header-custom-block" template="Magento_Theme::html/header_custom.phtml">
+                <block class="Magento\Cms\Block\Block" name="header-block">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">riki-header-block</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Cms\Block\Block" name="header-block-cnc">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">riki-header-cnc-block</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Cms\Block\Block" name="header-block-cis">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">riki-header-cis-block</argument>
+                    </arguments>
+                </block>
+            </block>
+            <block class="Riki\Theme\Block\Html\Header\Welcome" name="welcome"/>
+        </referenceContainer>
+<!--        <container name="header.search" label="Page Header" as="header.search" htmlTag="div" htmlClass="header content search">-->
+<!--            <block class="Riki\Theme\Block\Html\Header\Search" name="riki.search" after="-" template="Riki_Theme::html/header/search.phtml" />-->
+<!--        </container>-->
+
+        <referenceBlock name="logo">
+            <arguments>
+                <argument name="logo_file" xsi:type="string">images/logo.jpg</argument>
+                <argument name="logo_img_width" xsi:type="number">172</argument>
+                <argument name="logo_img_height" xsi:type="number">75</argument>
+            </arguments>
+        </referenceBlock>
+
+        <referenceContainer name="footer-container">
+            <block class="Magento\Framework\View\Element\Template" name="logout-button-mobile" template="Magento_Theme::html/logout.phtml"/>
+            <block class="Magento\Framework\View\Element\Template" name="footer-custom-block" template="Magento_Theme::html/footer_custom.phtml">
+                <block class="Magento\Cms\Block\Block" name="footer-block">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">riki-block-footer</argument>
+                    </arguments>
+                </block>
+            </block>
+        </referenceContainer>
+
+        <referenceContainer name="page.top">
+            <referenceBlock name="navigation.sections">
+                <referenceBlock name="store.settings">
+                    <block class="Magento\Directory\Block\Currency" name="store.settings.currency" before="store.settings.language" template="currency.phtml">
+                        <arguments>
+                            <argument name="id_modifier" xsi:type="string">nav</argument>
+                        </arguments>
+                    </block>
+                </referenceBlock>
+            </referenceBlock>
+        </referenceContainer>
+    </body>
+</page>

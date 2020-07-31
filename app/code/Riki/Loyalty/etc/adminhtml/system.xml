@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/system.xsd">
+    <system>
+        <section id="riki_loyalty" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Loyalty Program</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_Loyalty::config</resource>
+            <group id="api" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>API config</label>
+                <field id="base_url" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>API base URL</label>
+                    <validate>required-entry</validate>
+                </field>
+
+                <field id="client_info" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Client Info</label>
+                    <validate>required-entry</validate>
+                    <comment>Default:XC</comment>
+                </field>
+
+                <field id="client_info_domain" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Client Info Domain</label>
+                    <comment>Default:g.nestle.jp</comment>
+                </field>
+                <field id="enableLoggingApiCall" translate="label comment" type="select" sortOrder="0" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Enable Logging API</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable logging data transport when call KSS API (Enabled by default, Disable for better performance)</comment>
+                </field>
+            </group>
+            <group id="point" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Reward Point</label>
+                <field id="expiration" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Default expiration</label>
+                    <validate>required-entry validate-number validate-greater-than-zero</validate>
+                    <comment>In days</comment>
+                </field>
+                <field id="retrypoint" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Retry set point</label>
+
+                </field>
+                <field id="schedule_time" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Schedule time re-send conversion point</label>
+                </field>
+                <field id="approval_to_name" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Approval to name</label>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="approval_to_email" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Approval to email</label>
+                    <validate>required-entry validate-emails</validate>
+                </field>
+                <field id="approval_email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Approval email template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="rate" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Point rate</label>
+                    <validate>required-entry validate-number validate-greater-than-zero</validate>
+                </field>
+                <field id="point_setting_cms_page" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Point setting cms page</label>
+                    <source_model>Magento\Cms\Model\Config\Source\Page</source_model>
+                </field>
+                <field id="point_history_cms_page" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Point history cms page</label>
+                    <source_model>Magento\Cms\Model\Config\Source\Page</source_model>
+                </field>
+
+            </group>
+            <group id="serial_code" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Serial code</label>
+                <field id="template_confirmation" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Serial code confirmation</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+            <group id="about_point_guide_group" translate="label"  type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>About Point Guide Link</label>
+                <field id="about_point_guide_input" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>About Point Guide Link</label>
+                </field>
+            </group>
+            <group id="delay_payment" translate="label"  type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Shopping Point For Delay Payment</label>
+                <field id="wbs_code" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>WBS Code</label>
+                </field>
+                <field id="account_code" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Account Code</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
+

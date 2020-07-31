@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_model_service_quote_submit_before">
+        <observer name="riki_csv_order_multiple_set_flag_order" instance="Riki\CsvOrderMultiple\Observer\SetImportOrderFlag" />
+        <observer name="riki_csvOrderMultiple_validate_payment_method_before_submit_quote" instance="Riki\CsvOrderMultiple\Observer\ValidatePaymentMethodBeforeSubmitQuote"/>
+    </event>
+    <event name="after_assignation_success">
+        <observer name="riki_csv_order_multiple_validate_delivery_date" instance="Riki\CsvOrderMultiple\Observer\ValidateDeliveryDate" />
+    </event>
+</config>
+

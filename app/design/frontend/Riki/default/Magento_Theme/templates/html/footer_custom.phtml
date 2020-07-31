@@ -1,0 +1,5 @@
+<?php
+/** @var \Riki\Customer\Helper\Membership $_rikiMember */
+$_rikiMember = $this->helper('Riki\Customer\Helper\Membership');
+
+echo ($_rikiMember->getWebsiteCode() != 'cnc' && $_rikiMember->getWebsiteCode() != 'cis') ? $this->getChildHtml('footer-block') : '';

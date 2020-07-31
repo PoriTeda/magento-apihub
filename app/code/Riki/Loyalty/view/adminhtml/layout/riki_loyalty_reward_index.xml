@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <update handle="riki_loyalty_reward_ajaxgrid" />
+    <container name="root">
+        <block class="Riki\Loyalty\Block\Adminhtml\Customer\Edit\Tab\Reward\Balance" name="reward_balance" template="Riki_Loyalty::reward/tab/balance.phtml"/>
+        <block class="Riki\Loyalty\Block\Adminhtml\Reward\NewReward" name="reward_form" template="Riki_Loyalty::reward/edit/form.phtml"/>
+    </container>
+</layout>

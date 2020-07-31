@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <modal name="advanced_inventory_modal">
+        <fieldset name="wyomind_advanced_inventory" class="Wyomind\AdvancedInventory\Block\Adminhtml\Catalog\Product\Edit\AdvancedInventory">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Wyomind Advanced Inventory</item>
+                    <item name="sortOrder" xsi:type="number">1000</item>
+                </item>
+            </argument>
+        </fieldset>
+    </modal>
+</form>

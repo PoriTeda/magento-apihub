@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_shipment_save_after">
+        <observer name="riki_np_atobarai_update_shipment_id_for_transaction" instance="Riki\NpAtobarai\Observer\UpdateShipmentIdForTransaction" />
+    </event>
+    <event name="order_cancel_after">
+        <observer name="after_cancel_order_cancel_transaction" instance="Riki\NpAtobarai\Observer\CancelTransaction" />
+    </event>
+    <event name="rma_approve_cc_before">
+        <observer name="riki_np_atobarai_validate_before_approve_cc_rma" instance="Riki\NpAtobarai\Observer\ValidateBeforeApproveCcNpAtobaraiRma"/>
+    </event>
+    <event name="rma_approve_cs_after">
+        <observer name="riki_np_atobarai_cancel_transaction_after_complete_rma" instance="Riki\NpAtobarai\Observer\CancelTransactionAfterCompleteRma"/>
+    </event>
+    <event name="riki_order_assignation_update_after">
+        <observer name="riki_np_atobarai_cancel_order_assignation_update_after" instance="Riki\NpAtobarai\Observer\CancelTransactionAfterOrderReAssignation" />
+    </event>
+</config>

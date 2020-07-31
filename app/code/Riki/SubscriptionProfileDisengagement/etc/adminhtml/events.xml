@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="subscription_profile_create_order_after">
+        <observer name="riki-subscription-profile-created-order-update-profile" instance="Riki\SubscriptionProfileDisengagement\Observer\SubscriptionProfileCreateOrderAfter"/>
+    </event>
+
+    <event name="subscription_profile_disengaged_after">
+        <observer name="riki-subscription-profile-created-order-update-kss" instance="Riki\SubscriptionProfileDisengagement\Observer\DisengageSubscriptionProfileAfter"/>
+    </event>
+
+    <event name="subscription_profile_disengaged_without_penalty_after">
+        <observer name="riki-subscription-profile-disengaged-without-penalty-update-kss" instance="Riki\SubscriptionProfileDisengagement\Observer\DisengageSubscriptionProfileAfter"/>
+    </event>
+</config>

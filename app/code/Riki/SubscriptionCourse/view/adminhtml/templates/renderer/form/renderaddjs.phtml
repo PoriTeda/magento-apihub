@@ -1,0 +1,24 @@
+<script type="text/javascript">
+    require([
+        'jquery'
+    ], function($){
+        var choiceId = $('input[name="hanpukai_delivery_date_allowed"]:checked').val();
+        if(choiceId == '0') {
+            $('.field-hanpukai_delivery_date_from, .field-hanpukai_delivery_date_to').hide();
+            $('.field-hanpukai_first_delivery_date').show();
+        }else {
+            $('.field-hanpukai_delivery_date_from, .field-hanpukai_delivery_date_to').show();
+            $('.field-hanpukai_first_delivery_date').hide();
+        };
+        $('input[name="hanpukai_delivery_date_allowed"]').on('change', function() {
+            choiceId = $('input[name="hanpukai_delivery_date_allowed"]:checked').val();
+            if(choiceId == '0') {
+                $('.field-hanpukai_delivery_date_from, .field-hanpukai_delivery_date_to').hide();
+                $('.field-hanpukai_first_delivery_date').show();
+            }else {
+                $('.field-hanpukai_delivery_date_from, .field-hanpukai_delivery_date_to').show();
+                $('.field-hanpukai_first_delivery_date').hide();
+            }
+        });
+    });
+</script>

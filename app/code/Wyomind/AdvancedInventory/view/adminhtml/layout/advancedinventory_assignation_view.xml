@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!--
+ Copyright © 2016 Wyomind. All rights reserved.
+ See LICENSE.txt for license details.
+-->
+<!-- Layout of the error report (from the grid)  -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    
+    <body>
+        <!-- remove default output -->
+        <referenceContainer name="header" remove="true"/>
+        <referenceContainer name="backend.page" remove="true"/>
+        <referenceContainer name="page.menu" remove="true"/>
+        <referenceContainer name="global.notices" remove="true"/>
+        <referenceContainer name="logo" remove="true"/>
+        <referenceContainer name="page.breadcrumbs" remove="true"/>
+        <referenceContainer name="page.formkey" remove="true"/>
+        <referenceContainer name="main.top" remove="true"/>
+        <referenceContainer name="page.messages" remove="true"/>
+        <referenceContainer name="page.main.actions" remove="true"/>
+        <referenceContainer name="require.js" remove="true"/>
+        <referenceContainer name="root">
+            <block template="Wyomind_AdvancedInventory::assignation/view.phtml" class="Wyomind\AdvancedInventory\Block\Adminhtml\Assignation\View" name="assignation_view"/>
+        </referenceContainer>
+    </body>
+</page>

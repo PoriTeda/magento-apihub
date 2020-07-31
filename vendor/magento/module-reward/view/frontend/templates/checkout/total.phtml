@@ -1,0 +1,27 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php if ($block->getTotal()->getValue()): ?>
+    <tr class="rewardpoints">
+        <th colspan="<?= /* @escapeNotVerified */ $block->getColspan() ?>" style="<?= /* @escapeNotVerified */ $block->getTotal()->getStyle() ?>" class="mark" scope="row">
+            <?php if ($block->getRenderingArea() == $block->getTotal()->getArea()): ?><strong><?php endif; ?>
+                <?php $_title = __('Remove'); ?>
+                <?php $_url = $block->getRemoveRewardTotalUrl(); ?>
+                <a href="<?= /* @escapeNotVerified */ $_url ?>" title="<?= /* @escapeNotVerified */ $_title ?>" class="action delete"><span><?= /* @escapeNotVerified */ $_title ?></span></a>
+                <?= /* @escapeNotVerified */ $block->getTotal()->getTitle() ?>
+            <?php if ($block->getRenderingArea() == $block->getTotal()->getArea()): ?></strong><?php endif; ?>
+        </th>
+        <td style="<?= /* @escapeNotVerified */ $block->getTotal()->getStyle() ?>" class="amount"
+            data-th="<?= $block->escapeHtml($block->getTotal()->getTitle()) ?>">
+            <?php if ($block->getRenderingArea() == $block->getTotal()->getArea()): ?><strong><?php endif; ?>
+                <?= /* @escapeNotVerified */ $this->helper('Magento\Checkout\Helper\Data')->formatPrice($block->getTotal()->getValue()) ?>
+            <?php if ($block->getRenderingArea() == $block->getTotal()->getArea()): ?></strong><?php endif; ?>
+        </td>
+    </tr>
+<?php endif; ?>

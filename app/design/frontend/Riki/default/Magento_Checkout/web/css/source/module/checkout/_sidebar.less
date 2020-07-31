@@ -1,0 +1,36 @@
+// /**
+//  * Copyright © 2016 Magento. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+
+@checkout-sidebar__margin: @indent__base;
+@checkout-sidebar__margin__xl: 46px;
+@checkout-sidebar__columns: 4;
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    #opc-sidebar {
+        &.sidebar0 {
+            display: none !important;
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .opc-sidebar {
+        .lib-css(margin, 0 0 @checkout-sidebar__margin);
+        width:percentage(253/900);
+        float: right;
+    }
+}

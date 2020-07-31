@@ -1,0 +1,203 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * @see \Magento\Rma\Block\Adminhtml\Rma\Edit\Tab\General\Details
+ */
+/** @var \Magento\Rma\Block\Adminhtml\Rma\Edit\Tab\General\Details $block */
+
+/** @var \Riki\Rma\Helper\Data $helper */
+$helper = $this->helper('Riki\Rma\Helper\Data');
+/** @var \Riki\Framework\Helper\Datetime $datetimeHelper */
+$datetimeHelper = $this->helper(\Riki\Framework\Helper\Datetime::class);
+$customerLink = $block->getCustomerLink();
+$order = $this->getOrder();
+$invoiceDate = $order->getInvoiceCollection()->getFirstItem()->getCreatedAt();
+$paymentDate = empty($invoiceDate)? '' : $block->formatDate(
+    $invoiceDate,
+    \IntlDateFormatter::MEDIUM,
+    true
+);
+$paymentMethod = ($payment = $order->getPayment()) ? $payment->getMethodInstance() : null;
+$returnWithoutGoodsReasonId = $helper->getReturnWithoutGoodsReasonId();
+?>
+<div class="admin__page-section-item rma-request-details">
+    <div class="admin__page-section-item-title">
+        <span class="title"><?php /* @escapeNotVerified */ echo __('Request Details') ?></span>
+    </div>
+    <div class="admin__page-section-item-content">
+        <table class="admin__table-secondary">
+            <tr>
+                <th><?php /* @escapeNotVerified */ echo __('ID') ?></th>
+                <td><?php /* @escapeNotVerified */ echo __('#') . $block->getRmaData('increment_id') ?></td>
+            </tr>
+            <tr>
+                <th><?php /* @escapeNotVerified */ echo __('Order ID') ?></th>
+                <td><a href="<?php /* @escapeNotVerified */ echo $block->getOrderLink() ?>"><?php /* @escapeNotVerified */ echo __('#') . $block->getOrderIncrementId() ?></a></td>
+            </tr>
+            <tr>
+                <th><?php /* @escapeNotVerified */ echo __('Customer Name') ?></th>
+                <td>
+                    <?php
+                    if ($customerLink) {
+                        echo '<a href="' . $customerLink . '">';
+                    }
+                    /* @escapeNotVerified */ echo $block->getCustomerName();
+                    if ($customerLink) {
+                        echo '</a>';
+                    }
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <th><?php /* @escapeNotVerified */ echo __('Email Address') ?></th>
+                <td><a href="mailto:<?php /* @escapeNotVerified */ echo $block->getCustomerEmail() ?>"><?php /* @escapeNotVerified */ echo $block->getCustomerEmail() ?></a></td>
+            </tr>
+            <tr>
+                <th><?php /* @escapeNotVerified */ echo __('Contact Email Address') ?></th>
+                <td><?php if ($block->getCustomerContactEmail()): ?><a href="mailto:<?php /* @escapeNotVerified */ echo $block->getCustomerContactEmail() ?>"><?php /* @escapeNotVerified */ echo $block->getCustomerContactEmail() ?></a><?php endif; ?></td>
+            </tr>
+            <tr>
+                <th><?php /* @escapeNotVerified */ echo __('Order Payment Method') ?></th>
+                <td><?php echo $paymentMethod ? $paymentMethod->getTitle() : '' ?></td>
+            </tr>
+            <tr>
+                <th><?php /* @escapeNotVerified */ echo __('Order Payment Date') ?></th>
+                <td id="payment_date"><?php echo $paymentDate ?></td>
+            </tr>
+            <tr>
+                <th>
+                    <div class="admin__fieldset">
+                        <div class="_required admin__field" style="margin-bottom: 0">
+                            <label class="admin__field-label">
+                                <span><?php /* @escapeNotVerified */ echo __('Returned Date'); ?></span>
+                            </label>
+                        </div>
+                    </div>
+                </th>
+                <td>
+                    <input class="input-text admin__control-text required-entry" type="text" name="returned_date_calendar" id="returned_date_calendar" data-date-format="<?php echo $datetimeHelper->getDateFormat(\IntlDateFormatter::MEDIUM) ?>" value="<?php echo $block->formatDate($block->getRmaData('returned_date'), \IntlDateFormatter::MEDIUM, false) ?>">
+                    <input type="hidden" id="returned_date" name="returned_date" value="<?php echo $block->getRmaData('returned_date') ?: $datetimeHelper->getToday()->format('Y-m-d') ?>">
+                </td>
+            </tr>
+            <?php if ($reasonIdData = $block->getData(\Riki\Rma\Helper\Constant::REGISTRY_KEY_REASON_ID)):
+                $options = isset($reasonIdData['options']) ? $reasonIdData['options'] : [];
+                ?>
+                <tr>
+                    <th style="width: 40%">
+                        <div class="admin__fieldset">
+                            <div class="_required admin__field" style="margin-bottom: 0">
+                                <label class="admin__field-label">
+                                    <span><?php /* @escapeNotVerified */ echo __('Return Reason Code') ?></span>
+                                </label>
+                            </div>
+                        </div>
+                    </th>
+                    <td style="width: 60%">
+                        <select data-return-without-goods-reason_id="<?php echo $returnWithoutGoodsReasonId?>" name="reason_id" id="reason_id" class="required-entry select admin__control-select" style="width: 100%">
+                            <?php foreach ($options as $value => $label): ?>
+                                <option value="<?php /* @escapeNotVerified */ echo $value; ?>" <?php if ($block->getRmaData('reason_id') == $value): echo 'selected';  endif;?>><?php echo $label ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                </tr>
+            <?php endif; ?>
+            <?php if ($block->getData(\Riki\Rma\Helper\Constant::REGISTRY_KEY_RMA_SHIPMENT_NUMBER)): ?>
+                <?php
+                    $requiredInputClass = $block->getRmaData('reason_id') == $returnWithoutGoodsReasonId ? '' : 'required-entry';
+                    $requiredLabelClass = $requiredInputClass ? '_required' : '';
+                ?>
+                <tr data-bind="scope: 'getPaymentDate'">
+                    <th>
+                        <div class="admin__fieldset">
+                            <div id="shipment_number-label-wrap" class="<?php echo $requiredLabelClass ?> admin__field" style="margin-bottom: 0">
+                                <label class="admin__field-label">
+                                    <span><?php /* @escapeNotVerified */ echo __('Shipment Number') ?></span>
+                                </label>
+                            </div>
+                        </div>
+                    </th>
+                    <td>
+                        <input name="rma_shipment_number" id="rma_shipment_number" type="text" data-bind="event: {focusout: checkKeyFocusOut}" class="<?php echo $requiredInputClass ?> input-text admin__control-text" data-value="<?php echo $block->getRmaData('rma_shipment_number') ?>" value="<?php echo $block->getRmaData('rma_shipment_number') ?>">
+                    </td>
+                </tr>
+            <?php endif; ?>
+            <?php if ($block->getData(\Riki\Rma\Helper\Constant::REGISTRY_KEY_SUBSTITUTION_ORDER)): ?>
+            <tr>
+                <th>
+                    <div class="admin__fieldset">
+                        <div class="admin__field" style="margin-bottom: 0">
+                            <label class="admin__field-label">
+                                <span><?php /* @escapeNotVerified */ echo __('Substitution order') ?></span>
+                            </label>
+                        </div>
+                    </div>
+                </th>
+                <td>
+                    <input name="substitution_order" id="substitution_order" type="text" class="input-text admin__control-text" data-value="<?php echo $block->getRmaData('substitution_order') ?>" value="<?php echo $block->getRmaData('substitution_order') ?>">
+                </td>
+            </tr>
+            <?php endif; ?>
+            <?php if (
+                $helper->canShowReturnedWarehouseField()
+                && $returnedWarehouse = $block->getData(\Riki\Rma\Helper\Constant::REGISTRY_KEY_RETURNED_WAREHOUSE)
+            ):
+                $options = isset($returnedWarehouse['options']) ? $returnedWarehouse['options'] : [];
+                ?>
+                <tr>
+                    <th>
+                        <div class="admin__fieldset">
+                            <div class="_required admin__field" style="margin-bottom: 0">
+                                <label class="admin__field-label">
+                                    <span><?php /* @escapeNotVerified */ echo __('Returned warehouse') ?></span>
+                                </label>
+                            </div>
+                        </div>
+                    </th>
+                    <td>
+                        <select name="returned_warehouse" id="returned_warehouse" class="select admin__control-select required-entry">
+                            <?php foreach ($options as $value => $label): ?>
+                                <option value="<?php /* @escapeNotVerified */ echo $value; ?>" <?php if ($block->getRmaData('returned_warehouse') == $value): echo 'selected';  endif;?>><?php echo $label ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                </tr>
+            <?php endif; ?>
+            <?php if (
+                $helper->canShowPartialFullField()
+                && $fullPartial = $block->getData(\Riki\Rma\Helper\Constant::REGISTRY_KEY_FULL_PARTIAL)
+            ):
+            $options = isset($fullPartial['options']) ? $fullPartial['options'] : [];
+            ?>
+            <tr>
+                <th>
+                    <div class="admin__fieldset">
+                        <div class="_required admin__field" style="margin-bottom: 0">
+                            <label class="admin__field-label">
+                                <span><?php /* @escapeNotVerified */ echo __('Partial/Full') ?></span>
+                            </label>
+                        </div>
+                    </div>
+                </th>
+                <td>
+                    <select name="full_partial" id="full_partial" class="select admin__control-select required-entry" <?php echo $block->getRmaData('returned_warehouse') ? 'disabled' : ''?>>
+                        <?php foreach ($options as $value => $label): ?>
+                            <option value="<?php /* @escapeNotVerified */ echo $value; ?>" <?php if (!is_null($block->getRmaData('full_partial')) && $block->getRmaData('full_partial') == $value): echo 'selected';  endif;?>><?php echo $label ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
+            <?php endif; ?>
+        </table>
+        <input type="hidden" name="is_without_goods" value="<?php echo $block->getRmaData('is_without_goods'); ?>" />
+    </div>
+</div>
+
+<?php echo $block->getChildHtml('request_payment_date'); ?>

@@ -1,0 +1,10 @@
+<?php
+/** @var \Riki\Subscription\Block\Multiple\Category\View $parentBlock */
+$parentBlock = $block->getParentBlock()->getParentBlock();
+
+$product = $block->getProduct();
+?>
+
+<div class="product-item-photo" data-bind="click: function(){openDetailPopup(<?php echo $product->getId() ?>)}, touchstart:function(){openDetailPopup(<?php echo $product->getId() ?>)}">
+    <?php echo $parentBlock->getImage($product, 'product_thumbnail_image')->toHtml(); ?>
+</div>

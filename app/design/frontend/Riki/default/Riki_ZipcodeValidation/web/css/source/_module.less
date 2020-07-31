@@ -1,0 +1,323 @@
+//
+//    Common
+//--------------------------------------
+
+.form-address-edit,
+.form-shipping-address,
+.billing-address-form {
+    font-size: 1.2rem;
+    .fieldset {
+        legend {
+            border-bottom: 0;
+            padding-bottom: 0;
+        }
+        > .field {
+            background-color: #ffffff;
+            border-color: #cccccc;
+            border-width: 0 1px 1px 1px;
+            border-style: solid;
+            padding: 8px 15px;
+            margin-bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
+            .lib-clearer();
+            &:nth-of-type(even) {
+                background: #f2f2f2;
+            }
+            &:nth-of-type(1) {
+                border-width: 1px;
+            }
+            .label {
+                position: relative;
+                margin-top: 5px;
+                padding-right: 35px;
+                box-sizing: border-box;
+                .lib-clearer();
+                &:after {
+                    content: attr(attr-have-to);
+                    font-size: 1.2rem;
+                    color: #e02b27;
+                    font-weight: 400;
+                    margin: 0 0 0 5px;
+                }
+            }
+            .control {
+                position: relative;
+                input[name='postcode'],
+                input[name='postcode_c'] {
+                    width: 25%;
+                }
+                input, select {
+                    height: 28px;
+                    font-size: 1.3rem;
+                    max-width: 313px;
+                }
+                select {
+                    background-position: 100% 51%;
+                }
+                .find-postcode,
+                .find-postcode_c {
+                    position: absolute;
+                    top: 0;
+                    left: 25%;
+                    margin-left: 5px;
+                    background: @button-riki__background;
+                    height: 28px;
+                    line-height: 30px;
+                    color: #ffffff;
+                    font-size: 1.2rem;
+                    font-weight: 400;
+                    border: 0;
+                    padding: 0 15px;
+                    box-shadow: none;
+                }
+            }
+            &.telephone {
+                input {
+                    max-width: 120px;
+                }
+            }
+            &.nickname-address {
+                .label{
+                    display: block;
+                }
+            }
+            &.country {
+                display: none !important;
+            }
+            &.choice.set.billing,
+            &.choice.set.shipping {
+                padding: 0;
+                border: 0;
+                background: none;
+                margin: 5px 0 0 0;
+                .label {
+                    margin-top: 0;
+                    width: inherit;
+                    padding-right: 0;
+                    max-width: 300px;
+                }
+                input[type="checkbox"] {
+                    float: left;
+                    margin: 3px 9px 0 0;
+                }
+            }
+            &.choice.set.billing {
+                margin-top: 15px;
+            }
+            &.field-name {
+                .label {
+                    display: block;
+                }
+                .control {
+                    width: 24%;
+                    padding-right: 5px;
+                    float: left;
+                }
+            }
+            .field-tips {
+                font-size: 1rem;
+                color: #666666;
+                clear: both;
+                .tips-orange,
+                span{
+                    color: #ff6600;
+                }
+            }
+        }
+    }
+    .actions-toolbar {
+        .primary {
+            float: right;
+            button[type="submit"] {
+                margin-right: 0;
+                padding: 11px 17px;
+                min-width: 150px;
+                span {
+                    font-size: 1.6rem;
+                    font-weight: 400;
+                    padding-left: 30px;
+                    &:after {
+                        content: '\f054';
+                        font-family: @font-family__awesome;
+                        display: inline-block;
+                        padding-left: 12px;
+                    }
+                }
+            }
+        }
+        .secondary {
+            float: left;
+            font-size: 1.3rem;
+            margin-top: 13px;
+            .action.back {
+                display: block;
+                span {
+                    &:before {
+                        content: '\f053';
+                        font-family: @font-family__awesome;
+                        display: inline-block;
+                        padding-right: 5px;
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+//
+//    Desktop
+//--------------------------------------
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .form-address-edit,
+    .form-shipping-address,
+    .billing-address-form {
+        .fieldset {
+            width: 100%;
+            .field {
+                .label {
+                    float: left;
+                    width: 34%;
+                    &:after {
+                        position: absolute;
+                        right: 10px;
+                        top: 0;
+                    }
+                }
+                .control {
+                    float: left;
+                    width: 66%;
+                }
+                &.field-name {
+                    .label{
+                        width: 34%;
+                        float:left;
+                    }
+                    .control {
+                        width: 18%;
+                    }
+                }
+                &.nickname-address {
+                    .label{
+                        float: left;
+                    }
+                    input {
+                        max-width: 180px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//
+//    Mobile
+//--------------------------------------
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .form-address-edit,
+    .form-shipping-address {
+        .fieldset {
+            .field {
+                .label {
+                    display: block;
+                    width: 100%;
+                    float: left;
+                    padding-right: 0;
+                    &:after {
+                        display: inline-block;
+                    }
+                }
+                &.zip {
+                    .control {
+                        clear: both;
+                    }
+                }
+            }
+        }
+    }
+}
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+    .form-address-edit,
+    .form-shipping-address {
+        .fieldset {
+            .field {
+                .label {
+                    font-size: 1.4rem;
+                    padding-right: 40px;
+                    &:after {
+                        font-size: 1.2rem;
+                    }
+                }
+                .control {
+                    input[name='postcode'],
+                    input[name='postcode_c'] {
+                        width: 35%;
+                    }
+                    .find-postcode,
+                    .find-postcode_c {
+                        left: 35%;
+                        padding: 0 6px;
+                    }
+                }
+                &.field-name{
+                    .control{
+                        width: 30%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__xs) {
+    .form-address-edit,
+    .form-shipping-address {
+        .fieldset {
+            .field {
+                .control {
+                    input[name='postcode'],
+                    input[name='postcode_c'] {
+                        width: 48% !important;
+                    }
+                    input, select {
+                        max-width: 100%;
+                    }
+                    .find-postcode,
+                    .find-postcode_c {
+                        left: 48% !important;
+                        padding: 0 6px;
+                    }
+                }
+                &.telephone {
+                    input {
+                        max-width: 100%;
+                    }
+                }
+                &.nickname-address {
+                    input {
+                        max-width: 100%;
+                    }
+                }
+                &.choice.set.billing,
+                &.choice.set.shipping {
+                    .label {
+                        max-width: 275px;
+                    }
+                }
+                &.field-name {
+                    .control {
+                        width: 33%;
+                        padding-right: 5px;
+                        box-sizing: border-box;
+                        &:nth-of-type(2) {
+                            padding-right: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

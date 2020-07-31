@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="address">
+        <field name="postcode">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Riki_ZipcodeValidation/js/form/element/post-code</item>
+                    <item name="elementTmpl" xsi:type="string">Riki_ZipcodeValidation/form/element/input-postcode</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-custom-postal-code" xsi:type="string">true</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="string">1</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+</form>

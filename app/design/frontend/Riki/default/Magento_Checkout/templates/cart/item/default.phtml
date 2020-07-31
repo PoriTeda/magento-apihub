@@ -1,0 +1,349 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Checkout\Block\Cart\Item\Renderer */
+$isHanpukaiSubscription = $block->getData('is_hanpukai_subscription');
+$_item = $block->getItem();
+
+$minQty = max($block->getData('min_qty'), 1);
+$maxSales = min($block->getData('max_qty'), 99);
+
+$product = $_item->getProduct();
+$isVisibleProduct = $product->isVisibleInSiteVisibility();
+/* stock status */
+$stockHelper = $this->helper('Riki\ProductStockStatus\Helper\StockData');
+$stockMessageArr = $stockHelper->getStockStatusMessage($product);
+if (array_key_exists('class', $stockMessageArr)
+    && array_key_exists('message', $stockMessageArr)) {
+    $classMessage = $stockMessageArr['class'];
+    $textMessage = $stockMessageArr['message'];
+} else {
+    $classMessage = '';
+    $textMessage = $stockHelper->getOutStockMessageByProduct($product);
+}
+/** @var \Magento\Msrp\Helper\Data $helper */
+$helper = $this->helper('Magento\Msrp\Helper\Data');
+
+/** @var \Amasty\Promo\Helper\Item $helperAmasty */
+$helperAmasty =  $this->helper('Amasty\Promo\Helper\Item');
+
+/** @var \Riki\Catalog\Helper\Data $_rikiCatalogHelper */
+$_rikiCatalogHelper = $this->helper('Riki\Catalog\Helper\Data');
+$totalItem = $block->getData('total_item');
+
+$canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinimalPriceLessMsrp($product);
+$unitConvert = $_item->getUnitQty();
+$unitConvert = ($unitConvert != null && $unitConvert > 0)?$unitConvert:1;
+
+if($_item->getUnitCase() == 'CS'){
+    $maxSales =  $maxSales*$unitConvert;
+}
+$blockView =  $block->getLayout()->createBlock('Magento\Catalog\Block\Product\View');
+if (!$_item->hasData('prize_id') || !$_item->getData('prize_id')) :
+
+?>
+<!--<tbody class="cart item">-->
+    <tr data-item-id="<?php echo $product->getSku();?>" class="item-info parent-item-cart" data-cart-product-id="<?php /* @escapeNotVerified */ echo $_item->getProductId() ?>" >
+        <td class="col item image">
+            <?php if ($block->hasProductUrl()):?>
+            <a href="<?php /* @escapeNotVerified */ echo $block->getProductUrl() ?>"
+               title="<?php echo $block->escapeHtml($block->getProductName()) ?>"
+               tabindex="-1"
+               class="product-item-photo"
+               layer-item-id="<?php echo $block->getProduct()->getId();?>"
+            >
+                <?php else:?>
+                <span class="product-item-photo">
+            <?php endif;?>
+            <?php echo $block->getImage($block->getProductForThumbnail(), 'cart_page_product_thumbnail')->toHtml(); ?>
+            <?php if ($block->hasProductUrl()):?>
+            </a>
+        <?php else: ?>
+            </span>
+        <?php endif; ?>
+        </td>
+        <td data-th="<?php echo $block->escapeHtml(__('Item')); ?>" class="col item name">
+            <div class="product-item-details">
+                <strong class="product-item-name">
+                    <?php if ($block->hasProductUrl()):?>
+                        <a layer-item-id="<?php echo $block->getProduct()->getId();?>" href="<?php /* @escapeNotVerified */ echo $block->getProductUrl() ?>"><?php echo $block->escapeHtml($block->getProductName()) ?></a>
+                    <?php else: ?>
+                        <?php echo $block->escapeHtml($block->getProductName()) ?>
+                    <?php endif; ?>
+                </strong>
+                <div class="notification-qty <?php echo $classMessage;?>"><?php echo __('Stock:') ?> <?php echo $textMessage;?></div>
+                <?php if ($product->getDeliveryType() || $product->getIsFreeShipping() || ($product->getGiftWrapping() && $this->helper('\Magento\GiftWrapping\Helper\Data')->isGiftWrappingAvailableForItems())): ?>
+                <div class="product-tags">
+                    <?php if ($product->getDeliveryType()):
+                        $deliveryTypeHtmlClass = $_rikiCatalogHelper->getLabelHtmlClassOfDeliveryType($product->getDeliveryType());
+                        ?>
+                        <div class="product-tag delivery_type <?php echo $deliveryTypeHtmlClass ? $deliveryTypeHtmlClass : "none"; ?>">
+                            <span>
+                                <?php
+                                    $deliveryTypeText = $_rikiCatalogHelper->getLabelHtmlOfDeliveryType($product->getDeliveryType());
+                                    echo __($deliveryTypeText);
+                                ?>
+                            </span>
+                        </div>
+                    <?php endif; ?>
+                    <?php if($this->helper('\Riki\Preorder\Helper\Data')->getIsProductPreorder($product)): ?>
+                        <div class="product-tag reorder ">
+                            <span><?php echo __('Re order') ?></span>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($product->getIsFreeShipping()): ?>
+                        <div class="product-tag free_shipping">
+                            <span><?php echo __('Free Shipping'); ?></span>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ($product->getGiftWrapping() && $this->helper('\Magento\GiftWrapping\Helper\Data')->isGiftWrappingAvailableForItems()): ?>
+                        <div class="product-tag wrapping_available">
+                             <span>
+                        <?php if($_rikiCatalogHelper->hasFreeGiftWrapping($product)): ?>
+                             <?php echo __('Wrapping Free') ?>
+                            <?php else:?>
+                            <?php echo __('Wrapping Available'); ?>
+                        <?php endif; ?>
+                            </span>
+                        </div>
+                    <?php endif;?>
+                </div>
+                <?php endif; ?>
+
+                <?php if(!$helperAmasty->isPromoItem($_item)) : ?>
+                    <div class="actions-toolbar trackingDeleteProductCart" >
+                        <?php echo $block->getActions($_item) ?>
+                    </div>
+                <?php endif; ?>
+
+
+                <?php if ($_options = $block->getOptionList()):?>
+                    <dl class="item-options<?php echo ($product->getTypeId() == 'bundle') ? ' bundle' : '' ?>">
+                        <?php foreach ($_options as $_option) : ?>
+                            <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+                            <dt><?php echo $block->escapeHtml($_option['label']) ?></dt>
+                            <dd>
+                                <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                                    <?php /* @escapeNotVerified */ echo $_formatedOptionValue['full_view'] ?>
+                                <?php else: ?>
+                                    <?php /* @escapeNotVerified */ echo $_formatedOptionValue['value'] ?>
+                                <?php endif; ?>
+                            </dd>
+                        <?php endforeach; ?>
+                    </dl>
+                <?php endif;?>
+                <?php if ($messages = $block->getMessages()): ?>
+                    <?php foreach ($messages as $message): ?>
+                        <?php if($message['type'] != 'error'):?>
+                        <div class="cart item message <?php /* @escapeNotVerified */ echo $message['type'] ?>"><div><?php echo $block->escapeHtml($message['text']) ?></div></div>
+                        <?php endif;?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                <?php $addInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
+                <?php if ($addInfoBlock): ?>
+                    <?php echo $addInfoBlock->setItem($_item)->toHtml() ?>
+                <?php endif;?>
+
+            </div>
+        </td>
+
+        <?php if (!$isHanpukaiSubscription) : ?>
+            <?php if ($canApplyMsrp): ?>
+                <td class="col msrp" data-th="<?php echo $block->escapeHtml(__('Price')); ?>">
+                    <span class="pricing msrp">
+                        <span class="msrp notice"><?php /* @escapeNotVerified */ echo __('See price before order confirmation.'); ?></span>
+                        <?php $helpLinkId = 'cart-msrp-help-' . $_item->getId(); ?>
+                        <a href="#" class="action help map" id="<?php /* @escapeNotVerified */ echo($helpLinkId); ?>" data-mage-init='{"addToCart":{"helpLinkId": "#<?php /* @escapeNotVerified */ echo $helpLinkId;?>","productName": "<?php /* @escapeNotVerified */ echo $product->getName(); ?>","showAddToCart": false}}'>
+                            <span><?php /* @escapeNotVerified */ echo __("What's this?"); ?></span>
+                        </a>
+                    </span>
+                </td>
+            <?php else: ?>
+                <td class="col price" data-th="<?php echo $block->escapeHtml(__('Price')); ?>">
+                    <?php
+                        //show final price
+                        echo $block->getUnitPriceHtml($_item);
+                        if (!$block->getData('is_subscription')) {
+                            echo $this->getLayout()->getBlock('product.price.render.default')->render('tier_price', $product, []);
+                        }
+                    ?>
+
+                </td>
+            <?php endif; ?>
+        <?php endif; ?>
+
+        <td class="col qty<?php if($isHanpukaiSubscription): ?> hanpukai<?php endif; ?>" data-th="<?php echo $block->escapeHtml(__('Qty')); ?>">
+            <?php if (!$_item->getIsRikiMachine()): ?>
+            <div class="field qty">
+                <label class="label" for="cart-<?php /* @escapeNotVerified */ echo $_item->getId() ?>-qty">
+                    <span><?php /* @escapeNotVerified */ echo __('Qty') ?></span>
+                </label>
+                <div class="control qty" >
+                    <?php if($_item->getUnitCase() == 'CS') :?>
+                        <?php if($helperAmasty->isPromoItem($_item)){ ?>
+                            <span style="display: none;" class="qty"><?php /* @escapeNotVerified */ echo $block->getQty()?></span>
+                        <?php } else {?>
+
+                                <?php if(!$isHanpukaiSubscription) { ?>
+                                <div class="select-wrapper">
+                                <select style="display:none;" id="cart-<?php /* @escapeNotVerified */ echo $_item->getId() ?>-qty"
+                                        name="cart[<?php /* @escapeNotVerified */ echo $_item->getId() ?>][qty]"
+                                        title="<?php echo $block->escapeHtml(__('Qty')); ?>"
+                                        data-cart-item-id="<?php /* @escapeNotVerified */ echo $_item->getSku() ?>"
+                                        data-validate="{required:true, 'greater-than-equals-to':'#minimun-qty-<?php /* @escapeNotVerified */ echo $_item->getId() ?>'}"
+                                        data-role="cart-item-qty"
+                                        class="qty">
+                                    <?php for ($i = $minQty; $i <= $maxSales; $i++) : ?>
+                                        <option <?php if($block->getQty()== $i) echo "selected = selected"?> value="<?php echo $i ?>"><?php echo $i; ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                                    <button type="button" class="add"><span>+</span></button>
+                                </div>
+                                <?php } else { ?>
+                                    <?php //echo $block->getQty(); ?>
+                                <input type="hidden" name="cart[<?php /* @escapeNotVerified */ echo $_item->getId() ?>][qty]"
+                                       value="<?php echo $block->getQty(); ?>" />
+                                <?php } ?>
+
+
+                        <?php } ?>
+                        <?php
+                            $mini_qty_required_cs = ceil(($blockView->getProductDefaultQty($product) * 1) / $unitConvert);
+                            if ($mini_qty_required_cs <= 0) {
+                                $mini_qty_required_cs = 1
+                                ;
+                            }
+                        ?>
+                        <?php if($helperAmasty->isPromoItem($_item)){ ?>
+                            <span class="qty"><?php /* @escapeNotVerified */ echo $block->getQty()/$unitConvert?></span>
+                        <?php } else {?>
+
+                                <?php if (!$isHanpukaiSubscription) { ?>
+                                <div class="select-wrapper">
+                                <select id="cart-<?php /* @escapeNotVerified */ echo $_item->getId() ?>-qty-case"
+                                        name="cart[<?php /* @escapeNotVerified */ echo $_item->getId() ?>][qty_case]"
+                                        title="<?php echo $block->escapeHtml(__('Qty')); ?>"
+                                        data-cart-item-id="<?php /* @escapeNotVerified */ echo $_item->getSku() ?>"
+                                        data-validate="{required:true, 'greater-than-equals-to':'#minimun-qty-<?php /* @escapeNotVerified */ echo $_item->getId() ?>'}"
+                                        data-role="cart-item-qty-case"
+                                        class="unit-case">
+                                    <?php for ($i = $minQty; $i <= $maxSales/$unitConvert; $i++) : ?>
+                                        <option <?php if($block->getQty()/$unitConvert== $i) echo "selected = selected"?> value="<?php echo $i ?>"><?php echo $i; ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                                    <button type="button" class="subtract"><span>-</span></button>
+                                </div>
+                                <?php } else { ?>
+                                    <?php echo $block->getQty()/$unitConvert; ?>
+                                <input type="hidden" name="cart[<?php /* @escapeNotVerified */ echo $_item->getId() ?>][qty_case]"
+                                       value="<?php echo $block->getQty()/$unitConvert; ?>" />
+                                <?php } ?>
+
+                        <?php } ?>
+
+
+                        <input type="hidden" id="cart-<?php /* @escapeNotVerified */ echo $_item->getId() ?>-unit-qty-convert" name="unit_convert" value="<?php echo $unitConvert;?>"/>
+                        <input type="hidden" value="<?php echo $mini_qty_required_cs; ?>" id="minimun-qty-<?php /* @escapeNotVerified */ echo $_item->getId() ?>">
+                        <input type="hidden" value="<?php echo $unitConvert;?>" class="data-remove-qty" >
+                    <?php else:?>
+
+                        <?php
+                            $mini_qty_required = $blockView->getProductDefaultQty($product) * 1;
+                            if ($mini_qty_required <= 0) {
+                                $mini_qty_required = 1;
+                            }
+                        ?>
+                        <?php if($helperAmasty->isPromoItem($_item)){ ?>
+                            <span class="qty"><?php /* @escapeNotVerified */ echo $block->getQty()?></span>
+                            <?php } else {?>
+                                <button type="button" class="add"><span>+</span></button>
+                                <?php if (!$isHanpukaiSubscription) { ?>
+                                <div class="select-wrapper">
+                                <select id="cart-<?php /* @escapeNotVerified */ echo $_item->getId() ?>-qty"
+                                        name="cart[<?php /* @escapeNotVerified */ echo $_item->getId() ?>][qty]"
+                                        title="<?php echo $block->escapeHtml(__('Qty')); ?>"
+                                        data-cart-item-id="<?php /* @escapeNotVerified */ echo $_item->getSku() ?>"
+                                        data-validate="{required:true, 'greater-than-equals-to':'#minimun-qty-<?php /* @escapeNotVerified */ echo $_item->getId() ?>'}"
+                                        data-role="cart-item-qty">
+                                    <?php for ($i = $minQty; $i <= $maxSales; $i++) : ?>
+                                        <option <?php if($block->getQty()== $i) echo "selected = selected"?> value="<?php echo $i ?>"><?php echo $i; ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                                    <button type="button" class="subtract"><span>-</span></button>
+                                </div>
+                                <?php } else { ?>
+                                    <?php echo $block->getQty(); ?>
+                                    <input type="hidden" name="cart[<?php /* @escapeNotVerified */ echo $_item->getId() ?>][qty]"
+                                           value="<?php echo $block->getQty(); ?>" />
+                                <?php } ?>
+
+                            <?php } ?>
+                        <input type="hidden" value="<?php echo $mini_qty_required; ?>" id="minimun-qty-<?php /* @escapeNotVerified */ echo $_item->getId() ?>">
+                        <input type="hidden" value="<?php echo $block->getQty(); ?>" class="data-remove-qty" >
+
+                    <?php endif;?>
+                </div>
+                <span class="unit">
+                    <?php if('CS' ==$_item->getUnitCase()) { ?>
+                        <span><?php echo __($_item->getUnitCase()); ?></span>
+                    <?php } else { ?>
+                        <span><?php echo __($_item->getUnitCase()); ?></span>
+                    <?php } ?>
+                </span>
+            </div>
+            <?php else: ?>
+            <div class="field qty">
+                <span class="qty">1</span>
+                <input type="hidden" name="cart[<?php /* @escapeNotVerified */ echo $_item->getId() ?>][qty]" value="<?php echo $_item->getQty(); ?>">
+            </div>
+            <span class="unit">
+            <?php if('CS' ==$_item->getUnitCase()) { ?>
+                <span><?php echo __($_item->getUnitCase()); ?></span>
+            <?php } else { ?>
+                <span><?php echo __($_item->getUnitCase()); ?></span>
+            <?php } ?>
+            </span>
+            <?php endif; ?>
+        </td>
+
+        <?php if (!$isHanpukaiSubscription) : ?>
+        <td class="col price subtotal" data-th="<?php echo $block->escapeHtml(__('Subtotal (Incl. Tax)'));?>">
+            <?php if ($canApplyMsrp): ?>
+                <span class="cart msrp subtotal">--</span>
+            <?php else: ?>
+                <?php echo $block->getRowTotalHtml($_item); ?>
+            <?php endif; ?>
+        </td>
+        <?php endif; ?>
+
+        <?php if ($isHanpukaiSubscription) : ?>
+            <td rowspan="<?php echo $totalItem; ?>" class="col action has-row-span-hanpukai">
+                <button type="submit"
+                        name="update_hanpukai_cart_action"
+                        value="empty_cart"
+                        title="<?php echo $block->escapeHtml(__('Remove item')); ?>">
+                    <span><?php /* @escapeNotVerified */ echo __('Remove item'); ?></span>
+                </button>
+            </td>
+        <?php else : ?>
+            <td class="col action">
+                <?php if(!$helperAmasty->isPromoItem($_item)) : ?>
+                    <div class="actions-toolbar trackingDeleteProductCart" >
+                        <?php /* @escapeNotVerified */ echo !$_item->getIsRikiMachine() ? $block->getActions($_item) : '' ?>
+                    </div>
+                <?php endif; ?>
+            </td>
+        <?php endif; ?>
+        <?php if (!$block->getData('is_subscription')): ?>
+        <td class="col tier-price"><?php  echo $this->getLayout()->getBlock('product.price.render.default')->render('tier_price', $product, []); ?></td>
+        <?php endif; ?>
+        <input type="hidden" value="" name="cart[<?php /* @escapeNotVerified */ echo $_item->getId() ?>][is_changed_qty]" class="is-changed-qty" >
+    </tr>
+<!--</tbody>-->
+<?php endif;?>

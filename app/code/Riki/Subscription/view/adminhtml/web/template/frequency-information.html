@@ -1,0 +1,38 @@
+<div class="label">
+    <h4 data-bind="text: courseName">
+    </h4>
+</div>
+<div class="field status required">
+    <span class="label" data-bind="i18n: 'Frequency'">
+    </span>
+    <!-- ko if: !frequencyExistInCourse -->
+    <div class="label">
+        <span data-bind="text: currentFrequency"></span>
+        <span data-bind="i18n: '(No longer support)'"></span>
+    </div>
+    <!-- /ko -->
+    <div class="control">
+        <!-- ko if: !canShowFrequencyBox -->
+        <span class="label" data-bind="text: currentFrequency"></span>
+        <!-- /ko -->
+        <!-- ko if: canShowFrequencyBox -->
+        <select data-bind="
+                    options: frequencyData,
+                    optionsText: 'text',
+                    optionsValue: 'id',
+                    value: selectedFrequency,
+                    event: {
+                        change: selectFrequency
+                    },
+                    enable: !isDisabledAll() && isAllowChangeNextDeliveryDate"
+                name="frequency_id"
+                id="frequency_id"
+                aria-required="true"
+                class="select global-scope required-entry">
+        </select>
+        <!-- /ko -->
+    </div>
+    <!-- ko if: isDisabledAll() || !isAllowChangeNextDeliveryDate || !canShowFrequencyBox -->
+        <input data-bind="value: selectedFrequency" name="frequency_id" type="hidden" />
+    <!-- /ko -->
+</div>

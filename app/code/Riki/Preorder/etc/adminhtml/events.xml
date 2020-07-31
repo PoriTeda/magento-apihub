@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="adminhtml_sales_order_create_process_data">
+        <observer name="riki_preorder_order_create_process_data" instance="Riki\Preorder\Observer\AdminOrderCreateProcessData" />
+    </event>
+    <event name="adminhtml_sales_order_create_process_data_before">
+        <observer name="riki_preorder_adminhtml_sales_order_create_process_data_before" instance="Riki\Preorder\Observer\AdminOrderProcessDataBefore" />
+    </event>
+    <event name="sales_quote_remove_item">
+        <observer name="riki_preorder_sales_quote_remove_item" instance="Riki\Preorder\Observer\QuoteRemoveItemObserver" />
+    </event>
+</config>
+

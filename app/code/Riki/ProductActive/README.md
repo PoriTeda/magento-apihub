@@ -1,0 +1,5 @@
+- Create 2 attributes to product: Launch from and Launch to
+- Create a cron job to enable or disable product belong to "Launch from" and "Launch to"
+- Cron job will be run at mid night
+- Cron job expression could be configed in backend.
+- Log how many products will be enalbe/disable

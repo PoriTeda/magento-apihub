@@ -1,0 +1,78 @@
+<?php /** @var $block \Riki\GoogleTagManager\Block\TagManager **/ ?>
+
+<?php if($block->checkAllowShowTag()): ?>
+    <?php $transaction = $block->getOrdersTrackingCode();?>
+    <?php if($transaction !=null): ?>
+        <!-- JavaScript生成 start -->
+        <script type="text/javascript">
+            dataLayer = [<?php echo $transaction; ?>];
+        </script>
+        <!-- JavaScript生成 end-->
+    <?php endif; ?>
+    
+    <!-- JavaScript生成 start -->
+    <?php $dataLayer = $block->getDataLayerByCustomer(); ?>
+    <script type="text/javascript">
+        window.dataLayer = window.dataLayer || [];
+    <?php if(!$block->isLogin()) { ?>
+            window.dataLayer.push({
+                event: 'MembershipLoaded'
+            });
+        <?php }else { ?>
+        window.dataLayer.push({
+            membershipID                    :'<?php echo $dataLayer['membershipID']; ?>',
+            isAMBMember                     :'<?php echo $dataLayer['isAMBMember']; ?>',
+            isNestleMember                  :'<?php echo $dataLayer['isNestleMember']; ?>',
+            isRegularPurchaseSubscriber     :'<?php echo $dataLayer['isRegularPurchaseSubscriber']; ?>',
+            isSpotPurchase                  :'<?php echo $dataLayer['isSpotPurchase']; ?>',
+            isPastRegularPurchaseSubscriber :'<?php echo $dataLayer['isPastRegularPurchaseSubscriber']; ?>',
+            event: '<?php echo $dataLayer['event']; ?>',
+            isWellnessAMBHome: '<?php echo $dataLayer['isWellnessAMBHome']; ?>',
+            isWellnessAMBOffice: '<?php echo $dataLayer['isWellnessAMBOffice']; ?>',
+            shopLINEConnectID: '<?php echo $dataLayer['lineID']; ?>',
+            activeCourseCode: '<?php echo $dataLayer['activeCourseCode']; ?>'
+        });
+    <?php } ?>
+    </script>
+    <!-- JavaScript生成 end-->
+
+    <?php $dataAffTag = $block->getDataForAffTag(); ?>
+    <?php if ($dataAffTag != null): ?>
+    <!-- Aff Tag start -->
+        <?php foreach ($dataAffTag as $orderIncrementId => $data): ?>
+            <script language='javascript' src='https://admane.jp/ad/js/cv2.js'></script>
+            <script language='javascript'>
+                <!--
+                ADMANE_CV.cv('admane_xuid', 'https://admane.jp/ad', '_buyer=487&_campaign=31&_cvpoint=113&_price=<?php /* @escapeNotVerified */ echo $data ?>');
+                //-->
+            </script>
+
+            <noscript>
+                <img src="https://admane.jp/ad/p/cv?_buyer=487&_campaign=31&_cvpoint=113&_price=<?php /* @escapeNotVerified */ echo $data ?>" width="1" height="1">
+            </noscript>
+
+            <script language='javascript' src='https://admane.jp/ad/js/cv2.js'></script>
+            <script language='javascript'>
+                <!--
+                ADMANE_CV.cv('admane_xuid', 'https://admane.jp/ad', '_buyer=487&_campaign=30&_cvpoint=112&_price=<?php /* @escapeNotVerified */ echo $data ?>');
+                //-->
+            </script>
+
+            <noscript>
+                <img src="https://admane.jp/ad/p/cv?_buyer=487&_campaign=30&_cvpoint=112&_price=<?php /* @escapeNotVerified */ echo $data ?>" width="1" height="1">
+            </noscript>
+
+            <script language='javascript' src='https://admane.jp/ad/js/cv2.js'></script>
+            <script language='javascript'>
+                <!--
+                ADMANE_CV.cv('admane_xuid', 'https://admane.jp/ad', '_buyer=487&_campaign=32&_cvpoint=119&_price=&_buid=<?php /* @escapeNotVerified */ echo $orderIncrementId ?>');
+                //-->
+            </script>
+
+            <noscript>
+                <img src="https://admane.jp/ad/p/cv?_buyer=487&_campaign=32&_cvpoint=119&_price=&_buid=<?php /* @escapeNotVerified */ echo $orderIncrementId ?>" width="1" height="1">
+            </noscript>
+        <?php endforeach; ?>
+    <!-- Aff Tag end -->
+    <?php endif; ?>
+<?php endif; ?>

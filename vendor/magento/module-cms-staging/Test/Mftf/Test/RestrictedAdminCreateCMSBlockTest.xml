@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../../../../../../dev/tests/acceptance/vendor/magento/magento2-functional-testing-framework/src/Magento/FunctionalTestingFramework/Test/etc/testSchema.xsd">
+    <test name="RestrictedAdminCreateCMSBlockTest">
+        <annotations>
+            <features value="Cms"/>
+            <stories value="MAGETWO-91616 - Unable edit\create CMS/Block content by restricted admin"/>
+            <title value="Create CMS Block by restricted admin"/>
+            <description value="Create CMS Block by restricted admin"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="MAGETWO-93751"/>
+            <group value="cms"/>
+            <skip>
+                <issueId value="MQE-1187" />
+            </skip>
+        </annotations>
+        <!--Login as admin-->
+        <actionGroup ref="LoginAsAnyUser" stepKey="LoginAsAdmin"/>
+        <!--Go to all stores page-->
+        <actionGroup ref="GoToAllStores" stepKey="GoToAllStoresPage"/>
+        <!--Create new website-->
+        <actionGroup ref="AdminCreateWebsite" stepKey="AdminCreateNewWebsite">
+            <argument name="newWebsiteName" value="{{testData.websiteName}}"/>
+            <argument name="websiteCode" value="{{testData.websiteCode}}"/>
+        </actionGroup>
+        <!--Create new store-->
+        <actionGroup ref="AdminCreateNewStore" stepKey="AdminCreateNewStore">
+            <argument name="website" value="{{testData.websiteName}}"/>
+            <argument name="storeGroupName" value="{{testData.name}}"/>
+            <argument name="storeGroupCode" value="{{testData.storeCode}}"/>
+        </actionGroup>
+        <!--Create new store view-->
+        <actionGroup ref="AdminCreateStoreView" stepKey="AdminCreateNewStoreView">
+            <argument name="StoreGroup" value="testData"/>
+        </actionGroup>
+        <!--Go to user roles-->
+        <actionGroup ref="GoToUserRoles" stepKey="GoToUserRoles"/>
+        <!--Create new user role-->
+        <actionGroup ref="AdminCreateRole" stepKey="AdminCreateNewUserRole">
+            <argument name="role" value="{{role.name}}"/>
+            <argument name="websites" value="testData.websiteName"/>
+        </actionGroup>
+        <!--Go to all users-->
+        <actionGroup ref="GoToAllUser" stepKey="GoToAllUser"/>
+        <!--Create new admin role-->
+        <actionGroup ref="AdminCreateUser" stepKey="AdminCreateUser">
+            <argument name="role" value="role"/>
+        </actionGroup>
+        <!--Log out-->
+        <actionGroup ref="SignOut" stepKey="SignOut"/>
+        <!--Log in as new user-->
+        <actionGroup ref="LoginAsAnyUser" stepKey="LoginActionGroup">
+            <argument name="uname" value="{{newAdmin.username}}"/>
+            <argument name="passwd" value="{{newAdmin.password}}"/>
+        </actionGroup>
+        <!--Go to Blocks-->
+        <actionGroup ref="goToBlocks" stepKey="goToBlocks"/>
+        <!--Create new Block and verify the message-->
+        <actionGroup ref="RestrictedAdminCreateCMSActionGroup" stepKey="RestrictedAdminCreateCMSActionGroup">
+            <argument name="title" value="{{testData.block}}"/>
+            <argument name="id" value="1"/>
+            <argument name="storeView" value="store"/>
+        </actionGroup>
+        <!--Go to Blocks-->
+        <actionGroup ref="goToBlocks" stepKey="goToBlocks1"/>
+        <!--Delete created block-->
+        <actionGroup ref="RestrictedAdminDeleteCMSActionGroup" stepKey="RestrictedAdminDeleteCMSActionGroup">
+            <argument name="blockName" value="testData.block"></argument>
+        </actionGroup>
+        <waitForPageLoad stepKey="WaitForBlockDeleted"/>
+        <!--Log out-->
+        <actionGroup ref="SignOut" stepKey="SignOut1"/>
+        <!--Login as admin-->
+        <actionGroup ref="LoginAsAnyUser" stepKey="LoginAsAdmin1"/>
+        <after>
+            <!--Go to all stores page-->
+            <actionGroup ref="GoToAllStores" stepKey="GoToAllStoresPage1"/>
+            <!--Delete Website, store, store view-->
+            <actionGroup ref="AdminDeleteWebsite" stepKey="AdminDeleteWebsiteActionGroup">
+                <argument name="websiteName" value="{{testData.websiteName}}"></argument>
+            </actionGroup>
+            <!--Go to all users-->
+            <actionGroup ref="GoToAllUser" stepKey="GoToAllUser2"/>
+            <!--Delete created user-->
+            <actionGroup ref="AdminDeleteUserActionGroup" stepKey="AdminDeleteUserActionGroup">
+                <argument name="role" value="role"/>
+            </actionGroup>
+            <!--Go to user roles-->
+            <actionGroup ref="GoToUserRoles" stepKey="GoToUserRoles1"/>
+            <!--Delete created role-->
+            <actionGroup ref="AdminDeleteRoleActionGroup" stepKey="AdminDeleteRoleActionGroup">
+                <argument name="role" value="role"/>
+            </actionGroup>
+        </after>
+
+    </test>
+</tests>

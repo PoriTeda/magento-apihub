@@ -1,0 +1,7 @@
+システム名　　　　:EC
+ジョブ名　　　　　:ReAuthonlyJob
+バッチ処理名　　　：再与信
+バッチ処理日時　　：{{var date}}
+エラー内容: 再与信エラー
+
+{{block class="Magento\Framework\View\Element\Template" template="Riki_Subscription::email/profile-payment-method-error-bu.phtml" area="frontend" items=$items}}

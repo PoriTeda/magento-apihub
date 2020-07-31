@@ -1,0 +1,21 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/**
+ * @see \Magento\Rma\Block\Adminhtml\Rma\Edit\Tab\General\Returnaddress
+ */
+
+$customerLink = $block->getCustomerLink();
+?>
+<div class="admin__page-section-item order-return-address">
+    <div class="admin__page-section-item-title">
+        <span class="title"><?= /* @escapeNotVerified */ __('Return Address') ?></span>
+    </div>
+    <div class="admin__page-section-item-content">
+        <address><?= /* @escapeNotVerified */ $block->getReturnAddress() ?></address>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!--<preference for="Amasty\Coupons\Plugin\RuleCollection" type="Riki\Coupons\Plugin\RuleCollection" />-->
+
+    <type name="Magento\Checkout\Controller\Cart\CouponPost">
+        <plugin name="riki_coupons_checkout_controller_cart_coupon_post" type="Riki\Coupons\Plugin\Checkout\Controller\Cart\CouponPost" sortOrder="2"/>
+        <plugin name="riki_coupons_check_form_data_validate" type="Riki\Coupons\Plugin\Checkout\Controller\Cart\CouponPostValidate" sortOrder="1"/>
+    </type>
+
+    <type name="Magento\SalesRule\Observer\SalesOrderAfterPlaceObserver">
+        <plugin name="Amasty_Coupons::PluginObserver" type="Amasty\Coupons\Plugin\PluginObserver" disabled="true" />
+        <plugin name="Riki_Coupons::PluginObserver" type="Riki\Coupons\Plugin\PluginObserver" />
+    </type>
+</config>

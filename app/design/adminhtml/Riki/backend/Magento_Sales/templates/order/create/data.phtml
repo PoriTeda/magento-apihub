@@ -1,0 +1,156 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<?php
+
+/** @var \Magento\Sales\Block\Adminhtml\Order\Create\Data $block */
+
+/** @var \Riki\Preorder\Helper\Admin $helper */
+$helper = $this->helper('Riki\Preorder\Helper\Admin');
+?>
+
+<div class="page-create-order">
+    <script>
+        require(["Magento_Sales/order/create/form","Riki_Subscription/js/subprofile"], function(){
+            order.setCurrencySymbol('<?php /* @escapeNotVerified */ echo $block->getCurrencySymbol($block->getCurrentCurrencyCode()) ?>')
+        });
+    </script>
+    <div class="order-details<?php if ($block->getCustomerId()): ?> order-details-existing-customer<?php endif; ?>">
+
+        <div id="order-additional_area" style="display: none" class="admin__page-section order-additional-area">
+            <?php echo $block->getChildHtml('additional_area') ?>
+        </div>
+
+        <div id="order-gillette" style="display: none" class="admin__page-section order-search-items order-gillette">
+            <?php echo $block->getChildHtml('gillette') ?>
+        </div>
+
+        <div id="order-preproduct_area" style="display: none" class="admin__page-section order-search-items order-preproduct-area">
+            <?php echo $block->getChildHtml('preproduct_area') ?>
+        </div>
+
+        <div id="order-search" style="display: none" class="admin__page-section order-search-items">
+            <?php echo $block->getChildHtml('search') ?>
+        </div>
+        <?php if ($block->getCustomerId()): ?>
+        <div id="order-course" style="display: none" class="admin__page-section order-search-items">
+            <?php echo $block->getChildHtml('course') ?>
+        </div>
+        <?php endif; ?>
+        <?php if ($block->getCustomerId()): ?>
+            <div id="order-machines" style="display: none" class="admin__page-section order-search-items">
+                <?php echo $block->getChildHtml('machines') ?>
+            </div>
+        <?php endif; ?>
+
+        <section id="order-items" class="admin__page-section order-items" data-mage-init='{"loader": {}}'>
+            <?php echo $block->getChildHtml('items') ?>
+        </section>
+
+        <div id="order-errors" class="order-errors"><?php echo $block->getChildHtml('errors') ?></div>
+
+        <section id="order-additional-info" class="admin__page-section order-additional-info" >
+            <?php echo $block->getChildHtml('additional-info') ?>
+        </section>
+
+        <section id="order-form_account" class="admin__page-section order-account-information">
+            <?php echo $block->getChildHtml('form_account') ?>
+        </section>
+
+        <section id="order-addresses" class="admin__page-section order-addresses">
+            <div class="admin__page-section-title">
+                <span class="title"><?php /* @escapeNotVerified */ echo __('Address Information') ?></span>
+            </div>
+            <div class="admin__page-section-content">
+                <div id="order-billing_address" class="admin__page-section-item order-billing-address">
+                    <?php echo $block->getChildHtml('billing_address') ?>
+                </div>
+                <div id="order-shipping_address" class="admin__page-section-item order-shipping-address">
+                    <?php echo $block->getChildHtml('shipping_address') ?>
+                </div>
+            </div>
+        </section>
+        <?php $usePointUrl = $block->getUrl('riki_loyalty/redeem/usePoint');?>
+        <section id="order-reward_redeem" class="admin__page-section reward-redeem"  data-mage-init='{"Riki_Loyalty/js/order/create/reward-point":{"ajaxUrl": "<?php echo $usePointUrl;?>"}}'>
+            <?php echo $block->getChildHtml('reward_redeem') ?>
+        </section>
+        <section id="order-methods" class="admin__page-section order-methods">
+            <div class="admin__page-section-title">
+                <span class="title"><?php /* @escapeNotVerified */ echo __('Payment &amp; Shipping Information') ?></span>
+            </div>
+            <div class="admin__page-section-content">
+                <div id="order-billing_method" class="admin__page-section-item order-billing-method">
+                    <?php echo $block->getChildHtml('billing_method') ?>
+                </div>
+                <div id="order-shipping_method" class="admin__page-section-item order-shipping-method">
+                    <?php echo $block->getChildHtml('shipping_method') ?>
+                </div>
+            </div>
+        </section>
+
+        <?php if ($block->getChildBlock('card_validation')): ?>
+            <section id="order-card_validation" class="admin__page-section order-card-validation">
+                <?php echo $block->getChildHtml('card_validation') ?>
+            </section>
+        <?php endif; ?>
+
+        <section id="order-delivery_info" class="admin__page-section delivery-info">
+            <?php echo $block->getChildHtml('delivery_info') ?>
+        </section>
+
+        <section id="order-questionnaire" class="admin__page-section questionnaire">
+            <?php echo $block->getChildHtml('questionnaire') ?>
+        </section>
+
+        <?php echo $block->getChildHtml('gift_options') ?>
+
+        <section class="admin__page-section order-summary">
+            <div class="admin__page-section-title">
+                <span class="title"><?php /* @escapeNotVerified */ echo __('Order Total') ?></span>
+            </div>
+            <div class="admin__page-section-content">
+                <fieldset class="admin__fieldset order-history" id="order-comment">
+                    <legend class="admin__legend"><span><?php /* @escapeNotVerified */ echo __('Order History') ?></span></legend>
+                    <br>
+                    <?php echo $block->getChildHtml('comment') ?>
+                </fieldset>
+                <fieldset id="order-totals" class="admin__fieldset order-totals">
+                    <?php echo $block->getChildHtml('totals') ?>
+                </fieldset>
+            </div>
+        </section>
+    </div>
+
+    <?php if ($block->getCustomerId()): ?>
+        <div class="order-sidebar">
+            <div class="store-switcher order-currency">
+                <label class="admin__field-label" for="currency_switcher">
+                    <?php /* @escapeNotVerified */ echo __('Order Currency:') ?>
+                </label>
+                <select id="currency_switcher"
+                        class="admin__control-select"
+                        name="order[currency]"
+                        onchange="order.setCurrencyId(this.value); order.setCurrencySymbol(this.options[this.selectedIndex].getAttribute('symbol'));">
+                    <?php foreach ($block->getAvailableCurrencies() as $_code): ?>
+                        <option value="<?php /* @escapeNotVerified */ echo $_code ?>"<?php if ($_code == $block->getCurrentCurrencyCode()): ?> selected="selected"<?php endif; ?> symbol="<?php /* @escapeNotVerified */ echo $block->getCurrencySymbol($_code) ?>">
+                            <?php /* @escapeNotVerified */ echo $block->getCurrencyName($_code) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="customer-current-activity" id="order-sidebar">
+                <?php echo $block->getChildHtml('sidebar') ?>
+            </div>
+        </div>
+    <?php endif; ?>
+
+    <input type="hidden" name="session_unique_key" id="session_unique_key" value="<?php echo $block->getCreateOrderModel()->getSession()->getSessionUniqueKey() ?>" />
+
+</div>

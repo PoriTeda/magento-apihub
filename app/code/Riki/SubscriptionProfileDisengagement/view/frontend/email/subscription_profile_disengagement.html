@@ -1,0 +1,67 @@
+<!--@subject ネスレ通販】「定期お届けコース」の解約手続き完了のご連絡 @-->
+
+＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋</br>
+ネスレ通販</br>
+オンラインショップからのお知らせです。</br>
+＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋</br>
+※このメールは配信停止希望のお客様にもお送りしています。</br>
+
+
+{{var customer_lastname}}　{{var customer_firstname}}様</br>
+</br>
+    いつもネスレ通販をご利用いただき、誠にありがとうございます。</br>
+</br>
+    「定期お届けコース」の解約手続きが完了いたしました。</br>
+</br>
+    【解約済みご予定番号】{{var profile_id}}</br>
+【ご注文受付日時】{{var next_delivery_date}}</br>
+【お支払い合計金額】{{var next_order_amount}}
+　{{var subscription_name}}（{{var number_times}}回目/全{{var total_number_times}}回）</br>
+    </br>
+    </br>
+    </br>
+    <div class="address-details">
+        <h3>{{trans "Billing Info"}}</h3>
+        <p>{{var formattedBillingAddress|raw}}</p>
+    </div>
+    </br>
+    </br>
+    </br>
+****** ご注文内容およびお届け先 ******</br>
+
+    【お支払い金額（税込）】</br>
+    商品合計：{{var total_money_items}}円</br>
+    有料サービス：{{var wrapping_fee}}円</br>
+    送料：{{var shipping_fee}}円</br>
+    注文合計：{{var grand_total_order}}円</br>
+</br>
+    {{layout handle="sales_email_order_items_text" order=$order area="frontend"}}</br>
+</br>
+    <div class="address-details">
+        <h3>{{trans "Shipping Info"}}</h3>
+        <p>{{var formattedShippingAddress|raw}}</p>
+    </div>
+</br>
+    <td class="method-info">
+        <h3>{{trans "Shipping Method"}}</h3>
+        <p>{{var shipping_html}}</p>
+    </td>
+</br>
+    <div class="method-info">
+        <h3>{{trans "Payment Method"}}</h3>
+        {{var payment_html|raw}}
+    </div>
+</br>
+</br>
+</br>
+またの、ご利用をお待ち申し上げております。</br>
+</br></br>
+今後ともネスレ通販 オンラインショップを</br>
+よろしくお願いいたします。</br>
+</br>
+※このメールは自動配信メールです。</br>
+このメール送信元にご返信いただいてもご対応しかねますのでご了承ください。</br>
+このメールにお心当たりのない方、その他ご不明な点がございましたら、</br>
+大変お手数ですが、下記のお問い合わせ先までご連絡ください。</br>
+※表示されている価格は、すべて税込価格です。</br>
+――――――――――――――――――――――――――――――――</br>

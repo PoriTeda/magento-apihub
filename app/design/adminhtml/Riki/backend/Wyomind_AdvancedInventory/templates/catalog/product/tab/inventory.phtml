@@ -1,0 +1,198 @@
+<?php
+    $productId = $block->getRequest()->getParam('id');
+    $storeId = $block->getRequest()->getParam('store');
+
+    if (!$storeId) {
+        $pointOfSales = $block->getPosModel()->getCollection();
+    } else {
+        $pointOfSales = $block->getPosModel()->getPlacesByStoreId($storeId);
+    }
+    $ids = [];
+    foreach ($pointOfSales as $pointOfSale) {
+        $ids[] = $pointOfSale->getPlaceId();
+    }
+    $stock = $block->getStockModel()->getStockSettings($productId ? $productId : -1, null, $ids);
+    $fieldName = "inventory";
+?>
+<?php if (in_array($stock->getTypeId(), $block->getHelperData()->getProductTypes()) && $block->isAuthorized() && (($stock->getMultistockEnabled() && $storeId) || !$storeId)): ?>
+    <fieldset class="fieldset form-inline">
+        <legend class="legend"><span>Advanced Inventory</span></legend>
+        <br>
+        <?php if (!$storeId) : ?>
+            <div class="field">
+                <label class="label" for="inventory_manage_stock">
+                    <b><?php echo __('Enable multi-stock') ?></b>
+                </label>
+                <div class="control">
+                    <select id="multistock" name='<?php echo $fieldName; ?>[multistock]' class="select" onChange="InventoryManager.enableMultiStock('multistock')">
+                        <option value="0" <?php if (!$stock->getMultistockEnabled()) echo 'selected="selected"'; ?>><?php echo __('No') ?></option>
+                        <option value="1" <?php if ($stock->getMultistockEnabled()) echo 'selected="selected"'; ?>> <?php echo __('Yes') ?></option>
+                    </select>
+                </div>
+            </div>
+        <?php else: ?>
+            <input id="multistock" name='<?php echo $fieldName; ?>[multistock]' type='hidden' value="<?php echo ($stock->getMultistockEnabled()) ? 1 : 0; ?>">
+        <?php endif ?>
+        <div id= 'advancedinventory_stocks'>
+            <?php
+            $i = 0;
+            foreach ($pointOfSales as $pointOfSale):
+                $posWh = $fieldName . "[pos_wh][" . $pointOfSale->getPlaceId() . "]";
+
+                if ($pointOfSale->getStatus() == 0) {
+                    $visibility = __('Warehouse (hidden)');
+                } else {
+                    $visibility = __('Point of Sales (visible)');
+                }
+                ?>
+                <div class="field">
+                    <label class="label"  for="inventory_manage_local_stock">
+                        <?php echo $pointOfSale->getName(); ?>
+                        <br>
+                        <span style="font-size:10px;
+                              ">[<?php echo $visibility; ?>, code : <?php echo $pointOfSale->getStoreCode(); ?>]</span>
+                    </label>
+                    <div class="control">
+                        <?php
+                            $getQuantity = "getQuantity" . $pointOfSale->getPlaceId();
+                            $getUseConfigSettingForBackorders = "getUseConfigSettingForBackorders" . $pointOfSale->getPlaceId();
+                            $getBackorderAllowed = "getBackorderAllowed" . $pointOfSale->getPlaceId();
+                            $getBackorderLimit = "getBackordersLimit" . $pointOfSale->getPlaceId();
+                            $getBackorderExpire = "getBackordersExpire" . $pointOfSale->getPlaceId();
+                            $getBackorderDeliveryDateAllowed = "getBackorderDeliveryDateAllowed" . $pointOfSale->getPlaceId();
+                            $getBackorderFirstDeliveryDate = "getBackorderFirstDeliveryDate" . $pointOfSale->getPlaceId();
+                            $getManageStock = "getManageStock" . $pointOfSale->getPlaceId();
+                            $getStockId = "getStockId" . $pointOfSale->getPlaceId();
+
+                            $getDefaultStockManagement = "getDefaultStockManagement" . $pointOfSale->getPlaceId();
+                            $getDefaultUseDefaultSettingForBackorder = "getDefaultUseDefaultSettingForBackorder" . $pointOfSale->getPlaceId();
+                            $getDefaultAllowBackorder = "getDefaultAllowBackorder" . $pointOfSale->getPlaceId();
+                            $getDefaultStockManagement = "getDefaultStockManagement" . $pointOfSale->getPlaceId();
+                        ?>
+                        <select name="<?php echo $posWh ?>[manage_stock]" class="select"  onchange='InventoryManager.showDetails(this)' style="width:293px;">
+                            <option value="1" <?php if ((($stock->$getManageStock() && $stock->$getStockId()) || (!$stock->$getStockId() && $stock->$getDefaultStockManagement()))) echo 'selected="selected"'; ?>><?php echo __("Stock management enabled") ?></option>
+                            <option value="0" <?php if ((!$stock->$getManageStock() && $stock->$getStockId()) || (!$stock->$getStockId() && !$stock->$getDefaultStockManagement())) echo 'selected="selected"'; ?>><?php echo __("Stock management disabled") ?></option>
+                        </select>
+                        <div class="pointofsale field"<?php if ((!$stock->$getManageStock() && $stock->$getStockId()) || (!$stock->$getStockId() && !$stock->$getDefaultStockManagement())) echo "style='display:none';"; ?>>
+                            <input
+                                style="width:50px; text-align:center"
+                                type="text" 
+                                class="keydown input-text required-entry validate-number" 
+                                name='<?php echo $posWh ?>[qty]'
+                                value="<?php echo $block->getHelperData()->qtyFormat($stock->$getQuantity(), $stock->getIsQtyDecimal()); ?>" 
+                                onchange="InventoryManager.updateQty()"
+                                />
+                            <?php
+                                $backorders_checked = null;
+                                $backorders_value = null;
+                                $backorders_disabled = null;
+                                $backorders_date = null;
+
+                                $getStockId = "getStockId" . $pointOfSale->getPlaceId();
+                                if (!$stock->$getStockId()) {
+                                    $backorders_checked = $stock->$getDefaultUseDefaultSettingForBackorder();
+                                    $backorders_value = $stock->$getDefaultAllowBackorder();
+                                    $backorders_disabled = $stock->$getDefaultUseDefaultSettingForBackorder() ? true : false;
+                                    $backorders_date = $stock->$getBackorderDeliveryDateAllowed() ? true : false;
+                                } else {
+                                    $backorders_checked = $stock->$getUseConfigSettingForBackorders();
+                                    $backorders_value = $stock->$getBackorderAllowed();
+                                    $backorders_disabled = $stock->$getUseConfigSettingForBackorders() ? true : false;
+                                    $backorders_limit = $stock->$getBackorderLimit();
+                                    $backorders_expire = $stock->$getBackorderExpire();
+                                    $backorders_delivery_date_allowed = $stock->$getBackorderDeliveryDateAllowed();
+                                    $backorders_first_delivery_date = $stock->$getBackorderFirstDeliveryDate();
+                                    $backorders_date = $stock->$getBackorderDeliveryDateAllowed() ? true : false;
+                                }
+                            ?>
+
+                            <select <?php echo ($backorders_disabled) ? 'disabled="disabled"' : null; ?> name='<?php echo $posWh ?>[backorder_allowed]' id="backorder-allow-<?php echo $pointOfSale->getPlaceId() ?>"  style="width:240px;" onchange="requiredBackOrder(this, <?php echo $pointOfSale->getPlaceId();?>);">
+                                <option value="0" <?php echo ($backorders_value == 0) ? 'selected' : null; ?> ><?php echo __('No backorders') ?></option>
+                                <option value="1" <?php echo ($backorders_value == 1) ? 'selected' : null; ?>><?php echo __('Allow Qty below 0') ?></option>
+                            </select><br/>
+
+                            <div class="field" style="margin-bottom: 0px;">
+                                <label class="label" for="backorder-limit-<?php echo $pointOfSale->getPlaceId() ?>">
+                                    <?php echo __("Back order limit:") ?>
+                                </label>
+                                <input <?php echo ($backorders_disabled) ? 'disabled="disabled"' : null; ?>
+                                        type="text"
+                                        name="<?php echo $posWh ?>[backorder_limit]"
+                                        id="backorder-limit-<?php echo $pointOfSale->getPlaceId() ?>"
+                                        <?php if ($backorders_value == 1) echo 'class="required-entry"'; ?>
+                                        data-pos-id="<?php echo $pointOfSale->getPlaceId() ?>"
+                                      <?php if(isset($backorders_limit)): ?>  value="<?php echo $backorders_limit; ?>" <?php endif; ?>
+                                />
+                            </div>
+
+                            <div class="field" style="margin-bottom: 0px;">
+                                <label class="label" for="backorder-expire-<?php echo $pointOfSale->getPlaceId() ?>">
+                                    <?php echo __("Back expire date:") ?>
+                                </label>
+                                <input <?php echo ($backorders_disabled) ? 'disabled="disabled"' : null; ?>
+                                        type="text"
+                                        name="<?php echo $posWh; ?>[backorder_expire]"
+                                        id="backorder-expire-<?php echo $pointOfSale->getPlaceId(); ?>"
+                                        <?php if ($backorders_value == 1) echo 'class="required-entry"'; ?>
+                                        title="From"
+                                        data-pos-id="<?php echo $pointOfSale->getPlaceId() ?>"
+                                        data-mage-init='{"calendar": {"showTime": false, "dateFormat": "yy/mm/dd"}}'
+                                    <?php if(isset($backorders_expire)): ?> value="<?php echo date("Y/m/d", strtotime($backorders_expire)); ?>" <?php endif; ?>
+                                />
+                                <input onclick="disableUseConfigSetting(this)"
+                                    <?php echo ($backorders_checked) ? 'checked' : null; ?>
+                                       name='<?php echo $posWh ?>[use_config_setting_for_backorders]'
+                                       type="checkbox"
+                                       style="margin-left:70px"
+                                       data-pos-id="<?php echo $pointOfSale->getPlaceId() ?>"
+                                />
+                                <?php echo __('Use Config Settings') ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php
+                $i++;
+            endforeach;
+            ?>
+        </div>
+        <script type="text/javascript">
+            require(['jquery', 'Wyomind_AdvancedInventory/js/catalog/edit'], function ($) {
+                InventoryManager.autoUpdateStockStatus = <?php echo $block->getHelperCore()->getStoreConfig("advancedinventory/settings/auto_update_stock_status"); ?>;
+                var enableMultiStockFunctionExists = setInterval(function() {
+                    if(typeof InventoryManager.enableMultiStock === 'function') {
+                        InventoryManager.enableMultiStock();
+                        clearInterval(enableMultiStockFunctionExists);
+                    }
+                }, 100);
+            });
+        </script>
+        <script type="text/javascript">
+            var disableUseConfigSetting = function (element) {
+                var posId = element.getAttribute('data-pos-id');
+                document.getElementById('backorder-allow-' + posId).disabled = element.checked;
+                document.getElementById('backorder-limit-' + posId).disabled = element.checked;
+                document.getElementById('backorder-expire-' + posId).disabled = element.checked;
+            };
+            var disableDeliveryDate = function (element) {
+                var posId = element.getAttribute('data-pos-id');
+                var isChecked = element.getAttribute('value');
+                if (isChecked == 1) {
+                    document.getElementById('backorder-first-delivery-date-' + posId).disabled = element.checked;
+                } else {
+                    document.getElementById('backorder-first-delivery-date-' + posId).removeAttribute('disabled');
+                }
+            };
+            var requiredBackOrder = function (element, placeId) {
+                var checkEnable = element.getValue();
+                if (checkEnable == 0) {
+                    document.getElementById('backorder-limit-' + placeId).classList.remove('required-entry');
+                    document.getElementById('backorder-expire-' + placeId).classList.remove('required-entry');
+                } else {
+                    document.getElementById('backorder-limit-' + placeId).setAttribute('class', 'required-entry');
+                    document.getElementById('backorder-expire-' + placeId).setAttribute('class', 'required-entry hasDatepicker');
+                }
+            }
+        </script>
+    </fieldset>
+<?php endif;

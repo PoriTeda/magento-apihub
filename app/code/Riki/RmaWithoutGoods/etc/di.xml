@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Riki\Rma\Helper\Amount">
+        <plugin name="riki_rmaWgRikiRmaAmountHelper" type="Riki\RmaWithoutGoods\Plugin\RikiRma\Helper\Amount" />
+    </type>
+    <type name="Riki\Rma\Helper\Data">
+        <plugin name="riki_rmaWgRikiRmaDataHelper" type="Riki\RmaWithoutGoods\Plugin\RikiRma\Helper\Data" />
+    </type>
+    <type name="Riki\Rma\Helper\Refund">
+        <plugin name="riki_rmaWgRikiRmaRefundHelper" type="Riki\RmaWithoutGoods\Plugin\RikiRma\Helper\Refund" />
+    </type>
+    <type name="Magento\Rma\Model\Rma">
+        <plugin name="riki_rma_without_goods_save_rma_unset_items" type="Riki\RmaWithoutGoods\Plugin\Rma\SaveRmaUnsetItems" />
+        <plugin name="riki_rma_without_goods_get_items_unset_items" type="Riki\RmaWithoutGoods\Plugin\Rma\GetItemsUnsetItems" />
+    </type>
+</config>

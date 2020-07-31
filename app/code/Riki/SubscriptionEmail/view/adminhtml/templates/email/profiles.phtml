@@ -1,0 +1,4 @@
+<?php $_profile_ids = $block->getSubscriptionProfileIds() ?>
+<?php if (sizeof($_profile_ids)): ?>
+    Profile IDs: <?php echo implode(', ', $_profile_ids);?>
+<?php endif; ?>

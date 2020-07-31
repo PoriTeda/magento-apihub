@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
+    <system>
+        <section id="freemachine" translate="label" type="text" sortOrder="280" showInDefault="1" showInWebsite="1" showInStore="0">
+        <label>Free Machine Configuration</label>
+        <tab>bluecom_cronjob</tab>
+        <resource>Riki_MachineApi::config_freemachine</resource>
+            <group id="multi_machine" translate="label" type="text" sortOrder="20" showInDefault="1">
+                <label>Multiple Machines</label>
+                <field id="default_limit" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Limit the numbers of machines to load in the popup</label>
+                    <comment>By default 20 machine products will load</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

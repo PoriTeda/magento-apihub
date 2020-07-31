@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="riki_preorder">
+        <job name="riki_preorder_convert_to_normal" instance="Riki\Preorder\Cron\ConvertToNormal" method="process">
+            <config_path>rikipreorder/cron/schedule</config_path>
+        </job>
+    </group>
+</config>

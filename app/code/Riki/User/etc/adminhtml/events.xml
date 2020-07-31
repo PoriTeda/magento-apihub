@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="admin_user_authenticate_after">
+        <observer name="riki_user" instance="Riki\User\Observer\Backend\AuthObserver" />
+    </event>
+    <event name="controller_action_predispatch">
+        <observer name="riki_user" instance="Riki\User\Observer\Backend\ForceAdminPasswordChangeObserver" />
+    </event>
+    <event name="admin_user_save_after">
+        <observer name="riki_user" instance="Riki\User\Observer\Backend\TrackAdminNewPasswordObserver" />
+    </event>
+</config>

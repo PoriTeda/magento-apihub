@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Customer\Controller\Address\Delete" type="Riki\Customer\Controller\Address\Delete"/>
+    <preference for="Magento\Customer\Model\Session" type="Riki\Customer\Model\Session" />
+
+    <type name="Magento\Customer\Block\Address\Edit">
+        <plugin name="customer-address-confirm-save" type="Riki\Customer\Plugin\Block\Address\Edit" sortOrder="0"/>
+    </type>
+    <type name="Magento\Checkout\Block\Onepage">
+        <plugin name="customer-address-check-addresstype" type="Riki\Customer\Plugin\Block\Address\OnepageChange" sortOrder="0"/>
+    </type>
+    <type name="Magento\Customer\Block\CustomerData">
+        <plugin name="customer-data-setting" type="Riki\Customer\Block\Plugin\CustomerDataSetting" sortOrder="0"/>
+    </type>
+    <type name="Magento\Customer\Controller\Address\FormPost">
+        <plugin name="riki-customer-controller-form-post" type="Riki\Customer\Plugin\Controller\FormPostPlugin"/>
+    </type>
+    <type name="Magento\Framework\App\FrontControllerInterface">
+        <plugin name="riki-customer-front-controller-check-authentication" type="Riki\Customer\Plugin\FrontController\CheckAuthentication" sortOrder="-10"/>
+    </type>
+    <type name="Magento\Framework\App\ActionInterface">
+        <plugin name="riki_customer_sync_kss_customer_data" type="Riki\Customer\Plugin\ControllerAction\SyncKssCustomerData" sortOrder="0"/>
+    </type>
+    <type name="Riki\Checkout\Controller\Index\Single">
+        <plugin name="riki_customer_validate_missing_customer_info_single" type="Riki\Customer\Plugin\Checkout\Controller\Index\Single\ValidateCustomerInformation" sortOrder="1"/>
+    </type>
+    <type name="Riki\Checkout\Controller\Index\Index">
+        <plugin name="riki_customer_validate_missing_customer_info_multiple" type="Riki\Customer\Plugin\Checkout\Controller\Index\Multiple\ValidateCustomerInformation" sortOrder="1"/>
+    </type>
+    <type name="Riki\Customer\Observer\RestrictWebsite">
+        <arguments>
+            <argument name="allowedActions" xsi:type="array">
+                <item name="loginsso" xsi:type="string">customer_account_ssologin</item>
+                <item name="refresh_cookie" xsi:type="string">customer_account_refreshcookie</item>
+                <item name="validate_sso_session" xsi:type="string">customer_account_validatesession</item>
+                <item name="login" xsi:type="string">customer_account_login</item>
+                <item name="logout" xsi:type="string">customer_account_out</item>
+                <item name="create" xsi:type="string">customer_account_register</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Customer\Controller\Section\Load">
+        <arguments>
+            <argument name="resultJsonFactory" xsi:type="object">Riki\Framework\Controller\Result\TaintJsonFactory</argument>
+        </arguments>
+    </type>
+    <type name="\Magento\Quote\Model\Quote">
+        <plugin name="riki_skip_quote_collect_totals_when_customer_login" type="Riki\Customer\Plugin\Quote\Model\Quote\SkipQuoteCollectTotalsWhenCustomerLogin" sortOrder="9999" />
+    </type>
+</config>

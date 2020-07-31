@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<logging xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Logging:etc/logging.xsd">
+    <groups>
+        <group name="shipping_leadtime">
+            <label translate="true">Shipping Lead Time</label>
+            <expected_models>
+                <expected_model class="Riki\ShipLeadTime\Model\Leadtime" />
+            </expected_models>
+            <events>
+                <event controller_action="shipleadtime_index_save" action_alias="save" />
+            </events>
+        </group>
+    </groups>
+</logging>

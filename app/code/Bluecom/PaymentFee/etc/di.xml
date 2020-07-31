@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Bluecom\PaymentFee\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Bluecom\PaymentFee\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">myLoggerName</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Bluecom\PaymentFee\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Bluecom\PaymentFee\Logger\HandlerGiftOrder">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Bluecom\PaymentFee\Logger\LoggerGiftOrder">
+        <arguments>
+            <argument name="name" xsi:type="string">GiftOrderLog</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Bluecom\PaymentFee\Logger\HandlerGiftOrder</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <preference for="Magento\Checkout\Block\Onepage" type="Bluecom\PaymentFee\Block\Onepage"/>
+
+    <virtualType name="PaymentGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PaymentFeeDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Bluecom\PaymentFee\Model\ResourceModel\PaymentFee\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">PaymentGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="payment_listing_data_source" xsi:type="string">Bluecom\PaymentFee\Model\ResourceModel\PaymentFee\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Bluecom\PaymentFee\Model\ResourceModel\PaymentFee\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">payment_fee</argument>
+            <argument name="resourceModel" xsi:type="string">Bluecom\PaymentFee\Model\ResourceModel\PaymentFee</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- defined connection to table-->
+    <type name="Bluecom\PaymentFee\Model\ResourceModel\PaymentFee">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\ScalableOms\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="payment_fee" xsi:type="string">payment_fee</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <preference for="Bluecom\PaymentFee\Api\FeeManagementInterface" type="Bluecom\PaymentFee\Model\FeeManagement" />
+    <type name="Magento\Quote\Model\Quote\TotalsCollector">
+        <plugin name="riki_collect_total_init_payment_fee" type="Bluecom\PaymentFee\Plugin\Quote\Model\Quote\TotalsCollector\InitPaymentFee" />
+    </type>
+</config>

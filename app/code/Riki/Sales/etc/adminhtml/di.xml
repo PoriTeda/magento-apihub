@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Sales\Controller\Adminhtml\Order\Cancel"
+                type="Riki\Sales\Controller\Adminhtml\Order\Cancel"/>
+    <preference for="Magento\Sales\Block\Adminhtml\Order\Create\Shipping\Address"
+                type="Riki\Sales\Block\Adminhtml\Order\Create\Shipping\Address" />
+    <preference for="Magento\Sales\Block\Adminhtml\Order\Create\Billing\Address"
+                type="Riki\Sales\Block\Adminhtml\Order\Create\Billing\Address" />
+    <preference for="\Magento\Sales\Block\Adminhtml\Order\Address\Form"
+                type="\Riki\Sales\Block\Adminhtml\Order\Create\Form\Address" />
+    <preference for="Magento\Sales\Controller\Adminhtml\Order\MassCancel" type="Riki\Sales\Controller\Adminhtml\Order\MassCancel"/>
+    <preference for="Magento\Sales\Block\Adminhtml\Order\Create\Items\Grid" type="Riki\Sales\Block\Adminhtml\Order\Create\Items\Grid"/>
+    <preference for="Magento\CatalogInventory\Model\StockStateProvider" type="Riki\Sales\Model\CatalogInventory\StockStateProvider"/>
+    <preference for="Magento\Sales\Block\Adminhtml\Order\Creditmemo\Totals"
+                type="Riki\Sales\Block\Adminhtml\Order\Creditmemo\Totals"/>
+    <type name="Riki\Sales\Model\CatalogInventory\StockStateProvider">
+        <arguments>
+            <argument name="assignation" xsi:type="object">Riki\AdvancedInventory\Model\Assignation\Proxy</argument>
+        </arguments>
+    </type>
+    <preference for="Magento\CatalogInventory\Model\Quote\Item\QuantityValidator\Initializer\StockItem" type="Riki\Sales\Model\CatalogInventory\Quote\Item\QuantityValidator\Initializer\StockItem"/>
+    <preference for="Magento\AdvancedCheckout\Block\Adminhtml\Manage\Grid\Renderer\Product" type="Riki\Sales\Block\Adminhtml\AdvancedCheckout\Manage\Grid\Renderer\Product"/>
+    <preference for="Magento\Sales\Block\Adminhtml\Order\Create\Search\Grid\Renderer\Product" type="Riki\Sales\Block\Adminhtml\Order\Create\Search\Grid\Renderer\Product"/>
+    <preference for="Magento\Sales\Controller\Adminhtml\Order\Create\Reorder" type="Riki\Sales\Controller\Adminhtml\Order\Create\Reorder"/>
+    <type name="Magento\Sales\Model\AdminOrder\Create">
+        <plugin name="rikiSalesModelAdminOrderCreate" type="Riki\Sales\Plugin\Sales\Model\AdminOrder\Create"/>
+    </type>
+    <preference for="Magento\Sales\Block\Adminhtml\Order\View\Items\Renderer\DefaultRenderer"
+                type="Riki\Sales\Block\Adminhtml\Order\View\Items\Renderer\DefaultRenderer"/>
+    <preference for="Magento\Sales\Block\Adminhtml\Order\Totals\Tax"
+                type="Riki\Sales\Block\Adminhtml\Order\Totals\Tax"/>
+    <type name="Magento\Backend\Block\Widget\Button\Toolbar">
+        <plugin name="riki_sales_buttonToolbarBefore" type="Riki\Sales\Plugin\ButtonToolbarBefore" />
+    </type>
+    <type name="Magento\Sales\Block\Adminhtml\Order\Create\Search\Grid">
+        <plugin name="riki_sales_orderCreateProductGrid" type="Riki\Sales\Plugin\AdminOrderCreateProductGrid" />
+    </type>
+
+    <!--<preference for="Magento\Sales\Block\Adminhtml\Order\Create\Totals"-->
+                <!--type="Riki\Sales\Block\Adminhtml\Order\Create\Totals" />-->
+
+    <preference for="Magento\Quote\Model\Quote\Item\Updater" type="Riki\Sales\Model\Quote\Item\Updater" />
+
+    <!--<type name="Magento\Sales\Block\Adminhtml\Order\Create\Totals\Grandtotal">
+        <plugin name="riki_sales_adminhtml_order_create_totals_grandtotal" type="Riki\Sales\Plugin\AdminOrderCreateTotals" />
+    </type>-->
+
+    <type name="Magento\Ui\Component\ExportButton">
+        <plugin name="riki_ui_component_exportButton" type="Riki\Sales\Plugin\UiComponentExportButton" />
+    </type>
+    <preference for="Magento\Sales\Controller\Adminhtml\Order\AddressSave" type="Riki\Sales\Controller\Adminhtml\Order\AddressSave" />
+    <type name="Magento\Sales\Block\Adminhtml\Order\Create\Totals">
+        <plugin name="riki-sales-cache-the-totals" type="Riki\Sales\Plugin\Adminhtml\CacheTheTotals" />
+    </type>
+    <type name="Magento\Sales\Model\ResourceModel\Order">
+        <plugin name="riki-sales-save-updated-admin" type="\Riki\Sales\Plugin\Adminhtml\SaveUpdatedAdmin" />
+    </type>
+    <preference for="Magento\Sales\Model\Service\CreditmemoService" type="Riki\Sales\Model\Service\CreditmemoService"/>
+    <type name="Magento\Sales\Block\Adminhtml\Order\View">
+        <plugin name="riki_sales_sales_block_adminhtml_order_view" type="Riki\Sales\Plugin\Sales\Block\Adminhtml\Order\View" />
+    </type>
+    <type name="Magento\Sales\Block\Adminhtml\Order\View\History">
+        <plugin name="riki_sales_sales_block_adminhtml_order_view_history" type="Riki\Sales\Plugin\Sales\Block\Adminhtml\Order\View\History" />
+    </type>
+    <type name="Magento\Backend\Block\Widget\Context">
+        <plugin name="riki_salesBackendWidgetContext" type="Riki\Sales\Plugin\Backend\Block\Widget\Context" />
+    </type>
+    <type name="Magento\Sales\Block\Adminhtml\Order\View\Items\Renderer\DefaultRenderer">
+        <plugin name="riki_salesBlockAdminhtmlOrderViewItemsRendererDefaultRenderer" type="Riki\Sales\Plugin\Block\Adminhtml\Order\View\Items\Renderer\DefaultRenderer" />
+    </type>
+    <type name="Magento\Sales\Block\Adminhtml\Order\Create\Items">
+        <plugin name="riki_salesSalesBlockAdminhtmlOrderCreateItems" type="Riki\Sales\Plugin\Sales\Block\Adminhtml\Order\Create\Items" />
+    </type>
+    <type name="Magento\Sales\Block\Adminhtml\Order\Totals">
+        <plugin name="rikiSalesBlockAdminhtmlOrderTotals" type="Riki\Sales\Plugin\Sales\Block\Adminhtml\Order\Totals" />
+    </type>
+    <type name="Magento\Sales\Controller\Adminhtml\Order\Edit\Index">
+        <plugin name="rikiSalesOrderEdit" type="Riki\Sales\Plugin\Sales\Controller\Adminhtml\Order\Edit" sortOrder="1"/>
+    </type>
+    <preference for="Magento\Sales\Model\Order\Address\Validator"
+                type="Riki\Sales\Model\Order\Address\Validator"/>
+    <type name="Magento\Sales\Block\Order\Totals">
+        <plugin name="rikiSalesAdminOrderTotals" type="Riki\Sales\Plugin\Sales\Block\Order\Totals" />
+    </type>
+    <preference for="Magento\Sales\Block\Adminhtml\Order\Invoice\View" type="Riki\Sales\Block\Adminhtml\Order\Invoice\View"/>
+
+    <preference for="Magento\Sales\Controller\Adminhtml\Invoice\PrintAction"
+                type="Riki\Sales\Controller\Adminhtml\Order\Invoice\PrintAction" />
+    <type name="Bluecom\PaymentFee\Model\Quote\Total\Fee">
+        <plugin name="rikiSalesSetFlagFreePaymentFee" type="Riki\Sales\Plugin\SetFlagFreePaymentFee" />
+    </type>
+    <type name="Magento\Sales\Block\Adminhtml\Order\Create\Items\Grid">
+        <plugin name="rikiSalesSalesBlockAdminhtmlOrderCreateItemsGrid" type="Riki\Sales\Plugin\Sales\Block\Adminhtml\Order\Create\Items\Grid" />
+    </type>
+    <type name="Magento\Sales\Block\Adminhtml\Order\Create\Form">
+        <plugin name="rikiSalesModifyOrderDataJson" type="Riki\Sales\Plugin\Sales\Block\Adminhtml\Order\Create\Form\ModifyOrderDataJson" />
+    </type>
+    <type name="Magento\Sales\Block\Adminhtml\Reorder\Renderer\Action">
+        <plugin name="rikiSalesAddDuplicateCreateOrderTabRule" type="Riki\Sales\Plugin\Sales\Block\Adminhtml\Reorder\Renderer\Action\AddDuplicateCreateOrderTabRule" />
+    </type>
+    <type name="\Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <plugin name="Riki_Sales::injectCollection" type="Riki\Sales\Plugin\UiSearchResult" />
+    </type>
+</config>

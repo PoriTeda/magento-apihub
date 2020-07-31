@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="shipmentexporter_seemail_shipmentexport_email_template"
+              label="Shipment Exporter Email"
+              file="shippingexport.html"
+              type="html"
+              module="Riki_ShipmentExporter"
+              area="frontend"/>
+
+    <template id="general_email_support"
+              label="General Message"
+              file="generalmessages.html"
+              type="html"
+              module="Riki_ShipmentExporter"
+              area="frontend"/>
+</config>

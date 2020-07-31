@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- Create, Update, Disengage profile -->
+    <preference for="Riki\SubscriptionMachine\Api\MonthlyFeeProfileManagementInterface" type="Riki\SubscriptionMachine\Model\MonthlyFeeProfileManagement" />
+    <preference for="Riki\SubscriptionMachine\Api\Data\MonthlyFeeProfileCreationInterface" type="Riki\SubscriptionMachine\Model\Data\MonthlyFeeProfileCreation" />
+    <preference for="Riki\SubscriptionMachine\Api\Data\MonthlyFeeProfileUpdateInterface" type="Riki\SubscriptionMachine\Model\Data\MonthlyFeeProfileUpdate" />
+    <preference for="Riki\SubscriptionMachine\Api\Data\MonthlyFeeProfileProductInterface" type="Riki\SubscriptionMachine\Model\Data\MonthlyFeeProfileProduct" />
+    <preference for="Riki\SubscriptionMachine\Api\Data\MonthlyFeeProfileResultInterface" type="Riki\SubscriptionMachine\Model\Data\MonthlyFeeProfileResult" />
+    <preference for="Riki\SubscriptionMachine\Api\Data\DisengagementProfileInterface" type="Riki\SubscriptionMachine\Model\Data\DisengagementProfile" />
+
+    <!-- Approve order -->
+    <preference for="Riki\SubscriptionMachine\Api\CoffeeSubscriptionOrderManagementInterface" type="Riki\SubscriptionMachine\Model\CoffeeSubscriptionOrderManagement" />
+
+    <!-- Logger monthly fee -->
+    <type name="Riki\SubscriptionMachine\Logger\ApiLogger">
+        <arguments>
+            <argument name="name" xsi:type="string">Monthly fee api</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\SubscriptionMachine\Logger\ApiHandler</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Machine SKUs-->
+    <virtualType name="MachineSkusGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MachineSkusGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\SubscriptionMachine\Model\ResourceModel\MachineSkus\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">MachineSkusGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Riki\SubscriptionMachine\Model\ResourceModel\MachineSkus\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">riki_machine_skus</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\SubscriptionMachine\Model\ResourceModel\MachineSkus</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="machine_skus_listing_data_source" xsi:type="string">Riki\SubscriptionMachine\Model\ResourceModel\MachineSkus\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--End Machine SKUs-->
+
+    <!-- Machine Customer-->
+    <virtualType name="MachineCustomerGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MachineCustomerGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\SubscriptionMachine\Model\ResourceModel\MachineCustomer\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">MachineCustomerGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Riki\SubscriptionMachine\Model\ResourceModel\MachineCustomer\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">riki_machine_customer</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\SubscriptionMachine\Model\ResourceModel\MachineCustomer</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="machine_customer_listing_data_source" xsi:type="string">Riki\SubscriptionMachine\Model\ResourceModel\MachineCustomer\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--End Machine Customer-->
+
+    <!-- Machine ConditionRule-->
+    <virtualType name="MachineConditionRuleGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MachineConditionRuleGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\SubscriptionMachine\Model\ResourceModel\MachineConditionRule\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">MachineConditionRuleGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Riki\SubscriptionMachine\Model\ResourceModel\MachineConditionRule\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">riki_machine_condition</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\SubscriptionMachine\Model\ResourceModel\MachineConditionRule</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="machine_conditionrule_listing_data_source" xsi:type="string">Riki\SubscriptionMachine\Model\ResourceModel\MachineConditionRule\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--End Machine ConditionRule-->
+
+    <type name="Riki\SubscriptionMachine\Model\ResourceModel\MachineCustomer">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+
+    <type name="Riki\SubscriptionMachine\Model\ResourceModel\MachineSkus">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\ScalableOms\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="riki_machine_customer" xsi:type="string">riki_machine_customer</item>
+                <item name="riki_machine_skus" xsi:type="string">riki_machine_skus</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Quote\Model\Quote\Item">
+        <plugin name="free_machine_item_before_set_price" type="Riki\SubscriptionMachine\Plugin\Quote\FreeMachineItemSetPrice" />
+    </type>
+
+    <type name="Riki\Sales\Model\OrderCutoffDate">
+        <plugin name="update_order_status_for_free_duo_machine" type="Riki\SubscriptionMachine\Plugin\Sales\UpdateStatusForOrderFreeDuoMachine" />
+    </type>
+</config>

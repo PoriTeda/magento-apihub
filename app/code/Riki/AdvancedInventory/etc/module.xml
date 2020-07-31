@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Riki_AdvancedInventory" setup_version="2.4.0">
+        <sequence>
+            <module name="Riki_Framework" />
+            <module name="Wyomind_AdvancedInventory"/>
+            <module name="Wyomind_Core"/>
+            <module name="Wyomind_PointOfSale"/>
+            <module name="Riki_Sales"/>
+            <module name="Riki_ShippingProvider" />
+        </sequence>
+    </module>
+</config>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="adminhtml_sales_order_create_process_data">
+        <observer name="riki_backorder_adminhtml_sales_order_create_process_data" instance="Riki\BackOrder\Observer\AdminhtmlSalesOrderCreateProcessData" />
+    </event>
+</config>
+

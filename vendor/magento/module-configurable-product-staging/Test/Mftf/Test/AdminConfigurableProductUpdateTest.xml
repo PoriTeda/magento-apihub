@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AdminConfigurableProductUpdateTestEndDate">
+        <annotations>
+            <features value="ConfigurableProductStaging"/>
+            <stories value="Admin manages staging update"/>
+            <title value="Admin should be able to create Single Future Update with end date from Configurable Product Page"/>
+            <description value="Admin should be able to create Single Future Update with end date from Configurable Product Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="MC-3255"/>
+            <group value="ConfigurableProductStaging"/>
+        </annotations>
+        <before>
+            <createData entity="ApiCategory" stepKey="createCategory"/>
+            <actionGroup ref="LoginAsAdmin" stepKey="loginAsAdmin"/>
+
+            <!-- Create a configurable product via the UI -->
+            <actionGroup ref="createConfigurableProduct" stepKey="createProduct">
+                <argument name="product" value="_defaultProduct"/>
+                <argument name="category" value="$$createCategory$$"/>
+            </actionGroup>
+        </before>
+
+        <after>
+            <!-- Delete the product we created in before -->
+            <actionGroup stepKey="deleteConfigurableProduct" ref="deleteProductBySku">
+                <argument name="sku" value="{{_defaultProduct.sku}}"/>
+            </actionGroup>
+            <amOnPage url="admin/admin/auth/logout/" stepKey="logout"/>
+            <deleteData stepKey="deleteCategory" createDataKey="createCategory"/>
+        </after>
+
+        <!-- Create the new staging update -->
+        <generateDate stepKey="generateEndDate" date="+1 week" format="m/d/Y g:i A"/>
+        <actionGroup stepKey="fillOutNewStaging" ref="createEntityNameStagingUpdate">
+            <argument name="stagingUpdate" value="_defaultStaging"/>
+            <argument name="endDate" value="{$generateEndDate}"/>
+        </actionGroup>
+
+        <!-- Go to product storefront page to see the change applied-->
+        <amOnPage stepKey="goToCreatedProductPage" url="{{_defaultProduct.urlKey}}.html"/>
+        <waitForPageLoad stepKey="waitForProductPageLoad2"/>
+        <see stepKey="seeNewTitle" selector="{{StorefrontProductInfoMainSection.productName}}" userInput="{{_defaultStaging.entityName}}"/>
+
+        <actionGroup stepKey="changeDashboardView" ref="changeStagingView">
+            <argument name="view" value="grid"/>
+        </actionGroup>
+
+        <actionGroup stepKey="filterByName" ref="filterProductGridByName2">
+            <argument name="name" value="{{_defaultStaging.name}}"/>
+        </actionGroup>
+
+        <!-- Check to make sure the update shows up and has all of the details -->
+        <seeElement stepKey="seeUpdateRow" selector="{{AdminStagingDashboardSection.nthStagingUpdateRow('1')}}"/>
+        <see stepKey="seeUpcoming" selector="{{AdminStagingDashboardSection.nthStagingUpdateCell('1', '1')}}" userInput="Active"/>
+        <see stepKey="seeUpdateTitle" selector="{{AdminStagingDashboardSection.nthStagingUpdateCell('1', '2')}}" userInput="{{_defaultStaging.name}}"/>
+    </test>
+
+    <test name="AdminConfigurableProductUpdateTestNoEndDate" extends="AdminConfigurableProductUpdateTestEndDate">
+        <annotations>
+            <features value="ConfigurableProductStaging"/>
+            <stories value="Admin manages staging update"/>
+            <title value="Admin should be able to create Single Future Update with no end date from Configurable Product Page"/>
+            <description value="Admin should be able to create Single Future Update with no end date from Configurable Product Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="MC-3256"/>
+            <group value="ConfigurableProductStaging"/>
+        </annotations>
+
+        <!-- Create the new staging update -->
+        <actionGroup stepKey="fillOutNewStaging" ref="createEntityNameStagingUpdate">
+            <argument name="stagingUpdate" value="_defaultStaging"/>
+        </actionGroup>
+    </test>
+</tests>

@@ -1,0 +1,27 @@
+<?php $_delivery = $block->getDeliverydate(); ?>
+<?php if (isset($_delivery['fromSubscriptionProfileProductCart']) && $_delivery['fromSubscriptionProfileProductCart'] == 1) {  ?>
+    <?php foreach($_delivery as $deliveryType => $arrDelivaryDateAndTimeSlot) { ?>
+        <?php if($deliveryType != "fromSubscriptionProfileProductCart") { ?>
+        <?php echo '【配送方法】';  ?><?php echo $deliveryType; ?> <?php echo "\r\n";?>
+        <?php echo '【お届け希望日（予定）】:'; ?> <?php echo $arrDelivaryDateAndTimeSlot[0]; ?> <?php echo "\r\n"; ?>
+        <?php echo '【お届け希望時間帯】:';?> <?php echo $block->getSlotName($arrDelivaryDateAndTimeSlot[1]); ?> <?php echo "\r\n"; ?>
+        <?php } ?>
+    <?php } ?>
+<?php } elseif(isset($_delivery['fromBackendCreateOrder']) && $_delivery['fromBackendCreateOrder'] == 1) { ?>
+    <?php foreach($_delivery as $deliveryType => $arrDelivaryDateAndTimeSlot) { ?>
+        <?php if($deliveryType != "fromBackendCreateOrder") { ?>
+            <?php echo '【配送方法】';  ?><?php echo $deliveryType; ?> <?php echo "\r\n";?>
+            <?php echo '【お届け希望日（予定）】:'; ?> <?php echo $arrDelivaryDateAndTimeSlot[0]; ?> <?php echo "\r\n"; ?>
+            <?php echo '【お届け希望時間帯】:';?> <?php echo $block->getSlotName($arrDelivaryDateAndTimeSlot[1]); ?> <?php echo "\r\n"; ?>
+        <?php } ?>
+    <?php } ?>
+<?php } else { ?>
+    <?php $_delivery = json_decode($_delivery);?>
+<?php if ($_delivery):?>
+    <?php foreach($_delivery as $deliveryItem) { ?>
+        <?php echo '【配送方法】';  ?><?php echo $deliveryItem->deliveryName; ?> <?php echo "\r\n";?>
+        <?php echo '【お届け希望日（予定）】:'; ?> <?php echo $deliveryItem->deliveryDate; ?> <?php echo "\r\n"; ?>
+        <?php echo '【お届け希望時間帯】:';?> <?php echo $block->getSlotName($deliveryItem->deliveryTime); ?> <?php echo "\r\n"; ?>
+        <?php } ?>
+<?php endif; ?>
+<?php } ?>

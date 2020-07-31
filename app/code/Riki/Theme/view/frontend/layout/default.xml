@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="head.additional">
+            <block class="Riki\Theme\Block\Html\Head\PageReloading" name="riki.head.pageReloading"
+                   template="html/head/page-reloading.phtml"/>
+
+            <block class="Magento\Framework\View\Element\Text" name="security.xfs">
+                <arguments>
+                    <argument name="text" xsi:type="string">
+                        <![CDATA[
+                            <style id="antiClickjack">body{display:none !important;}</style>
+
+                            <script type="text/javascript">
+                               if (self === top) {
+                                   var antiClickjack = document.getElementById("antiClickjack");
+                                   antiClickjack.parentNode.removeChild(antiClickjack);
+                               } else {
+                                   top.location = self.location;
+                               }
+                               function $yubin(data){
+                                    AjaxZip3.callback(data);
+                                };
+                            </script>
+                        ]]>
+                    </argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+
+        <referenceContainer name="after.body.start">
+            <block class="Riki\Theme\Block\Js\Cookie" name="js_cookies" template="js/cookie.phtml"/>
+        </referenceContainer>
+
+        <referenceContainer name="header-wrapper">
+            <block class="Riki\Theme\Block\Html\Header\Navigation" name="riki.navigation" before="-"
+                   template="Riki_Theme::html/header/navigation.phtml">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Riki\Theme\ViewModel\Header\Navigation</argument>
+                </arguments>
+            </block>
+            <referenceBlock name="logo">
+                <action method="setTemplate">
+                    <argument name="template" xsi:type="string">Riki_Theme::html/header/logo.phtml</argument>
+                </action>
+            </referenceBlock>
+            <block class="Riki\Theme\Block\Html\Header\Search" name="riki.search" after="logo"
+                   template="Riki_Theme::html/header/search.phtml"/>
+            <block class="Riki\Theme\Block\Html\Header\Minicart" name="riki.minicart" after="riki.search"
+                   template="Riki_Theme::html/header/minicart.phtml"/>
+            <!--<block class="Riki\Theme\Block\Html\Header\Logo" name="riki.logo" before="-" template="Riki_Theme::html/header/logo.phtml" />-->
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block name="minicart-merge-quote"
+                   class="Magento\Framework\View\Element\Template"
+                   template="Riki_Theme::html/header/minicart-merge-quote.phtml" after="customer.customer.data"/>
+        </referenceContainer>
+    </body>
+</page>

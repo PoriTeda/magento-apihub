@@ -1,0 +1,106 @@
+<!-- ko if: deliveryTypes().length == 1 -->
+<div class="shipping-container block-products" data-bind="css: {'hanpukai-new-checkout': window.checkoutConfig.isSubHanpukai}">
+    <div class="shipping-block-title" data-bind="css: {'subscription-checkout': window.checkoutConfig.isSubscriptionCheckout}">
+        <div class="col ddate"><span data-bind="i18n: 'Delivery Options'"></span></div>
+    </div>
+    <div class="shipping-block-content">
+        <div data-bind="foreach: deliveryTypes, afterRender: showMessage">
+            <!-- ko if: cartItems.length-->
+            <div class="ddate-block" data-bind="css: {'subscription-checkout': window.checkoutConfig.isSubscriptionCheckout}">
+                <div class="main-actions show-mobile">
+                    <button class="action" data-bind="click: $parent.showSelectShippingAddressPopUpDDate"><span data-bind="i18n: 'Change address'"></span></button>
+                    <button class="action action-show-popup action-select-shipping-item" data-bind="click: $parent.addNewAddressDDate">
+                        <span data-bind="i18n: 'Create new address'"></span>
+                    </button>
+                </div>
+                <div class="left col ddate">
+                    <h4 class="shipping-block__title"><!-- ko i18n: name --><!-- /ko --></h4>
+                    <!-- ko if: allowChooseDeliveryDate && !preOrder -->
+                    <div class="shipping-block">
+                        <!-- ko ifnot: onlyDm -->
+                        <div class="shipping-label">
+                            <label data-bind="visible: !onlyDm"><!-- ko i18n: 'Delivery Date'--><!-- /ko --></label>
+                        </div>
+                        <!-- /ko -->
+                        <div class="shipping-control">
+                            <div class="delivery-specified-row" data-bind="visible: !onlyDm">
+                                <div class="calendar-wrapper">
+                                    <input name="delivery_date"
+                                           class="input-text delivery_date input-text input-new"
+                                           type="text"
+                                           onfocus="this.blur()"
+                                           data-bind="
+                                               datetimepicker: true,
+                                               restrictDateList: restrictDate,
+                                               periodRank: period,
+                                               errors: items_error_messages,
+                                               dataBound: dataBound,
+                                               attr: {'placeholder': $t('Unspecified')}
+                                               css: {notOnlyDm: onlyDm}"
+                                           readonly="readonly" />
+                                </div>
+                                <input name="delivery_name" class="input-text" type="hidden" data-bind="value: name" />
+                            </div>
+                        </div>
+                        <!-- ko if: (isSubscription && !onlyDm) -->
+                        <div class="block-next-delivery-date no-display">
+                            <div class="shipping-label">
+                                <label><!-- ko i18n: 'Next Delivery Date'--><!-- /ko --></label>
+                            </div>
+                            <div class="shipping-control">
+                                <div class="calendar-wrapper">
+                                    <input name="next_delivery_date"
+                                           class="input-text input-new delivery_date"
+                                           type="text"
+                                           onfocus="this.blur()"
+                                           data-bind="
+                                               disable: !isSubscription || isAllowChangeNextDD == 0,
+                                               datetimepicker: true,
+                                               restrictDateList: restrictDate,
+                                               periodRank: period,
+                                               errors: items_error_messages,
+                                               attr: {'placeholder': $t('Unspecified')}"
+                                           readonly="readonly" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                    <!-- /ko -->
+                    <div class="shipping-block" data-bind="visible: timeSlot.getLength() > 0  && allowChooseDeliveryDate">
+                        <div class="shipping-label">
+                            <label><!-- ko i18n: 'Delivery Time'--><!-- /ko --></label>
+                        </div>
+                        <div class="shipping-control">
+                            <div class="select-wrapper">
+                                <select name="delivery_time"
+                                        class="delivery_time input-new select-box"
+                                        data-bind="
+                                        visible: timeSlot.getLength() > 0,
+                                        value: timeSlotValue">
+                                    <!-- ko foreach: { data: timeSlot, as: 'timeslotitem' } -->
+                                    <option data-bind="
+                                                text: timeslotitem.label,
+                                                attr: {
+                                                    value: timeslotitem.value,
+                                                }
+                                            ">
+                                    </option>
+                                    <!-- /ko -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="color-red" data-bind="visible: !onlyDm && allowChooseDeliveryDate">
+                        <p data-bind="i18n: 'Regarding various campaigns of periodic delivery flights, you can not specify the desired delivery date.'"></p>
+                        <p data-bind="i18n: 'Even if you specify delivery date, it will be invalid. Please note.'"></p>
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+</div>
+<!-- /ko -->

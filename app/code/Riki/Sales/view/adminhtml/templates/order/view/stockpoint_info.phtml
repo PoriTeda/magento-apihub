@@ -1,0 +1,44 @@
+<?php
+    /** @var $block \Riki\Sales\Block\Adminhtml\Order\View\StockPointInfo */
+    $deliveryStatus = $block->getStockPointDeliveryOrderInfo();
+?>
+<?php if ($deliveryStatus) :?>
+<div class="admin__page-section-title">
+    <span class="title"><?php /* @escapeNotVerified */ echo __('Stock Point Status') ?></span>
+</div>
+<div class="admin__page-section-item order-information">
+    <table class="admin__table-secondary order-information-table">
+        <tbody>
+            <tr>
+                <th><?php echo __('Stock Point Delivery Comment');?></th>
+                <td><?php echo $deliveryStatus['delivery_information']; ?></td>
+            </tr>
+            <tr>
+                <th><?php echo __('Stock Point Delivery Status');?></th>
+                <td><?php
+                if (isset($deliveryStatus['data']['delivery_status'])) {
+                    echo $deliveryStatus['data']['delivery_status'];
+                }
+                    ?></td>
+            </tr>
+            <tr>
+                <th><?php echo __('Stock Point Prepared Date');?></th>
+                <td><?php
+                if (isset($deliveryStatus['data']['stockpoint_prepared_date'])) {
+                    echo $block->formatStockPointDate($deliveryStatus['data']['stockpoint_prepared_date']);
+                }
+                    ?></td>
+            </tr>
+            <tr>
+                <th><?php echo __('Stock Point Delivery Date');?></th>
+                <td><?php
+                if (isset($deliveryStatus['data']['stockpoint_delivered_date'])) {
+                    echo $block->formatStockPointDate($deliveryStatus['data']['stockpoint_delivered_date']);
+                }
+                    ?></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<br clear="all" />
+<?php endif;?>

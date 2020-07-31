@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+<acl>
+    <resources>
+        <resource id="Magento_Backend::admin">
+            <resource id="Magento_Cart::cart">
+                <resource id="Magento_Cart::manage">
+                    <resource id="Riki_SpotOrderApi::call_spot_order_api" title="SPOT Order Api" sortOrder="202" />
+                </resource>
+            </resource>
+        </resource>
+    </resources>
+</acl>
+</config>

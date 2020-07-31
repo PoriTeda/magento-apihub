@@ -1,0 +1,298 @@
+<div class="admin__page-section-title">
+    <strong class="title"><?php echo __('Delivery Information') ?></strong>
+</div>
+<?php /** @var $block \Riki\Sales\Block\Adminhtml\Order\View\DeliveryInfo */ ?>
+<?php
+$_addressGroups = $block->getAddressGroups();
+$_shippingFeeItems = $block->getDetailShippingFee();
+$defaultShippingFee = $block->getDefaultShippingFee();
+?>
+<?php
+$objCourseInfo = $block->getCourseInfo();
+
+$intervalFrequency  = $objCourseInfo->getData('intervalFrequency');
+$unitFrequency      = $objCourseInfo->getData("unitFrequency");
+$isAllowChangeNextDD = $objCourseInfo->getData("isAllowChangeNextDD");
+
+$strCurrentDateServer = $block->getCurrentDateServer();
+
+$hasEditableDeliveryTimeField = false;
+
+$customerAddressIdByShippingAddress = $block->getCustomerAddressIdFromOrder();
+
+/** @var Riki\Sales\Helper\CheckRoleViewOnly $checkViewOnlyHelper */
+$checkViewOnlyHelper = $this->helper('Riki\Sales\Helper\CheckRoleViewOnly');
+
+
+/** @var Riki\Sales\Helper\Order $helperOrder */
+$helperOrder = $this->helper('Riki\Sales\Helper\Order');
+$isOrderAtobarai = $helperOrder->isOrderNpAtobarai($block->getOrder());
+$disableSelect = ($isOrderAtobarai) ? 'disabled="disabled"' : '' ;
+?>
+<?php $_numCalendar = 0; ?>
+<?php if ($_addressGroups): ?>
+    <div id="admin__order-delivery-info">
+        <?php foreach ($_addressGroups as $addressId    => $addressGroup):?>
+            <div class="admin__order-delivery-info-item">
+                <div class="admin__order-delivery-info-left">
+                    <div class="admin__page-section-item-title">
+                        <span class="title"><?php /* @escapeNotVerified */ echo __('Address') ?></span>
+                    </div>
+                    <?php if($block->canEditAddress()): ?>
+                        <fieldset class="admin__fieldset">
+                            <div class="admin__field field">
+                                <label class="label admin__field-label"><?php echo __('Change shipping address:'); ?></label>
+                                <div class="admin__field-control control">
+                                    <select <?php echo $disableSelect; ?> name="new_address_selected" class="admin__control-select" onchange="submitAndReloadArea($('admin__order-delivery-info').parentNode, '<?php echo $block->getChangeShippingAddressUrl() ?>')">
+                                        <option value=""><?php echo __('Select an address') ?></option>
+                                        <?php foreach($block->getAddressListOfCurrentCustomer() as $addressObject): ?>
+                                            <option value="<?php echo $addressObject->getId() ?>" <?php if($addressObject->getId() == $customerAddressIdByShippingAddress): ?>selected="selected" <?php endif; ?>>
+                                                <?php echo $block->getAddressAsString($addressObject) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                        </fieldset>
+                    <?php endif; ?>
+                    <div>
+                        <?php echo $addressGroup['address_html']; ?>
+                    </div>
+                </div>
+                <div class="admin__order-delivery-info-right">
+                    <?php foreach($addressGroup['delivery'] as  $deliveryType   =>  $deliveryInfo):  ?>
+                        <div class="items<?php if(!isset($addressGroup['is_preorder'])): ?> has_preorder<?php endif; ?>">
+                            <?php if(!isset($addressGroup['is_preorder']) && $deliveryInfo['date_info']): ?>
+                            <div class="item">
+                                <div class="admin__page-section-item-title">
+                                    <span class="title"><?php echo __('Delivery method, hope date and time'); ?></span>
+                                </div>
+                                    <fieldset class="admin__fieldset">
+                                        <?php if(
+                                                $deliveryInfo['delivery_date'] ||
+                                                (isset($deliveryInfo['date_info']['only_dm']) && !$deliveryInfo['date_info']['only_dm']
+                                                && !$block->isCsvPayment())
+                                        ): ?>
+                                            <div class="admin__field field">
+                                                <label class="label admin__field-label">
+                                                    <span><?php echo __('Delivery dates:') ?> <?php echo $deliveryInfo['delivery_date']; ?></span>
+                                                </label>
+
+                                                <?php if(
+                                                    $block->allowedToEditDeliveryInfo()
+                                                    && !$checkViewOnlyHelper->checkViewShipmentOnly($checkViewOnlyHelper::ORDER_VIEW_ONLY) && $block->canEditAddress()
+                                                ): ?>
+                                                    <div class="admin__field-control control">
+                                                        <input <?php echo $disableSelect; ?> class="admin__control-text hasDatepicker" type="text" id="delivery_date_picker_<?php echo $_numCalendar; ?>" name="order[delivery_date][<?php echo $addressId; ?>][<?php echo $deliveryType ?>]" value="<?php echo $deliveryInfo['delivery_date']; ?>" readonly="readonly" />
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if($block->allowedToEditDeliveryInfo()): ?>
+                                            <script type="text/javascript">
+                                                require([
+                                                    "jquery",
+                                                    "mage/calendar"
+                                                ], function($){
+                                                    var datePlusFrequency = function(paramselectDate, arrFrequency) {
+                                                        var selectDate = new Date(paramselectDate.getTime());
+                                                        var interval = parseInt(arrFrequency[0]), unit = arrFrequency[1];
+
+                                                        if(unit === 'month') {
+                                                            selectDate.setMonth(selectDate.getMonth() + interval);
+
+                                                            return selectDate
+                                                        }
+                                                        /** week */
+                                                        selectDate.setDate(selectDate.getDate() + interval * 7);
+
+                                                        return selectDate;
+                                                    };
+
+
+                                                    /** 3 - setvalue default */
+                                                    var isAllowChangeNextDD = '<?php echo $isAllowChangeNextDD ? '1' : '0' ?>',
+                                                        strCurrentDateServer = '<?php echo $strCurrentDateServer; ?>',
+                                                        arrCurrentDateServer = strCurrentDateServer.split("-"),
+                                                        arrFrequency = [parseInt('<?php echo $intervalFrequency ?>'), '<?php echo $unitFrequency ?>']
+                                                        ;
+
+                                                    var currentDateServer = new Date(arrCurrentDateServer[0], parseInt(arrCurrentDateServer[1]) - 1, arrCurrentDateServer[2]);
+
+
+                                                    var maxDate = '', maxDateByFrequency = datePlusFrequency(new Date(currentDateServer.getTime()), arrFrequency);
+                                                    var maxDateByPeriod = new Date(currentDateServer.getTime()); maxDateByPeriod.setDate(maxDateByPeriod.getDate() + <?php echo $deliveryInfo['date_info']['period']; ?>);
+
+                                                    maxDate = maxDateByPeriod.getTime() > maxDateByFrequency.getTime() ?  maxDateByPeriod : maxDateByFrequency;
+
+                                                    var restrictArray = '<?php echo implode(',', $deliveryInfo['date_info']['deliverydate']); ?>';
+                                                    restrictArray = restrictArray.split(',');
+                                                    var    options = {
+                                                            dayNames: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+                                                            dayNamesMin: ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+                                                            monthNames: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+                                                            monthNamesShort: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+                                                            firstDay: 1,
+                                                            closeText: "Close",
+                                                            currentText: "Go Today",
+                                                            prevText: "Previous",
+                                                            nextText: "Next",
+                                                            weekHeader: "WK",
+                                                            timeText: "Time",
+                                                            hourText: "Hour",
+                                                            minuteText: "Minute",
+                                                            dateFormat: "yy-mm-dd",
+                                                            showOn: "button",
+                                                            buttonText: "",
+                                                            showAnim: "",
+                                                            changeMonth: true,
+                                                            changeYear: true,
+                                                            buttonImageOnly: false,
+                                                            buttonImage: null,
+                                                            showButtonPanel: false,
+                                                            showOtherMonths: true,
+                                                            showWeek: false,
+                                                            timeFormat: '',
+                                                            showTime: false,
+                                                            showHour: false,
+                                                            showMinute: false,
+                                                            minDate: currentDateServer,
+                                                            maxDate: maxDateByPeriod,
+                                                            onSelect: function(date) {
+
+                                                                var $this = $(this),
+                                                                    $nextDeliveryDateInput = $("#next_delivery_date_picker_<?php echo $_numCalendar; ?>");
+
+
+                                                                if ($this.attr('id') !== 'delivery_date_picker_<?php echo $_numCalendar; ?>') {
+                                                                    return;
+                                                                }
+
+                                                                var arrSelectDate = date.split('-'),
+                                                                    selectDate = new Date(arrSelectDate[0], parseInt(arrSelectDate[1]) - 1, arrSelectDate[2]);
+
+                                                                var minCalendar = new Date(selectDate.getTime()); minCalendar.setDate(minCalendar.getDate() + 1);
+
+                                                                var chooseNextDD = datePlusFrequency(selectDate, arrFrequency),
+
+                                                                    maxDateByFrequency = new Date(chooseNextDD.getTime());
+
+                                                                var maxDateByPeriod = new Date(currentDateServer.getTime()); maxDateByPeriod.setDate(maxDateByPeriod.getDate() + <?php echo $deliveryInfo['date_info']['period']; ?>),
+                                                                    maxCalendar = maxDateByPeriod.getTime() > maxDateByFrequency.getTime() ? maxDateByPeriod : maxDateByFrequency;
+
+                                                                if(isAllowChangeNextDD == '0') {
+                                                                    $nextDeliveryDateInput.val(chooseNextDD.getFullYear() +'-'+ ('0' + (chooseNextDD.getMonth()+1)).slice(-2) +'-' + chooseNextDD.getDate());
+                                                                    return;
+                                                                }
+
+
+                                                                if(typeof $nextDeliveryDateInput.data('datepicker') !== 'undefined' ) {
+
+                                                                    /** set min date */
+                                                                    $nextDeliveryDateInput.data('datepicker').settings.minDate = minCalendar;
+                                                                    $nextDeliveryDateInput.data('datepicker').settings.maxDate = maxCalendar;
+
+                                                                    /** Auto set automatic when choose the first call */
+                                                                    $nextDeliveryDateInput.datepicker('setDate',  chooseNextDD );
+
+                                                                }
+                                                            },
+                                                            beforeShowDay: function(date){
+                                                                var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+                                                                return [ restrictArray.indexOf(string) == -1 ]
+                                                            }
+                                                        },
+
+                                                        calendarPickerObj = $("#delivery_date_picker_<?php echo $_numCalendar; ?>").datepicker(options);
+                                                    $('.ui-datepicker').addClass('notranslate');
+
+                                                    <?php if(!empty($deliveryInfo['delivery_date'])): ?>
+                                                        $("#delivery_date_picker_<?php echo $_numCalendar; ?>").datepicker('setDate', '<?php echo $deliveryInfo['delivery_date']; ?>');
+                                                    <?php endif; ?>
+
+                                                    if(isAllowChangeNextDD !== '0') {
+                                                        var $nextDeliveryDate = $("#next_delivery_date_picker_<?php echo $_numCalendar; ?>");
+                                                        options.maxDate = maxDate;
+                                                        var nextCalendarPickerObj = $nextDeliveryDate.datepicker(options);
+                                                        $('.ui-datepicker').addClass('notranslate');
+                                                    }
+                                                });
+                                            </script>
+                                        <?php endif; ?>
+                                        <?php if($deliveryInfo['delivery_time'] || ($block->allowedToEditDeliveryInfo() && $deliveryInfo['date_info']['timeslot'] && is_array($deliveryInfo['date_info']['timeslot']))): ?>
+                                        <div class="admin__field field">
+                                            <label class="label admin__field-label">
+                                                <span><?php echo __('Time slot:') ?> <?php if ($deliveryInfo['delivery_time']) : echo $deliveryInfo['delivery_time']; endif; ?></span>
+                                            </label>
+                                            <?php if (!$checkViewOnlyHelper->checkViewShipmentOnly($checkViewOnlyHelper::ORDER_VIEW_ONLY) && $block->canEditAddress()): ?>
+                                                <?php if($block->allowedToEditDeliveryInfo() && $deliveryInfo['date_info']['timeslot'] && is_array($deliveryInfo['date_info']['timeslot'])): $hasEditableDeliveryTimeField = true; ?>
+                                                    <div class="admin__field-control">
+                                                        <select <?php echo $disableSelect; ?> class="admin__control-select" name="order[delivery_timeslot][<?php echo $addressId; ?>][<?php echo $deliveryType ?>]">
+                                                            <option value=""><?php echo __('Please select a time slot') ?></option>
+                                                            <?php foreach ($deliveryInfo['date_info']['timeslot'] as  $timeSlotId =>   $timeSlotName): ?>
+                                                                <option value="<?php echo $timeSlotId; ?>" <?php if($timeSlotId == $deliveryInfo['time_slot_id']): ?>selected="selected" <?php endif; ?>><?php echo $timeSlotName; ?></option>
+                                                            <?php endforeach; ?>
+                                                        </select>
+                                                    </div>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+
+                                        </div>
+                                        <?php endif; ?>
+                                    </fieldset>
+                                    <div class="admin__note_delivery <?php if (!$block->isCsvPayment()) : ?> no-display <?php endif;?>">
+                                        <?php echo __('It is impossible to select the delivery date, when you use CVS payment method. If you want to select "Delivery date", please use Cash on Delivery or Credit Card payment method') ?>
+                                    </div>
+                            </div>
+                            <?php endif; ?>
+                            <div class="item product-items">
+                                <div class="admin__page-section-item-title">
+                                    <span class="title"><?php echo __('Delivery commodity'); ?></span>
+                                </div>
+                                <ul>
+                                    <?php foreach ($deliveryInfo['items'] as $item): ?>
+                                        <li>
+                                            <div><?php echo $item['name'] . ' ' . $item['qty'] . __('items'); ?></div>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+
+                            <div class="item">
+                                <div class="admin__page-section-item-title">
+                                    <span class="title"><?php echo __('Delivery Type'); ?></span>
+                                </div>
+                                <div><?php echo $deliveryInfo['delivery_type_name']; ?></div>
+                            </div>
+
+                            <div class="item">
+                                <div class="admin__page-section-item-title">
+                                    <span class="title"><?php echo __('Shipping Fee'); ?></span>
+                                </div>
+                                <div>
+                                    <?php echo isset($_shippingFeeItems[$addressId][$block->getDeliveryTypeForShippingFeeData($deliveryType)])? $_shippingFeeItems[$addressId][$block->getDeliveryTypeForShippingFeeData($deliveryType)] : $defaultShippingFee; ?>
+                                </div>
+                            </div>
+                        </div>
+                        <?php $_numCalendar++; endforeach; ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+
+    <?php if (empty($disableSelect)): ?>
+        <?php if( $block->allowedToEditDeliveryInfo() && ( $block->getSubscriptionCourseId() || !$block->isCsvPayment() || $hasEditableDeliveryTimeField)): ?>
+            <?php if (!$checkViewOnlyHelper->checkViewShipmentOnly($checkViewOnlyHelper::ORDER_VIEW_ONLY) && $block->canEditAddress()): ?>
+            <div class="actions">
+                <button title="<?php echo __('Save Delivery Information'); ?>" type="button" class="action-default scalable save" onclick="submitAndReloadArea($('admin__order-delivery-info').parentNode, '<?php echo $block->getSaveDeliveryInfoUrl() ?>')">
+                    <span><?php echo __('Save Delivery Information'); ?></span>
+                </button>
+            </div>
+            <?php endif; ?>
+        <?php endif; ?>
+    <?php endif; ?>
+
+<?php else: ?>
+    <div id="order-delivery-info-summary" class="order-delivery-info-summary">
+        <span><?php echo __('Delivery Information is unavailable') ?></span>
+    </div>
+<?php endif; ?>

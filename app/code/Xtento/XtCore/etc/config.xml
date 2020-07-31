@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <xtcore>
+            <adminnotification>
+                <use_https>0</use_https>
+                <check_frequency>86400</check_frequency>
+                <enabled>1</enabled>
+                <follow>NEW_RELEASE,UPDATE,PROMOTIONS,OTHER_INFO</follow>
+            </adminnotification>
+        </xtcore>
+    </default>
+</config>
+<!--
+/**
+ * Product:       Xtento_XtCore (2.1.0)
+ * ID:            %!uniqueid!%
+ * Packaged:      %!packaged!%
+ * Last Modified: 2017-08-16T08:52:13+00:00
+ * File:          app/code/Xtento/XtCore/etc/config.xml
+ * Copyright:     Copyright (c) 2017 XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

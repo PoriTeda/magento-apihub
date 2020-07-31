@@ -1,0 +1,174 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<?php
+/** @var \Magento\Catalog\Pricing\Render\PriceBox $block */
+
+/** @var \Magento\Catalog\Pricing\Price\TierPrice $tierPriceModel */
+$tierPriceModel = $block->getPrice();
+$tierPrices = $tierPriceModel->getTierPriceList();
+$msrpShowOnGesture = $block->getPriceType('msrp_price')->isShowPriceOnGesture();
+$product = $block->getSaleableItem();
+$hasTierPrice = (count($tierPrices)) ? 1 : 0;
+$isSaleable = false;
+$minQty = '';
+
+$caseDisplay = $product->getCaseDisplay();
+$unitCase = \Riki\CreateProductAttributes\Model\Product\UnitEc::UNIT_PIECE;
+$unitQty = 1;
+
+if($caseDisplay == \Riki\CreateProductAttributes\Model\Product\CaseDisplay::CD_CASE_ONLY ){
+    $unitCase = \Riki\CreateProductAttributes\Model\Product\UnitEc::UNIT_CASE;
+    $unitQty = (null != $product->getUnitQty())?$product->getUnitQty():1;
+}
+
+
+?>
+<?php if (count($tierPrices)) : ?>
+    <ul class="<?php /* @escapeNotVerified */
+    echo($block->hasListClass() ? $block->getListClass() : 'prices-tier items'); ?>">
+        <?php
+            // Get min price_qty at the first array
+            $minQty = reset($tierPrices)['price_qty'];
+        ?>
+        <?php if(\Riki\CreateProductAttributes\Model\Product\UnitEc::UNIT_CASE == $unitCase) { ?>
+             <?php if((int)$minQty / $unitQty > 1) { ?>
+             <li class="item">
+                 <span class="item-tier-qty">
+                 <?php
+                    echo __('%1 <span class="bold">less than</span> of the purchase price <br/>', (int)$minQty / $unitQty);
+                 ?>
+                 </span>
+             </li>
+            <?php } ?>
+        <?php } else { ?>
+            <li class="item">
+                <span class="item-tier-qty">
+                <?php
+                echo __('%1 <span class="bold">less than</span> of the purchase price <br/>', $minQty);
+                ?>
+                </span>
+            </li>
+        <?php } ?>
+        <?php foreach ($tierPrices as $index => $price) : ?>
+            <li class="item">
+
+                <?php
+                $productId = $product->getId();
+                $isSaleable = $product->isSaleable();
+                $popupId = 'msrp-popup-' . $productId . $block->getRandomString(20);
+                if ($msrpShowOnGesture && $price['price']->getValue() < $product->getMsrp()):
+                    $addToCartUrl = '';
+                    if ($isSaleable) {
+                        $addToCartUrl = $this->helper('\Magento\Checkout\Helper\Cart')
+                            ->getAddUrl($product, ['qty' => $price['price_qty']]);
+                    }
+                    $tierPriceData = [
+                        'addToCartUrl' => $addToCartUrl,
+                        'name' => $product->getName(),
+                        'realPrice' => $block->renderAmount(
+                            $price['price'],
+                            [
+                                'price_id' => $index,
+                                'id_suffix' => '-' . $index,
+                                'include_container' => true
+                            ]
+                        ),
+                        'msrpPrice' => $block->renderAmount(
+                            $block->getPriceType('msrp_price')->getAmount(),
+                            [
+                                'price_id' => $index,
+                                'id_suffix' => '-' . $index,
+                                'include_container' => true
+                            ]
+                        ),
+                    ];
+                    if ($block->getCanDisplayQty($product)) {
+                        $tierPriceData['qty'] = $price['price_qty'];
+                    }
+                    ?>
+                    <?php /* @escapeNotVerified */
+                    echo __('Buy %1 for: ', $price['price_qty']); ?>
+                    <a href="javascript:void(0);"
+                       id="<?php /* @escapeNotVerified */
+                       echo($popupId); ?>"
+                       data-tier-price="<?php echo $block->escapeHtml($block->jsonEncode($tierPriceData)); ?>">
+                        <?php /* @escapeNotVerified */
+                        echo __('Click for price'); ?></a>
+                <?php else:
+                    $priceAmountBlock = $block->renderAmount(
+                        $price['price'],
+                        [
+                            'price_id' => $index,
+                            'id_suffix' => '-' . $index,
+                            'include_container' => true,
+                            'zone' => \Magento\Framework\Pricing\Render::ZONE_ITEM_OPTION
+                        ]
+                    );
+                    ?>
+                    <?php /* @escapeNotVerified */
+                    if(\Riki\CreateProductAttributes\Model\Product\UnitEc::UNIT_CASE == $unitCase){
+                        echo __('<span class="item-tier-qty">%1 <span class="bold">or more</span> of the purchase price <br/></span> %2', (int)$price['price_qty']/$unitQty, $priceAmountBlock);
+                    }
+                    else{
+                        echo __('<span class="item-tier-qty">%1 <span class="bold">or more</span> of the purchase price <br/></span> %2', $price['price_qty'], $priceAmountBlock);
+                    }
+
+                    ?>
+                <?php endif; ?>
+
+            </li>
+        <?php endforeach; ?>
+    </ul>
+    <?php if ($msrpShowOnGesture): ?>
+        <script type="text/x-magento-init">
+            {
+                ".product-info-main": {
+                    "addToCart": {
+                        "origin": "tier",
+                        "addToCartButton": "#product_addtocart_form [type=submit]",
+                        "inputQty": "#qty",
+                        "attr": "[data-tier-price]",
+                        "productForm": "#product_addtocart_form",
+                        "productId": "<?php /* @escapeNotVerified */ echo $productId; ?>",
+                        "productIdInput": "input[type=hidden][name=product]",
+                        "isSaleable": "<?php /* @escapeNotVerified */ echo $isSaleable; ?>"
+                    }
+                }
+            }
+        </script>
+    <?php endif; ?>
+<?php endif; ?>
+<script type="text/javascript">
+    require([
+        'jquery'
+    ], function ($) {
+        if ($('.catalog-product-view .product-info-main .prices-tier').length) {
+            $('.catalog-product-view .product-info-main .product-info-price').addClass('has-tier-prices');
+
+            // Move block base price to first of tier price
+            <?php if((int)$minQty / $unitQty > 1): ?>
+                $('.catalog-product-view .product-info-main .product-info-price .price-box').clone().appendTo($('.prices-tier.items .item:first-child'));
+            <?php endif; ?>
+        }
+    });
+</script>
+<script type="text/javascript">
+    var tierPriceObj_<?php echo $product->getId() ?> = {
+        hasTierPrice: <?php echo $hasTierPrice ?>,
+        tierPriceItem: []
+    }
+    <?php foreach ($tierPrices as $price) : ?>
+    tierPriceObj_<?php echo $product->getId() ?>.tierPriceItem.push({
+        qty: <?php echo $price['price_qty'] ?>,
+        price: <?php echo floor($price['price']->getValue()) ?>
+    });
+    <?php endforeach; ?>
+</script>

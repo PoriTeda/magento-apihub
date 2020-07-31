@@ -1,0 +1,65 @@
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div class="payment-method" data-bind="css: {'_active': (getCode() == isChecked())}">
+    <div class="payment-method-title field choice">
+        <input type="radio"
+               name="payment[method]"
+               class="radio"
+               data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
+        <label data-bind="attr: {'for': getCode()}" class="label"><span data-bind="text: getTitle()"></span></label>
+    </div>
+    <div class="payment-method-content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <div class="payment-method-billing-address">
+            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+        <div class="checkout-agreements-block">
+            <!-- ko foreach: $parent.getRegion('before-place-order') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+
+        <div class="card-method-image">
+            <a href="http://www.np-atobarai.jp/about/" target="_blank">
+                <img data-bind="attr: { src: require.toUrl('images/np_atobarai_payment.png') }" alt="Np Atobarai Payment">
+            </a><br />
+            <span data-bind="i18n: 'Details of this payment method'"></span><br>
+            <div data-bind="i18n: 'After confirming the arrival of the product, at \'Convenience Store\' \'Post Office\' \'Bank\' \'LINE Pay\''"></div>
+            <div data-bind="i18n: 'This is a simple and easy way to pay later. Invoice is separate from the product'"></div>
+            <div data-bind="i18n: 'Payment will be made within 14 days after issuance.'"></div><br>
+            <span data-bind="i18n: 'please note'"></span><br>
+            <span data-bind="i18n: 'Postpay fee:'"></span> <span data-bind="text: getPaymentFee(), style: { 'color': 'red', 'font-weight': 'bold' }"></span><br>
+            <span data-bind="i18n: 'For postpay orders,'"></span><a href="https://www.netprotections.com/" target="_blank"><span data-bind="i18n: 'Net Protections Inc.'"></span></a><span data-bind="i18n: 'Provided by'"></span><br>
+            <div data-bind="i18n: 'NP postpaid service is applied, providing personal information within the scope of the service,'"></div>
+            <div>
+                <span data-bind="i18n: 'Transfer the price receivable.'"></span><span data-bind="i18n: 'The maximum usage limit is 55,000 yen (tax included).', style: { 'color': 'red' } "></span>
+            </div>
+            <div data-bind="i18n: 'Click on the banner for details.'"></div>
+            <div data-bind="i18n: 'If you are a minor, please use it with the consent of a legal representative.'"></div>
+        </div>
+    </div>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button class="action primary checkout"
+                    type="submit"
+                    data-bind="
+                        click: placeOrder,
+                        attr: {title: $t('Place Order')},
+                        css: {disabled: !isPlaceOrderActionAllowed()},
+                        enable: (getCode() == isChecked())
+                        "
+                    disabled>
+                <span data-bind="i18n: 'Order confirmation'"></span>
+            </button>
+        </div>
+    </div>
+</div>
+        

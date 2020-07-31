@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+<acl>
+    <resources>
+        <resource id="Magento_Backend::admin">
+            <resource id="Magento_Cart::cart">
+                <resource id="Magento_Cart::manage">
+                    <resource id="Riki_MachineApi::call_machine_api" title="Machine Api" sortOrder="201" />
+                </resource>
+            </resource>
+
+            <resource id="Riki_SubscriptionFrequency::subscription" title="Subscription" sortOrder="45">
+                <resource id="Riki_Subscription::machine_b2c_skus" title="B2C Machine SKUs" sortOrder="354">
+                    <resource id="Riki_Subscription::machine_b2c_skus_save" title="Save" sortOrder="354" />
+                    <resource id="Riki_Subscription::machine_b2c_skus_delete" title="Delete" sortOrder="354" />
+                </resource>
+            </resource>
+        </resource>
+    </resources>
+</acl>
+</config>

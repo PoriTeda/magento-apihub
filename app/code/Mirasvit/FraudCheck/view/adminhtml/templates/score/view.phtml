@@ -1,0 +1,57 @@
+<?php
+//@codingStandardsIgnoreFile
+/** @var $block \Mirasvit\FraudCheck\Block\Adminhtml\Score\View */
+$score = $block->getScore();
+$rules = $score->getRules();
+?>
+<fieldset class="admin__fieldset ">
+    <div class="fc__score-threshold">
+
+        <div class="accept-threshold" style="width:<?= $score->getAcceptThreshold() ?>%;">
+            <span class="label"><?= ('Accept') ?></span>
+            0...<?= $score->getAcceptThreshold() ?>
+        </div>
+
+        <div class="review-threshold"
+             style="width:<?= ($score->getReviewThreshold() - $score->getAcceptThreshold()) ?>%;">
+            <span class="label"><?= ('Review') ?></span>
+            <?= $score->getAcceptThreshold() ?>...<?= $score->getReviewThreshold() ?>
+        </div>
+
+        <div class="reject-threshold" style="width:<?= (100 - $score->getReviewThreshold()) ?>%;">
+            <span class="label"><?= ('Reject') ?></span>
+            <?= $score->getReviewThreshold() ?>...100
+        </div>
+    </div>
+    <br><br>
+    <legend class="admin__legend">
+        <span><?= __('Checklist') ?></span>
+    </legend>
+
+    <div class="clearfix"></div>
+
+    <div class="fc__score-table">
+        <?php foreach ($rules as $rule): ?>
+            <div class="fc__score-table-row">
+                <div class="col-is-active">
+                    <?php if ($rule->isActive()): ?>
+                        <div class="fa fa-fw fa-toggle-on"></div>
+                    <?php else: ?>
+                        <div class="fa fa-fw fa-toggle-off"></div>
+                    <?php endif ?>
+                </div>
+
+                <div class="col-importance" data-importance="<?= $rule->getImportance() ?>">
+                    <?php for ($i = 1; $i <= 10; $i++): ?>
+                        <div data-value="<?= $i ?>"></div>
+                    <?php endfor ?>
+                </div>
+
+                <div class="col-label">
+                    <?php echo $rule->getLabel() ?>
+                </div>
+            </div>
+        <?php endforeach ?>
+    </div>
+
+</fieldset>

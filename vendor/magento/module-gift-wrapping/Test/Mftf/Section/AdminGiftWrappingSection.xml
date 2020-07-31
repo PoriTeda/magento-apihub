@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="AdminGiftWrappingSection">
+        <element name="giftWrappingDesign" type="text" selector="#design"/>
+        <element name="website" type="multiselect" selector="#website_ids"/>
+        <element name="price" type="text" selector="#base_price"/>
+        <element name="imageFileUpload" type="file" selector="#image"/>
+        <element name="saveButton" type="button" selector="#save" timeout="30"/>
+        <element name="deleteButton" type="button" selector="#delete" timeout="30"/>
+    </section>
+</sections>

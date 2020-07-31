@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+    <entity name="_staging" type="Stage">
+        <data key="update_name">Test Update Name</data>
+        <data key="start_date">02/9/2030</data>
+    </entity>
+    <entity name="_defaultStaging" type="Stage">
+        <data key="name" unique="suffix">Test Update Name</data>
+        <data key="description">Test Update Description</data>
+        <data key="entityName"  unique="suffix">New entity name</data>
+    </entity>
+    <entity name="S5UpdateNameStaging" type="Stage">
+        <data key="updateName">S5UpdateName</data>
+        <data key="updateDescription">S5UpdateName</data>
+        <data key="startDate">07/11/2020 7:00 AM</data>
+        <data key="endDate">07/13/2020 7:00 AM</data>
+        <data key="productPrice">14</data>
+        <data key="scheduleStartDate">Jul 11, 2020</data>
+        <data key="scheduleEndDate">Jul 13, 2020</data>
+        <data key="scheduleStartTime">7:00 AM</data>
+        <data key="scheduleEndTime">7:00 AM</data>
+        <data key="start">Start</data>
+        <data key="end">End</data>
+        <data key="viewedit">View/Edit</data>
+        <data key="preview">Preview</data>
+    </entity>
+    <entity name="S8UpdateNameStaging" type="Stage">
+        <data key="updateName">S8.7UpdateName</data>
+        <data key="updateDescription">S8.7Description</data>
+        <data key="startDate">07/10/2020 8:00 AM</data>
+        <data key="endDate">07/10/2020 10:00 AM</data>
+        <data key="productPrice">10</data>
+        <data key="scheduleStartDate">Jul 10, 2020</data>
+        <data key="scheduleEndDate">Jul 10, 2020</data>
+        <data key="scheduleStartTime">8:00 AM</data>
+        <data key="scheduleEndTime">10:00 AM</data>
+        <data key="start">Start</data>
+        <data key="end">End</data>
+        <data key="viewedit">View/Edit</data>
+        <data key="preview">Preview</data>
+    </entity>
+    <entity name="UpdateWithoutEnd" type="Stage">
+        <data key="updateName">UpdateWithoutEnd</data>
+        <data key="updateDescription">Description: Update Width Out End</data>
+        <data key="scheduleMinutesAhead">3</data>
+        <data key="endDate"> </data>
+        <data key="productPrice">12</data>
+        <data key="start">Start</data>
+        <data key="end"> </data>
+        <data key="viewedit">View/Edit</data>
+        <data key="preview">Preview</data>
+    </entity>
+</entities>

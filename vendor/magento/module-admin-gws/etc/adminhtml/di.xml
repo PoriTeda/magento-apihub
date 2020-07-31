@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\SalesRule\Block\Adminhtml\Promo\Quote\Edit\Tab\Labels" type="Magento\AdminGws\Block\Adminhtml\Promo\SalesRule\Edit\Tab\Labels" />
+    <type name="Magento\Catalog\Model\ResourceModel\Category">
+        <plugin name="admingws_category_resource_plugin" type="Magento\AdminGws\Model\Plugin\CategoryResource"/>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Action">
+        <plugin name="admingws_product_action_plugin" type="Magento\AdminGws\Model\Plugin\ProductAction"/>
+    </type>
+    <type name="Magento\Backend\Block\Widget\ContainerInterface">
+        <plugin name="admin_gws" type="Magento\AdminGws\Model\Block\Container\Plugin" />
+    </type>
+    <type name="Magento\Store\Api\WebsiteRepositoryInterface">
+        <plugin name="admin_gws_website_repository_plugin" type="Magento\AdminGws\Model\Plugin\WebsiteRepository" />
+    </type>
+    <type name="Magento\CatalogEvent\Block\Adminhtml\Catalog\Category\Edit\AddEventButton">
+        <plugin name="admin_gws_category_event_buttons_limitation_plugin" type="Magento\AdminGws\Model\Plugin\CategoryEventButton" />
+    </type>
+    <type name="Magento\User\Controller\Adminhtml\User\Role\SaveRole">
+        <plugin name="admin_gws_save_role" type="Magento\AdminGws\Model\Plugin\SaveRole" />
+    </type>
+    <type name="Magento\Store\Model\System\Store">
+        <arguments>
+            <argument name="storeManager" xsi:type="object">Magento\AdminGws\Model\Role\StoreManager</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\Websites">
+        <arguments>
+            <argument name="storeManager" xsi:type="object">Magento\AdminGws\Model\Role\StoreManager</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Ui\Component\Product\MassAction">
+        <plugin name="admin_gws_massaction" type="Magento\AdminGws\Ui\Component\Plugin\Catalog\Product\MassAction" />
+    </type>
+    <type name="Magento\Catalog\Block\Adminhtml\Product\Edit\Button\AddAttribute">
+        <plugin name="admin_gws_add_attribute" type="\Magento\AdminGws\Block\Adminhtml\Plugin\Catalog\Product\Edit\Button\AddAttribute" />
+    </type>
+    <type name="Magento\Catalog\Ui\Component\Listing\Columns\ProductActions">
+        <plugin name="admin_gws_product_link" type="Magento\AdminGws\Plugin\ProductLinkUpdater" />
+    </type>
+    <type name="Magento\Catalog\Controller\Adminhtml\Product\Edit">
+        <plugin name="admin_gws_store_switcher" type="Magento\AdminGws\Plugin\ProductStoreSwitcherUpdater" />
+    </type>
+</config>

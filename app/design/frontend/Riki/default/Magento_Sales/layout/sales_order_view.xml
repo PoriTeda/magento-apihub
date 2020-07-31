@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <!--<update handle="customer_account"/>-->
+    <!--<update handle="sales_order_item_renderers"/>-->
+    <!--<update handle="sales_order_item_price"/>-->
+    <!--<update handle="sales_order_info_links"/>-->
+    <body>
+        <referenceContainer name="page.main.title">
+            <referenceBlock name="order.status" remove="true"/>
+            <referenceBlock name="order.date" remove="true"/>
+            <!--<block class="Magento\Sales\Block\Order\Info" name="order.status" template="order/order_status.phtml"/>-->
+            <!--<block class="Magento\Sales\Block\Order\Info" name="order.date" template="order/order_date.phtml"/>-->
+        </referenceContainer>
+
+        <referenceContainer name="sales.order.info.buttons">
+            <block class="Magento\Sales\Block\Order\Info\Buttons\Rss" as="buttons.rss" name="sales.order.info.buttons.rss" cacheable="false"/>
+        </referenceContainer>
+
+        <referenceContainer name="content">
+            <referenceBlock name="sales.order.info.links" remove="true"/>
+            <block class="Magento\Sales\Block\Order\Info" name="order.info.text" before="-" template="Magento_Sales::order/info-text.phtml" />
+            <container name="order.actions.container" htmlTag="div" htmlClass="actions-toolbar order-actions-toolbar" after="order.info.text">
+                <block class="Magento\Sales\Block\Order\Info\Buttons" as="buttons" name="sales.order.info.buttons" cacheable="false"/>
+            </container>
+            <container htmlTag="div" htmlClass="order-detail-info">
+                <!--billing and shipping-->
+                <block class="Riki\Sales\Block\Order\Info" as="info" name="sales.order.info" before="-" template="Magento_Sales::order/info.phtml"/>
+                <!--payment-amount-->
+                <block class="Magento\Sales\Block\Order\Totals" name="order_totals" template="order/payment_total.phtml" before="sales.order.view">
+                    <arguments>
+                        <argument name="label_properties" xsi:type="string">colspan="4" class="mark"</argument>
+                        <argument name="value_properties" xsi:type="string">class="amount"</argument>
+                    </arguments>
+                    <block class="Magento\Tax\Block\Sales\Order\Tax" name="tax" template="order/tax.phtml"/>
+                </block>
+                <!--shipment info-->
+                <block class="Riki\Sales\Block\Order\PrintOrder\Shipment" name="riki_shipment_order_detail"
+                       template="Magento_Sales::order/shipment_info.phtml" before="sales.order.view"/>
+
+                <referenceBlock name="order_items" remove="true"/>
+                <referenceBlock name="order.comments" remove="true"/>
+            </container>
+
+            <block class="Magento\Sales\Block\Order\View" name="sales_order_info_buttons_back" template="Magento_Sales::order/info/back.phtml" cacheable="false" after="-"/>
+            <block class="Riki\Sales\Block\Order\Info\Buttons\Cancel" as="buttons.cancel" name="sales.order.info.buttons.cancel" cacheable="false" after="-"/>
+        </referenceContainer>
+
+        <referenceBlock name="page.main.title.sub" remove="true" />
+        <move element="page.main.title" destination="columns.top" before="-"/>
+        <move element="page.messages" destination="columns.top" after="page.main.title"/>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument name="title" translate="true" xsi:type="string">Order History</argument>
+            </action>
+        </referenceBlock>
+
+        <block class="Magento\Framework\View\Element\Template" name="additional.product.info" template="Magento_Theme::template.phtml"/>
+    </body>
+</page>

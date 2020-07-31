@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Layout\Pool">
+        <arguments>
+            <argument name="types" xsi:type="array">
+                <item name="riki_tmprma_tabs" xsi:type="array">
+                    <item name="class" xsi:type="string">Riki\TmpRma\Ui\Component\Layout\Tabs</item>
+                    <item name="template" xsi:type="string">templates/layout/tabs</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <preference for="Riki\TmpRma\Api\CommentRepositoryInterface" type="Riki\TmpRma\Model\Rma\CommentRepository" />
+    <type name="Riki\TmpRma\Model\ResourceModel\Rma">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Riki\TmpRma\Model\ResourceModel\Rma\Item">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Riki\TmpRma\Model\ResourceModel\Rma\Comment">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Magento\ScalableOms\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="riki_tmprma" xsi:type="string">riki_tmprma</item>
+                <item name="riki_tmprma_item" xsi:type="string">riki_tmprma_item</item>
+                <item name="riki_tmprma_comment" xsi:type="string">riki_tmprma_comment</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

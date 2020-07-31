@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="../../../../../../vendor/magento/magento2-functional-testing-framework/src/Magento/FunctionalTestingFramework/Test/etc/testSchema.xsd">
+    <test name="AdminRemoveDefaultVideoGiftCardProductTest" extends="AdminRemoveDefaultVideoSimpleProductTest">
+        <annotations>
+            <features value="GiftCard"/>
+            <stories value="Add/remove images and videos for all product types and category"/>
+            <title value="Admin should be able to remove default video from a Gift Card Product"/>
+            <description value="Admin should be able to remove default video from a Gift Card Product"/>
+            <severity value="MAJOR"/>
+            <testCaseId value="MC-202"/>
+            <group value="GiftCard"/>
+        </annotations>
+
+        <!-- Create a gift card -->
+        <!-- Replacing steps in base AdminRemoveDefaultVideoSimpleProductTest -->
+        <actionGroup ref="goToCreateProductPage" stepKey="goToCreateProductPage">
+            <argument name="product" value="GiftCard"/>
+        </actionGroup>
+        <actionGroup ref="fillProductNameAndSkuInProductForm" stepKey="fillMainProductForm">
+            <argument name="product" value="GiftCard"/>
+        </actionGroup>
+
+        <!-- Add additional gift card data -->
+        <selectOption selector="{{AdminProductFormSection.cardType}}" userInput="{{GiftCard.card_type}}" stepKey="selectGiftCardType" after="addProductVideo"/>
+        <actionGroup ref="addGiftCardAmount" stepKey="fillFirstGiftCardAmount" after="selectGiftCardType">
+            <argument name="giftCardAmount" value="GiftCard.amounts[0]"/>
+        </actionGroup>
+        <actionGroup ref="addGiftCardAmount" stepKey="fillSecondGiftCardAmount" after="fillFirstGiftCardAmount">
+            <argument name="giftCardAmount" value="GiftCard.amounts[1]"/>
+        </actionGroup>
+        <seeInField selector="{{AdminProductFormSection.cardAmount('1')}}" userInput="{{GiftCard.amounts[0]}}" stepKey="checkFirstCardAmountFilled" after="fillSecondGiftCardAmount"/>
+        <seeInField selector="{{AdminProductFormSection.cardAmount('2')}}" userInput="{{GiftCard.amounts[1]}}" stepKey="checkSecondCardAmountFilled" after="checkFirstCardAmountFilled"/>
+        <fillField selector="{{AdminProductFormSection.productQuantity}}" userInput="{{GiftCard.quantity}}" stepKey="fillGiftCardQuantity" before="saveProductForm"/>
+
+        <!-- Assert product in storefront product page -->
+        <actionGroup ref="AssertProductNameAndSkuInStorefrontProductPage" stepKey="AssertProductInStorefrontProductPage">
+            <argument name="product" value="GiftCard"/>
+        </actionGroup>
+    </test>
+</tests>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © 2016 Wyomind All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Ui/etc/ui_configuration.xsd">
+   
+    <dataSource name="sales_order_grid_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Wyomind\AdvancedInventory\Ui\Component\DataProvider\DataProvider</argument>
+            <argument name="name" xsi:type="string">sales_order_grid_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">entity_id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                </item>
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+    
+    <container name="listing_top">
+        
+        <filters name="listing_filters">
+            <filterSelect name="assigned_to" provider="${ $.parentName }">
+                <settings>
+                    <options class="Wyomind\AdvancedInventory\Model\ResourceModel\Sales\Grid\AssignationArray"/>
+                    <caption translate="true">Select...</caption>
+                    <label translate="true">Assigned to</label>
+                    <dataScope>assigned_to</dataScope>
+                    <imports>
+                        <link name="visible">ns = ${ $.ns }, componentType = column, index = ${ $.index }:visible</link>
+                    </imports>
+                </settings>
+            </filterSelect>
+        </filters>
+       
+    </container>
+    <columns name="sales_order_columns"> 
+        <column name="assigned_to" class="Wyomind\AdvancedInventory\Ui\Component\Listing\Column\AssignedTo">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="align" xsi:type="string">left</item>
+                    <item name="label" xsi:type="string" translate="true">Assigned to</item>
+                </item>
+            </argument>
+        </column>
+        
+        
+    </columns>
+</listing>

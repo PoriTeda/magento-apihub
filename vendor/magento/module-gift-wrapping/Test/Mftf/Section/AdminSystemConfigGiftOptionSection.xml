@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="AdminSystemConfigGiftOptionSection">
+        <element name="allowGiftMessagesOnOrderLevelCheckbox" type="checkbox" selector="#sales_gift_options_allow_order_inherit"/>
+        <element name="allowGiftMessagesForOrderItemsCheckbox" type="checkbox" selector="#sales_gift_options_allow_items_inherit"/>
+        <element name="allowGiftMessagesOnOrderLevel" type="select" selector="#sales_gift_options_allow_order"/>
+        <element name="allowGiftMessagesForOrderItems" type="select" selector="#sales_gift_options_allow_items"/>
+        <element name="allowGiftWrappingOnOrderLevel" type="select" selector="#sales_gift_options_wrapping_allow_order"/>
+        <element name="allowGiftWrappingForOrderItems" type="select" selector="#sales_gift_options_wrapping_allow_items"/>
+        <element name="allowPrintedCard" type="select" selector="#sales_gift_options_allow_printed_card"/>
+        <element name="allowGiftReceipt" type="select" selector="#sales_gift_options_allow_gift_receipt"/>
+        <element name="defaultPriceForPrintedCard" type="input" selector="#sales_gift_options_printed_card_price"/>
+    </section>
+</sections>

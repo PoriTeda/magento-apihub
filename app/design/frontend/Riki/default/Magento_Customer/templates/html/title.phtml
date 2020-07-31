@@ -1,0 +1,59 @@
+<?php /** @var \Riki\Customer\Block\Html\Title $block */ ?>
+
+<?php
+    $customerName = $block->getName();
+    $member = $block->checkMember();
+    $websiteAvailable = $block->getWebsiteList();
+    $memberList = explode(',',$member);
+    $shoshaCustomer = $block->isCedynaCustomer();
+?>
+<div class="page-title-wrapper-sub riki-tracking-panel" data-title="<?php echo __('My page'); ?>" >
+    <h2 class="page-title">
+        <?php if($block->getAction() == 'subscriptions_profile_edit' || $block->getAction() == 'subscriptions_profile_edit_payment_method'): ?>
+            <?php echo __('Subscription Course Change'); ?>
+        <?php elseif ($block->getAction() == 'subscriptions_profile_editHanpukai'): ?>
+            <?php echo __('Payment method edit'); ?>
+        <?php elseif ($block->getAction() == 'subscriptions_profile_confirmEditHanpukai'): ?>
+            <?php echo __('Payment method edit confirm'); ?>
+        <?php else: ?>
+            <?php echo $block->getTitle(); ?>
+            <?php if ($shoshaCustomer) : ?>
+                <span class="button-group-invoice">
+                    <a href="<?php echo $block->getUrl('cedyna_invoice/invoice/index') ?>" class="action primary riki-tracking-button"><span><?php echo __('CEDYNA CUSTOMER INVOICE') ?></span></a>
+                </span>
+            <?php else :?>
+                <span class="button-group">
+                    <?php if(!$websiteAvailable){?>
+                        <?php if($member &&  in_array(3,$memberList)) :?>
+                            <a target="_blank" href="<?php echo $block->getSystemConfig('customerksslink/kss_link_edit_customer/kss_nescafe_amb') ?>" class="action primary riki-tracking-button"><span><?php echo __('Nescafe Ambassador TOP') ?></span></a>
+                        <?php endif ;?>
+                    <?php if($member &&  in_array(15,$memberList)) :?>
+                            <a target="_blank" href="<?php echo $block->getSystemConfig('customerksslink/kss_link_edit_customer/kss_wellness_amb') ?>" class="action primary riki-tracking-button"><span><?php echo __('Wellness Ambassador TOP') ?></span></a>
+                        <?php endif ;?>
+                    <?php if($member &&  !in_array(3,$memberList) && !in_array(5,$memberList) && !in_array(6,$memberList) && !in_array(15,$memberList)) :?>
+                            <a target="_blank" href="<?php echo $block->getSystemConfig('customerksslink/kss_link_edit_customer/kss_about_my_page') ?>" class="action primary riki-tracking-button"><span><?php echo __('About My Page') ?></span></a>
+                            <a target="_blank"  href="<?php echo $block->getSystemConfig('customerksslink/kss_link_edit_customer/kss_subscription_page') ?>" class="action secondary riki-tracking-button"><span><?php echo __('Info Subscription') ?></span></a>
+                        <?php endif ;?>
+                    <?php } ?>
+                </span>
+            <?php endif; ?>
+        <?php endif; ?>
+    </h2>
+</div>
+<?php if($block->getAction() != 'subscriptions_profile_edit' && $block->getAction() != 'subscriptions_profile_editHanpukai' && $block->getAction() != 'subscriptions_profile_confirmEditHanpukai' && $block->getAction() != 'subscriptions_profile_edit_payment_method'): ?>
+<div class="button-group mobile riki-tracking-panel" data-title="<?php echo __('My page'); ?>">
+    <?php if(!$websiteAvailable){?>
+        <?php if($member &&  in_array(3,$memberList)) :?>
+            <a target="_blank"  href="<?php echo $block->getSystemConfig('customerksslink/kss_link_edit_customer/kss_nescafe_amb') ?>" class="action primary riki-tracking-button"><span><?php echo __('Nescafe Ambassador TOP') ?></span></a>
+        <?php endif ;?>
+        <?php if($member &&  in_array(15,$memberList)) :?>
+            <a target="_blank" href="<?php echo $block->getSystemConfig('customerksslink/kss_link_edit_customer/kss_wellness_amb') ?>" class="action primary riki-tracking-button"><span><?php echo __('Wellness Ambassador TOP') ?></span></a>
+        <?php endif ;?>
+        <?php if($member &&  !in_array(3,$memberList) && !in_array(5,$memberList) && !in_array(6,$memberList) && !in_array(15,$memberList)) :?>
+            <a target="_blank" href="<?php echo $block->getSystemConfig('customerksslink/kss_link_edit_customer/kss_about_my_page') ?>" class="action primary riki-tracking-button"><span><?php echo __('About My Page') ?></span></a>
+            <a target="_blank"  href="<?php echo $block->getSystemConfig('customerksslink/kss_link_edit_customer/kss_subscription_page') ?>" class="action secondary riki-tracking-button"><span><?php echo __('Info Subscription') ?></span></a>
+        <?php endif ;?>
+    <?php } ?>
+</div>
+<?php endif; ?>
+

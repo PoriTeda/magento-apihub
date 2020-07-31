@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="checkout_submit_all_after">
+        <observer name="authorization_timing" instance="Bluecom\Paygent\Observer\SaveAuthorizationTiming"/>
+    </event>
+    <event name="sales_order_invoice_save_after">
+        <observer name="after_invoice" instance="Bluecom\Paygent\Observer\AfterInvoice"/>
+    </event>
+    <event name="order_cancel_after">
+        <observer name="remove_after_cancel_order" instance="Bluecom\Paygent\Observer\OrderCancelAfter" />
+    </event>
+    <event name="after_assignation_success">
+        <observer name="paygent_authorize_after_asignation_success" instance="Bluecom\Paygent\Observer\AuthorizeAfterAssignationSuccess" />
+    </event>
+    <event name="sales_quote_payment_import_data_before">
+        <observer name="bluecom_paygent_set_option" instance="Bluecom\Paygent\Observer\SetOption" />
+    </event>
+    <event name="sales_model_service_quote_submit_failure">
+        <observer name="paygent_quote_submit_failure" instance="Bluecom\Paygent\Observer\RevertPaygentOptionData" />
+    </event>
+    <event name="preorder_convert_normal_after">
+        <observer name="bluecom_paygent_preorder_reauthorize" instance="Bluecom\Paygent\Observer\ReAuthorizePreOrder" />
+    </event>
+    <event name="paygent_update_order_after_authorize_success_after">
+        <observer name="paygent_update_order_after_authorize_success_update_profile" instance="Bluecom\Paygent\Observer\UpdateOrderProfileAfterAuthorizeSuccess" />
+    </event>
+</config>

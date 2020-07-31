@@ -1,0 +1,526 @@
+<div class="table table list" data-bind="foreach: { data: itemData, as: 'item' }">
+    <!-- Show address + delivery type -->
+    <div class="table block block-delivery-item" data-bind=" attr:{'index-item':$index,'delivery-type':item.info.code}">
+        <h4 data-bind="text: item.info.name + '(' +  item.info.code + ')'"></h4>
+
+        <div class="left">
+            <ul>
+                <li>
+                    <span class="label" data-bind="i18n: 'Current shipping address'"></span>
+                    <select data-bind="attr:{
+                        name: 'address[' + item.address_id + '][' + item.info.code + ']',
+                        id: 'head-address-' + item.address_id + '-' + item.info.code
+                        },
+                        enable: !$parent.isDisabledAll() && $parent.isAllowChangeAddress && !$parent.isStockPointProfile,
+                        options: $parent.customerAddressData,
+                        optionsText: 'name',
+                        optionsValue: 'address_id',
+                        value: item.address_id,
+                        event:{ change: $parent.selectAddress}"  class="can-create-new-address">
+                    </select>
+                    <!-- ko if: $parent.isDisabledAll() || !$parent.isAllowChangeAddress || $parent.isStockPointProfile -->
+                    <input type="hidden" data-bind="attr:{
+                        name: 'address[' + item.address_id + '][' + item.info.code + ']',
+                        id: 'head-address-' + item.address_id + '-' + item.info.code
+                        },
+                        value: item.address_id
+                        " />
+                    <!-- /ko-->
+                </li>
+
+                <li>
+                    <span class="label" data-bind="i18n: 'Delivery Type'"></span>
+                    <span data-bind="text: item.info.code"></span>
+                </li>
+
+                <li>
+                    <div class="w50 label" data-bind="i18n: 'Delivery Date'">
+                    </div>
+
+                    <div class="w50">
+                        <div style="position: relative">
+                            <!-- ko if: !$parent.isDisabledAll() && $parent.isAllowChangeNextDeliveryDate && $parent.getHanpukaiDeliveryDateAllow() && !$parent.isExistBackOrderChooseDD(item) -->
+                            <input data-bind="
+                            attr:{
+                                name: 'next_delivery[' + item.address_id  + '][' + item.info.code + ']',
+                                id: 'calendar_inputField_' + item.address_id + '_' + item.info.code,
+                                'address-id': item.address_id ,
+                                'delivery-type': item.info.code
+                            },
+                            value: item.info.next_delivery_date,
+                            enable: !$parent.isDisabledAll() && $parent.isAllowChangeNextDeliveryDate && $parent.getHanpukaiDeliveryDateAllow() && !$parent.isExistBackOrderChooseDD(item) && !$parent.isStockPointProfile,
+                            afterRender: $parent.showCalendar(item,$parent.frequency_unit,$parent.frequency_interval,$parent.next_delivery_date)"
+                                   data-validate="{'required-entry':true}" class="input-text current-delivery-date" type="text" readonly="readonly" />
+                            <!-- /ko -->
+                            <!-- ko if: $parent.isDisabledAll() || !$parent.isAllowChangeNextDeliveryDate || !$parent.getHanpukaiDeliveryDateAllow() || $parent.isExistBackOrderChooseDD(item) -->
+                            <input data-bind="
+                            attr:{
+                                name: 'next_delivery[' + item.address_id  + '][' + item.info.code + ']',
+                                id: 'calendar_inputField_' + item.address_id + '_' + item.info.code,
+                                'address-id': item.address_id ,
+                                'delivery-type': item.info.code
+                            },
+                            value: $parent.getNextDeliveryDate(item.info.next_delivery_date,$parent.next_delivery_date),
+                            enable: !$parent.isDisabledAll() && $parent.isAllowChangeNextDeliveryDate && $parent.getHanpukaiDeliveryDateAllow()"
+                                   data-validate="{'required-entry':true}" class="input-text" type="text" readonly="readonly" />
+                            <!-- /ko -->
+                        </div>
+
+                        <!-- ko if: $parent.isStockPointProfile -->
+                        <input data-bind="
+                                attr:{
+                                    name: 'next_delivery[' + item.address_id  + '][' + item.info.code + ']',
+                                    id: 'calendar_inputField_' + item.address_id + '_' + item.info.code,
+                                    'address-id': item.address_id ,
+                                    'delivery-type': item.info.code
+                                },
+                                value: item.info.next_delivery_date,
+                                enable: $parent.isStockPointProfile
+                               "
+                               data-validate="{'required-entry':true}" class="input-text current-delivery-date" type="hidden" readonly="readonly" />
+                        <!-- /ko -->
+
+                        <select data-bind="
+                            attr:{
+                               name: 'time_slot[' + item.address_id + '][' + item.info.code + ']',
+                               id: 'time_slot-' + item.address_id + '-' + item.info.code,
+                            },
+                            enable: !$parent.isDisabledAll() && $parent.isAllowChangeNextDeliveryDate && !$parent.isStockPointProfile,
+                            options: $parent.timeslotData,
+                            optionsText: 'label',
+                            optionsValue: 'value',
+                            value: item.info.timeslot_id,
+                            event:{
+                                change: $parent.selectTimeSlot
+                            }" data-validate="{required:true}">
+                        </select>
+
+                        <!-- ko if: !$parent.isStockPointProfile && $parent.isDayOfWeekAndIntervalUnitMonth() -->
+                            <span class="delivery-message" data-bind="text: $parent.getDeliveryMessage(item.info.code)"></span>
+                        <!-- /ko -->
+
+                        <!-- ko if: $parent.isStockPointProfile -->
+                            <input data-bind="
+                            attr:{
+                                   name: 'time_slot[' + item.address_id + '][' + item.info.code + ']',
+                                   id: 'time_slot-' + item.address_id + '-' + item.info.code,
+                                },
+                            value: item.info.timeslot_id" type="hidden" />
+                        <!-- /ko -->
+                        <div style="color:red;" class="message-change-delivery"></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="right" data-bind="html: item.info.address_html, style: { width:50 + '%' }">
+        </div>
+
+        <!-- Show list product -->
+        <!-- Detail -->
+        <table class="list-product">
+            <colgroup>
+                <col width="10%">
+                <col width="40%">
+                <col width="10%">
+                <col width="10%">
+                <col width="10%">
+                <col width="10%">
+                <col width="10%">
+            </colgroup>
+            <thead>
+            <th class="product-image" data-bind="i18n: 'Product image'"></th>
+            <th class="product-name" data-bind="i18n: 'Product name'"></th>
+            <th class="product-sku-code" data-bind="i18n: 'SKU code'"></th>
+            <th class="price" data-bind="i18n: 'Price'"></th>
+            <!--<th class="address" data-bind="i18n: 'Address'"></th>-->
+            <th class="qty" data-bind="i18n: 'Qty'"></th>
+            <th class="qty" data-bind="i18n: 'Unit'"></th>
+            <th class="order-status" data-bind="i18n: 'Order status'"></th>
+            <th class="stock-level" data-bind="i18n: 'Stock level'"></th>
+
+            <!-- ko if: $parents[1].profileStatus -->
+            <th class="action">
+                <span data-bind="i18n: 'Choose all'"></span>
+                <input type="checkbox" data-bind="event:{click: $parent.checkAllItems}">
+            </th>
+            <!-- /ko -->
+
+            </thead>
+
+            <tbody data-bind="foreach: { data: item.items, as: 'productcart_item' }">
+            <tr class="tr-product" data-id="productcart_item.productcart_data.cart_id" data-bind="attr: {id: 'product_cart_id_' + productcart_item.productcart_data.cart_id}">
+                <td data-bind="attr:{ 'data-th': 'Product Image' }" class="img-thumbnail-wrapper product-image" >
+                        <span>
+                            <img height="150" width="110"
+                                 data-bind="attr:{
+                                 alt: productcart_item.name ,
+                                 src: productcart_item.product_data.thumbnail
+                                 }" class="img-thumbnail" src=""  />
+                        </span>
+                    <input type="hidden" id="is_addition" data-bind="attr:{name: 'is_additional[' + productcart_item.productcart_data.cart_id + ']',value:productcart_item.productcart_data.is_addition}" />
+                </td>
+
+                <td class="product-name cart table-wrapper">
+                    <span data-bind="text: productcart_item.name"></span>
+
+                    <!-- ko if: $parents[1].messageAvaiable || $parents[1].giftAvaiable -->
+                    <a data-bind="
+                           attr:{
+                               id: 'a-action-gift-' + productcart_item.gw_id()
+                           },
+                           visible: !_.isUndefined(productcart_item.gw_data) ,
+                           event: {
+                                click: $parents[1].giftToggle
+                           }" class="action action-gift" style="cursor: pointer;">
+                        <span data-bind="i18n: 'Gift options'"></span>
+                    </a>
+
+
+                    <div data-bind="css:{
+                                'gift-content': true,
+                                '_active' : (productcart_item.has_gw || productcart_item.has_message) && productcart_item.gift_toggle()
+                            }">
+                        <div class="message-content" data-bind="if: productcart_item.has_message">
+                            <span data-bind="i18n: 'Message:'"></span>
+                            <span data-bind="text: productcart_item.gift_message_data" class="edit-message"></span>
+                        </div>
+
+
+                        <div data-bind="
+                            if: productcart_item.has_gw || $parents[1].giftAvaiable ,
+                            css:{
+                                'gift-wrapping': true,
+                                'has-message': productcart_item.has_message
+                            }">
+                            <div class="gift-options-title"
+                                 data-bind="i18n: 'Pick a paper of your choice (optional)',visible: !_.isUndefined(productcart_item.gw_data)" >
+                            </div>
+                            <div class="gift-options-content">
+                                <div class="gift-wrap-img-thumb">
+                                    <input data-bind="
+                                        attr:{
+                                            id: 'no-gift-' + productcart_item.item_id,
+                                            name: 'gift[' + productcart_item.productcart_data.shipping_address_id + '][' + productcart_item.item_id + ']'
+                                        },value: '0',checked: productcart_item.gw_id(),enable: !$parents[1].isDisabledAll()" type="radio"/>
+                                    <div data-bind="foreach: { data: productcart_item.gw_data, as: 'gift' }">
+                                        <label data-bind="
+                                        css:{
+                                            '_active': (productcart_item.gw_id() == gift.wrapping_id)
+                                        },
+                                        event:{
+                                            click: $parents[2].selectGiftOption
+                                        },
+                                        attr:{
+                                            'data-show-desc': 'desc-img-' + productcart_item.item_id + '-' + gift.wrapping_id,
+                                            'for': 'gift-' + 'productcart_item.item_id' + '-' + gift.wrapping_id,
+                                            'product-cart-item-id': productcart_item.item_id,
+                                            'data-disable': $parents[2].isDisabledAll()
+                                        }">
+                                            <!-- ko if: gift.image != '' && gift.image != null  -->
+                                            <img  data-bind="attr:{
+                                                src: MEDIA_URL + 'wrapping/' + gift.image,
+                                                alt: gift.gift_name,
+                                                title: gift.gift_name}">
+                                            <!-- /ko -->
+                                            <!-- ko if: gift.image == '' || gift.image == null -->
+                                                <span data-bind="css:{ 'no-image': true }">
+                                                </span>
+                                            <!-- /ko -->
+                                        </label>
+                                        <input data-bind="attr:{
+                                                type: 'radio',
+                                                id: 'gift-' + productcart_item.item_id + '-' + gift.wrapping_id,
+                                                name: 'gift[' + productcart_item.productcart_data.shipping_address_id + '][' + productcart_item.item_id + ']'
+                                            },checked: productcart_item.gw_id,value: gift.wrapping_id,enable: !$parents[2].isDisabledAll()"/>
+                                    </div>
+                                </div>
+
+                                <ul class="gift-wrapping-list" data-bind="foreach: { data: productcart_item.gw_data, as: 'gift' }">
+                                    <li data-bind="
+                                        attr:{
+                                            id: 'desc-img-' + productcart_item.item_id + '-' + gift.wrapping_id,
+                                            'product-cart-item-id': productcart_item.item_id
+                                        },
+                                        css:{
+                                            'gift-wrapping-item': true,
+                                            '_active': productcart_item.gw_id() == gift.wrapping_id
+                                        }">
+                                        <div class="gift-wrapping-preview">
+                                                    <span>
+                                                        <!-- ko if: gift.image != '' && gift.image != null  -->
+                                                                <img  data-bind="attr:{
+                                                                src: MEDIA_URL + 'wrapping/' + gift.image,
+                                                                alt: gift.gift_name,
+                                                                title: gift.gift_name}">
+                                                        <!-- /ko -->
+                                                        <!-- ko if: gift.image == '' -->
+                                                                <span data-bind="css:{ 'no-image': true }">
+                                                                </span>
+                                                        <!-- /ko -->
+                                                    </span>
+                                        </div>
+                                        <div class="gift-wrapping-title">
+                                                <span data-bind="text: gift.gift_name" class="gift-wrapping-name" >
+                                                </span>
+                                                <span class="regular-price" data-label="Price">
+                                                <span class="price" data-bind="text: $parents[2].getPriceFormatted(gift.price_incl_tax)">
+                                                </span>
+                                                </span>
+                                            <button data-bind="
+                                                attr:{
+                                                    'data-remove-gift-wrap': 'desc-img-' + productcart_item.item_id + '-' + gift.wrapping_id,
+                                                    'data-no-gift': 'no-gift-' + productcart_item.item_id,
+                                                    'product-cart-item-id': productcart_item.item_id
+                                                },
+                                                event:{
+                                                    click: $parents[2].removeGiftOption
+                                                },visible: !$parents[2].isDisabledAll()" type="button" class="action action-remove">
+                                                <span data-bind="i18n: 'Remove'"></span>
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+
+                    <!-- ko if:productcart_item.allow_seasonal_skip == 1 -->
+                    <div class="seasonal-skip">
+                        <!-- ko if:productcart_item.seasonal_skip_optional == 1 -->
+                        <!-- ko if: $parents[1].getStrToTime(productcart_item.productcart_data.delivery_date) > $parents[1].getStrToTime(productcart_item.allow_skip_to) -->
+                        <div>
+                            <span data-bind="i18n: '* This product will be available for a certain period of rest.'"></span>
+                            <span data-bind="text:productcart_item.skip_from"></span> ~ <span data-bind="text:productcart_item.skip_to"></span>
+                            <span data-bind="i18n:'You can rest for a while.'"></span>
+                        </div>
+                                    <span class="tag">
+                                        <span data-bind="i18n:'It is possible to rest for a certain period'"></span>
+                                    </span>
+                        <!-- /ko -->
+                        <!-- ko if: $parents[1].getStrToTime(productcart_item.productcart_data.delivery_date) <= $parents[1].getStrToTime(productcart_item.allow_skip_to) -->
+                                    <span class="tag">
+                                        <span data-bind="i18n:'It is possible to rest for a certain period'"></span>
+                                    </span>
+
+                        <input type="checkbox"
+                               data-bind="
+                                               checked: productcart_item.is_skip,
+                                               value: productcart_item.is_skip,
+                                               click: $parents[1].checkSeasonalSkip(productcart_item.item_id),
+                                               attr:{
+                                                    'id': 'checkbox-seasonal-skip-item-' + productcart_item.item_id,
+                                                    name: 'is_skip_product[' + productcart_item.productcart_data.cart_id + ']' ,
+                                               }"
+                                />
+                        <input type="hidden" data-bind="
+                                    attr:{
+                                    name: 'is_skip_productcat[' + productcart_item.productcart_data.cart_id + ']',
+                                    value: productcart_item.is_skip(),
+                                    id: 'is_skip_product_'+ productcart_item.productcart_data.cart_id
+                                    }" >
+
+                        <div class="date-from"
+                             data-bind="
+                                         attr:{id: 'calendar_block_from_item_' + productcart_item.item_id},
+                                         visible: !productcart_item.is_skip(),art
+                                    ">
+                            <label data-bind="
+                                               i18n: 'Skip from',
+                                               attr:{
+                                                    'for': 'checkbox-seasonal-skip-item-' + productcart_item.item_id
+                                               }"></label>
+                            <input class="input-text from_calendar"
+                                   type="text"
+                                   readonly="readonly"
+                                   data-bind="
+                                               dateTimePickerFromTo: true,
+                                               skip_from: productcart_item.allow_skip_from,
+                                               skip_to: productcart_item.allow_skip_to,
+                                               attr:{
+                                                    id: 'calendar_from_item_' + productcart_item.item_id,
+                                                    name: 'skip_from_productcat[' + productcart_item.productcart_data.cart_id + ']' ,
+                                                    'data-to-calendar': 'calendar_to_item_' + productcart_item.item_id,
+                                                    'item_id': productcart_item.item_id
+                                               },
+                                               value: productcart_item.skip_from
+                                               "/>
+                        </div>
+                        <div class="date-to"
+                             data-bind="
+                                         attr:{id: 'calendar_block_to_item_' + productcart_item.item_id},
+                                         visible: !productcart_item.is_skip()
+                                         ">
+                            <label data-bind="i18n: 'to'"></label>
+                            <input class="input-text to_calendar"
+                                   type="text"
+                                   readonly="readonly"
+                                   data-bind="
+                                               dateTimePickerFromTo: true,
+                                               skip_from: productcart_item.allow_skip_from,
+                                               skip_to: productcart_item.allow_skip_to,
+                                               attr:{
+                                                    id: 'calendar_to_item_' + productcart_item.item_id,
+                                                    name: 'skip_to_productcat[' + productcart_item.productcart_data.cart_id + ']',
+                                                    'item_id': productcart_item.item_id
+                                               },
+                                               value: productcart_item.skip_to
+                                               "/>
+                        </div>
+                        <div class="date-from-text"
+                             data-bind="
+                                         attr:{id: 'text_block_from_item_' + productcart_item.item_id},
+                                         visible: productcart_item.is_skip()
+                                         ">
+                            <span class="text" data-bind="text: productcart_item.skip_from"></span>
+                            <span> ~ </span>
+                        </div>
+                        <div class="date-to-text"
+                             data-bind="
+                                        attr:{id: 'text_block_to_item_' + productcart_item.item_id},
+                                        visible: productcart_item.is_skip()
+                                        ">
+                            <span class="text" data-bind="text: productcart_item.skip_to"></span>
+                            <span data-bind="i18n: '[During the holiday]'"></span>
+                        </div>
+                        <!-- /ko -->
+                        <!-- /ko -->
+                        <!-- ko if: productcart_item.seasonal_skip_optional == 0 -->
+                        <!-- ko if: $parents[1].getStrToTime(productcart_item.productcart_data.delivery_date) > $parents[1].getStrToTime(productcart_item.allow_skip_to) -->
+                        <div>
+                            <span data-bind="i18n: '* This product is a seasonal item.'"></span>
+                            <span data-bind="text:productcart_item.skip_from"></span> ~ <span data-bind="text:productcart_item.skip_to"></span>
+                            <span data-bind="i18n:'The delivery will be skipped.'"></span>
+                            <span data-bind="text:$parents[1].getNextDate(productcart_item.skip_to())"></span>
+                            <span data-bind="i18n:'Delivery will be restarted from'"></span>
+                        </div>
+                                    <span class="tag">
+                                        <span data-bind="i18n:'Seasonal limited'"></span>
+                                    </span>
+                        <!-- /ko -->
+                        <!-- ko if: $parents[1].getStrToTime(productcart_item.productcart_data.delivery_date) <= $parents[1].getStrToTime(productcart_item.allow_skip_to) -->
+                        <div>
+                            <span data-bind="i18n: '[During the holiday]'"></span>
+                            <span data-bind="i18n: '* This product is a seasonal item.'"></span>
+                            <span data-bind="text:productcart_item.skip_from"></span> ~ <span data-bind="text:productcart_item.skip_to"></span>
+                            <span data-bind="i18n:'The delivery will be skipped.'"></span>
+                            <span data-bind="text:$parents[1].getNextDate(productcart_item.skip_to())"></span>
+                            <span data-bind="i18n:'Delivery will be restarted from'"></span>
+                        </div>
+                            <span class="tag">
+                                <span data-bind="i18n:'Seasonal limited'"></span>
+                            </span>
+                        <!-- /ko -->
+                        <!-- /ko -->
+
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if: productcart_item.productcart_data.is_spot == 1 -->
+                            <span class="tag">
+                                <span data-bind="i18n:'Outside the course'"></span>
+                            </span>
+                    <!-- /ko -->
+
+                </td>
+
+                <td class="product-sku-code" data-bind="attr:{ 'data-th': 'SKU code' }">
+                    <span data-bind="text: productcart_item.product_data.sku"></span>
+                </td>
+
+                <td class="price" data-bind="attr:{ 'data-th': 'Price' }">
+                    <span data-bind="text: $parents[1].getPriceFormatted(productcart_item.amount)"></span>
+                </td>
+
+                <td class="qty" data-bind="attr:{ 'data-th': 'Qty', 'data-productcartid': productcart_item.item_id }">
+                    <!-- This attribute is center -->
+                    <!-- ko if: !productcart_item.is_free_gift -->
+                        <input data-bind="attr:{
+                                    name: 'productcat_id[' + item.address_id  + '][' + item.info.code + '][]',
+                                    value: productcart_item.item_id
+                                }" type="hidden">
+                    <!-- /ko -->
+                    <!-- ko if: productcart_item.unit_case == 'CS' -->
+                    <input
+                            data-bind="attr:{
+                                   'data-validate': '{\'required-entry\':true ,\'validate-greater-than-zero\': true, \'validate-item-quantity\': {\'minAllowed\': ' + $parents[1].minimumOrderQty + '}}',
+                                   id:  'product_cart_id_case_' + productcart_item.productcart_data.cart_id,
+                                   productcartid: productcart_item.productcart_data.cart_id,
+                                   unitqty: productcart_item.unit_qty ,
+                                   name: 'product_qty_case[' +  productcart_item.productcart_data.cart_id + ']',
+                                   value:  $parents[1].getFinalQty(productcart_item.qty,productcart_item.unit_qty,productcart_item.unit_case),
+                                   readonly: $parents[1].isDisabledAll() || !$parents[1].isAllowChangeQty || productcart_item.is_free_gift
+                                },
+                                event:{
+                                    change: $parents[1].changeProductQtyCase
+                                }"
+                            type="text"
+                            class="qty_case"/>
+                    <input type="hidden"
+                           data-bind="attr:{
+                                   id:  'product_unit_qty_' + productcart_item.productcart_data.cart_id,
+                                   value : productcart_item.unit_qty ,
+                                   name: 'product_unit_qty[' +  productcart_item.productcart_data.cart_id + ']',
+                                }"
+                           class="unit_qty"/>
+                    <!-- /ko -->
+                    <!-- ko if: productcart_item.unit_case != 'CS' -->
+                    <input
+                            data-bind="attr:{
+                                    'data-validate': '{\'required-entry\':true ,\'validate-greater-than-zero\': true, \'validate-item-quantity\': {\'minAllowed\': ' + $parents[1].minimumOrderQty + '}}',
+                                   id:  'product_cart_id_' + productcart_item.productcart_data.cart_id,
+                                   productcartid: productcart_item.productcart_data.cart_id,
+                                   unitqty: productcart_item.unit_qty ,
+                                   name: 'product_qty[' +  productcart_item.productcart_data.cart_id + ']',
+                                   value:  $parents[1].getFinalQty(productcart_item.qty,productcart_item.unit_qty,productcart_item.unit_case),
+                                   readonly: $parents[1].isDisabledAll() || !$parents[1].isAllowChangeQty || productcart_item.is_free_gift,
+                                   disabled: productcart_item.is_free_gift
+                                },
+                                event:{
+                                    change: $parents[1].changeProductQty
+                                }"
+                            type="text"
+                            class="qty_case"/>
+                    <!-- /ko -->
+
+                    <p data-bind="text: productcart_item.product_data.stock_message"></p>
+                </td>
+
+                <td data-bind="attr:{ 'data-th': 'Unit'}">
+                        <span data-bind="
+                            text: productcart_item.unit_case + '(' + productcart_item.unit_qty  +  ' ' + $parents[1].translate('EA') + ' ' + ')',
+                            visible: productcart_item.unit_case == 'CS' "></span>
+                    <span data-bind="text: productcart_item.unit_case,visible: productcart_item.unit_case == 'EA'"></span>
+                    <span data-bind="i18n: 'EA', visible: productcart_item.unit_case == 'N/A'"></span>
+                </td>
+
+                <td data-bind="attr:{ 'data-th': 'Order status'}">
+                    <span data-bind="text:$parents[1].getOrderStatus(productcart_item.productcart_data.product_id)"></span>
+                </td>
+
+                <td data-bind="attr:{ 'data-th': 'Stock level'}">
+                    <span data-bind="text:$parents[1].getStockLevel(productcart_item.productcart_data.product_id)"></span>
+                </td>
+
+                <td class="action" data-bind="attr:{ 'data-th': 'Action' }">
+
+                    <!-- show input checkbox if profile is disengaged and not free gift  -->
+                    <!-- ko if: !productcart_item.is_free_gift && $parents[1].profileStatus  -->
+                    <input type="checkbox"
+                           class="delete-product-cart-checkbox" name="deleteProduct[]"
+                           data-bind="
+                               value:productcart_item.productcart_data.cart_id,
+                               visible: (!$parents[1].isDisabledAll() && $parents[1].isAllowChangeProduct && $parents[1].profileStatus ) || ( $parents[1].wasDisengaged )
+                           "
+                    />
+                    <!-- /ko -->
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+
+    </div>
+</div>

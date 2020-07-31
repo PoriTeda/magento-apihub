@@ -1,0 +1,50 @@
+<div id="dialog-form" class="no-display" title="To print a receipt">
+    <span data-bind="i18n: 'Please select one option below'"></span>
+    <form data-role="print"
+          method="post"
+            id="print-order-form">
+        <fieldset>
+            <div class="name field" data-bind="if: printName[3]" >
+                <input type="radio"
+                       name="print-order-name"
+                       class="radio"
+                       value="3"
+                       id="name" checked/>
+                <label for="name" data-bind="text: printName[3]" ></label>
+            </div>
+            <div class="ambname-lastname-firstname field" data-bind="if: printName[4]" data-validate="require">
+                <input type="radio"
+                       name="print-order-name"
+                       class="radio"
+                       value="4"
+                       id="ambname-lastname-firstname"/>
+                <label for="ambname-lastname-firstname" data-bind="text: printName[4]" ></label>
+            </div>
+            <div class="ambname field" data-validate="require" data-bind="if: printName[5]">
+                <input type="radio"
+                       name="print-order-name"
+                       class="radio"
+                       value="5"
+                       id="ambname"/>
+                <label for="ambname" data-bind="text: printName[5]" ></label>
+            </div>
+            <div class="ambname-deptname-nameperson field" data-bind="if: printName[6]" data-validate="require">
+                <input type="radio"
+                       name="print-order-name"
+                       class="radio"
+                       value="6"
+                       id="ambname-depttname-nameperson"/>
+                <label for="ambname-depttname-nameperson" data-bind="text: printName[6]" ></label>
+            </div>
+            <div class="ambname-nameperson field" data-validate="require" data-bind="if: printName[7]">
+                <input type="radio"
+                       name="print-order-name"
+                       class="radio"
+                       value="7"
+                       id="ambname-nameperson"/>
+                <label for="ambname-nameperson" data-bind="text: printName[7]" ></label>
+            </div>
+        </fieldset>
+    </form>
+</div>
+

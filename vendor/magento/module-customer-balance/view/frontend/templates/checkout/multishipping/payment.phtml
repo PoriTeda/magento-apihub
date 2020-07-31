@@ -1,0 +1,31 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php if ($block->isAllowed()): ?>
+<div class="checkout multishipping payment customerbalance" id="customerbalance-block">
+    <input type="hidden" name="payment[use_customer_balance]" value="0"/>
+
+    <div class="field choice payment">
+        <input type="checkbox" class="checkbox" name="payment[use_customer_balance]" value="1"
+               id="use-customer-balance"
+               data-mage-init='{"checkoutBalance":{
+                   "amountSubstracted":"<?= /* @noEscape */ $block->isCustomerBalanceUsed() ?>",
+                   "usedAmount":"<?= (float)$block->getQuote()->getBaseCustomerBalAmountUsed() ?>",
+                   "balance":"<?= (float)$block->getBalance() ?>"
+               }}'
+               <?= ($block->isCustomerBalanceUsed() ? 'checked' : '') ?>
+        />
+
+        <?php $balance = $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($block->getBalance()); ?>
+        <label for="use-customer-balance" class="label">
+            <span><?= /* @escapeNotVerified */ __('Use Store Credit (%1 available)', $balance) ?></span>
+        </label>
+    </div>
+</div>
+<?php endif; ?>

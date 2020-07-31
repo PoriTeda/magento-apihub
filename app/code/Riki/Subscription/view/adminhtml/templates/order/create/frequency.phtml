@@ -1,0 +1,26 @@
+<?php
+$frequencies = $block->getFrequency();
+$frequencyId = $block->getFrequencyId();
+$isHanpukai = $block->isHanpukai();
+$frequencySelected = $block->getFrequencySelected();
+if($frequencySelected){
+    $frequencyId = $frequencySelected;
+}
+
+?>
+<?php
+if($isHanpukai){
+    foreach ($frequencies as $id => $frequency){
+        echo __("Frequency").": ".$frequency;
+        echo '<input type="hidden" name="frequency_course" value="'.$id.'" id="frequency_course"/>';
+    }
+}else{
+?>
+<select name="frequency_course" class="required-entry admin__control-select" id="frequency_course">
+    <option value=""><?php echo __("Select a frequency") ?></option>
+    <?php foreach ($frequencies as $id=>$frequency) : ?>
+        <option value="<?php echo $id ?>" <?php echo $id == $frequencyId ? 'selected' : '' ?>><?php echo $frequency ?></option>
+    }
+    <?php endforeach; ?>
+</select>
+<?php } ?>

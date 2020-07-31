@@ -1,0 +1,166 @@
+
+<?php
+/** @var Riki\Sales\Helper\CheckRoleViewOnly $checkViewOnlyHelper */
+$checkViewOnlyHelper = $this->helper('Riki\Sales\Helper\CheckRoleViewOnly');
+
+$places = $block->modelPos->getPlaces();
+$assigned_to = explode(',', $block->order->getAssignedTo());
+$first_pos_assigned = array_shift($assigned_to);
+if ($block->modelAssignation->getAssignationRequired($block->orderId)):
+//$disabled = (Mage::helper('advancedinventory')->getAllowedOrder($order)) ? (Mage::getStoreConfig("advancedinventory/setting/multiple_assignation_enabled")) ? "" : "disabled" : "disabled"; 
+    ?>
+
+
+    <?php if (!$block->helperAssignation->isUpdatable($block->order->getStatus())): ?>
+        <div class="notification-global"><?php echo __("The stock assignation can't be updated due to the order's status.") ?></div>
+    <?php endif; ?>
+
+    <?php if ($block->getRequest()->getParam("isAjax")): ?>
+        <div class='close' onclick='InventoryManager.closePopup()'>✖</div>
+    <?php endif; ?>
+    <div class='ai-stock-inner' style="overflow-y:auto;height:400px">
+        <table  cellpadding='0' cellspacing='0' style='width:300px;'>
+            <thead>
+                <tr class='headings'><th style='text-align:left;' width='250'><?php echo __("Product name"); ?></th>
+                    <th width='50'><?php echo __("Qty"); ?> </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $js = null;
+                foreach ($block->modelAssignation->getAssignationByOrderId($block->orderId)->toArray()['items'] as $item) :
+                    ?>
+
+
+                    <tr qty='<?php echo $item["qty_ordered"] ?>' id='product_<?php echo $item["product_id"] ?> '>
+                        <td style='text-align:left; overflow:ellipsis;' title="<?php echo $item["name"] . " [ " . $item["name"] . " ]"; ?>"><?php echo $item["name"]; ?></td>
+                        <td  align='right' class=''><?php echo (int) $item["qty_to_assign"] ?></td>
+                    </tr>
+                <?php endforeach; ?>
+
+            </tbody>
+        </table>
+        <form id='ai-scroller'>
+            <table  cellpadding='0' cellspacing='0'>
+                <thead>
+                    <tr class='headings'>
+
+                        <?php $k = 0; ?>
+                        <?php foreach ($places as $place) : ?>
+                            <?php $display = ($block->permissions->isAllowed($place->getPlaceId())) ? '' : 'none'; ?>
+                            <th  style="white-space:nowrap; display:<?php echo $display ?>" colspan='2' class='double-border' title='<?php echo $place->getName() ?>'>
+                                <?php if (!$block->helperCore->getStoreConfig("advancedinventory/settings/multiple_assignation_enabled")): ?>
+
+                                    <?php
+                                    $checked = null;
+
+                                    ($first_pos_assigned == $place->getPlaceId()) ? $checked = "checked='checked'" : $checked = null;
+                                    ?>
+                                    <?php if ($block->helperAssignation->isUpdatable($block->order->getStatus())): ?>
+                                        <input id='radio_<?php echo $place->getPlaceId(); ?>' type='radio' <?php echo $checked; ?> class="assigned_to" name='assigned_to' value='<?php echo $k; ?>'/> 
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                                <?php echo $place->getStoreCode() ?> </th>
+                            <?php $k++; ?>
+                        <?php endforeach; ?>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $js = null;
+                    foreach ($block->modelAssignation->getAssignationByOrderId($block->orderId)->toArray()['items'] as $item) :
+                        ?>
+
+                        <tr qty='<?php echo $item["qty_to_assign"] ?>' id='product_<?php echo $item["product_id"] ?>' item_id="<?php echo $item["item_id"]; ?>">
+                    <input type='hidden'  value='<?php echo $item["qty_to_assign"] ?>'  name='inventory[items][<?php echo $item["item_id"] ?>][qty_to_assign]' />
+                    <input type='hidden'  value='<?php echo $item["product_id"] ?>'  name='inventory[items][<?php echo $item["item_id"] ?>][product_id]' />
+
+
+                    <?php
+                    $disabled = (!$block->helperCore->getStoreConfig("advancedinventory/settings/multiple_assignation_enabled")) ? 'disabled="disabled"' : null;
+
+                    foreach ($places as $place) :
+                        $display = ($block->permissions->isAllowed($place->getPlaceId())) ? '' : 'none';
+                        $stock = $block->modelStock->getStockSettings($item["product_id"], $place->getId());
+
+                        if ($stock->getMultistockEnabled()) :
+
+                            if ($stock->getManagedAtProductLevel() && $stock->getManagedAtStockLevel()) :
+                                ?>
+
+                                <?php $class = ($stock->getBackorderableAtStockLevel()) ? "backorder" : (($stock->getQuantityInStock() > 0) ? "in_stock" : "out_of_stock"); ?>
+
+                                <td style="display:<?php echo $display ?>" align='center' width='35' class='<?php echo $class; ?>'><?php echo $block->helperData->qtyFormat($stock->getQuantityInStock(), $stock->getIsQtyDecimal()) ?></td>
+                            <?php else: ?>
+                                <td style="display:<?php echo $display ?>" align='center' width='35' class='multistock_disabled'><?php echo __("X") ?></td>
+                            <?php
+                            endif;
+
+                            $assignation = $block->modelAssignation->getAssignationByItemIdAndPlaceId($item["item_id"], $place->getId());
+                            $qty = $block->helperData->qtyFormat($assignation["qty_assigned"] - $assignation["qty_returned"], $stock->getIsQtyDecimal());
+                            $valid = ($assignation["qty_assigned"]) ? 'valid' : null;
+                            ?>
+
+                            <td  style="display:<?php echo $display ?>"width='35' class='double-border'>
+                                <input type='text'  class='keydown <?php echo $valid ?>' <?php echo $disabled ?> onchange='InventoryManager.updateRemainingStock(this)'  value='<?php echo $qty ?>'  name='inventory[items][<?php echo $item["item_id"] ?>][pos][<?php echo $place->getId() ?>][qty_assigned]'  id='inventory_<?php echo $item["item_id"] ?>_<?php echo $place->getId() ?>' />
+                                <input type='hidden'  value='<?php echo $assignation['id'] ?>'  name='inventory[items][<?php echo $item["item_id"] ?>][pos][<?php echo $place->getId() ?>][assignation_id]' />
+                                <input type='hidden'  value='<?php echo $qty ?>'/>
+                                <input type='hidden'  value='<?php echo ($stock->getQuantityInStock() + $qty) ?>' name='inventory[items][<?php echo $item["item_id"] ?>][pos][<?php echo $place->getId() ?>][qty_maximum]'/>
+                                <input type='hidden'  value='<?php echo $qty ?>'  name='inventory[items][<?php echo $item["item_id"] ?>][pos][<?php echo $place->getId() ?>][qty_original]'/>
+                                <input type='hidden'  value='<?php echo $stock->getQuantityInStock() ?>'  name='inventory[items][<?php echo $item["item_id"] ?>][pos][<?php echo $place->getId() ?>][quantity_in_stock]'/>
+
+                            </td>
+                        <?php else: ?>
+
+                            <td style="display:<?php echo $display ?>" width='70' colspan='2' class='double-border'>-</td>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                    </tr>
+                <?php endforeach; ?>
+
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+
+
+
+    <div style='clear:both'></div>
+    <ul>
+        <li class='in_stock'><?php echo __("In stock"); ?> </li>
+        <li class='out_of_stock'><?php echo __("Out of stock"); ?> </li>
+        <li class='backorder'><?php echo __("Backorders"); ?></li>
+        <li class='not_managed'><?php echo __("X") . " " . __("Qty not managed"); ?></li>
+        <li class=''><?php echo __("-") . " " . __("Stock not managed"); ?> </li>
+    </ul>
+    <?php if ($block->helperAssignation->isUpdatable($block->order->getStatus())): ?>
+
+        <?php if (!$checkViewOnlyHelper->checkViewShipmentOnly($checkViewOnlyHelper::ORDER_VIEW_ONLY)): ?>
+            <button style='float:right' id='assignation_button' class='action-scalable primary' onclick="InventoryManager.updateAssignation('<?php echo $block->getUrl("advancedinventory/assignation/update", ["entity_id" => $block->orderId]); ?>', '<?php echo $block->orderId; ?>')"><?php echo __("Save") ?></button>
+            <?php //if ($first_pos_assigned == '0') : ?>
+            <button style='float:right; margin-right:10px' id='automatic_assignation_button' class='action-scalable primary' onclick="InventoryManager.autoUpdateAssignation('<?php echo $block->getUrl("advancedinventory/assignation/run", ["entity_id" => $block->orderId]); ?>', '<?php echo $block->orderId; ?>')"><?php echo __("Run automatic assignation") ?></button>
+            <?php //else: ?>
+            <button style='float:right; margin-right:10px' id='clear_all_button' class='action-scalable primary' onclick="InventoryManager.clearAll()"><?php echo __("Reset") ?></button>
+
+            <?php //endif; ?>
+        <?php endif;//end if check view only ?>
+
+    <?php endif; ?>
+
+    <script type='text/javascript'>
+    <?php
+    if (!$block->helperCore->getStoreConfig("advancedinventory/settings/multiple_assignation_enabled")) {
+        echo "InventoryManager.canSave=true;\n";
+    }
+    ?>
+        require(["jquery", "mage/mage"], function ($) {
+            $(function () {
+                InventoryManager.validateStockData();
+            })
+        })
+    </script>
+<?php else: ?>
+    <?php echo __("No assignation required"); ?>
+<?php endif; ?>

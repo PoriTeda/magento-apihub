@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Mview/etc/mview.xsd">
+    <view id="profile_simulator" class="Riki\Subscription\Model\Indexer\Profile" group="indexer">
+        <subscriptions>
+            <table name="subscription_profile" entity_column="profile_id" />
+            <table name="subscription_profile_product_cart" entity_column="profile_id" />
+        </subscriptions>
+    </view>
+    <view id="profile_simulator_catalogrule" class="Riki\Subscription\Model\Indexer\CatalogRule" group="indexer">
+        <subscriptions>
+            <table name="catalogrule" entity_column="rule_id" />
+        </subscriptions>
+    </view>
+    <view id="profile_simulator_cartrule" class="Riki\Subscription\Model\Indexer\CartRule" group="indexer">
+        <subscriptions>
+            <table name="salesrule" entity_column="rule_id" />
+        </subscriptions>
+    </view>
+</config>

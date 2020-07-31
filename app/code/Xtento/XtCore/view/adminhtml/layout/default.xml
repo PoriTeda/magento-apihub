@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Xtento_XtCore::css/base_admin.min.css"/>
+    </head>
+</page>
+<!--
+/**
+ * Product:       Xtento_XtCore (2.1.0)
+ * ID:            %!uniqueid!%
+ * Packaged:      %!packaged!%
+ * Last Modified: 2017-08-16T08:52:13+00:00
+ * File:          app/code/Xtento/XtCore/view/adminhtml/layout/default.xml
+ * Copyright:     Copyright (c) 2017 XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

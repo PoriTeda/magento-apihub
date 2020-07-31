@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="backend_block_widget_grid_prepare_grid_before">
+        <observer name="Riki_Sales_Prepare_Grid_Before" instance="Riki\Sales\Observer\AdminGridPrepareBefore" />
+    </event>
+    <event name="sales_order_save_after">
+        <observer name="after_save_order_admin" instance="Riki\Customer\Observer\CreateCustomerAPI" />
+    </event>
+    <event name="checkout_submit_all_after">
+        <observer name="riki_sales_checkout_submit_after" instance="Riki\Sales\Observer\CheckoutSubmitAllAfter" />
+    </event>
+    <event name="adminhtml_sales_order_create_process_data">
+        <observer name="riki_sales_order_create_process_data" instance="Riki\Sales\Observer\AdminOrderCreateProcessData" />
+    </event>
+    <event name="adminhtml_sales_order_create_process_data_before">
+        <observer name="riki_sales_validate_session_unique_key" instance="Riki\Sales\Observer\ValidateSessionUniqueKey" />
+        <observer name="riki_sales_order_process_data_before" instance="Riki\Sales\Observer\AdminOrderProcessDataBefore" />
+        <observer name="riki_adminhtml_sales_order_create_process_data" instance="Riki\Sales\Observer\CheckBackEndPieceCase" />
+    </event>
+    <event name="sales_convert_order_to_quote">
+        <observer name="riki_order_to_quote" instance="Riki\Sales\Observer\ConvertOrderToQuote" />
+    </event>
+    <event name="sales_convert_order_item_to_quote_item">
+        <observer name="riki_orderItem_to_quoteItem" instance="Riki\Sales\Observer\ConvertOrderItemToQuoteItem" />
+    </event>
+    <event name="admin_sales_order_address_update">
+        <observer name="riki_orderAddressUpdate" instance="Riki\Sales\Observer\UpdateOrderAddress" />
+    </event>
+    <event name="sales_model_service_quote_submit_before">
+        <observer name="riki_salesAdminQuoteServiceSubmitBefore" instance="Riki\Sales\Observer\AdminQuoteServiceSubmitBefore" />
+    </event>
+    <event name="controller_action_predispatch_sales_order_create_index">
+        <observer name="riki_sales_init_catalog_rule_data" instance="Riki\Sales\Observer\InitCatalogRuleData"/>
+        <observer name="riki_sales_add_unique_session_key" instance="Riki\Sales\Observer\AddUniqueSessionKey"/>
+    </event>
+    <event name="controller_action_predispatch_sales_order_edit_index">
+        <observer name="riki_sales_add_unique_session_key_edit_page" instance="Riki\Sales\Observer\AddUniqueSessionKey"/>
+    </event>
+</config>
+

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="subscriptioncourse_subscriptionprofile_email_template" label="Subscription Profile Email" file="subscription-profile.txt" type="text" module="Riki_SubscriptionEmail" area="frontend"/>
+    <template id="subscriptioncourse_subscriptionprofileedit_email_template" label="Subscription Profile Edit Email" file="subscription-profile-edit.txt" type="text" module="Riki_SubscriptionEmail" area="frontend"/>
+    <template id="subscriptioncourse_replaceproduct_email_template" label="Subscription Replace Discontinued Product" file="subscription-place-product.txt" type="text" module="Riki_SubscriptionEmail" area="adminhtml"/>
+    <template id="subscriptioncourse_replaceproduct_delete_template" label="Subscription Delete Discontinued Product" file="subscription-delete-discontinued-product.txt" type="text" module="Riki_SubscriptionEmail" area="adminhtml"/>
+    <template id="subscriptioncourse_subscriptionprofile_hanpukai_email_template" label="Subscription Profile Hanpukai Email" file="subscription-profile-hanpukai.txt" type="text" module="Riki_SubscriptionEmail" area="frontend"/>
+</config>

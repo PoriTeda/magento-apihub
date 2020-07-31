@@ -1,0 +1,63 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="checkout.cart">
+            <referenceContainer name="checkout.cart.items">
+                <container name="checkout.steps" label="Checkout steps" htmlTag="div" htmlClass="checkout-steps" before="-">
+                    <block class="Riki\Checkout\Block\Checkout\Cart\BackToTopCart" before="checkout.step"
+                           name="back_to_top_cart" template="Riki_Checkout::checkout/cart/back_to_top_cart.phtml" />
+                    <block class="Magento\Framework\View\Element\Template"
+                           before="-" name="checkout.step" template="Magento_Checkout::checkout_steps.phtml" />
+
+                </container>
+                <block class="Magento\Cms\Block\Block" name="checkout.cart.tips">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">shopping-cart-1</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Framework\View\Element\Template" name="checkout.cart.back" template="Magento_Checkout::cart/back.phtml">
+                    <block class="Magento\Cms\Block\Block" name="checkout.cart.banner">
+                        <arguments>
+                            <argument name="block_id" xsi:type="string">shopping-cart-2</argument>
+                        </arguments>
+                    </block>
+                </block>
+                <block class="Magento\Framework\View\Element\Template" name="checkout.cart.floatingButton" template="Magento_Checkout::cart/floatingButton.phtml" />
+            </referenceContainer>
+            <referenceContainer name="checkout.cart.noitems">
+                <container name="noitems.checkout.steps" label="Checkout steps" htmlTag="div" htmlClass="checkout-steps" before="-">
+                    <block class="Magento\Framework\View\Element\Template" before="-" name="noitems.checkout.step" template="Magento_Checkout::checkout_steps.phtml" />
+                </container>
+            </referenceContainer>
+        </referenceBlock>
+        <referenceBlock name="main.content">
+            <block class="Magento\Checkout\Block\Cart\Sidebar"  name="minicart.js" template="Magento_Checkout::cart/minicart.phtml" />
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.shipping">
+            <arguments>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="components" xsi:type="array">
+                        <item name="summary-block-config" xsi:type="array">
+                            <item name="config" xsi:type="array">
+                                <item name="componentDisabled" xsi:type="boolean">true</item>
+                            </item>
+                        </item>
+                        <item name="block-summary" xsi:type="array">
+                            <item name="config" xsi:type="array">
+                                <item name="componentDisabled" xsi:type="boolean">true</item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+
+        <move element="cart.summary" destination="checkout.cart.container" before="checkout.cart.coupon2" after="checkout.cart.form"/>
+        <move element="checkout.cart.floatingButton" destination="cart.summary" after="-"/>
+        <move element="checkout.cart.methods.bottom" destination="checkout.cart.floatingButton" after="-"/>
+        <move element="checkout.cart.tips" destination="content" after="checkout.cart.container"/>
+        <move element="checkout.cart.back" destination="content" after="-"/>
+       <!-- <referenceBlock name="checkout.cart.crosssell" remove="true"/>-->
+        <move element="riki.checkout.cart.product.related" destination="content" after="checkout.cart.tips" />
+    </body>
+</page>
+

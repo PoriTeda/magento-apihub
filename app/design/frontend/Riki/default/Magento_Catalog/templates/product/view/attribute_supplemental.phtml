@@ -1,0 +1,21 @@
+<?php
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+$_product = $block->getProduct()
+?>
+<?php
+if ($_additional = $block->getAdditionalData()): ?>
+    <?php
+    foreach ($_additional as $_data):
+        if ($_data['code']=='desc_supplemental_info'){
+            $desc_supplemental_info = $_helper->productAttribute($_product, $_data['value'], $_data['code']);
+        }
+    endforeach; ?>
+    <?php
+    $html = (!empty($desc_supplemental_info))?"$desc_supplemental_info":"";
+    ?>
+    <?php if (!empty($html)): ?>
+        <div class="attributes-supplemental">
+            <?php echo $html ?>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>

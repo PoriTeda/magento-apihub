@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="riki_emailmarketing">
+        <job name="riki_emailqueue" instance="Riki\EmailMarketing\Cron\EmailQueue" method="execute">
+            <config_path>emailqueue/setting/scheduler</config_path>
+        </job>
+
+
+        <job name="riki_resend_email_queue_start" instance="Riki\EmailMarketing\Cron\ResendEmailQueueStartConsumer" method="execute">
+            <config_path>resend_email_queue/setting/queue_cron</config_path>
+        </job>
+    </group>
+</config>

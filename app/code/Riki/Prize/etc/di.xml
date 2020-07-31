@@ -1,0 +1,76 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Riki\Prize\Api\Data\PrizeInterface" type="Riki\Prize\Model\Prize" />
+    <preference for="Riki\Prize\Api\PrizeRepositoryInterface" type="Riki\Prize\Model\Repository\PrizeRepository" />
+    
+    <virtualType name="PrizeGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="PrizeGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\Prize\Model\ResourceModel\Prize\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">PrizeGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Riki\Prize\Model\ResourceModel\Prize\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">riki_prize</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\Prize\Model\ResourceModel\Prize</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="prize_listing_data_source" xsi:type="string">Riki\Prize\Model\ResourceModel\Prize\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Riki\Prize\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+
+    <type name="Riki\Prize\Logger\LoggerImportCsv">
+        <arguments>
+            <argument name="name" xsi:type="string">var/log/import_prize_csv.log</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Prize\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="riki_prize_plugin_quote_item_toorderitem" type="Riki\Prize\Model\Quote\Item\ToOrderItemPlugin"/>
+    </type>
+
+    <type name="Riki\Prize\Model\ResourceModel\Prize">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\ScalableOms\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="riki_prize" xsi:type="string">riki_prize</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="PrizeImportCommand" xsi:type="object">Riki\Prize\Command\PrizeImport</item>
+                <item name="PrizeBeforeImportCommand" xsi:type="object">Riki\Prize\Command\PrizeBeforeImport</item>
+            </argument>
+        </arguments>
+    </type>
+    <preference for="Riki\Prize\Api\PrizeManagementInterface" type="Riki\Prize\Model\PrizeManagement" />
+</config>

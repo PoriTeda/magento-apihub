@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="rule_information">
+        <field name="from_date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </field>
+        <field name="to_date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </field>
+        <field name="from_time" formElement="date" sortOrder="10">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">catalog_rule</item>
+                    <item name="timezoneFormat" xsi:type="string">YYYY-MM-DD HH:mm:ss</item>
+                    <item name="storeTimeZone" xsi:type="string">UTC</item>
+                    <item name="options" xsi:type="array">
+                        <item name="timeFormat" xsi:type="string">HH:mm:ss</item>
+                        <item name="showsTime" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">From</label>
+                <visible>true</visible>
+                <dataScope>from_time</dataScope>
+            </settings>
+            <formElements>
+                <date>
+                    <settings>
+                        <options>
+                            <option name="showsTime" xsi:type="boolean">true</option>
+                        </options>
+                    </settings>
+                </date>
+            </formElements>
+        </field>
+        <field name="to_time" formElement="date" sortOrder="11">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">catalog_rule</item>
+                    <item name="timezoneFormat" xsi:type="string">YYYY-MM-DD HH:mm:ss</item>
+                    <item name="storeTimeZone" xsi:type="string">UTC</item>
+                    <item name="options" xsi:type="array">
+                        <item name="timeFormat" xsi:type="string">HH:mm:ss</item>
+                        <item name="showsTime" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">To</label>
+                <visible>true</visible>
+                <dataScope>to_time</dataScope>
+            </settings>
+            <formElements>
+                <date>
+                    <settings>
+                        <options>
+                            <option name="showsTime" xsi:type="boolean">true</option>
+                        </options>
+                    </settings>
+                </date>
+            </formElements>
+        </field>
+        <field name="subscription" formElement="select" sortOrder="30">
+            <settings>
+                <required>true</required>
+                <dataType>number</dataType>
+                <label translate="true">SPOT/Subscription</label>
+                <switcherConfig>
+                    <rules>
+                        <rule name="0">
+                            <value>-1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>catalog_rule_form.catalog_rule_form.rule_information.apply_subscription</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>catalog_rule_form.catalog_rule_form.rule_information.apply_frequency</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>catalog_rule_form.catalog_rule_form.rule_information.subscription_delivery</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="3">
+                                    <target>catalog_rule_form.catalog_rule_form.rule_information.delivery_n</target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>catalog_rule_form.catalog_rule_form.rule_information.apply_subscription</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>catalog_rule_form.catalog_rule_form.rule_information.apply_frequency</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>catalog_rule_form.catalog_rule_form.rule_information.subscription_delivery</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="3">
+                                    <target>catalog_rule_form.catalog_rule_form.rule_information.delivery_n</target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="2">
+                            <value>2</value>
+                            <actions>
+                                <action name="0">
+                                    <target>catalog_rule_form.catalog_rule_form.rule_information.apply_subscription</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="1">
+                                    <target>catalog_rule_form.catalog_rule_form.rule_information.apply_frequency</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="2">
+                                    <target>catalog_rule_form.catalog_rule_form.rule_information.subscription_delivery</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="3">
+                                    <target>catalog_rule_form.catalog_rule_form.rule_information.delivery_n</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="3">
+                            <value>3</value>
+                            <actions>
+                                <action name="0">
+                                    <target>catalog_rule_form.catalog_rule_form.rule_information.apply_subscription</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="1">
+                                    <target>catalog_rule_form.catalog_rule_form.rule_information.apply_frequency</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="2">
+                                    <target>catalog_rule_form.catalog_rule_form.rule_information.subscription_delivery</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="3">
+                                    <target>catalog_rule_form.catalog_rule_form.rule_information.delivery_n</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                    <enabled>true</enabled>
+                </switcherConfig>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="validate-select-subscription" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options>
+                            <option name="0" xsi:type="array">
+                                <item name="value" xsi:type="string">-1</item>
+                                <item name="label" xsi:type="string" translate="true">Please select</item>
+                            </option>
+                            <option name="1" xsi:type="array">
+                                <item name="value" xsi:type="string">1</item>
+                                <item name="label" xsi:type="string" translate="true">SPOT only</item>
+                            </option>
+                            <option name="2" xsi:type="array">
+                                <item name="value" xsi:type="string">2</item>
+                                <item name="label" xsi:type="string" translate="true">Subscription only</item>
+                            </option>
+                            <option name="3" xsi:type="array">
+                                <item name="value" xsi:type="string">3</item>
+                                <item name="label" xsi:type="string" translate="true">SPOT and subscription</item>
+                            </option>
+                        </options>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="apply_subscription" formElement="multiselect" sortOrder="40">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>number</dataType>
+                <label translate="true">Apply only to subscription</label>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="Riki\SalesRule\Ui\Component\Form\Subscription\Options"/>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+
+        <field name="apply_frequency" component="Riki_Promo/js/component/apply_frequency" formElement="multiselect"
+               sortOrder="45">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>number</dataType>
+                <label translate="true">Apply only to frequency</label>
+                <listens>
+                    <link name="${ $.provider }:data.apply_subscription:value">handleCourseChange</link>
+                </listens>
+                <elementTmpl>Riki_Promo/form/element/apply_frequency</elementTmpl>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="Riki\SalesRule\Ui\Component\Form\Frequency\Options"/>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+        <field name="subscription_delivery" formElement="select" sortOrder="90">
+            <settings>
+                <dataType>number</dataType>
+                <label translate="true">Subscription deliveries</label>
+                <validation>
+                    <rule name="validate-select-subscription" xsi:type="boolean">true</rule>
+                </validation>
+                <switcherConfig>
+                    <enabled>true</enabled>
+                    <rules>
+                        <rule name="0">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>catalog_rule_form.catalog_rule_form.rule_information.delivery_n</target>
+                                    <callback>enable</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>2</value>
+                            <actions>
+                                <action name="0">
+                                    <target>catalog_rule_form.catalog_rule_form.rule_information.delivery_n</target>
+                                    <callback>enable</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="2">
+                            <value>3</value>
+                            <actions>
+                                <action name="0">
+                                    <target>catalog_rule_form.catalog_rule_form.rule_information.delivery_n</target>
+                                    <callback>disable</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="3">
+                            <value>4</value>
+                            <actions>
+                                <action name="0">
+                                    <target>catalog_rule_form.catalog_rule_form.rule_information.delivery_n</target>
+                                    <callback>enable</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                </switcherConfig>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options>
+                            <option name="0" xsi:type="array">
+                                <item name="value" xsi:type="string">3</item>
+                                <item name="label" xsi:type="string" translate="true">All deliveries</item>
+
+                            </option>
+                            <option name="1" xsi:type="array">
+                                <item name="value" xsi:type="string">1</item>
+                                <item name="label" xsi:type="string" translate="true">Every N delivery</item>
+                            </option>
+                            <option name="2" xsi:type="array">
+                                <item name="value" xsi:type="string">2</item>
+                                <item name="label" xsi:type="string" translate="true">On N delivery</item>
+                            </option>
+                            <option name="3" xsi:type="array">
+                                <item name="value" xsi:type="string">4</item>
+                                <item name="label" xsi:type="string" translate="true">From N delivery</item>
+                            </option>
+                        </options>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="delivery_n" formElement="input" sortOrder="100">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Delivery N</label>
+                <visible>true</visible>
+                <disabled>true</disabled>
+                <validation>
+                    <rule name="validate-number" xsi:type="boolean">true</rule>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="validate-greater-than-zero" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+    </fieldset>
+    <fieldset name="actions">
+        <field name="sap_condition_type" formElement="input" sortOrder="50">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">SAP Condition Type</label>
+            </settings>
+        </field>
+    </fieldset>
+</form>

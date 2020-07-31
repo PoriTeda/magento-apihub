@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+
+    <group id="riki_subs_create_order">
+        <job name="cron_subscription_monthly_fee_generate_paygent_url" instance="\Riki\SubscriptionMachine\Cron\RegeneratePaygentUrlForPendingPaymentOrder" method="execute">
+            <config_path>freemachine/paygent_authorize_fail/cron_schedule</config_path>
+        </job>
+    </group>
+</config>

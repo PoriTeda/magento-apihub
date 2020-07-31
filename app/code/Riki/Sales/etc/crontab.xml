@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="sales_clean_orders" instance="Riki\Sales\Model\CronJob\CleanExpiredOrders" method="execute" />
+        <job name="publish_capture_order_queue" instance="Riki\Sales\Cron\PublishCapturedOrder" method="execute">
+            <config_path>paygent_config/capture/publish_cron_exp</config_path>
+        </job>
+        <job name="trigger_capture_order_consumer" instance="Riki\Sales\Cron\StartOrderCaptureConsumer" method="execute">
+            <config_path>paygent_config/capture/trigger_capture_consumer_cron_exp</config_path>
+        </job>
+    </group>
+</config>

@@ -1,0 +1,139 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+// @codingStandardsIgnoreFile
+/** @var $block Riki\ArReconciliation\Block\Adminhtml\Shipment*/
+?>
+
+<?php
+/** @var Riki\Sales\Helper\CheckRoleViewOnly $checkViewOnlyHelper */
+$checkViewOnlyHelper = $this->helper('Riki\Sales\Helper\CheckRoleViewOnly');
+?>
+
+<div class="admin__control-table-wrapper">
+    <table class="data-table admin__control-table" id="shipment_received_info">
+        <thead>
+        <tr class="headings">
+            <th class="col-amount"><?php /* @escapeNotVerified */ echo __('Collected amount') ?></th>
+            <th class="col-date"><?php /* @escapeNotVerified */ echo __('Collected date') ?></th>
+            <th class="col-date"><?php /* @escapeNotVerified */ echo __('Reconciliation') ?></th>
+
+            <?php if (!$checkViewOnlyHelper->checkViewShipmentOnly($checkViewOnlyHelper::SHIPMENT_VIEW_ONLY)): ?>
+            <th class="col-action last"><?php /* @escapeNotVerified */ echo __('Action') ?></th>
+            <?php endif; ?>
+
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <td class="col-amount">
+                <input class="input-text admin__control-text required-entry validate-number"
+                    type="text"
+                    id="nestle_payment_amount"
+                    name="nestle_payment_amount"
+                    value="<?php echo (int)$block->getShipment()->getData('nestle_payment_amount');?>"
+                />
+            </td>
+            <td class="col-date">
+                <input class="input-text admin__control-text required-entry validate-date"
+                    type="text"
+                    id="nestle_payment_date"
+                    name="nestle_payment_date" readonly="true"
+                    value="<?php echo $block->getShipment()->getData('nestle_payment_date');?>"
+                />
+            </td>
+            <td class="col-reconciliation">
+                <input class="input-text"
+                    type="checkbox"
+                    id="nestle_payment_reconciliation"
+                    name="nestle_payment_reconciliation"
+                    value = "1"
+                    <?php echo $block->getShipment()->getData('nestle_payment_reconciliation') == 1 ? 'checked' : '';?>
+                />
+            </td>
+
+            <?php if (!$checkViewOnlyHelper->checkViewShipmentOnly($checkViewOnlyHelper::SHIPMENT_VIEW_ONLY)): ?>
+            <td class="col-action last"><?php echo $block->getSaveButtonHtml() ?></td>
+            <?php endif; ?>
+        </tr>
+        </tfoot>
+    </table>
+
+<?php if( !empty( $block->getChangeLog() ) ): ?>
+
+    <section class="admin__page-section">
+        <div class="admin__page-section-title">
+            <span class="title"><?php /* @escapeNotVerified */ echo __('History change log') ?></span>
+        </div>
+
+
+        <div class="admin__control-table-wrapper">
+            <table class="data-table admin__control-table" id="shipment_received_info_log">
+                <thead>
+                <tr class="headings">
+                    <th class="col-user"><?php /* @escapeNotVerified */ echo __('User Id'); ?></th>
+                    <th class="col-date"><?php /* @escapeNotVerified */ echo __('Change Date') ?></th>
+                    <th class="col-time"><?php /* @escapeNotVerified */ echo __('Time') ?></th>
+                    <th class="col-transaction"><?php /* @escapeNotVerified */ echo __('Transaction ID') ?></th>
+                    <th class="col-note"><?php /* @escapeNotVerified */ echo __('Changes Made') ?></th>
+                    <th class="col-change-to"><?php /* @escapeNotVerified */ echo __('Changed To') ?></th>
+                    <th class="col-change-from last"><?php /* @escapeNotVerified */ echo __('Change From') ?></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <?php foreach ( $block->getChangeLog() as $item ):  ?>
+
+                <tr>
+                    <td class="col-user">
+                        <?php echo $item->getData('user_name');?>
+                    </td>
+                    <td class="col-date">
+                        <?php echo $block->getTimeLog($item->getCreated(), 'date');?>
+                    </td>
+                    <td class="col-time">
+                        <?php echo $block->getTimeLog($item->getCreated(), 'time');?>
+                    </td>
+                    <td class="col-transaction">
+                        <?php echo $item->getData('shipment_increment_id');?>
+                    </td>
+                    <td class="col-note">
+                        <?php echo $item->getData('note');?>
+                    </td>
+                    <td class="col-change-to">
+                        <?php echo $block->getChangeTo($item);?>
+                    </td>
+                    <td class="col-change-from last">
+                        <?php echo $block->getChangeFrom($item);?>
+                    </td>
+                </tr>
+                <?php endforeach;?>
+                <tr>
+                    <td colspan="7" style="text-align:center">
+                        <a href="<?php echo $block->getExportUrl();?>" target="_blank"><?php echo __('Export change log');?></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+<?php endif;?>
+</div>
+
+<script>
+    require([
+        "jquery",
+        "mage/calendar"
+    ], function($){
+        $("#nestle_payment_date").calendar({
+            'dateFormat': 'yyyy-mm-dd',
+            'timeFormat' : 'hh:ii:ss',
+            'showTime' : true,
+            'showHour' : true,
+            'showMinute' : true
+        });
+    });
+</script>
+

@@ -1,0 +1,195 @@
+<?php
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var $block \Riki\Sales\Block\Adminhtml\Order\Receipt\Info */ ?>
+<?php
+$_order = $block->getOrder();
+$_billingAddress    = $_order->getBillingAddress();
+$_paymentMethod     = $_order->getPayment()->getMethodInstance()->getTitle();
+$_paymentMethodCode = $_order->getPayment()->getMethod();
+$isSubscriptionHanpukai = false;
+
+if (strtolower($_order->getData('riki_type')) == \Riki\SubscriptionCourse\Model\Course\Type::TYPE_HANPUKAI) {
+    $isSubscriptionHanpukai = true;
+}
+
+/** @var Riki\Sales\Helper\PointHelper $pointHelper  */
+$pointHelper = $this->helper('Riki\Sales\Helper\PointHelper');
+$items = $_order->getItems();
+$canApplyTaxChange = $block->canApplyTaxChangeFromDate($_order->getEntityId());
+$arrTotal = $block->getPaymentTotalOrder();
+?>
+<div class="block block-order-details-view">
+    <div class="header-print">
+        <img class="logo" src="<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('images/logo-print.jpg'); ?>"
+             alt="<?php /* @escapeNotVerified */ echo __('Logo print') ?>">
+    </div>
+    <div class="print-order-title">
+        <div>
+            <?php echo __('print invoice header store name'); ?>
+        </div>
+        <div>
+            <?php echo __('print invoice header title 1'); ?>
+        </div>
+        <div>
+            <?php echo __('print invoice header title 2'); ?>
+        </div>
+        <div>
+            <?php echo __('print invoice header title 3'); ?>
+        </div>
+        <?php if(intval($_order->getData('receipt_counter'))>1)://?>
+            <div><?php echo __('print invoice header secondary printing'); ?></div>
+        <?php endif;?>
+    </div>
+
+    <div class="order-date">
+        <?php /* @escapeNotVerified */ echo __('<span class="label">Date:</span> %1', '<date class="date">' . $block->formatDate(date('Y-m-d'), \IntlDateFormatter::LONG) . '</date>') ?> <br> <span><?php echo __('print invoice date suffix');?></span>
+    </div>
+    <div class="billing-info">
+        <div class="billing-info-table">
+            <div class="billing-info-name">
+                <label class="label"><?php echo __("Received from:"); ?><br><?php echo __('print invoice receive from'); ?></label>
+                <div class="content"><?php echo $block->getReceiptName(); ?></div>
+            </div>
+            <div class="billing-info-name">
+                <label class="label"><?php echo __("The sum of Yen:"); ?><br><?php echo __('print invoice total amount'); ?></label>
+                <div class="content"><?php /* @escapeNotVerified */ echo $block->formatCurrencyInvoice($arrTotal["grand_total"]) ;?>-</div>
+            </div>
+        </div>
+        <div class="billing-info-order">
+            <div class="info-order-increment">
+                <label class="label"><?php echo __('print invoice order number'); ?></label>
+                <div class="content"><?php echo $_order->getIncrementId(); ?></div>
+            </div>
+            <div class="info-order-increment">
+                <label class="label"><?php echo __('print invoice shipped out date'); ?></label>
+                <div class="content"><?php echo $block->getShippedOutDate(); ?></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--item list -->
+<div class="block block-order-details-view">
+    <table>
+        <thead>
+        <tr>
+            <td><?php /* @escapeNotVerified */ echo __('Product Name') ?></td>
+            <td><?php /* @escapeNotVerified */ echo __('Unit Price') ?></td>
+            <td><?php /* @escapeNotVerified */ echo __('Qty') ?></td>
+            <td><?php /* @escapeNotVerified */ echo __('Row total') ?></td>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($items as $orderItem):?>
+            <?php if(intval($orderItem->getRowTotalInclTax())):?>
+                <tr>
+                    <td>
+                        <?php echo $orderItem->getName() ;?>
+                        <?php if((int)$orderItem->getTaxPercent() == $block->getCompareTaxPercent() && $canApplyTaxChange):?>
+                            <?php echo __('required sign');?>
+                        <?php endif;?>
+                    </td>
+                    <td><?php echo $block->formatCurrencyInvoice($orderItem->getPriceInclTax()*$block->getItemUnitQty($orderItem)); ?></td>
+                    <td><?php echo $block->getQtyOrderItem($orderItem) ?></td>
+                    <td><?php echo $block->formatCurrencyInvoice($orderItem->getRowTotalInclTax());?></td>
+                </tr>
+            <?php endif;?>
+        <?php endforeach;?>
+        </tbody>
+        <tfoot>
+        <?php
+
+        if(isset($arrTotal['totals-tax']))  unset($arrTotal['totals-tax']);
+        if(isset($arrTotal['grand_total_before_apply_point']))  unset($arrTotal['grand_total_before_apply_point']);
+        //if have  grand_total_incl and  grand_total. We just show grand_total_incl
+        if(isset($arrTotal['grand_total_incl']) && isset($arrTotal['grand_total']) ){
+            unset($arrTotal['grand_total']);
+        }
+
+        // add discount to subtotal
+        if ($isSubscriptionHanpukai) {
+            if (array_key_exists('subtotal', $arrTotal)
+                && array_key_exists('discount', $arrTotal)
+                && ($arrTotal['subtotal'] instanceof \Magento\Framework\DataObject)
+                && ($arrTotal['discount'] instanceof \Magento\Framework\DataObject)
+            ) {
+                $subtotalIncDiscount = $arrTotal['subtotal']->getValue() + $arrTotal['discount']->getValue();
+                $arrTotal['subtotal']->setData('value', $subtotalIncDiscount);
+            }
+        }
+        $noFormatCurrency = ['point', 'usedpoint_8_percent', 'usedpoint_10_percent'];
+        $noDisplayAmount = [];
+        if (!$canApplyTaxChange) {
+            $noDisplayAmount = [
+                'usedpoint_8_percent',
+                'usedpoint_10_percent',
+                'grand_total8_percent',
+                'grand_total10_percent'
+            ];
+        }
+        ?>
+        <?php foreach ($arrTotal as $_code => $_total): ?>
+            <?php if ($_total->getBlockName()): ?>
+                <?php echo $block->getChildHtml($_total->getBlockName(), false); ?>
+            <?php else:?>
+                <?php if (!in_array($_code, $noDisplayAmount)):?>
+                <tr class="<?php /* @escapeNotVerified */ echo $_code?>">
+                    <td <?php /* @escapeNotVerified */ echo $block->getLabelProperties()?> scope="row" colspan="3">
+                        <?php
+                        $labelText = $block->escapeHtml($_total->getLabel());
+                        if($_code == 'gw_items_incl') {
+                            $labelText = __('Gift Wrapping for Items');
+                        } elseif ($_code == 'paymentfee') {
+                            $labelText = __('Payment fee');
+                        } elseif ($_code =='grand_total') {
+                            $labelText = __('Total Tax Incl');
+                        }
+                        ?>
+                        <?php if ($_total->getStrong()):?>
+                            <?php echo $labelText;?>
+                        <?php else:?>
+                            <?php echo ($_total->getCode() == 'discount') ? __('Discount Print') : $labelText ?>
+                        <?php endif?>
+                    </td>
+                    <td <?php /* @escapeNotVerified */ echo $block->getValueProperties()?> data-th="<?php echo $labelText;?>">
+                            <?php
+                            if (in_array($_code, $noFormatCurrency)) {
+                                /* @escapeNotVerified */ echo $pointHelper->formatUsePointInvoice($_total->getValue());
+                            } else {
+                                /* @escapeNotVerified */ echo $block->formatCurrencyInvoice($_total) ;
+                            }
+                            ?>
+                    </td>
+                </tr>
+                <?php endif;?>
+            <?php endif?>
+        <?php endforeach?>
+        <?php if($canApplyTaxChange):?>
+            <tr>
+                <td colspan="4"><?php echo __('Reduced tax rate target');?></td>
+            </tr>
+        <?php endif;?>
+        </tfoot>
+    </table>
+</div>
+<!-- end of item list -->
+<div class="receipt-footer-left receipt-footer">
+    <div class="payment-method-name">
+        <label class="label"><?php echo __("Payment by:"); ?><br><?php echo __("決済方法");?></label>
+        <div class="content"><span><?php echo $block->getPaymentTitle() ?></span></div>
+    </div>
+    <div class="receipt-title"><?php echo __("決済手続済"); ?></div>
+    <div class="receipt-text"><?php echo __("当該領収書無しの返品はお受けできませんので御了承下さい"); ?></div>
+    <div class="receipt-text"><?php echo __("発行済領収書がある場合は破棄していただくようお願いいたします。"); ?></div>
+</div>
+<div class="receipt-footer-right receipt-footer">
+    <img class="stamp" src="<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('images/stamp.jpg'); ?>"
+         alt="<?php /* @escapeNotVerified */ echo __('Stamp') ?>">
+    <div class="content"><span><?php echo __("Nestlé  Japan Limited"); ?></span><br><?php echo __("ネスレ日本株式会社"); ?></div>
+</div>
+<div class="receipt-message"><?php echo __("Nestlé Japan Limited will recognize this official receipt only"); ?></div>
+
+
+

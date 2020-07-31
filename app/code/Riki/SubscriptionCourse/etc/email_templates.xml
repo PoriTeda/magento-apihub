@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="subscriptioncourse_cancelsubscription_cancel_template"
+              label="Notification for Cancellation of Subscription" file="subscriber.txt"
+              type="text"
+              module="Riki_SubscriptionCourse"
+              area="frontend"
+    />
+</config>

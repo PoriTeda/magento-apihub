@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Nestle\Gillette\Logger\Handler\Api" type="Nestle\Gillette\Logger\Handler\BaseHandler">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/gillette_api.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Nestle\Gillette\Logger\Api" type="Monolog\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">gillette_api</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">Nestle\Gillette\Logger\Handler\Api</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Nestle\Gillette\Model\CartEstimationManagement">
+        <arguments>
+            <argument name="logger" xsi:type="object">Nestle\Gillette\Logger\Api</argument>
+        </arguments>
+    </type>
+    <type name="Nestle\Gillette\Model\ProductInfo">
+        <arguments>
+            <argument name="logger" xsi:type="object">Nestle\Gillette\Logger\Api</argument>
+        </arguments>
+    </type>
+    <type name="Nestle\Gillette\Model\OrderManagement">
+        <arguments>
+            <argument name="logger" xsi:type="object">Nestle\Gillette\Logger\Api</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Subscription\Helper\Order\Data">
+        <arguments>
+            <argument name="gilletteLogger" xsi:type="object">Nestle\Gillette\Logger\Api</argument>
+        </arguments>
+    </type>
+    <type name="Nestle\Gillette\Helper\Data">
+        <arguments>
+            <argument name="logger" xsi:type="object">Nestle\Gillette\Logger\Api</argument>
+        </arguments>
+    </type>
+</config>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="CheckingOfPreviewingRegistryUpdateEmailTest">
+        <annotations>
+            <features value="GiftRegistry"/>
+            <stories value="MAGETWO-66489: Fatal Error Previewing Registry Update Email"/>
+            <group value="giftRegistry"/>
+            <title value="Checking of Previewing Registry Update Email."/>
+            <description value="Preview should be loaded without errors and System should displays it "/>
+            <severity value="MAJOR"/>
+            <testCaseId value="MAGETWO-94107"/>
+        </annotations>
+
+        <before>
+            <actionGroup ref="LoginAsAdmin" stepKey="loginAsAdmin"/>
+        </before>
+
+        <!--Go to Marketing> Email Templates-->
+        <amOnPage url="{{AdminEmailTemplatePage.url}}" stepKey="navigateToEmailTemplatePage"/>
+
+        <!--Create new template-->
+        <actionGroup ref="CreateNewTemplate" stepKey="createNewTemplate"/>
+
+        <!--Verify that Preview loaded without errors and System displays it -->
+        <comment userInput="Open created template" stepKey="openCreatedTemplate"/>
+        <fillField stepKey="findCreatedTemplate" selector="{{MarketingEmailTemplateSection.searchTemplateField}}" userInput="{{EmailTemplate.templateName}}"/>
+        <click stepKey="clickSearchButton" selector="{{MarketingEmailTemplateSection.searchButton}}"/>
+        <waitForElementVisible selector="{{MarketingEmailTemplateSection.createdTemplate(EmailTemplate.templateName)}}" stepKey="waitForNewCreatedTemplatesAppeared"/>
+        <waitForLoadingMaskToDisappear stepKey="wait1"/>
+        <click stepKey="clickToOpenCreatedTemplate" selector="{{MarketingEmailTemplateSection.createdTemplate(EmailTemplate.templateName)}}"/>
+        <waitForPageLoad stepKey="waitForCreatedTemplatePageOpened"/>
+
+        <!--Click "Preview Template" button-->
+        <click stepKey="clickPreviewTemplateButton" selector="{{EmailTemplatesSection.previewTemplateButton}}"/>
+        <waitForPageLoad stepKey="waitForPreviewPageLoaded"/>
+        <switchToNextTab stepKey="switchToNewOpenedTab"/>
+        <seeInCurrentUrl stepKey="seeCurrentUrl" url="email_template/preview"/>
+        <see stepKey="verifySystemDisplaysCorrectlyPage" userInput="You can sign in to your account to view more details about this gift registry."/>
+
+        <after>
+            <!--Delete created Template-->
+            <actionGroup ref="DeleteCreatedTemplate" stepKey="deleteCreatedTemplate"/>
+            <actionGroup ref="logout" stepKey="logout" after="deleteCreatedTemplate"/>
+        </after>
+    </test>
+</tests>

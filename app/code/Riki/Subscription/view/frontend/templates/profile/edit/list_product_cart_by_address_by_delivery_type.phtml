@@ -1,0 +1,399 @@
+<?php
+$arrProduct             = $block->getData("arrProduct");
+$isAllowChangeProduct   = $block->getData("isAllowChangeProduct");
+$allAddress             = $block->getData("allAddress");
+$addressId              = $block->getData("addressId");
+$parentBlock            = $block->getData("parentBlock");
+$profileData            = $parentBlock->getEntity();
+$isAllowChangeAddress   = $block->getData("isAllowChangeAddress");
+$addressOrder           = $block->getData('addressOrder');
+$deliveryType           = $block->getData("deliveryType");
+$isBtnUpdateAllChangesPressed = $block->getData('isBtnUpdateAllChangesPressed');
+$isHanpukaiSubscription = $block->getData('isHanpukaiSubscription');
+$currentDay = $block->getData('currentDay');
+$currentDayTime = strtotime($currentDay);
+$totalDeliveryType = $block->getData('totalDeliveryType');
+$countDeliveryType = $block->getData('countDeliveryType');
+$htmlListCouponApplied = $block->getData('htmlListCouponApplied');
+$messageValidateCoupon = $block->getData('messageValidateCoupon');
+
+$defaultOptions = 10;
+?>
+<table class="list-product" data-bind="scope: 'productPrice'">
+    <thead>
+        <tr>
+            <th class="product-image"><?php echo __("Product name") ?></th>
+            <th class="product-name">&nbsp;</th>
+            <th class="spot-tag">&nbsp;</th>
+            <th class="seasonal-skip">&nbsp;</th>
+            <th class="price"><?php echo __("Product Price") ?></th>
+            <th class="qty"><?php echo __("Qty") ?></th>
+            <th class="qty"><?php echo __("Sub Total") ?></th>
+            <th class="action">&nbsp;</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    <?php
+    $giftAvailable = $parentBlock->getGiftConfig();
+    $messageAvailable = $parentBlock->getMessageConfig();
+    $check = 0;
+    foreach($arrProduct as $arrP):
+        $productModel = $arrP['instance'];
+        $allowSkipSeasonalProduct = $productModel->getData('allow_seasonal_skip');
+        $seasonalSkipOptional = $productModel->getData('seasonal_skip_optional');
+        $productCartModel = $arrP['productcartInstance'];
+        $deliveryDate = $productCartModel->getData('delivery_date') != null?$productCartModel->getData('delivery_date') : $profileData->getData('next_delivery_date');
+        $isSkipSeasonal = $productCartModel->getData('is_skip_seasonal');
+        /*Product setting: Allow skip from -> to*/
+        $allowSkipFrom = $productModel->getData('allow_skip_from');
+        $allowSkipTo = $productModel->getData('allow_skip_to');
+        /*ProductCart setting: Skip from -> to */
+        $skipFrom = $productCartModel->getData('skip_from')? : $parentBlock->getDateFormat($allowSkipFrom);
+        $skipTo = $productCartModel->getData('skip_to') ? : $parentBlock->getDateFormat($allowSkipTo);
+        /*Enable skip feature*/
+        $enableSeasonalSkip = ($seasonalSkipOptional and $allowSkipSeasonalProduct );
+        $arrAttribute = null;
+        $isFreeGift = isset($arrP['is_free_gift']) ? (bool) $arrP['is_free_gift'] : false;
+        $productModel = $arrP['instance'];
+        $allowSkipSeasonalProduct = $productModel->getData('allow_seasonal_skip');
+        $isAllowChangeQty = $block->getData("isAllowChangeQty") && !$isFreeGift;
+        if($arrP['instance']->getData('gift_wrapping') != null){
+            $arrAttribute = $parentBlock->getAttributeArray($arrP['instance']->getData('gift_wrapping'));
+        }
+        if (isset($arrP['gift_message_id']) && $arrP['gift_message_id'] != null){
+            $message = $parentBlock->getMessage($arrP['gift_message_id']);
+        }
+        $productCatId = $arrP['productcat_id'];
+        if ($arrP['unit_case'] != \Riki\CreateProductAttributes\Model\Product\CaseDisplay::PROFILE_UNIT_CASE) {
+            $arrP['unit_qty'] = 1;
+        }
+        ?>
+        <tr class="tr-product item-has-seasonal-skip <?php echo ($check % 2 == 0) ? 'even' : 'odd' ?>" data-id="<?php echo $arrP['instance']->getId() ?>">
+            <td class = "img-thumbnail-wrapper product-image" data-th="<?php echo __("Product name")  ?>">
+                <span>
+                    <?php echo $parentBlock->getImage($arrP['instance'], 'cart_page_product_thumbnail')->toHtml();?>
+                </span>
+                <input type="hidden" name="is_addition[<?php echo $productCatId  ?>]" value="<?php echo $arrP['is_addition'];  ?>"/>
+            </td>
+            <td class="product-name cart table-wrapper" data-th="<?php echo __("Product name")  ?>">
+                <div class="product-name"><?php echo $arrP['name']  ?></div>
+
+                <?php
+                $allowStockOrder = $arrP['instance']->getData('allow_spot_order');
+                if (!$allowStockOrder):
+                ?>
+                    <div class="stock unavailable">
+                        <span>
+                            <b>
+                                <?php /* @escapeNotVerified */ echo __('Out of stock') ?>
+                            </b>
+                        </span>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!$isBtnUpdateAllChangesPressed && !$isHanpukaiSubscription) : ?>
+                    <?php if($giftAvailable && isset($arrAttribute)) :?>
+                        <div class="select-wrapper clear-both giftwrap">
+
+                            <select class="input-new select-box"
+                                    name="gift[<?php echo $addressId ?>][<?php echo $productCatId ?>]" id=""
+                                   >
+                                <option value="-1"><?php echo __('None') ?></option>
+                                <?php foreach ($arrAttribute->getData() as $gift) : ?>
+                                    <option <?php echo ($arrP['gw_id'] == $gift['wrapping_id']) ? 'selected="selected"' : '' ?>
+                                        value="<?php echo $gift['wrapping_id'] ?>"><?php echo $gift['gift_name'] ?>
+                                        【<?php echo $parentBlock->formatCurrency($parentBlock->calTax($gift['base_price'])) ?>
+                                        】
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                    <?php endif; ?>
+                <?php endif; ?>
+                <?php if ($isHanpukaiSubscription && !$isBtnUpdateAllChangesPressed) { ?>
+                    <input type="hidden" name="gift[<?php echo $addressId  ?>][<?php echo $productCatId  ?>]" value="<?php echo $arrP['gw_id']?>"/>
+                <?php } ?>
+
+            </td>
+            <td class="spot-tag">
+                <?php if ($arrP['is_spot']) : ?>
+                    <span class="tag_spot"><span><?php echo __('Spot tag') ?></span></span>
+                <?php endif; ?>
+            </td>
+            <td class="seasonal-skip" data-th="<?php echo __("Seasonal skip") ?>">
+                <?php if($enableSeasonalSkip) : ?>
+                    <?php if(strtotime($deliveryDate) > strtotime($skipTo)) : ?>
+                        <span class="tag seasonal-skip">
+                            <span><?php echo __("Absence for a certain period of time") ?></span>
+                        </span>
+                    <?php else : ?>
+                        <span class="tag seasonal-skip">
+                            <span><?php echo __("Absence for a certain period of time") ?></span>
+                        </span>
+                    <?php endif; ?>
+                <?php else : ?>
+                    <?php if($allowSkipSeasonalProduct): ?>
+                    <span class="tag seasonal-skip">
+                        <span><?php echo __("Seasonal Limited") ?></span>
+                    </span>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </td>
+            <td class="price" data-th="<?php echo __("Price")  ?>">
+                <span id="price_item_<?php echo $productCatId; ?>"><?php echo $parentBlock->formatCurrency($arrP['amount']);  ?></span>
+            </td>
+            <td class="qty" data-th="<?php echo __("Qty")  ?>">
+                <!-- This attribute is center -->
+                <?php if (!$isFreeGift): ?>
+                <input type="hidden" name="productcat_id[<?php echo $addressId  ?>][<?php echo $deliveryType ?>][]" value="<?php echo $productCatId  ?>"/>
+                <?php endif;?>
+                <?php
+                    $minimalQty = $parentBlock->getMinimalQty($productModel);
+                    $minimalQty = ($minimalQty > 0)?$minimalQty:1;
+
+                    $maximumQty = $parentBlock->getMaximumQty($productModel);
+                    $maximumQty = ($maximumQty > 99) ? 99 : $maximumQty;
+                    $maximumQty = ($maximumQty > 0)?$maximumQty:1;
+
+                    $unitQty = $parentBlock->getUnitQty($productModel);
+                ?>
+                <?php if(\Riki\CreateProductAttributes\Model\Product\CaseDisplay::PROFILE_UNIT_CASE == $arrP['unit_case']) { ?>
+
+                    <!--show qty case-->
+                    <?php if(!$isBtnUpdateAllChangesPressed && !$isHanpukaiSubscription) { ?>
+                        <div class="select-wrapper" data-bind="scope: 'productPrice'">
+                            <select id="product_cart_id_case_<?php echo $productCatId ?>" productcartid="<?php echo $productCatId; ?>" unitqty="<?php echo $arrP['unit_qty'];?>"
+                                    name="product_qty_case[<?php echo $productCatId  ?>]" <?php echo $isAllowChangeQty ? '' : 'disabled';  ?>
+                                    class="qty_case input-new select-box"  data-bind="event: {click:generateOption, touchstart:generateOption, change: function(data, item) {
+                                    refreshPrice('<?php echo $productCatId; ?>','<?php echo $productModel->getId()?>','<?php echo $arrP['unit_qty'] ?>', '<?php echo "product_cart_id_case_".$productCatId ?>',
+                                     '<?php echo $profileData->getData("course_id") ?>', '<?php echo $profileData->getData("frequency_unit") ?>', '<?php echo $profileData->getData("frequency_interval") ?>')
+                                    } }"
+                                    data-render="0" data-selected="<?php echo $arrP['qty'] / $arrP['unit_qty'] ?>" data-quantity="<?php echo $maximumQty ?>"
+                                >
+                                <?php //***************************[NED-1590] Load on demand*************************** ?>
+                                <?php $selectedFlag = false; ?>
+                                <?php for ($i = 1; $i <= $defaultOptions; $i++) : ?>
+                                    <?php
+                                    $select = '';
+                                    if (!$selectedFlag && $arrP['qty'] / $arrP['unit_qty'] == $i) {
+                                        $select = 'selected';
+                                        $selectedFlag = true;
+                                    }
+                                    ?>
+                                    <option <?php echo $select;?> value="<?php echo $i?>"><?php echo $i?></option>
+                                <?php endfor; ?>
+                                <?php if(!$selectedFlag) : ?>
+                                    <option value="<?php echo $arrP['qty'] / $arrP['unit_qty']?>" selected ><?php echo $arrP['qty'] / $arrP['unit_qty']?></option>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+                        <div class="label-pc"><?php echo __('Case'); ?></div>
+                    <?php } else { ?>
+                        <?php echo $arrP['qty'] / $arrP['unit_qty']; ?>
+                    <?php } ?>
+
+                    <input type="hidden" name="product_unit_qty[<?php echo $productCatId  ?>]" value="<?php echo $arrP['unit_qty'];  ?>"/>
+                    <!--hide real qty-->
+                    <?php if(!$isBtnUpdateAllChangesPressed && !$isHanpukaiSubscription) { ?>
+                        <div style="display: none">
+                            <div class="select-wrapper">
+                                <select id="product_cart_id_<?php echo $productCatId ?>" name="product_qty[<?php echo $productCatId ?>] <?php echo $isAllowChangeQty ? '' : 'disabled';?>"
+                                        class="input-new select-box" >
+                                    <?php for ($i = $minimalQty*$unitQty; $i <= $maximumQty*$unitQty; $i++) : ?>
+                                        <?php
+                                        $select = '';
+                                        if ($arrP['qty'] == $i) {
+                                            $select = 'selected';
+                                        }
+                                        ?>
+                                        <option value="<?php echo $i?>" <?php echo $select;?> ><?php echo $i?></option>
+                                    <?php endfor; ?>
+                                </select>
+                            </div>
+                            <div class="label-pc"><?php echo __('Piece'); ?></div>
+                        </div>
+                    <?php } else { ?>
+                        <span style="display: none" ><?php echo $arrP['qty']; ?></span>
+                    <?php } ?>
+
+                <?php } else { ?>
+                    <?php if(!$isBtnUpdateAllChangesPressed && !$isHanpukaiSubscription) { ?>
+                        <div class="select-wrapper">
+                            <select name="product_qty[<?php echo $productCatId ?>]" <?php echo $isAllowChangeQty ? '' : 'disabled';?> class="input-new select-box"
+                                    id ="<?php echo 'product_qty_ea_'.$productCatId; ?>"
+                                    data-bind="event: {click:generateOption, touchstart:generateOption, change: function(data, item) {
+                                    refreshPrice('<?php echo $productCatId; ?>','<?php echo $productModel->getId()?>','<?php echo 1; ?>', '<?php echo 'product_qty_ea_'.$productCatId; ?>',
+                                     '<?php echo $profileData->getData("course_id") ?>', '<?php echo $profileData->getData("frequency_unit") ?>', '<?php echo $profileData->getData("frequency_interval") ?>')
+                                    } }"
+                                    data-render="0" data-selected="<?php echo $arrP['qty'] ?>" data-quantity="<?php echo $maximumQty ?>"
+                            >
+                                <!--***************************[NED-1590] Load on demand***************************-->
+                                <?php $selectedFlag = false; ?>
+                                <?php for ($i = 1; $i <= $defaultOptions; $i++) : ?>
+                                    <?php
+                                    $select = '';
+                                    if (!$selectedFlag && $arrP['qty'] == $i) {
+                                        $select = 'selected';
+                                        $selectedFlag = true;
+                                    }
+                                    ?>
+                                    <option value="<?php echo $i?>" <?php echo $select;?> ><?php echo $i?></option>
+                                <?php endfor; ?>
+                                <?php if(!$selectedFlag) : ?>
+                                    <option value="<?php echo $arrP['qty']?>" selected><?php echo $arrP['qty']?></option>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+                        <div class="label-pc"><?php echo __('Piece'); ?></div>
+                    <?php } else { ?>
+                        <?php echo $arrP['qty']; ?>
+                    <?php } ?>
+
+                <?php } ?>
+
+            </td>
+
+            <td class="subtotal" data-th="<?php echo __("Subtotal(tax included)")  ?>">
+                <span id="<?php echo 'subtotal_item_'.$productCatId;  ?>">
+                    <?php echo $parentBlock->formatCurrency($arrP['amount'] * (int)$arrP['qty'] /(isset($arrP['unit_qty'])?$arrP['unit_qty']:1));  ?>
+                </span>
+            </td>
+
+            <td class="action">
+                <?php if(!$isFreeGift && $isAllowChangeProduct && !$isBtnUpdateAllChangesPressed && !$isHanpukaiSubscription):  ?>
+                    <a class="delete_btn" href="javascript:void(0);" onclick="deleteProductCart('<?php echo $arrP['productcat_id'] ?>')" ><?php echo __("Remove item")  ?></a>
+                <?php endif;  ?>
+            </td>
+        </tr>
+        <?php if($allowSkipSeasonalProduct) : ?>
+        <tr class="seasonal-skip <?php echo ($check % 2 == 0) ? 'even' : 'odd' ?>">
+            <td colspan="8">
+                <?php if($enableSeasonalSkip) : ?>
+                <?php if(strtotime($deliveryDate) > strtotime($skipTo)) : ?>
+                    <div class="message" <?php echo ($isSkipSeasonal) ? 'style="display:none"' :''?>>
+                        <?php echo __("※この商品は一定期間お休み可能商品となります。").$skipFrom." ～ ".$skipTo.__("までの間お休みすることができます。") ?>
+                    </div>
+                <?php else : ?>
+                    <div class="from" <?php echo ($isSkipSeasonal) ?'style="display:none"' : ''?>>
+                        <div class="calendar-wrapper">
+                            <input id="calendar-from-<?php echo $arrP['productcat_id'] ?>"
+                                   data-bind="afterRender : function(data, event) { renderSeasonalFromCalendar('<?php echo 'calendar-from-'. $arrP['productcat_id'] ?>', '<?php echo $allowSkipFrom; ?>', '<?php echo $allowSkipTo; ?>') }"
+                                   name="skip_from_productcat[<?php echo $arrP['productcat_id'] ?>]"
+                                   value="<?php echo $skipFrom?$skipFrom:$parentBlock->getDateFormat($allowSkipFrom) ?>" type="text" class="input-text input-new" readonly="readonly" onfocus="this.blur()" />
+                        </div>
+                        <div class="text"><?php echo __('From') ?></div>
+                    </div>
+                    <div class="to" <?php echo ($isSkipSeasonal) ? 'style="display:none"' :''?>>
+                        <div class="calendar-wrapper">
+                            <input id="calendar-to-<?php echo $arrP['productcat_id'] ?>"
+                                   data-bind="afterRender : function(data, event) { renderSeasonalToCalendar('<?php echo 'calendar-to-'. $arrP['productcat_id'] ?>', '<?php echo $allowSkipFrom; ?>', '<?php echo $allowSkipTo; ?>') }"
+                                   name="skip_to_productcat[<?php echo $arrP['productcat_id'] ?>]"
+                                   value="<?php echo $skipTo?$skipTo:$parentBlock->getDateFormat($allowSkipTo) ?>" type="text" class="input-text input-new" readonly="readonly" onfocus="this.blur()" />
+                        </div>
+                        <div class="text"><?php echo __('Skip To') ?></div>
+                    </div>
+
+                    <div class="from-text" <?php echo ($isSkipSeasonal) ?'' : 'style="display:none"' ?>>
+                        <div class="content"><?php echo $skipFrom?$skipFrom:$parentBlock->getDateFormat($allowSkipFrom) ?></div>
+                    </div>
+                    <div class="to-text" <?php echo ($isSkipSeasonal) ?'' : 'style="display:none"' ?>>
+                        <div class="text"> ~ </div>
+                        <div class="content"><?php echo $skipTo?$skipTo:$parentBlock->getDateFormat($allowSkipTo) ?></div>
+                        <div class="text"> <?php echo __('【お休み中】') ?> </div>
+                    </div>
+
+                    <div class="action">
+                        <a href="#" id="<?php echo 'seasonal_skip_play_'.$productCatId ?>"
+                           data-bind="click: function(data, event){ pressPlay('<?php echo 'seasonal_skip_play_'.$productCatId ?>', event)}"
+                           class="play" <?php echo ($isSkipSeasonal) ?'' : 'style="display:none"' ?>>
+                            <?php echo __("配送を再開する") ?>
+                        </a>
+                        <a href="#" class="pause" id="<?php echo 'seasonal_skip_pause_'.$productCatId ?>"
+                           data-bind="click: function(data, event){ pressPause('<?php echo 'seasonal_skip_pause_'.$productCatId ?>', event)}" <?php echo ($isSkipSeasonal) ? 'style="display:none"':'' ?>>
+                            <?php echo __("お休みする") ?>
+                        </a>
+                        <input type="hidden" name="is_skip_productcat[<?php echo $productCatId ?>]" value="<?php echo $isSkipSeasonal? 1 : 0 ?>">
+                    </div>
+                    <div class="time message" <?php echo ($isSkipSeasonal) ?'style="display:none"' :''?>>
+                        <?php echo __("※この商品は一定期間お休み可能商品となります。").$parentBlock->getDateFormat($allowSkipFrom)." ～ ".$parentBlock->getDateFormat($allowSkipTo).__("までの間お休みすることができます。"); ?>
+                    </div>
+                <?php endif; ?>
+                <?php else : ?>
+                <?php if ((strtotime($deliveryDate) > strtotime($skipTo) || strtotime($deliveryDate) < strtotime($skipFrom)) && strtotime($skipTo) > strtotime($skipFrom)) : ?>
+                    <div class="message" <?php echo ($isSkipSeasonal) ? 'style="display:none"' :''?> >
+                    <div class="icon_skip" style="display: none"><?php echo __("【お休み中】") ?></div> <br>
+                 <?php else : ?>
+                    <div class="message">
+                    <div class="icon_skip"><?php echo __("【お休み中】") ?></div>
+                    </div>
+                 <?php endif; ?>
+                    <?php echo __("※この商品は季節限定商品となります。").$skipFrom." ～ ".$skipTo.__("までの間配送がお休みされます。"). date('Y-m-d',strtotime('+1 day',strtotime($skipTo))) .__("より配送が再開します。") ?> <br>                    </div>
+                <?php endif; ?>
+            </td>
+        </tr>
+        <?php endif; ?>
+    <?php $check++; endforeach; ?>
+    </tbody>
+</table>
+<?php /** Coupon code area */ ?>
+<?php if ($countDeliveryType == $totalDeliveryType): ?>
+<div class="subscription-profile-discount" data-bind="scope: 'couponCode'">
+    <div class="block discount" id="block-discount">
+        <div class="content">
+
+            <?php if($htmlListCouponApplied==null): ?>
+            <div class="fieldset coupon">
+                <div class="field">
+                    <label for="coupon_code" class="label"><span><?php echo __('Coupon use') ?></span></label>
+                    <div class="control">
+                        <input type="text" data-bind="event: {keypress: checkKeyPress}" class="input-text" id="coupon_code_fake" name="coupon_code_fake" placeholder="<?php echo $block->escapeHtml(__('Enter your code'));?>" />
+                        <div id="messageAppliedCoupon" class="no-display"><?php echo $messageValidateCoupon; ?></div>
+                    </div>
+                </div>
+                <div class="actions-toolbar-coupon">
+                    <div class="primary">
+                        <button data-bind="click: function() {applyCoupon('<?php echo  $profileData->getData('profile_id'); ?>')}" class="action apply primary applyCoupon" type="button" value="<?php echo __('Apply Coupon') ?>">
+                            <span><?php echo __('Apply Coupon') ?></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+
+            <?php /** Applied coupon area */ ?>
+            <div id="listCouponApplied"><?php echo $htmlListCouponApplied; ?></div>
+            <?php if($htmlListCouponApplied!=null): ?>
+            <div style="display:none;" id="messageAppliedCoupon"><?php echo $messageValidateCoupon; ?></div>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "couponCode": {
+                        "component": "Riki_Subscription/js/view/couponCode"
+                    }
+                }
+            }
+        }
+    }
+</script>
+<?php endif; ?>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "productPrice": {
+                        "component": "Riki_Subscription/js/view/productPrice"
+                    }
+                }
+            }
+        }
+    }
+</script>

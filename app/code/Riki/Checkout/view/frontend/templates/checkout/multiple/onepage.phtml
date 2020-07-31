@@ -1,0 +1,66 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+?>
+<?php /** @var $block Bluecom\PaymentFee\Block\Onepage */?>
+
+<div id="checkout" data-bind="scope:'checkout'" class="checkout-container">
+    <div id="checkout-loader" data-role="checkout-loader" class="loading-mask no-display">
+        <div class="loader">
+            <i class="fa fa-spinner fa-spin"></i>
+            <p><?php echo __('Sorry, the server is under heavy load. Please wait a second.') ?></p>
+        </div>
+    </div>
+    <p id="loadingText" class="no-display"><?php echo __('Sorry, the server is under heavy load. Please wait a second.') ?></p>
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <script type="text/x-magento-init">
+        {
+            "#checkout": {
+                "Magento_Ui/js/core/app": <?php /* @escapeNotVerified */ echo $block->getJsLayout();?>
+            }
+        }
+    </script>
+    <script>
+        window.checkoutConfig = <?php /* @escapeNotVerified */ echo \Zend_Json::encode($block->getCheckoutConfig()); ?>;
+        window.checkoutConfig.checkoutUrl = "<?php echo $this->getMultiCheckoutBaseUrl(); ?>";
+        // Create aliases for customer.js model from customer module
+        window.isCustomerLoggedIn = window.checkoutConfig.isCustomerLoggedIn;
+        window.checkoutConfig.quoteItemData = <?php /* @escapeNotVerified */ echo $block->getQuoteShippingAddressesItems();?>;
+        window.customerData = window.checkoutConfig.customerData;
+        window.checkoutConfig.gift_wrapping_available = <?php echo $this->helper('\Magento\GiftWrapping\Helper\Data')->isGiftWrappingAvailableForItems();?>;
+        window.customerData.loyalty_reward_point = <?php echo $block->getCustomerRewardPoint();?>;
+        window.customerData.reward_user_setting = "<?php echo $block->getRewardUserSetting();?>";
+        window.customerData.reward_user_redeem = <?php echo $block->getRewardUserRedeem();?>;
+        window.cardMethodImage = "<?php echo $block->getViewFileUrl('images/credit_card_method.png') ?>";
+        window.checkoutConfig.quoteData.is_edit_next_ddate = <?php echo $this->checkIsEditNextDDate();?>;
+        window.checkoutConfig.quoteData.is_hanpukai = <?php echo $this->isHanpukaiSubscription(); ?>;
+        window.checkoutConfig.quoteData.is_allow_change_hanpukai_delivery_date
+            = <?php echo $this->isAllowChangeHanpukaiDeliveryDate(); ?>;
+        window.checkoutConfig.quoteData.hanpukai_delivery_date_config
+            = <?php echo json_encode($this->getHanpukaiDeliveryDateRuleConfig()); ?>;
+        window.checkoutConfig.quoteData.sub_interval = '<?php echo $this->getFrequency()['interval'];?>';
+        window.checkoutConfig.quoteData.sub_unit = '<?php echo $this->getFrequency()['unit']; ?>';
+        window.cvsPaymentImage = "<?php echo $block->getViewFileUrl('images/cvs-payment-form.jpg') ?>";
+        window.checkoutConfig.urlEditHomeNoCompany = '<?php echo $block->escapeQuote($block->getUrlEditHomeNoCompany()) ?>';
+        window.checkoutConfig.urlEditHomeHaveCompany = '<?php echo $block->escapeQuote($block->getUrlEditHomeHaveCompany()) ?>';
+        window.checkoutConfig.urlEditCompany = '<?php echo $block->escapeQuote($block->getUrlEditCompany()) ?>';
+        window.checkoutConfig.wrappingServicesLink = '<?php echo $block->escapeQuote($block->getWrappingServicesLink()) ?>';
+    </script>
+    <script>
+        require([
+            'mage/url',
+            'Magento_Ui/js/block-loader'
+        ], function(url, blockLoader) {
+            blockLoader("<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('images/loader-1.gif'); ?>");
+            return url.setBaseUrl('<?php /* @escapeNotVerified */ echo $block->getBaseUrl();?>');
+        })
+    </script>
+    <script>
+        window.paymentFeeKeyCode = <?php echo \Zend_Json::encode($block->getKeyCode())?>;
+        window.paymentFee = <?php echo \Zend_Json::encode($block->getPaymentFeeCode())?>;
+    </script>
+</div>

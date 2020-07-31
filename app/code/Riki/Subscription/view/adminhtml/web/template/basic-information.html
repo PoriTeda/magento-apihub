@@ -1,0 +1,120 @@
+<!-- ko if:is_invalid_lead_time_on_both_wh -->
+<div class="message message-error error">
+    <div data-ui-id="messages-message-error" data-bind="i18n:invalid_lead_time_message"></div>
+</div>
+<!-- /ko -->
+<ul class="custom-table">
+    <li class="item">
+        <span data-bind="i18n: 'Profile ID'"></span>
+        <span data-bind="text: profileId"></span>
+    </li>
+    <li class="item">
+        <span data-bind="i18n: 'Status'"></span>
+        <span data-bind="text: getStatus()"></span>
+    </li>
+    <li class="item">
+        <span data-bind="i18n: 'Delivery Times of Subscription'"></span>
+        <span data-bind="text: deliveryTimesOfSubscription"></span>
+    </li>
+    <li class="item">
+        <span data-bind="i18n: 'Waiting for out-of-stock delivery'"></span>
+        <div style="float: left; width: 50%; padding: 5px;" data-bind="if: waitingOOSOrders().length > 0">
+            <!-- ko foreach: waitingOOSOrders -->
+            <a data-bind="attr: { href: $data.url}, text: $data.id" target="_blank">
+            </a>
+            <p style="display: inline-block" data-bind="ifnot: ($index() === ($parent.waitingOOSOrders().length - 1))"> , </p>
+            <!-- /ko -->
+        </div>
+        <div style="float: left; width: 50%; padding: 5px;" data-bind="ifnot: waitingOOSOrders().length > 0">
+            <span>NULL</span>
+        </div>
+    </li>
+    <li class="item">
+        <span data-bind="i18n: 'Times Of Cancel Order'"></span>
+        <span data-bind="text: timesOfCancelOrder"></span>
+    </li>
+    <li class="item">
+        <span data-bind="i18n: 'Times of Subscription Order'"></span>
+        <span data-bind="text: orderTimes"></span>
+    </li>
+    <li class="item">
+        <span data-bind="i18n: 'Course'"></span>
+        <span data-bind="text: courseName"></span>
+    </li>
+    <li class="item">
+        <span data-bind="i18n: 'Course ID'"></span>
+        <span data-bind="text: courseId"></span>
+    </li>
+    <li class="item">
+        <span data-bind="i18n: 'Course Code'"></span>
+        <span data-bind="text: courseCode"></span>
+    </li>
+    <li class="item">
+        <span data-bind="i18n: 'Accumulated value'"></span>
+        <span data-bind="text:  sales_count"></span>
+    </li>
+    <li class="item">
+        <span data-bind="i18n: 'Accumulated purchase amount'"></span>
+        <span data-bind="text: getPriceFormatted(sales_value_count)"></span>
+    </li>
+    <li class="item">
+        <span data-bind="i18n: 'Monthly Fee Label'"></span>
+        <span data-bind="text: monthlyFeeLabel"></span>
+    </li>
+</ul>
+
+<ul class="custom-table">
+    <li class="item">
+        <span data-bind="i18n: 'Order total minimum amount threshold'"></span>
+        <span data-bind="html: totalMinAmountThreshold"></span>
+    </li>
+    <li class="item">
+        <span data-bind="i18n: 'Order total maximum amount threshold'"></span>
+        <span data-bind="text: totalMaxAmountThreshold"></span>
+    </li>
+    <li class="item">
+        <span data-bind="i18n: 'Maximum Qty Restriction'"></span>
+        <span data-bind="html: maxQtyRestriction"></span>
+    </li>
+    <li class="item">
+        <span data-bind="i18n: 'Terms of use'"></span>
+        <a data-bind="attr: { href: termsOfUseDownloadUrl }"><span data-bind="text: termsOfUse"></span>
+        </a>
+    </li>
+    <li class="item">
+        <span data-bind="text: 'Navigation path'"></span>
+        <span data-bind="text: navigationPath"></span>
+    </li>
+</ul>
+<!-- ko if:wasDisengaged -->
+<div class="disengage-section">
+    <div class="disengage-information">
+        <h3><span data-bind="i18n: 'Disengagement Information'"></span></h3>
+        <p><span data-bind="i18n: 'Disengaged Date'"></span>: <span data-bind="text: disengagedDate"></span></p>
+        <p><span data-bind="i18n: 'Disengaged By'"></span>: <span data-bind="text: disengagedUserName"></span></p>
+    </div>
+    <div class="disengage-questionare">
+        <h3><span data-bind="i18n: 'Machine questionnaire answer'"></span></h3>
+        <!-- ko foreach: questionnaireData -->
+        <div class="disengage-questionare-item">
+            <p class="questionTitle"><span data-bind="i18n: 'Question'"></span>: <span data-bind="text: questionTitle"></span></p>
+            <p class="answerTitle">
+                <span data-bind="i18n: 'Answers'"></span>:
+                <ul>
+                    <!-- ko foreach: answerChoices -->
+                    <li class="answer-item" data-bind="text: $data"></li>
+                    <!-- /ko -->
+                </ul>
+            </p>
+
+        </div>
+        <!-- /ko -->
+    </div>
+    <div class="disengage-reasons">
+        <h3><span data-bind="i18n: 'Disengagement Reasons'"></span></h3>
+        <!-- ko foreach: disengagementReasons -->
+        <p>- <span data-bind="text: $data"></span></p>
+        <!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="adminhtml_sales_order_update_delivery">
+        <observer name="riki_gift_order" instance="Riki\GiftOrder\Observer\CheckGiftOrder"/>
+    </event>
+
+    <event name="adminhtml_sales_order_update_shipping_address">
+        <observer name="riki_gift_order_multi" instance="Riki\GiftOrder\Observer\CheckGiftOrderMultiCheckout"/>
+    </event>
+</config>

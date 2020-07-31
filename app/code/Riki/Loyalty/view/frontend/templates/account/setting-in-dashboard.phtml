@@ -1,0 +1,111 @@
+<?php
+/** @var \Riki\Loyalty\Block\Reward $block */
+//$_descriptionUrl = $block->pointSettingPageUrl();
+$pointBalance  = $block->getPointBalance();
+$availableCoin = $block->getAvailableCoin();
+?>
+<div class="section">
+    <h3 class="title"><?php echo __("View or edit Shopping Point") ?></h3>
+    <div class="block points info riki-tracking-dashboard" data-title="<?php echo __("View or edit Shopping Point") ?>">
+        <div class="block holding-point">
+            <div class="block points items">
+                <strong>
+                    <?php echo __("Current holding point");?>
+                    <?php echo sprintf(__(' You have <span class="mark">%s point</span>'), $pointBalance) ?>
+                </strong>
+                <div class="item">
+                    <ul>
+                        <li><a href="<?php echo $block->getUrl('loyalty/reward') ?>"><span class="link"><?php echo __("View Points History")?></span></a></li>
+                        <li><a href="<?php echo $block->getUrl('loyalty/reward/expired') ?>"><span class="link"><?php echo __("List of Points about to lapse")?></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="block setting-point">
+            <div class="title"> <?php echo __("Setting the automatic use point")?></div>
+            <a href="<?php echo $block->getSystemConfig('customerksslink/kss_link_edit_customer/kss_auto_point') ?>" class="more" target="_blank"><?php echo __("More info") ?>
+            </a>
+            <form id="reward-point-setting" class="points setting" action="<?php echo $block->getUrl('loyalty/reward/setting') ?>"
+                  method="post" id="form-validate"  data-mage-init='{"Riki_Loyalty/js/action/account/form-ajax": {"formId": "reward-point-setting"}}'>
+                <?php echo $block->getBlockHtml('formkey')?>
+                <ul>
+                    <li><input id="not-use-point" type="radio" name="reward_user_setting" class="radio" value="0" <?php if ($this->getRewardUserSetting() == 0) echo 'checked="checked"';?> ><label for="not-use-point"><?php echo __("Do not use points automatically");?></label></li>
+                    <li><input id="use-all-point" type="radio" name="reward_user_setting" class="radio" value="1" <?php if ($this->getRewardUserSetting() == 1) echo 'checked="checked"';?>><label for="use-all-point"><?php echo __("Each time, to automatically use all of the holding point")?></label></li>
+                    <li><input id="use-specific-point" type="radio" name="reward_user_setting" class="radio" value="2" <?php if ($this->getRewardUserSetting() == 2) echo 'checked="checked"';?>><label for="use-specific-point"><?php echo __("Every time, automatically use the specified point")?></label>
+                        <p>
+                            <input maxlength="10" type="text" class="input-text" name="reward_user_redeem"
+                                   id="reward_user_redeem" value="<?php echo intval($block->getRewardPointUserRedeem($pointBalance)); ?>"
+                                   disabled = "disabled"
+                                   data-validate='{"less-than-equals-to-check-point-input": "#balance","validate-zero-and-blank": "true","validate-point-number": "true"}' />
+                            <input type="hidden" id="balance" value="<?php echo $pointBalance;?>"/>
+                        </p>
+                        <div id="reward-point-message">
+                        </div>
+                    </li>
+                </ul>
+                <div class="submit-option">
+                    <button type="submit" class="action save primary" title="<?php /* @escapeNotVerified */
+                    echo __('Save Settings') ?>"><span><?php /* @escapeNotVerified */
+                            echo __('Save Settings') ?></span>
+                    </button>
+                </div>
+            </form>
+            <span class="note mark">
+            <?php echo __("※ If accumulated points are lesser than the points set to use automatically, then all accumulated points will be used.") ?>
+        </span>
+        </div>
+    </div>
+    <div class="block tentative-point riki-tracking-dashboard" data-title="<?php echo __("View or edit Shopping Point") ?>" >
+        <div class="title">
+            <?php echo __("Tentative points") ?>
+        </div>
+        <div class="content">
+            <p><strong><?php echo $block->getTentativePoint();?></strong> <?php echo __("point") ?></p>
+        </div>
+        <span class="tips"><?php echo __("※Tentative points for this order is temporary points, and will be updated to your point history in the future.");?></span>
+        <div class="item">
+            <ul>
+                <li class="last"><a href="<?php echo $block->getSystemConfig('customerksslink/kss_link_edit_customer/kss_about_nsp') ?>" target="_blank"><span class="link"><?php echo __("About Shopping Point") ?></span></a></li>
+            </ul>
+
+        </div>
+    </div>
+</div>
+<div class="section nestle coins items riki-tracking-dashboard" data-title="<?php echo __("Nestle Coins")?>">
+    <div class="nestle-img"><img src="<?php echo $block->getViewFileUrl('images/logo-nestle.jpg') ?>" alt="Nestle Coin Image"></div>
+    <h3 class="title"><?php echo __("Nestle Coins")?></h3>
+    <div class="block nestle-coin">
+        <div class="title">
+            <?php echo __("Coin available") ?>
+        </div>
+        <div class="content">
+            <strong><?php echo sprintf(__(' You have <span class="mark">%s coin</span>'), $availableCoin); ?></strong>
+            <div class="notification"><?php echo __("Nestle amuse has a lot of content for you to get nestle coints. These coins can be easily used to apply for campaigns in Nestle Amuse.");?></div>
+        </div>
+    </div>
+    <?php echo $block->getChildHtml('about_coins')?>
+</div>
+
+
+<script type="text/javascript">
+    require(
+        ['jquery'],
+        function( $ ) {
+            $(function() {
+                var use_reward= $("#reward_user_redeem");
+                CheckUseReward();
+                $(".points.setting ul li input[type=radio]").on('click',function(){
+                    CheckUseReward();
+                });
+                function CheckUseReward(){
+                    if($('#use-specific-point').attr('checked')) {
+                        use_reward.removeAttr('disabled');
+                    } else {
+                        use_reward.attr('disabled',true);
+                    }
+                }
+            });
+
+        }
+    );
+</script>

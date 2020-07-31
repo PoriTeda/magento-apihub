@@ -1,0 +1,65 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/* @var $block \Magento\TargetRule\Block\Adminhtml\Product */
+?>
+<?php if ($block->getIsReadonly()):?>
+<?php $_readonly = ' disabled="disabled" ';?>
+<?php else: ?>
+<?php $_readonly = '';?>
+<?php endif; ?>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?= /* @escapeNotVerified */ __('Rule-based Settings') ?></h4>
+    </div>
+    <div class="fieldset">
+        <div class="hor-scroll">
+        <table class="form-list" id="table_catalog_targetrule">
+        <tr>
+            <td class="label"><label for="<?= /* @escapeNotVerified */ $block->getFieldName('position_limit') ?>"><?= /* @escapeNotVerified */ __('Rule-based Positions') ?></label></td>
+            <td class="value"><input type="text" class="input-text validate-number" id="<?= /* @escapeNotVerified */ $block->getFieldName('position_limit') ?>" name="product[<?= /* @escapeNotVerified */ $block->getFieldName('position_limit') ?>]" value="<?= (int)$block->getPositionLimit() ?>" <?= $block->isDefault('position_limit') || $block->getIsReadonly() ? 'disabled="true" ' : ''; ?>/>
+                <input type="checkbox" id="<?= /* @escapeNotVerified */ $block->getFieldName('position_limit') ?>_default" name="product[<?= /* @escapeNotVerified */ $block->getFieldName('position_limit') ?>_default]" value="1" onclick="targetruleSetDefault(this, '<?= /* @escapeNotVerified */ $block->getFieldName('position_limit') ?>');" class="checkbox" <?= /* @escapeNotVerified */ $_readonly ?><?= $block->isDefault('position_limit') ? 'checked' : ''; ?>/>
+                <label for="<?= /* @escapeNotVerified */ $block->getFieldName('position_limit') ?>_default" class="normal"><?= /* @escapeNotVerified */ __('Use Config Settings') ?></label>
+            </td>
+            <?php if (!$block->isSingleStoreMode()): ?>
+            <td class="value scope-label"><?= /* @escapeNotVerified */ __('[GLOBAL]') ?></td>
+            <?php endif; ?>
+        </tr>
+        <tr>
+            <td class="label"><label for="<?= /* @escapeNotVerified */ $block->getFieldName('position_behavior') ?>"><?= /* @escapeNotVerified */ __('Position Behavior') ?></label></td>
+            <td class="value"><select id="<?= /* @escapeNotVerified */ $block->getFieldName('position_behavior') ?>" name="product[<?= /* @escapeNotVerified */ $block->getFieldName('position_behavior') ?>]" class="select" <?= $block->isDefault('position_behavior') || $block->getIsReadonly() ? 'disabled="true"' : ''; ?>>
+            <?php
+            foreach ($block->getPositionBehaviorOptions() as $key => $value) {
+                /* @escapeNotVerified */ echo "<option value=\"{$key}\"";
+                echo($key == $block->getPositionBehavior()) ? 'selected' : '';
+                /* @escapeNotVerified */ echo ">{$value}</option>";
+            }
+            ?>
+            </select>
+            <input type="checkbox" id="<?= /* @escapeNotVerified */ $block->getFieldName('position_behavior') ?>_default" name="product[<?= /* @escapeNotVerified */ $block->getFieldName('position_behavior') ?>_default]" value="1" onclick="targetruleSetDefault(this, '<?= /* @escapeNotVerified */ $block->getFieldName('position_behavior') ?>');" class="checkbox" <?= /* @escapeNotVerified */ $_readonly ?><?= $block->isDefault('position_behavior') ? 'checked' : ''; ?>/>
+            <label for="<?= /* @escapeNotVerified */ $block->getFieldName('position_behavior') ?>_default" class="normal"><?= /* @escapeNotVerified */ __('Use Config Settings') ?></label>
+            </td>
+            <?php if (!$block->isSingleStoreMode()): ?>
+            <td class="value scope-label"><?= /* @escapeNotVerified */ __('[GLOBAL]') ?></td>
+            <?php endif; ?>
+        </tr>
+        </table>
+        </div>
+    </div>
+</div>
+<script>
+require(['prototype'], function(){
+
+//<![CDATA[
+targetruleSetDefault = function (check, elementId) {
+    var el = $(elementId).disabled = check.checked;
+};
+//]]>
+
+});
+</script>

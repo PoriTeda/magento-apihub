@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="fraud_check" showInDefault="1" showInWebsite="1" showInStore="1" type="text" translate="label"
+                 sortOrder="100">
+            <label>Fraud Detection</label>
+            <tab>mirasvit</tab>
+            <resource>Mirasvit_FraudCheck::config</resource>
+            <group id="hold" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="10">
+                <label>Order behaviour configuration</label>
+
+                <field id="on_review" translate="label" type="select" sortOrder="20" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Hold on Review status</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="on_reject" translate="label" type="select" sortOrder="20" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Hold on Reject status</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="authorization" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0"
+                   showInStore="0">
+                <label>Authorization Settings</label>
+                <field id="google_api_key" translate="label comment tooltip" type="text" sortOrder="10"
+                       showInDefault="1">
+                    <label>Google Map API Key</label>
+                    <comment>https://developers.google.com/maps/documentation/javascript/get-api-key</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

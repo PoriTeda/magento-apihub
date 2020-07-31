@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<config>
+    <system>
+        
+        
+        
+        <!-- master tab -->
+        
+        <tab id="wyomind" translate="label" sortOrder="1000000">
+            <label><![CDATA[<span class='wyomind-logo'>Wyomind</span>]]></label>
+        </tab>
+        
+            
+        <section id="pointofsale" translate="label" sortOrder="130" showInDefault="1" showInWebsite="0" showInStore="0">
+            <class>separator-top</class>
+            <label><![CDATA[<span class='pos-logo'>Point Of Sale</span>]]></label>
+            <tab>wyomind</tab>
+            <resource>Wyomind_PointOfSale::pointofsale_config</resource>
+            
+            <!-- License -->
+            
+            <group id="license" translate="label" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>License activation</label>
+                <field id="extension_version" translate="label" type="link" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Extension version</label>
+                </field>
+                <field id="activation_key" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Activation key</label>
+                    <comment>1- Fill this field with your activation key.</comment>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+               <field id="get_online_license" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Remote Activation</label>
+                    <comment><![CDATA[2- Choose your activation method.<br/>[yes = automatic activation]<br/>[no = manual activation]]]></comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="activation_code" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Activation code</label>
+                    <comment>3 - Follow the instructions in the nofication.\nThen fill this field with the license code you get.</comment>
+                    <depends>
+                        <field id="get_online_license">0</field>
+                    </depends>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+                <field id="activation_flag" translate="label" type="hidden" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <frontend_model>Wyomind\Core\Block\Adminhtml\System\Config\Form\Field\ActivationFlag</frontend_model>
+                </field>
+            </group>
+            <group id="settings" translate="label" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Settings</label>
+                 <field id="googleapi" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Google Api key</label>
+                    <comment><![CDATA[<a target="_blank" href="https://developers.google.com/maps/documentation/javascript/get-api-key">Get your Google api key</a>]]></comment>
+                </field>
+                <field id="pattern" translate="label comment" type="textarea" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Store description template</label>
+                    <comment>Html and css code are supported. Available variables : {{code}},{{name}},{{phone}},{{email}},{{address_1}},{{address_2}},{{city}},{{state}},{{country}},{{zipcode}},{{hours}},{{description}},{{image}}</comment>
+                </field>
+                <field id="time" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Time format to display</label>
+                    <comment>
+                        <![CDATA[<span class="notice">Example : h:i A for 2:30 AM.
+                            <br>
+                            <br>
+                            <style>
+                                .date-format TD{
+                                    border:1px solid grey !important;
+                                    vertical-align:middle;
+                                    text-align: center;
+                                }
+                                .date-format .section {
+                                    background: none repeat scroll 0 0 #FC862E;
+                                    color: white;
+                                    font-weight: bold;
+                                }
+                            </style>
+                            <strong>The following characters are recognized in the time format</strong>
+                            <table style="width:auto;border:1px solid grey" class='date-format' >
+                                <thead>
+                                    <tr style="color:#676056;">
+                                        <th>Character</th>
+                                        <th>Description</th>
+                                        <th>Returned values</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="tbody">
+                                    <tr><td><em>a</em> <td>Lowercase Ante meridiem and Post meridiem</td><td> 	<em>am</em> or <em>pm</em></td></tr>
+                                    <tr><td><em>A</em> 	 <td>Uppercase Ante meridiem and Post meridiem</td><td>  	<em>AM</em> or <em>PM</em></td></tr>
+                                    <tr><td><em>g</em> <td> 	12-hour format of an hour without leading zeros </td><td> 	<em>1</em> through <em>12</em></td></tr>
+                                    <tr><td><em>G</em> <td> 	24-hour format of an hour without leading zeros </td><td> 	<em>0</em> through <em>23</em></td></tr>
+                                    <tr><td><em>h</em> <td> 	12-hour format of an hour with leading zeros</td><td>  	<em>01</em> through <em>12</em></td></tr>
+                                    <tr><td><em>H</em> <td> 	24-hour format of an hour with leading zeros </td><td> 	<em>00</em> through <em>23</em></td></tr>
+                                    <tr><td><em>i</em> <td> 	Minutes with leading zeros </td><td> 	<em>00</em> to <em>59</em></td></tr>
+                                    <tr><td><em>s</em>  <td>	Seconds, with leading zeros </td><td> 	<em>00</em> through <em>59</em></td></tr>
+                                </tbody>
+                            </table>
+                        </span>]]>
+                    </comment>
+                </field>
+            </group>
+            
+            
+            
+        </section>
+    </system>
+</config>

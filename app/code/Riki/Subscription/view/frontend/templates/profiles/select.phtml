@@ -1,0 +1,127 @@
+<?php /** @var \Riki\Subscription\Block\Profiles\Select $block */ ?>
+<?php
+    $profiles = $block->getProfiles();
+    $reqDataValue = $block->getResquestData();
+?>
+<div id="choose-subscription" class="block-choose-subscription">
+    <?php if (count($profiles) > 0): ?>
+    <div class="choose-subscription-head">
+        <div class="back-to-acquia">
+            <a href="javascript:void(0)" onclick="history.back();"><em class="fa fa-angle-left"></em></a>
+        </div>
+        <div class="list-profiles">
+            <div class="explanation">
+                <strong><?= __('Add to next scheduled delivery'); ?></strong>
+                <p><?= __('Please select a course to add products'); ?></p>
+            </div>
+        </div>
+    </div>
+    <form action="<?= $block->getUrl('*/profiles/addproduct') ?>" method="POST" id="form-choose-profile">
+        <?= $block->getBlockHtml('formkey') ?>
+        <input name="current_url" type="hidden" value="<?= $block->getCurrentPageViewUrl(); ?>">
+        <input name="products" type="hidden" value="<?= $block->getProductList(); ?>">
+        <?php foreach ($profiles as $profile): ?>
+            <table summary="<?= 'profile_' . $profile['profile_id']; ?>" class="profile">
+                <tr style="display: none;">
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+                <tbody>
+                <tr>
+                    <td class="course-name"></td>
+                    <td class="title" align="right"><?= __('Subscription course name') ?></td>
+                    <td class="course-name">
+                        <div class="data">
+                            <label for="<?= 'profile_' . $profile['profile_id']; ?>">
+                                <span><?= $profile['course_name'] ?></span>
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="profile-id">
+                        <div class="data">
+                            <input name="profile_id" type="radio" class="required-entry profile-id"
+                                   value="<?= $profile['profile_id']; ?>"
+                                   id="<?= 'profile_' . $profile['profile_id']; ?>"/>
+                            <span class="checkmark"></span>
+                        </div>
+                    </td>
+                    <td class="title" align="right"><?= __('Frequency') ?></td>
+                    <td class="frequency">
+                        <div class="data">
+                            <span><?= $profile['frequency_interval'] . ' ' ?></span><span><?= __($profile['frequency_unit']) ?></span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="deliver-to"></td>
+                    <td class="title" align="right"><?= __('Deliver To') ?></td>
+                    <td class="deliver-to">
+                        <div class="data"><?= $profile['shipping_address_type'] ?></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="next-delivery-date"></td>
+                    <td class="title" align="right"><?= __('Next delivery date') ?></td>
+                    <td class="next-delivery-date">
+                        <div class="data"><?= $profile['next_delivery_date'] ?></div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        <?php endforeach; ?>
+        <div class="primary">
+            <button data-title="<?php echo __('Proceed to order process') ?>" type="submit"
+                    class="action submit primary submit-selected-profile disabled"
+                    title="<?php echo __('Proceed to order process') ?>">
+                <span><?php echo __('Proceed to order process') ?></span>
+            </button>
+        </div>
+        <input type="hidden" name="reqdata" value="<?= $reqDataValue ?>">
+    </form>
+</div>
+<?php else: ?>
+    <div class="no-profile">
+        <div class="content">
+            <div class="explanation"><?= __('There are no scheduled flights for this campaign.') ?></div>
+        </div>
+    </div>
+<?php endif; ?>
+<script type="text/javascript">
+    require([
+        'jquery',
+        'Magento_Customer/js/customer-data'
+    ], function ($, customerData) {
+        'use strict';
+        var confirm = $('#form-choose-profile'),
+            button = $('button.submit-selected-profile'),
+            selectProfile = $('input:radio[name=profile_id]'),
+            errorMsg = '<?php echo __('Please select a course to add products') ?>';
+
+        confirm.on('submit', function (event) {
+            if (selectProfile.is(':checked') === false) {
+                button.addClass('disabled');
+                customerData.set('messages', {
+                    messages: [{
+                        type: 'error',
+                        text: errorMsg
+                    }]
+                });
+                event.preventDefault();
+                return false;
+            }
+        });
+
+        selectProfile.on('change', function () {
+            button.removeClass('disabled');
+        });
+
+        $(document).ready(function () {
+            if(selectProfile.is(':checked') === true){
+                button.removeClass('disabled');
+            }
+        });
+    });
+</script>

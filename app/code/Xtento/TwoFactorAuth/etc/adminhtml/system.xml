@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="twofactorauth" translate="label" sortOrder="190" showInDefault="1" showInStore="1" showInWebsite="0">
+            <tab>xtento</tab>
+            <label>Two-Factor Authentication</label>
+            <resource>Xtento_TwoFactorAuth::configuration</resource>
+            <group id="general" translate="label" showInDefault="1" sortOrder="10">
+                <label>Extension Configuration</label>
+                <attribute type="expanded">1</attribute>
+                <frontend_model>Xtento\XtCore\Block\System\Config\Form\Xtento\Module</frontend_model>
+                <fieldset_css>Xtento_TwoFactorAuth|Xtento\TwoFactorAuth\Model\System\Config\Backend\Server</fieldset_css>
+                <comment>
+                    <![CDATA[
+                    <script>
+                    requirejs(['jquery', 'prototype'], function() {
+                        function setCommentHtml(message) {
+                            if (Prototype.Browser.IE) {
+                                $('twofactorauth_general_serial').next('p').outerHTML = message;
+                            } else {
+                                $('twofactorauth_general_serial').next('p').innerHTML = message;
+                            }
+                        }
+
+                        function initSystemConfiguration() {
+                            if ($('twofactorauth_general_server_name')) {
+                                $('twofactorauth_general_server_name').style.backgroundColor='#f0f0f0';
+                                $('twofactorauth_general_server_name').disable();
+                                if ($('row_twofactorauth_general_server')) {
+                                    $('row_twofactorauth_general_server').hide();
+                                }
+                            }
+
+                            if ($('twofactorauth_general_serial') && $('twofactorauth_general_serial').value !== '' && $('twofactorauth_general_server') && $('twofactorauth_general_server').value !== '') {
+                                if ($('twofactorauth_general_serial').value.length !== 40) {
+                                    setCommentHtml('<a href="http://www.xtento.com" target="_blank"><img src="//www.xtento.com/license/check/?d='+$('twofactorauth_general_server').value+'" border="0" style="margin-top: 4px;"/></a>');
+                                } else {
+                                    if (typeof $('twofactorauth_general_serial').nextSibling !== 'undefined' && typeof $('twofactorauth_general_serial').nextSibling.nextSibling !== 'undefined') {
+                                        setCommentHtml('<a href="http://www.xtento.com" target="_blank"><img src="//www.xtento.com/license/check/?d='+$('twofactorauth_general_server').value+'" border="0" style="margin-top: 4px;"/></a>');
+                                    }
+                                }
+                            } else {
+                                if ($('twofactorauth_general_server').value !== '') {
+                                    setCommentHtml('<a href="http://www.xtento.com" target="_blank"><img src="//www.xtento.com/license/check/?d='+$('twofactorauth_general_server').value+'" border="0" style="margin-top: 4px;"/></a>');
+                                }
+                            }
+                        }
+                        jQuery(document).ready(function () {
+                            initSystemConfiguration();
+                        });
+                    });
+                    </script>
+                    ]]>
+                </comment>
+                <field id="heading" translate="label" sortOrder="10" showInDefault="1">
+                    <label>General Configuration</label>
+                    <frontend_model>Magento\Config\Block\System\Config\Form\Field\Heading</frontend_model>
+                </field>
+                <field id="server_name" translate="label" sortOrder="20" showInDefault="1">
+                    <label>Server Name</label>
+                    <frontend_model>Xtento\XtCore\Block\System\Config\Form\Xtento\Servername</frontend_model>
+                </field>
+                <field id="serial" translate="label" sortOrder="30" showInDefault="1">
+                    <label>License Key</label>
+                    <comment>Please enter your license key here.</comment>
+                    <backend_model>Xtento\XtCore\Model\System\Config\Backend\License</backend_model>
+                </field>
+                <field id="enabled" translate="label" type="select" sortOrder="40" showInDefault="1">
+                    <label>Module Enabled</label>
+                    <comment>A valid license key is required in order to enable the module.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="server" translate="label" type="hidden" sortOrder="50" showInDefault="1">
+                    <label/>
+                    <backend_model>Xtento\TwoFactorAuth\Model\System\Config\Backend\Server</backend_model>
+                </field>
+                <field id="allow_ips" translate="label" type="text" sortOrder="60" showInDefault="1">
+                    <label>Disabled for IPs</label>
+                    <comment><![CDATA[Enter IP addresses (comma separated) which don't have to use two factor authentication when logging in. This makes sense if you are accessing your Magento administration from a static IP address for example.]]></comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
+<!--
+/**
+ * Product:       Xtento_TwoFactorAuth (2.1.5)
+ * ID:            %!uniqueid!%
+ * Packaged:      %!packaged!%
+ * Last Modified: 2017-07-26T13:33:01+00:00
+ * File:          etc/adminhtml/system.xml
+ * Copyright:     Copyright (c) 2017 XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

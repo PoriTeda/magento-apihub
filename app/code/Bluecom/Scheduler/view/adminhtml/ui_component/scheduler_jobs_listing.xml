@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">scheduler_jobs_listing.scheduler_jobs_listing_data_source</item>
+            <item name="deps" xsi:type="string">scheduler_jobs_listing.scheduler_jobs_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">scheduler_jobs_columns</item>
+    </argument>
+    <dataSource name="scheduler_jobs_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">JobsGridDataProvider</argument>
+            <argument name="name" xsi:type="string">scheduler_jobs_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">job_id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="indexField" xsi:type="string">job_id</item>
+                    </item>
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                </item>
+                <!--<item name="config" xsi:type="array">
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                </item>-->
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+    <container name="listing_top">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="template" xsi:type="string">ui/grid/toolbar</item>
+                <item name="stickyTmpl" xsi:type="string">ui/grid/sticky/toolbar</item>
+            </item>
+        </argument>
+        <bookmark name="bookmarks">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="namespace" xsi:type="string">scheduler_jobs_listing</item>
+                    </item>
+                </item>
+            </argument>
+        </bookmark>
+        <component name="columns_controls">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsData" xsi:type="array">
+                        <item name="provider" xsi:type="string">scheduler_jobs_listing.scheduler_jobs_listing.scheduler_jobs_columns</item>
+                    </item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
+                    <item name="displayArea" xsi:type="string">dataGridActions</item>
+                </item>
+            </argument>
+        </component>
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsProvider" xsi:type="string">scheduler_jobs_listing.scheduler_jobs_listing.scheduler_jobs_columns</item>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">scheduler_jobs_listing.scheduler_jobs_listing.listing_top.bookmarks</item>
+                        <item name="namespace" xsi:type="string">current.filters</item>
+                    </item>
+                    <item name="templates" xsi:type="array">
+                        <item name="filters" xsi:type="array">
+                            <item name="select" xsi:type="array">
+                                <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
+                                <item name="template" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+                            </item>
+                        </item>
+                    </item>
+                    <item name="childDefaults" xsi:type="array">
+                        <item name="provider" xsi:type="string">scheduler_jobs_listing.scheduler_jobs_listing.listing_top.listing_filters</item>
+                        <item name="imports" xsi:type="array">
+                            <item name="visible" xsi:type="string">scheduler_jobs_listing.scheduler_jobs_listing.scheduler_jobs_columns.${ $.index }:visible</item>
+                        </item>
+                    </item>
+                </item>
+                <item name="observers" xsi:type="array">
+                    <item name="column" xsi:type="string">column</item>
+                </item>
+            </argument>
+        </filters>
+        <massaction name="listing_massaction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">scheduler_jobs_listing.scheduler_jobs_listing.scheduler_jobs_columns.ids</item>
+                    <item name="indexField" xsi:type="string">job_id</item>
+                </item>
+            </argument>
+            <action name="enable">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">enable</item>
+                        <item name="label" xsi:type="string" translate="true">Enable</item>
+                        <item name="url" xsi:type="url" path="scheduler/jobs/massEnable"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Enable Items</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+            <action name="disable">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">disable</item>
+                        <item name="label" xsi:type="string" translate="true">Disable</item>
+                        <item name="url" xsi:type="url" path="scheduler/jobs/massDisable"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Disable Items</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+            <action name="schenow">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">schenow</item>
+                        <item name="label" xsi:type="string" translate="true">Schedule Now</item>
+                        <item name="url" xsi:type="url" path="scheduler/jobs/massSchenow"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Schedule Now</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
+        <paging name="listing_paging">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">scheduler_jobs_listing.scheduler_jobs_listing.listing_top.bookmarks</item>
+                        <item name="namespace" xsi:type="string">current.paging</item>
+                    </item>
+                    <item name="selectProvider" xsi:type="string">scheduler_jobs_listing.scheduler_jobs_listing.scheduler_jobs_columns.ids</item>
+                </item>
+            </argument>
+        </paging>
+    </container>
+
+    <columns name="scheduler_jobs_columns">
+        <selectionsColumn name="ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">job_id</item>
+                    <item name="sortOrder" xsi:type="number">1</item>
+                </item>
+            </argument>
+        </selectionsColumn>
+
+        <column name="job_code">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Job Code</item>
+                    <item name="sortOrder" xsi:type="number">2</item>
+                </item>
+            </argument>
+        </column>
+        <column name="expression">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Cron Expression</item>
+                    <item name="sortOrder" xsi:type="number">3</item>
+                </item>
+            </argument>
+        </column>
+        <column name="group_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Group</item>
+                    <item name="sortOrder" xsi:type="number">4</item>
+                </item>
+            </argument>
+        </column>
+        <column name="model_path">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Model Path</item>
+                    <item name="sortOrder" xsi:type="number">5</item>
+                </item>
+            </argument>
+        </column>
+        <column name="method_execute">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Method</item>
+                    <item name="sortOrder" xsi:type="number">6</item>
+                </item>
+            </argument>
+        </column>
+        <column name="active">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Bluecom\Scheduler\Model\Source\JobStatusOption</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Status</item>
+                    <item name="sortOrder" xsi:type="number">7</item>
+                </item>
+            </argument>
+        </column>
+        <actionsColumn name="actions" class="Bluecom\Scheduler\Ui\Component\Listing\Column\JobAction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">job_id</item>
+                    <item name="sortOrder" xsi:type="number">8</item>
+                </item>
+            </argument>
+        </actionsColumn>
+    </columns>
+</listing>

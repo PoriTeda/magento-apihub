@@ -1,0 +1,44 @@
+<?php
+
+/** @var \Riki\Catalog\Helper\Data $_rikiCatalogHelper */
+$_rikiCatalogHelper = $this->helper('Riki\Catalog\Helper\Data');
+
+/** @var \Magento\Catalog\Model\Product $_product */
+$_product = $block->getProduct();
+$_isFreeShipping = $_product->getIsFreeShipping();
+$_deliveryType = $_product->getData('delivery_type');
+$_giftWrapping = $_product->getData('gift_wrapping');
+$_giftWrappingAvailable = $this->helper('\Magento\GiftWrapping\Helper\Data')->isGiftWrappingAvailableForItems();
+$deliveryTypeText = $_rikiCatalogHelper->getLabelHtmlOfDeliveryType($_deliveryType);
+$deliveryTypeHtmlClass = $_rikiCatalogHelper->getLabelHtmlClassOfDeliveryType($_deliveryType);
+?>
+<?php if ($_isFreeShipping || $_deliveryType || ($_giftWrapping && $_giftWrappingAvailable)) : ?>
+    <div class="group">
+        <?php if ($_deliveryType && $deliveryTypeText) :?>
+            <div class="product-tag delivery_type <?php echo $deliveryTypeHtmlClass; ?>">
+                <span><?php echo __($deliveryTypeText); ?></span>
+            </div>
+        <?php endif; ?>
+        <?php if ($_isFreeShipping) : ?>
+            <div class="product-tag free_shipping">
+                <span><?php echo __('FreeShipping'); ?></span>
+            </div>
+        <?php endif; ?>
+
+        <?php if($_giftWrappingAvailable && $_rikiCatalogHelper->hasGiftWrapping($_product)): ?>
+            <?php if($_rikiCatalogHelper->hasFreeGiftWrapping($_product)): ?>
+                <div class="product-tag wrapping_available"><span><?php echo __('Wrapping Free') ?></span></div>
+            <?php else:?>
+                <div class="product-tag wrapping_available"><span><?php echo __('Wrapping Available') ?></span></div>
+            <?php endif; ?>
+        <?php endif; ?>
+        <?php if($this->helper('\Riki\Preorder\Helper\Data')->getIsProductPreorder($_product)): ?>
+            <div class="product-tag reorder"><span><?php echo __('Re order') ?></span></div>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>
+
+<script type="text/javascript">
+    window.deliveryType = "<?= $deliveryTypeHtmlClass ?? null; ?>";
+    window.giftWrapping = "<?= $_giftWrapping ?? null; ?>";
+</script>

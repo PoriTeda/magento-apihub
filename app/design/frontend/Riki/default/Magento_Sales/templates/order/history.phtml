@@ -1,0 +1,141 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/** @var \Riki\Sales\Block\Order\History $block */
+$_orders = $block->getOrders();
+$blockLegacy  = $block->getLayout()->createBlock('Riki\ThirdPartyImportExport\Block\Order\History');
+$ordersLegacy = $blockLegacy->getOrders();
+
+?>
+<?php echo $block->getChildHtml('info');?>
+<div class="orders-history orders info detailed">
+    <div class="orders data items" data-mage-init='{"tabs":{"openedState":"active"}}'>
+        <div class="data item title active"
+             aria-labeledby="tab-label-title"
+             data-role="collapsible" id="tab-label">
+            <a class="data switch"
+               tabindex="-1"
+               data-toggle="switch"
+               href="#"
+               id="tab-label--title">
+                <?php  echo __('After 6/14'); ?>
+            </a>
+        </div>
+        <div class="data item content" data-role="content">
+            <?php if ($_orders && count($_orders)): ?>
+                <?php if ($block->getPagerHtml()): ?>
+                    <div class="order-products-toolbar toolbar toolbar-products top"><?php echo $block->getPagerHtml(); ?></div>
+                <?php endif ?>
+                <div class="table-wrapper orders-history">
+                    <table class="data table table-order-items history" id="my-orders-table">
+                        <caption class="table-caption"><?php /* @escapeNotVerified */ echo __('Orders') ?></caption>
+                        <thead>
+                        <tr>
+                            <th scope="col" class="col id"><?php /* @escapeNotVerified */ echo __('Order #') ?></th>
+                            <th scope="col" class="col date"><?php /* @escapeNotVerified */ echo __('Order Date') ?></th>
+                            <th scope="col" class="col type"><?php /* @escapeNotVerified */ echo __('Order Type') ?></th>
+                            <th scope="col" class="col total"><?php /* @escapeNotVerified */ echo __('Order Total (Incl. Tax)') ?></th>
+                            <th scope="col" class="col status"><?php /* @escapeNotVerified */ echo __('Shipments') ?></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($_orders as $_order): ?>
+                            <?php $colorCode = $block->getColorStatus($_order->getStatus()); ?>
+                            <tr>
+                                <td data-th="<?php echo $block->escapeHtml(__('Order #')) ?>" class="col id"><a href="<?php /* @escapeNotVerified */ echo $block->getViewUrl($_order) ?>" class="action view"><?php /* @escapeNotVerified */ echo $_order->getRealOrderId() ?></a></td>
+                                <td data-th="<?php echo $block->escapeHtml(__('Order Date')) ?>" class="col date"><?php /* @escapeNotVerified */ echo $block->formatDate($_order->getCreatedAt(), \IntlDateFormatter::MEDIUM) ?></td>
+                                <td data-th="<?php echo $block->escapeHtml(__('Order Type')) ?>" class="col type">
+                                    <?php
+                                        /* @escapeNotVerified */
+                                        echo $block->getOrderType($_order);
+                                    ?>
+                                </td>
+                                <td data-th="<?php echo $block->escapeHtml(__('Order Total (Incl. Tax)')) ?>" class="col total"><?php /* @escapeNotVerified */ echo $_order->formatPrice($_order->getGrandTotal()) ?></td>
+                                <td data-th="<?php echo $block->escapeHtml(__('Shipments')) ?>" class="col status"><span><?php /* @escapeNotVerified */ echo $_order->getStatusLabel() ?></span></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <?php if ($block->getPagerHtml()): ?>
+                    <div class="order-products-toolbar toolbar toolbar-products bottom"><?php echo $block->getPagerHtml(); ?></div>
+                <?php endif ?>
+            <?php else: ?>
+                <div class="message info empty"><span><?php /* @escapeNotVerified */ echo __('You have placed no orders.'); ?></span></div>
+            <?php endif ?>
+        </div>
+        <div class="data item title"
+             aria-labeledby="tab-label-title"
+             data-role="collapsible" id="tab-label">
+            <a class="data switch"
+               tabindex="-1"
+               data-toggle="switch"
+               href="#"
+               id="tab-label--title">
+                <?php  echo __('Before 6/13'); ?>
+            </a>
+        </div>
+
+        <div class="data item content" data-role="content">
+            <?php if ($ordersLegacy && count($ordersLegacy)): ?>
+                <?php if ($blockLegacy->getPagerHtml()): ?>
+                    <div class="order-products-toolbar toolbar toolbar-products top"><?php echo $blockLegacy->getPagerHtml(); ?></div>
+                <?php endif ?>
+                <div class="table-wrapper orders-history">
+                    <table class="data table table-order-items history" id="my-orders-table">
+                        <caption class="table-caption"><?php /* @escapeNotVerified */ echo __('Orders') ?></caption>
+                        <thead>
+                        <tr>
+                            <th scope="col" class="col id"><?php /* @escapeNotVerified */ echo __('Order #') ?></th>
+                            <th scope="col" class="col date"><?php /* @escapeNotVerified */ echo __('Order Date') ?></th>
+                            <th scope="col" class="col type"><?php /* @escapeNotVerified */ echo __('Order Type') ?></th>
+                            <th scope="col" class="col total"><?php /* @escapeNotVerified */ echo __('Order Total') ?></th>
+                            <th scope="col" class="col status"><?php /* @escapeNotVerified */ echo __('Shipments') ?></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($ordersLegacy as $_orderLegacy): ?>
+                            <tr>
+                                <td data-th="<?php echo $block->escapeHtml(__('Order #')) ?>" class="col id">
+                                    <a href="<?php /* @escapeNotVerified */ echo $_orderLegacy->getViewUrl($_orderLegacy) ?>" class="action view">
+                                        <?php /* @escapeNotVerified */ echo $_orderLegacy->getId() ?>
+                                    </a>
+                                </td>
+                                <td data-th="<?php echo $block->escapeHtml(__('Order Date')) ?>" class="col date">
+                                    <?php /* @escapeNotVerified */ echo $block->formatDate($_orderLegacy->getOrderDatetime(), \IntlDateFormatter::MEDIUM) ?>
+                                </td>
+                                <td data-th="<?php echo $block->escapeHtml(__('Order Type')) ?>" class="col type">
+                                    <span>
+                                        <?php /* @escapeNotVerified */ echo $_orderLegacy->getSubscriptionTypeLabel() ?>
+                                    </span>
+                                </td>
+                                <td data-th="<?php echo $block->escapeHtml(__('Order Total')) ?>" class="col total">
+                                    <?php /* @escapeNotVerified */ echo $_orderLegacy->formatPrice($_orderLegacy->getGrandTotal()) ?>
+                                </td>
+                                <td data-th="<?php echo $block->escapeHtml(__('Shipments')) ?>" class="col status">
+                                    <span><?php /* @escapeNotVerified */ echo $_orderLegacy->getStatusLabel() ?></span>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <?php if ($blockLegacy->getPagerHtml()): ?>
+                    <div class="order-products-toolbar toolbar toolbar-products bottom"><?php echo $blockLegacy->getPagerHtml(); ?></div>
+                <?php endif ?>
+            <?php else: ?>
+                <div class="message info empty"><span><?php /* @escapeNotVerified */ echo __('You have placed no orders.'); ?></span></div>
+            <?php endif ?>
+        </div>
+    </div>
+</div>
+
+
+

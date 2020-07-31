@@ -1,0 +1,57 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Gift registry items template
+ *
+ * @var $block \Magento\GiftRegistry\Block\Items
+ */
+?>
+<?php
+    $_itemsCount = count($block->getItems());
+?>
+<div class="block block-giftregistry-shared-items">
+    <div class="block-title"><strong><?= /* @escapeNotVerified */ __('Gift Registry Items') ?></strong></div>
+    <div class="block-content">
+        <?php if (!$_itemsCount): ?>
+            <div class="message info empty"><span><?= /* @escapeNotVerified */ __('This gift registry has no items.') ?></span></div>
+        <?php else:?>
+            <form action="<?= /* @escapeNotVerified */ $block->getActionUrl() ?>" method="post" class="form giftregistry">
+                <div class="table-wrapper">
+                    <table id="shopping-cart-table" class="data table giftregistry">
+                        <caption class="table-caption"><?= /* @escapeNotVerified */ __('Gift Registry Items') ?></caption>
+                        <thead>
+                        <tr>
+                            <th class="col product" scope="col"><?= /* @escapeNotVerified */ __('Product Name') ?></th>
+                            <th class="col registered" scope="col"><?= /* @escapeNotVerified */ __('Requested') ?></th>
+                            <th class="col fulfilled" scope="col"><?= /* @escapeNotVerified */ __('Fulfilled') ?></th>
+                            <th class="col remaining" scope="col"><?= /* @escapeNotVerified */ __('Remaining') ?></th>
+                            <th class="col price" scope="col"><?= /* @escapeNotVerified */ __('Unit Price') ?></th>
+                            <th class="col qty" scope="col"><?= /* @escapeNotVerified */ __('Qty') ?></th>
+                        </tr>
+                        </thead>
+                        <?php foreach ($block->getItems() as $_item): ?>
+                            <tbody class="item">
+                                <?= $block->getItemHtml($_item) ?>
+                            </tbody>
+                        <?php endforeach ?>
+                    </table>
+                </div>
+                <div class="actions-toolbar">
+                    <div class="primary">
+                        <button type="submit"
+                                title="<?= /* @escapeNotVerified */ __('Add to Cart') ?>"
+                                class="action primary"><span><?= /* @escapeNotVerified */ __('Add to Cart') ?></span></button>
+                    </div>
+                </div>
+            </form>
+        <?php endif; ?>
+    </div>
+</div>

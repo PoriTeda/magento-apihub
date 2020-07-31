@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Riki\CedynaInvoice\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Riki\CedynaInvoice\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">Cedyna Invoice Importer</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\CedynaInvoice\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="cedyna_invoice_invoice_listing_data_source_provider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\CedynaInvoice\Model\Resource\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">CedynaInvoiceGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="cedyna_invoice_invoice_listing_data_source" xsi:type="string">Riki\CedynaInvoice\Model\ResourceModel\Grid\Invoice\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Riki\CedynaInvoice\Model\ResourceModel\Grid\Invoice\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">riki_cedyna_invoice</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\CedynaInvoice\Model\ResourceModel\Invoice</argument>
+        </arguments>
+    </virtualType>
+    <type name="Riki\CedynaInvoice\Model\ResourceModel\Invoice">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Magento\ScalableOms\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="riki_cedyna_invoice" xsi:type="string">riki_cedyna_invoice</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data"  xsi:type="array">
+        <item name="buttons" xsi:type="array">
+            <item name="add" xsi:type="array">
+                <item name="name" xsi:type="string">add</item>
+                <item name="label" xsi:type="string" translate="true">Create New Order</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="class_name" xsi:type="string">Riki\Sales\Ui\Component\SplitButton</item>
+                <item name="url" xsi:type="string">sales/order_create/start</item>
+                <item name="options" xsi:type="array">
+                    <item name="single_address" xsi:type="array">
+                        <item name="label" xsi:type="string">Single Shipping Address</item>
+                        <item name="onclick_custom" xsi:type="array">
+                            <item name="path" xsi:type="string">sales/order_create/start</item>
+                            <item name="params" xsi:type="array">
+                            </item>
+                        </item>
+                        <item name="default" xsi:type="string">1</item>
+                    </item>
+                    <item name="multiple_address" xsi:type="array">
+                        <item name="label" xsi:type="string">Multiple Shipping Address</item>
+                        <item name="onclick_custom" xsi:type="array">
+                            <item name="path" xsi:type="string">riki_sales/order_create/multipleAddress</item>
+                            <item name="params" xsi:type="array">
+                            </item>
+                        </item>
+                    </item>
+                </item>
+            </item>
+        </item>
+    </argument>
+    <dataSource name="sales_order_grid_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Riki\Sales\Ui\DataProvider\OrderDataProvider</argument>
+        </argument>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <filters name="listing_filters">
+            <filterSelect name="customer_membership" provider="${ $.parentName }">
+                <settings>
+                    <options class="Riki\SubscriptionMembership\Model\Customer\Attribute\Source\Membership"/>
+                    <caption translate="true">Select...</caption>
+                    <label translate="true">Customer Membership</label>
+                    <dataScope>customer_membership</dataScope>
+                    <imports>
+                        <link name="visible">ns = ${ $.ns }, componentType = column, index = ${ $.index }:visible</link>
+                    </imports>
+                </settings>
+            </filterSelect>
+        </filters>
+        <massaction name="listing_massaction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Riki_Sales/js/grid/massactions</item>
+                </item>
+            </argument>
+        </massaction>
+    </listingToolbar>
+    <columns name="sales_order_columns">
+        <column name="customer_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Customer Id</item>
+                </item>
+            </argument>
+        </column>
+        <column name="payment_status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Riki\Shipment\Model\ResourceModel\Status\Options\Payment</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Payment Status</item>
+                </item>
+            </argument>
+        </column>
+        <column name="order_channel">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Riki\Sales\Model\Config\Source\OrderChannel</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Order channel</item>
+                </item>
+            </argument>
+        </column>
+        <column name="created_by">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">User</item>
+                </item>
+            </argument>
+        </column>
+        <column name="shosha_business_code">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Business Code</item>
+                </item>
+            </argument>
+        </column>
+        <column name="free_of_charge">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">\Magento\Config\Model\Config\Source\Yesno</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Free order?</item>
+                </item>
+            </argument>
+        </column>
+        <column name="payment_agent">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Payment Agent</item>
+                </item>
+            </argument>
+        </column>
+        <column name="collected_date" class="Riki\Sales\Ui\Component\Listing\Columns\CollectedDate">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Collection Date</item>
+                </item>
+            </argument>
+        </column>
+        <column name="mm_order_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Machine Maintenance Order ID</item>
+                </item>
+            </argument>
+        </column>
+        <column name="replacement_reason">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Replacement Reason Code</item>
+                </item>
+            </argument>
+        </column>
+        <column name="payment_transaction_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Transaction ID of Paygent</item>
+                </item>
+            </argument>
+        </column>
+        <column name="subscription_course_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Subscription Code</item>
+                </item>
+            </argument>
+        </column>
+        <column name="subscription_course_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Subscription Name</item>
+                </item>
+            </argument>
+        </column>
+        <column name="customer_membership" class="Riki\Sales\Ui\Component\Listing\Columns\CustomerMembership">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="align" xsi:type="string">left</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Customer Membership</item>
+                </item>
+            </argument>
+        </column>
+        <column name="payment_error_message">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Credit Error Code</item>
+                </item>
+            </argument>
+        </column>
+        <column name="refunded_to_store_credit">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Refunded To StoreCredit</item>
+                </item>
+            </argument>
+        </column>
+        <column name="original_order_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Original ID</item>
+                </item>
+            </argument>
+        </column>
+        <column name="original_unique_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Original Unique ID</item>
+                </item>
+            </argument>
+        </column>
+        <column name="is_stock_point">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">\Magento\Config\Model\Config\Source\Yesno</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Is Stock Point</item>
+                </item>
+            </argument>
+        </column>
+        <column name="riki_type">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">\Riki\SubscriptionCourse\Model\DelayedPayment\RikiType</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Order Type</item>
+                </item>
+            </argument>
+        </column>
+    </columns>
+</listing>

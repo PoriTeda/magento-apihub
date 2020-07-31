@@ -1,0 +1,19 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php if ($block->checkProductType($block->getItem()->getProduct())): ?>
+    <div class="giftregisty-dropdown add">
+        <span class="action toggle" data-mage-init='{"dropdown":{}}' data-toggle="dropdown" title=""><span><?= /* @escapeNotVerified */ __('Add to Gift Registry') ?></span></span>
+        <ul class="dropdown items">
+            <?php foreach ($block->getGiftRegistryList() as $_entity):?>
+                <li data-wishlist-to-giftregistry='{"itemId":"<?= /* @escapeNotVerified */ $block->getItem()->getId() ?>", "entity":"<?= /* @escapeNotVerified */ $_entity->getValue() ?>", "url":"<?= /* @escapeNotVerified */ $block->getUrl('giftregistry/index/wishlist', ['_secure' => $block->getRequest()->isSecure()]) ?>"}' class="item" title="<?= $block->escapeHtml($_entity->getTitle()) ?>"><?= $block->escapeHtml($block->truncateString($_entity->getTitle(), 40)) ?></li>
+            <?php endforeach;?>
+        </ul>
+    </div>
+<?php endif;?>

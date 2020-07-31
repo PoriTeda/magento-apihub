@@ -1,0 +1,20 @@
+<tr class="row-totals">
+    <td class="admin__total-mark" colspan="<?php /* @escapeNotVerified */ echo $block->getColspan() + 1; ?>">
+        <strong><?php /* @escapeNotVerified */ echo __('Shopping Point Information')?></strong>
+    </td>
+</tr>
+<tr class="row-totals">
+    <?php if($block->hasPointForTrial()){ ?>
+        <td style="<?php /* @escapeNotVerified */ echo $block->getStyle() ?>" class="admin__total-mark" colspan="<?php /* @escapeNotVerified */ echo $block->getColspan(); ?>">
+            <?php /* @escapeNotVerified */ echo __('Shopping Point Trial') ?>:
+        </td>
+    <?php }else{ ?>
+        <td style="<?php /* @escapeNotVerified */ echo $block->getStyle() ?>" class="admin__total-mark" colspan="<?php /* @escapeNotVerified */ echo $block->getColspan(); ?>">
+            <?php /* @escapeNotVerified */ echo $block->getTotal()->getTitle() ?>
+        </td>
+    <?php } ?>
+
+    <td style="<?php /* @escapeNotVerified */ echo $block->getStyle() ?>" class="admin__total-amount">
+        <?php /* @escapeNotVerified */ echo (int)$block->getTotal()->getValue() . __('point(s)') ?>
+    </td>
+</tr>

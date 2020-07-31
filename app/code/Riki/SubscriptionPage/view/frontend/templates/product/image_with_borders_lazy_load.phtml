@@ -1,0 +1,7 @@
+<?php /** @var $block \Magento\Catalog\Block\Product\Image */ ?>
+
+<img class="product-image-photo lazy"
+	<?php /* @escapeNotVerified */
+	echo $block->getCustomAttributes(); ?>
+     data-src="<?php /* @escapeNotVerified */ echo $block->getImageUrl(); ?>"
+     alt="<?php /* @escapeNotVerified */ echo $block->stripTags($block->getLabel(), null, true); ?>"/>

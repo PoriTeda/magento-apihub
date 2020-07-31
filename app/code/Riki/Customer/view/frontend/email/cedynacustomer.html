@@ -1,0 +1,14 @@
+<!--@subject Cedyna customer hold @-->
+{{template config_path="design/email/header_template"}}
+
+<p>各位</p>
+<p>※このメールは自動で送信されています</p>
+<p>本日、買取保留に関するステータスの変更が発生しております。
+ご確認いただきますよう、お願い申し上げます。</p>
+<p>また、買取保留で出荷手配中の伝票について緊急出荷止めが必要な場合は、
+倉庫業者様にご連絡いただきますようお願い申し上げます。</p>
+<p>【買取保留顧客】</p>
+<p>
+    {{var list_blocked_customer|nl2br}}
+</p>
+{{template config_path="design/email/footer_template"}}

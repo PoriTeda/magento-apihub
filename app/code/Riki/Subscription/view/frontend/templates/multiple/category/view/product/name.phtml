@@ -1,0 +1,67 @@
+<?php
+/** @var \Riki\Subscription\Block\Multiple\Category\View $parentBlock */
+$parentBlock = $block->getParentBlock()->getParentBlock();
+
+$categoryId = $block->getCategoryId();
+$product = $block->getProduct();
+
+$stockMessageArr = $parentBlock->getStockStatusMessage($product);
+if (array_key_exists('class', $stockMessageArr)
+    && array_key_exists('message', $stockMessageArr)
+) {
+    $classMessage = $stockMessageArr['class'];
+    $textMessage = $stockMessageArr['message'];
+} else {
+    $classMessage = '';
+    $textMessage = '';
+}
+$isInStock = $product->getIsSalable();
+if ($isInStock == false) {
+    $textMessage = $parentBlock->getOutStockMessageByProduct($product);
+}
+?>
+<input type="hidden"
+       name="<?php echo 'data[product]' . '[' . ((int)$product->getId() . '_' . (int)$categoryId) . ']' . '[product_id]' ?>"
+       value="<?php echo $product->getId(); ?>">
+<div class="product-item-name">
+    <span><?php echo $product->getName(); ?></span>
+</div>
+<div class="notification-qty <?php echo $classMessage ?>">
+    <?php echo __('Stock:') ?><?php echo $textMessage ?>
+</div>
+
+<?php if($parentBlock->getProductType($product) == 'configurable'): ?>
+    <input type="hidden"
+           name="<?php echo 'data[product]' . '[' . ((int)$product->getId() . '_' . (int)$categoryId) . ']' . '[product_type]' ?>"
+           value="<?php echo $parentBlock->getProductType($product); ?>">
+    <div class="swatch-opt<?php echo $product->getId() ?>"></div>
+    <script type="text/javascript">
+        require(["jquery", "jquery/ui", "Riki_SubscriptionPage/js/SwatchRendererCustom"], function ($) {
+            $('.swatch-opt<?php echo $product->getId() ?>').SwatchRenderer({
+                jsonConfig: <?php /* @escapeNotVerified */ echo $swatchOptions = $parentBlock->getJsonConfig($product)->getJsonConfig(); ?>,
+                jsonSwatchConfig: <?php /* @escapeNotVerified */ echo $swatchOptions = $parentBlock->getJsonConfig($product)->getJsonSwatchConfig(); ?>,
+                selectorProduct: '.subscription-info-price<?php echo $product->getId() ?>',
+                productId: <?php echo $product->getId() ?>
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        require([
+            'jquery',
+            'Magento_Catalog/js/price-box'
+        ], function ($) {
+            var priceBoxes<?php echo $product->getId() ?> = $('.subscription-info-price<?php echo $product->getId() ?> .price-box');
+            priceBoxes<?php echo $product->getId() ?>.priceBox({'priceConfig': <?php /* @escapeNotVerified */ echo $parentBlock->getJsonPriceConfig($product)->getJsonConfig() ?>});
+        });
+    </script>
+    <?php $parentBlock->deleteRegister('product'); ?>
+<?php endif; ?>
+
+<?php if($parentBlock->getProductType($product) == 'bundle'): ?>
+    <input type="hidden"
+           name="<?php echo 'data[product]' . '[' .((int)$product->getId() . '_' . (int)$categoryId) . ']' . '[product_type]' ?>"
+           value="<?php echo $parentBlock->getProductType($product); ?>">
+    <div class="no-display">
+        <?php echo $parentBlock->getLayout()->getBlock('product.info.bundle.options')->setProduct($product)->setCategoryId($categoryId)->toHtml() ?>
+    </div>
+<?php endif; ?>

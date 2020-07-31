@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="validate_product_stock_after_assigned">
+        <observer name="riki_pageCache_validate_product_stock_after_assigned" instance="Riki\PageCache\Observer\ValidateProductStockAfterAssigned"/>
+    </event>
+    <event name="checkout_submit_all_after">
+        <observer name="riki_pageCache_checkout_submit_all_after" instance="Riki\PageCache\Observer\CleanProductCacheAfterPlaceOrder" />
+    </event>
+</config>

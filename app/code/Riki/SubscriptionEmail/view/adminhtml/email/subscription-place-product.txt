@@ -1,0 +1,8 @@
+<!--@subject Replace Product Reminder @-->
+<!--@vars {
+
+} @-->
+Hello {{var customer_name}},
+The product "{{var discontinued_product}}" has been replaced by product "{{var replacement_product}}".
+So, your subscription profiles has been updated:
+{{layout handle="profile_replace_product" subscription_profile_ids=$subscription_profile_ids area="adminhtml"}}

@@ -1,0 +1,41 @@
+<?php
+/**
+ * @var $block \Riki\Loyalty\Block\Adminhtml\Customer\Edit\Tab\Reward\Balance
+ */
+$statistic = $block->getStatistic();
+?>
+
+<div class="fieldset-wrapper customer-information">
+    <div class="fieldset-wrapper-title">
+        <span class="title"><?php /* @escapeNotVerified */ echo __('Reward Points') ?></span>
+    </div>
+    <table class="admin__table-secondary">
+        <tbody>
+        <tr>
+            <th><?php /* @escapeNotVerified */ echo __('Current Balance:') ?></th>
+            <td><?php /* @escapeNotVerified */ echo (isset($statistic['REST_POINT'])) ? $statistic['REST_POINT'] : '' ?> </td>
+        </tr>
+
+        <tr>
+            <th><?php /* @escapeNotVerified */ echo __('Total Earned:') ?></th>
+            <td><?php /* @escapeNotVerified */ echo (isset($statistic['REST_POINT'])) ? $statistic['GAIN_TOTAL_POINT'] : '' ?> </td>
+        </tr>
+
+        <tr>
+            <th><?php /* @escapeNotVerified */ echo __('Total Spent:') ?></th>
+            <td><?php /* @escapeNotVerified */ echo (isset($statistic['REST_POINT'])) ? $statistic['USED_TOTAL_POINT'] : '' ?> </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<?php if($block->canAddPoint()): ?>
+<button data-ui-id="widget-button-1"
+        onclick="jQuery('#reward_form').modal('openModal')"
+        class="action-default scalable"
+        type="button"
+        title="<?php echo __('Add Points');?>"
+        id="add_points_button">
+    <span><?php echo __('Add Points');?></span>
+</button>
+<?php endif; ?>

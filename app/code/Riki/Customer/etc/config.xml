@@ -1,0 +1,167 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <sso_login_setting>
+            <sso_group>
+                <use_sso_login>0</use_sso_login>
+                <url_login_sso>https://stagingec2.nestle.jp/front/app/common/login?URL=</url_login_sso>
+                <url_logout_sso>https://stagingec2.nestle.jp/front/app/common/logout/</url_logout_sso>
+                <url_register_sso>https://stagingec2.nestle.jp/front/customer/member_regist.html</url_register_sso>
+            </sso_group>
+            <restrict_website_group>
+                <restrict_website>2,3,4</restrict_website>
+                <urls_not_restrict>paygent/paygent</urls_not_restrict>
+            </restrict_website_group>
+            <reindex_queue_customer>
+                <queue_cron>*/5 * * * *</queue_cron>
+                <queue_enabled>1</queue_enabled>
+            </reindex_queue_customer>
+            <update_segment_queue_customer>
+                <queue_cron>*/5 * * * *</queue_cron>
+                <max_message_queue>10000</max_message_queue>
+                <use_queue_to_update_segment>1</use_queue_to_update_segment>
+            </update_segment_queue_customer>
+        </sso_login_setting>
+        <cedyna_customer_hold>
+            <sftp>
+                <host>192.168.0.25</host>
+                <port>22</port>
+                <username>riki</username>
+                <password></password>
+            </sftp>
+            <file_setting>
+                <file_path>Demo/Cedyna</file_path>
+                <file_import>suspended_user</file_import>
+                <file_local_import>var/import/cedyna</file_local_import>
+                <setting_crontab>*/15 * * * *</setting_crontab>
+            </file_setting>
+        </cedyna_customer_hold>
+        <mypage_app_config_block>
+            <app_config_block>
+                <url_my_page_app>https://preprod.account.nestle.jp/</url_my_page_app>
+                <use_my_page_app>1</use_my_page_app>
+            </app_config_block>
+        </mypage_app_config_block>
+        <export_shosha>
+            <folder_setting>
+                <folder_local>var/cedyna_shosha</folder_local>
+                <setting_crontab>0 0 * * *</setting_crontab>
+                <cron_last_time_run>1971-01-01 00:00:00</cron_last_time_run>
+            </folder_setting>
+            <folder_setting_shipment>
+                <folder_local>var/cedyna_shosha_shipment</folder_local>
+                <setting_crontab>0 0 1 * *</setting_crontab>
+                <cron_last_time_run>1971-01-01 00:00:00</cron_last_time_run>
+            </folder_setting_shipment>
+            <folder_setting_return>
+                <folder_local>var/cedyna_shosha_rma</folder_local>
+                <setting_crontab>0 0 1 * *</setting_crontab>
+                <cron_last_time_run>1971-01-01 00:00:00</cron_last_time_run>
+            </folder_setting_return>
+        </export_shosha>
+
+        <consumer_db_api_url>
+
+            <setting_base_url>
+                <setCustomer_domain>https://stagingec2.nestle.jp/axis2/services/</setCustomer_domain>
+            </setting_base_url>
+
+            <customer>
+                <param1>EC</param1>
+                <param2>kssol</param2>
+                <param3>XC</param3>
+                <param4>g.nestle.jp</param4>
+            </customer>
+
+            <customer_sub>
+                <param1>EC</param1>
+                <param2>kssol</param2>
+                <param3>XC</param3>
+                <param4>g.nestle.jp</param4>
+            </customer_sub>
+
+            <customer_sub>
+                <param1>EC</param1>
+                <param2>kssol</param2>
+                <param3>XC</param3>
+                <param4>g.nestle.jp</param4>
+            </customer_sub>
+
+            <ambassador>
+                <param1>EC</param1>
+                <param2>kssol</param2>
+                <param3>XC</param3>
+                <param4>g.nestle.jp</param4>
+            </ambassador>
+
+            <customer_machine>
+                <param1>EC</param1>
+                <param2>magento.nestle.jp</param2>
+                <param3>XC</param3>
+                <param4>g.nestle.jp</param4>
+            </customer_machine>
+
+            <customer_check_duplicate>
+                <param1>EC</param1>
+                <param2>kssol</param2>
+            </customer_check_duplicate>
+
+            <customer_machine_owned>
+                <getMachine>https://stagingcsif.nestle.jp/axis2/services/GetMachineService?wsdl</getMachine>
+                <param1>XC</param1>
+                <param2>g.nestle.jp</param2>
+            </customer_machine_owned>
+
+            <logging_kss_api>
+                <enableLoggingApiCall>1</enableLoggingApiCall>
+            </logging_kss_api>
+
+            <setting_url_get_mid_info>
+                <api_url>https://stagingec2.nestle.jp/axis2/services/</api_url>
+            </setting_url_get_mid_info>
+
+        </consumer_db_api_url>
+        <customerksslink>
+            <kss_link_edit_customer>
+                <kss_about_my_page>https://int.shop.nestle.jp/front/contents/info/AboutMyPage/</kss_about_my_page>
+                <kss_subscription_page>https://int.shop.nestle.jp/front/contents/info/Subscription
+                </kss_subscription_page>
+                <kss_nescafe_amb>https://int.shop.nestle.jp/front/contents/AmbassadorsES/
+                </kss_nescafe_amb>
+                <kss_wellness_amb>https://int.shop.nestle.jp/front/contents/AmbassadorsES/wellness</kss_wellness_amb>
+                <kss_customer_edit>https://int.shop.nestle.jp/front/app/customer/customer_edit1?URL=</kss_customer_edit>
+                <kss_office_customer_edit>https://int.shop.nestle.jp/front/app/customer/office_customer_edit2?URL=</kss_office_customer_edit>
+                <kss_company_edit>https://int.shop.nestle.jp/front/app/customer/ambassador_info_edit?URL=</kss_company_edit>
+                <kss_customer_change_password>https://int.shop.nestle.jp/front/app/mypage/customer_changepassword/init
+                </kss_customer_change_password>
+                <kss_auto_point>https://int.shop.nestle.jp/contents/AutoPoint/
+                </kss_auto_point>
+                <kss_about_nsp>https://int.shop.nestle.jp/contents/about_nsp/
+                </kss_about_nsp>
+                <kss_machine_register>https://int3.shop.nestle.jp/front/contents/MachineReg/
+                </kss_machine_register>
+            </kss_link_edit_customer>
+        </customerksslink>
+        <thank_you_page_link_to_top_page>
+            <link_to_top_page>
+                <link_to_top_page_ec>https://int.shop.nestle.jp/front/contents/top/</link_to_top_page_ec>
+                <link_to_top_page_amb>https://int.shop.nestle.jp/front/contents/AmbassadorsES/</link_to_top_page_amb>
+                <link_to_top_page_milan>https://int.shop.nestle.jp/front/contents/milano/</link_to_top_page_milan>
+                <link_to_top_page_cnc>https://int.shop.nestle.jp/front/app/catalog/category/init?searchCategoryCode=cnc</link_to_top_page_cnc>
+                <link_to_top_page_cis>https://int.shop.nestle.jp/front/app/catalog/category/init?searchCategoryCode=cis</link_to_top_page_cis>
+                <link_to_top_page_employee>https://int.shop.nestle.jp/front/contents/Shahan/</link_to_top_page_employee>
+                <link_to_top_page_alegria>https://stagingec.nestle.jp/front/contents/nsalegria/</link_to_top_page_alegria>
+                <link_to_top_page_wellness_amb>https://stagingec.nestle.jp/front/contents/AmbassadorsES/wellness</link_to_top_page_wellness_amb>
+            </link_to_top_page>
+        </thank_you_page_link_to_top_page>
+        <loggersetting>
+            <customer_logger>
+                <logger_customer_address_enable_status>1</logger_customer_address_enable_status>
+            </customer_logger>
+        </loggersetting>
+        <customer>
+            <crontab>
+                <clean_duplicate_consumer_db>0 1 * * *</clean_duplicate_consumer_db>
+            </crontab>
+        </customer>
+    </default>
+</config>

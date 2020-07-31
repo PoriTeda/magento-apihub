@@ -1,0 +1,19 @@
+<?php
+// @codingStandardsIgnoreFile
+
+/** @var \Riki\NpAtobarai\Block\Adminhtml\Rma\Edit\Tab\General\Details\GetPaymentDate $block */
+?>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "getPaymentDate": {
+                        "component": "Riki_NpAtobarai/js/view/getPaymentDate",
+                        "listPaymentDate": <?php /* @escapeNotVerified */ echo $block->getPaymentDateOfAllTransactionsByOrderId(); ?>
+                    }
+                }
+            }
+        }
+    }
+</script>

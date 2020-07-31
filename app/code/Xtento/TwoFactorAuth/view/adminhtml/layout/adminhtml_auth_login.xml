@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="form.additional.info">
+            <block class="Magento\Backend\Block\Template" name="tfa_login_form" as="tfa_login_form" before="-" ifconfig="twofactorauth/general/enabled" template="Xtento_TwoFactorAuth::tfa_form.phtml"/>
+        </referenceContainer>
+    </body>
+</page>
+
+<!--
+/**
+ * Product:       Xtento_TwoFactorAuth (2.1.5)
+ * ID:            %!uniqueid!%
+ * Packaged:      %!packaged!%
+ * Last Modified: 2016-01-05T16:05:19+00:00
+ * File:          view/adminhtml/layout/adminhtml_auth_login.xml
+ * Copyright:     Copyright (c) 2017 XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

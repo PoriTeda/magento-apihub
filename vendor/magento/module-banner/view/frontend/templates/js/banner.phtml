@@ -1,0 +1,17 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Banner\Block\Ajax\Data $block */
+?>
+<script type="text/x-magento-init">
+<?= /* @noEscape */ $this->helper(\Magento\Framework\Json\Helper\Data::class)->jsonEncode([
+        '*' => ['Magento_Banner/js/model/banner' => [
+            'sectionLoadUrl' => $block->escapeUrl($block->getCustomerDataUrl('banner/ajax/load')),
+            'cacheTtl' => $block->getCacheTtl()
+        ]],
+    ]);
+?>
+</script>

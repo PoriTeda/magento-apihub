@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <block class="Magento\Framework\Pricing\Render" name="product.price.render.default">
+            <arguments>
+                <argument name="price_render_handle" xsi:type="string">checkout_catalog_multiple_product_prices</argument>
+                <argument name="use_link_for_as_low_as" xsi:type="boolean">true</argument>
+                <!-- set "override" configuration settings here -->
+            </arguments>
+        </block>
+        <referenceBlock name="checkout.cart.methods.multishipping" remove="true"/>
+        <referenceBlock name="checkout.cart.methods.onepage.bottom" remove="true"/>
+        <referenceBlock name="riki.minicart" remove="true"/>
+        <referenceContainer name="checkout.cart.methods">
+            <block class="Riki\Checkout\Block\Checkout\Onepage\Link" name="riki.checkout.cart.methods.single" template="checkout/single.phtml"/>
+            <!--<block class="Riki\Checkout\Block\Checkout\Onepage\Link" name="riki.checkout.cart.methods.multiple" template="checkout/multiple.phtml"/>-->
+            <block class="Riki\Checkout\Block\Product\ProductList\Related" name="riki.checkout.cart.product.related" after="columns" template="product/list/items.phtml" />
+        </referenceContainer>
+    </body>
+</page>

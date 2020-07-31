@@ -1,0 +1,39 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * @see \Magento\AdvancedCheckout\Block\Adminhtml\Manage\Form\Coupon
+ */
+?>
+<div id="coupon_container" class="order-coupons">
+    <div class="admin__field field-apply-coupon-code">
+        <label class="admin__field-label"><span><?= /* @escapeNotVerified */ __('Apply Coupon Code') ?></span></label>
+        <div class="admin__field-control">
+            <input type="text" class="admin__control-text" id="coupon_code" name="ccode"/>
+            <?= $block->getApplyButtonHtml() ?>
+        </div>
+
+        <?php if ($block->getCouponCode()): ?>
+            <p id="cc_info" class="added-coupon-code">
+                <span><?= $block->escapeHtml($block->getCouponCode()) ?></span>
+                <a href="#"
+                   onclick="checkoutObj.applyCoupon();return false;"
+                   title="<?= /* @escapeNotVerified */ __('Remove Coupon Code') ?>"
+                   class="action-remove">
+                    <span><?= /* @escapeNotVerified */ __('Remove') ?></span>
+                </a>
+            </p>
+        <?php elseif ($invalid = $block->getInvalidCouponCode()): ?>
+            <p id="cc_info" class="added-coupon-code-fail">
+                <strong><?= /* @escapeNotVerified */ __('The coupon code "%1" is not valid.', $block->escapeHtml($invalid)) ?></strong>
+            </p>
+        <?php endif; ?>
+    </div>
+</div>

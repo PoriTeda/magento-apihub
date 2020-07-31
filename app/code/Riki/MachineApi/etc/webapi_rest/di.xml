@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Quote\Model\Quote\Address\FreeShippingInterface">
+        <plugin name="riki-machine-api-free-shipping" type="\Riki\MachineApi\Model\Plugin\FreeShipping"/>
+    </type>
+
+    <!-- overwrite discount -->
+    <type name="Magento\SalesRule\Model\Validator">
+        <plugin name="riki_machine_api_discount_amount" type="Riki\MachineApi\Plugin\Validator"/>
+    </type>
+
+</config>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_CatalogFreeShipping::catalog_free_shipping"
+             title="Catalog Free Shipping"
+             sortOrder="100"
+             module="Riki_CatalogFreeShipping"
+             parent="Magento_Backend::marketing"
+             action="catalogfs/rule/"
+             resource="Riki_CatalogFreeShipping::catalog_free_shipping"/>
+    </menu>
+</config>

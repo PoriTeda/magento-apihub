@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Riki\SubscriptionCourse\Block\Frontend\Checkout\OnepageSuccessSubscription" name="onepage.success.subscription" template="Riki_SubscriptionCourse::checkout/onepage_success_subscription.phtml">
+                <block class="Magento\Cms\Block\Block" name="ordersuccessimg">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">ordersuccessimg</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Cms\Block\Block" name="order_success_subscription">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">order_success_subscription</argument>
+                    </arguments>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

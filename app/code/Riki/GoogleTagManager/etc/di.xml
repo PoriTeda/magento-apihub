@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="\Magento\GoogleTagManager\Observer\SendCookieOnCartActionCompleteObserver"
+                type="\Riki\GoogleTagManager\Observer\Frontend\SendCookieOnCartActionCompleteObserver"/>
+    <preference for="\Magento\GoogleTagManager\Block\ListJson"
+                type="\Riki\GoogleTagManager\Block\ListJson"/>
+    <preference for="Magento\GoogleTagManager\Block\Ga"
+                type="Riki\GoogleTagManager\Block\Ga"/>
+    <preference for="\Magento\GoogleTagManager\Model\Plugin\Quote"
+                type="\Riki\GoogleTagManager\Plugin\Quote"/>
+
+    <preference for="Riki\GoogleTagManager\Api\GaClientInterface" type="Riki\GoogleTagManager\Model\GaClient" />
+
+</config>

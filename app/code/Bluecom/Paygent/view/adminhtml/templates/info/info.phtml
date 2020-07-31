@@ -1,0 +1,73 @@
+<?php
+/**
+ * @var \Bluecom\Paygent\Block\Info $block
+ * @see \Magento\Payment\Block\Info
+ */
+$specificInfo = $block->getSpecificInformation();
+$useIvr = $block->checkUseIvr();
+$ivrTransaction = $block->getIvrTransaction();
+?>
+<?php echo $block->escapeHtml($block->getMethod()->getTitle()); ?>
+
+<?php if ($specificInfo): ?>
+    <table class="data-table admin__table-secondary">
+        <?php foreach ($specificInfo as $label => $value):?>
+            <tr>
+                <th><?php echo $block->escapeHtml($label)?>:</th>
+                <td>
+                    <?php echo $value;?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+<?php endif;?>
+
+<?php echo $block->getChildHtml()?>
+
+<?php if($useIvr):?>
+    <?php if(!$ivrTransaction) :?>
+        <?php if (!$block->checkShowButtonIvr()): ?>
+        <div class="connectIVR">
+            <br>
+            <button id="connect_to_ivr" class="action-scalable primary"
+                    onclick="IvrManager.connectToIvr('<?php echo $block->getUrl("paygent/paygent/ivr", ["id" => $block->getOrderId()]); ?>', '<?php echo $block->getOrderId(); ?>')">
+                <?php echo __('Connect to IVR')?>
+            </button>
+            <br>
+        </div>
+        <?php endif;?>
+
+        <div>
+            <p style="display:none" id="transaction_ivr"><?php echo __('Register successful, IVR Transaction Id:')?> <span id="response_detail"></span></p>
+        </div>
+
+        <?php if (!$block->canShowGetUpdateButton()): ?>
+        <button id="get_update" style="display:none;" class="action-scalable primary"
+                onclick="IvrManager.getUpdateIvr('<?php echo $block->getUrl("paygent/paygent/getupdate", ["id" => $block->getOrderId()]); ?>', '<?php echo $block->getOrderId(); ?>')">
+            <?php echo __('Get Update')?>
+        </button>
+        <?php endif;?>
+
+    <?php elseif ($ivrTransaction == 'error'):?>
+        <div>
+            <?php echo 'The Order used IVR and requested registration failure.'?>
+        </div>
+    <?php else: ?>
+        <div>
+            <?php if ($block->canShowTransactionId()):?>
+            <p id="transaction_ivr">
+                <?php echo __('IVR Transaction Id: ')?>
+                <span id="response_detail"><?php echo $ivrTransaction?></span>
+            </p>
+            <?php endif;?>
+
+            <?php if ($block->canShowGetUpdateButton()): ?>
+                <button id="get_update" class="action-scalable primary"
+                        onclick="IvrManager.getUpdateIvr('<?php echo $block->getUrl("paygent/paygent/getupdate", ["id" => $block->getOrderId()]); ?>', '<?php echo $block->getOrderId(); ?>')">
+                    <?php echo __('Get Update')?>
+                </button>
+            <?php endif;?>
+        </div>
+        <div class="result-data"></div>
+    <?php endif;?>
+<?php endif?>

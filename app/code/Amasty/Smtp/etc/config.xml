@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2019 Amasty (https://www.amasty.com)
+ * @package Amasty_Smtp
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <amsmtp>
+            <general>
+                <enable>0</enable>
+                <log>0</log>
+                <debug>0</debug>
+                <disable_delivery>0</disable_delivery>
+            </general>
+            <smtp>
+                <port>25</port>
+                <use_custom_email_sender>0</use_custom_email_sender>
+                <custom_sender_email></custom_sender_email>
+                <custom_sender_name></custom_sender_name>
+            </smtp>
+            <clear>
+                <email>30</email>
+                <schedule_clear_email>0 3 * * *</schedule_clear_email>
+                <debug>30</debug>
+            </clear>
+        </amsmtp>
+    </default>
+</config>

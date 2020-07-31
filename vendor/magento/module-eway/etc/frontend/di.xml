@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Payment\Model\CcGenericConfigProvider">
+        <arguments>
+            <argument name="methodCodes" xsi:type="array">
+                <item name="eway" xsi:type="string">eway</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Eway\Model\Ui\Direct\ConfigProvider">
+        <arguments>
+            <argument name="config" xsi:type="object">EwayConfig</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Checkout\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="eway" xsi:type="object">Magento\Eway\Model\Ui\Direct\ConfigProvider</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Eway\Block\Direct\Info">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item xsi:type="string" name="is_secure_mode">1</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Eway\Controller\Payment\Complete">
+        <arguments>
+            <argument name="commandPool" xsi:type="object">EwaySharedCommandPool</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Eway\Controller\Order\Cancel">
+        <arguments>
+            <argument name="commandPool" xsi:type="object">EwaySharedCommandPool</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Eway\Controller\Payment\GetAccessCode">
+        <arguments>
+            <argument name="commandPool" xsi:type="object">EwaySharedCommandPool</argument>
+        </arguments>
+    </type>
+</config>

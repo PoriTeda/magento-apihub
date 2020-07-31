@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Riki\Preorder\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Preorder\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">preorderLogger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="error" xsi:type="object">Riki\Preorder\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="\Magento\CatalogInventory\Model\Source\Backorders">
+        <plugin name="Riki_Preorder::toOptionArray" type="Riki\Preorder\Plugin\CatalogInventoryBackorders" />
+    </type>
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">sales_order_grid</argument>
+            <argument name="resourceModel" xsi:type="string">Magento\Sales\Model\ResourceModel\Order</argument>
+        </arguments>
+    </virtualType>
+    <type name="\Magento\Catalog\Block\Adminhtml\Product\Edit\Tab\Inventory">
+        <plugin name="Riki_Preorder::addPreOrderFields" type="Riki\Preorder\Plugin\ProductEditTabInventory" />
+    </type>
+    <type name="\Magento\Catalog\Block\Product\ListProduct">
+        <plugin name="Riki_Preorder::addPreorderLabelToList" type="Riki\Preorder\Plugin\ListProduct" />
+    </type>
+    <type name="Magento\Checkout\Controller\Cart\Add">
+        <plugin name="Riki_Preorder::addToCart" type="Riki\Preorder\Plugin\AddToCartAction" />
+    </type>
+    <type name="\Magento\CatalogInventory\Model\StockStateProvider">
+        <plugin name="Riki_Preorder::stockState" type="Riki\Preorder\Plugin\StockStateProvider" />
+    </type>
+    <preference for="\Magento\CatalogInventory\Model\StockStateProvider" type="Riki\Preorder\Model\Stock\StockStateProvider" />
+    <preference for="\Magento\Bundle\Block\Adminhtml\Catalog\Product\Edit\Tab\Bundle\Option\Search\Grid" type="Riki\Preorder\Block\Adminhtml\Catalog\Product\Edit\Tab\Bundle\Option\Search\Grid" />
+    <type name="Riki\AdvancedInventory\Helper\Assignation">
+        <plugin name="Riki_Preorder::advancedInventoryHelper" type="Riki\Preorder\Plugin\AdvancedInventory\Helper\Data" />
+    </type>
+    <type name="Riki\Preorder\Model\ResourceModel\OrderPreorder">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Preorder\Model\ResourceModel\OrderItemPreorder">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\ScalableOms\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="riki_preorder_order_preorder" xsi:type="string">riki_preorder_order_preorder</item>
+                <item name="riki_preorder_order_item_preorder" xsi:type="string">riki_preorder_order_item_preorder</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Quote\Model\QuoteValidator">
+        <plugin name="riki_preorder_quote_validator" type="Riki\Preorder\Plugin\Quote\Model\QuoteValidator" />
+    </type>
+</config>

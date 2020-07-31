@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_CatalogRule::wbs_conversion" module="Riki_CatalogRule" resource="Riki_CatalogRule::wbs_conversion"
+             sortOrder="50" title="Wbs Conversion" parent="Magento_Backend::marketing"/>
+
+        <add id="Riki_CatalogRule::wbs_conversion_management" title="Wbs Conversion Management" module="Riki_CatalogRule"
+             sortOrder="10" action="wbs_conversion/wbs/index" resource="Riki_CatalogRule::wbs_conversion_management"
+             parent="Riki_CatalogRule::wbs_conversion"/>
+    </menu>
+</config>

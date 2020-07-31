@@ -1,0 +1,62 @@
+<?php
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var $block \Magento\Sales\Block\Order\Info */ ?>
+<?php
+
+$_order = $block->getOrder();
+$_billingAddress    = $_order->getBillingAddress();
+$_paymentMethod     = $_order->getPayment()->getMethodInstance()->getTitle();
+$_paymentMethodCode = $_order->getPayment()->getMethod();
+$receiptCounter = $block->getData('current_counter');
+?>
+<div class="block block-order-details-view">
+    <div class="header-print">
+        <img class="logo" src="<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('images/logo-print.jpg'); ?>"
+             alt="<?php /* @escapeNotVerified */ echo __('Logo print') ?>">
+    </div>
+    <div class="print-order-title">
+        <div>
+            <?php echo __('print invoice header store name'); ?>
+        </div>
+        <div>
+            <?php echo __('print invoice header title 1'); ?>
+        </div>
+        <div>
+            <?php echo __('print invoice header title 2'); ?>
+        </div>
+        <div>
+            <?php echo __('print invoice header title 3'); ?>
+        </div>
+        <?php if(intval($receiptCounter)>1)://?>
+        <div><?php echo __('print invoice header secondary printing'); ?></div>
+        <?php endif;?>
+    </div>
+
+    <div class="order-date">
+        <?php /* @escapeNotVerified */ echo __('<span class="label">Date:</span> %1', '<date class="date">' . $block->formatDate(date('Y-m-d'), \IntlDateFormatter::LONG) . '</date>') ?> <br> <span><?php echo __('print invoice date suffix');?></span>
+    </div>
+    <div class="billing-info">
+        <div class="billing-info-table">
+            <div class="billing-info-name">
+                <label class="label"><?php echo __("Received from:"); ?><br><?php echo __('print invoice receive from'); ?></label>
+                <div class="content"><?php echo $block->getReceiptName(); ?></div>
+            </div>
+            <div class="billing-info-name">
+                <label class="label"><?php echo __("The sum of Yen:"); ?><br><?php echo __('print invoice total amount'); ?></label>
+                <div class="content"><?php echo $block->getCurrencySymbol(). number_format($_order->getGrandTotal(),0,'',','); ?>-</div>
+            </div>
+        </div>
+        <div class="billing-info-order">
+            <div class="info-order-increment">
+                <label class="label"><?php echo __('print invoice order number'); ?></label>
+                <div class="content"><?php echo $_order->getIncrementId(); ?></div>
+            </div>
+            <div class="info-order-increment">
+                <label class="label"><?php echo __('print invoice shipped out date'); ?></label>
+                <div class="content"><?php echo $block->getShippedOutDate(); ?></div>
+            </div>
+        </div>
+    </div>
+</div>

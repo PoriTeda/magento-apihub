@@ -1,0 +1,232 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="riki.navigation" remove="false"/>
+        <referenceBlock name="riki.search" remove="true"/>
+        <referenceBlock name="riki.minicart" remove="true"/>
+        <referenceBlock name="checkout.root">
+            <arguments>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="components" xsi:type="array">
+                        <item name="checkout" xsi:type="array">
+                            <item name="config" xsi:type="array">
+                                <item name="component" xsi:type="string">Magento_Checkout/js/view/onepage</item>
+                            </item>
+                            <item name="children" xsi:type="array">
+                                <item name="checkoutTitle" xsi:type="array">
+                                    <item name="sortOrder" xsi:type="string">0</item>
+                                    <item name="component" xsi:type="string">Magento_Checkout/js/view/checkout-title</item>
+                                    <item name="displayArea" xsi:type="string">checkoutTitle</item>
+                                </item>
+                                <item name="authentication" xsi:type="array">
+                                    <item name="config" xsi:type="array">
+                                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                                    </item>
+                                </item>
+                                <item name="estimation" xsi:type="array">
+                                    <item name="config" xsi:type="array">
+                                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                                    </item>
+                                </item>
+                                <item name="steps" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="shipping-step" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="shippingAddress" xsi:type="array">
+                                                    <item name="config" xsi:type="array">
+                                                        <item name="popUpForm" xsi:type="array">
+                                                            <item name="options" xsi:type="array">
+                                                                <item name="responsive" xsi:type="boolean">false</item>
+                                                                <item name="innerScroll" xsi:type="boolean">false</item>
+                                                                <item name="title" xsi:type="string" translate="true">Register/Edit Shipping Address</item>
+                                                                <item name="buttons" xsi:type="array">
+                                                                    <item name="save" xsi:type="array">
+                                                                        <item name="text" xsi:type="string" translate="true">Save New Address</item>
+                                                                    </item>
+                                                                </item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
+                                                    <item name="children" xsi:type="array">
+                                                        <item name="shipping-address-fieldset" xsi:type="array">
+                                                            <item name="children" xsi:type="array">
+                                                                <!-- The following items override configuration of corresponding address attributes -->
+                                                                <item name="riki_nickname" xsi:type="array">
+                                                                    <item name="label" xsi:type="string" translate="true">Nickname of this address (full width)</item>
+                                                                    <item name="sortOrder" xsi:type="string">400</item>
+                                                                    <item name="exampleTmp" xsi:type="string" translate="true">Example: home address</item>
+                                                                    <item name="validation" xsi:type="array">
+                                                                        <item name="required-entry" xsi:type="string">true</item>
+                                                                        <item name="validate_double_byte_required" xsi:type="string">true</item>
+                                                                        <item name="max_text_length" xsi:type="number">20</item>
+                                                                    </item>
+                                                                </item>
+                                                                <item name="postcode" xsi:type="array">
+                                                                    <item name="sortOrder" xsi:type="string">401</item>
+                                                                    <item name="exampleTmp" xsi:type="string" translate="true">Example: 100-0001</item>
+                                                                </item>
+                                                                <item name="region_id" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">Riki_Checkout/js/form/element/region</item>
+                                                                    <item name="sortOrder" xsi:type="string">402</item>
+                                                                    <item name="validation" xsi:type="array">
+                                                                        <item name="required-entry-region" xsi:type="string">true</item>
+                                                                    </item>
+                                                                </item>
+                                                                <item name="city" xsi:type="array">
+                                                                    <item name="visible" xsi:type="boolean">false</item>
+                                                                    <item name="sortOrder" xsi:type="string">403</item>
+                                                                    <item name="exampleTmp" xsi:type="string" translate="true">Example: Chiyoda-ku</item>
+                                                                    <item name="validation" xsi:type="array">
+                                                                        <item name="required-entry-city" xsi:type="string">true</item>
+                                                                        <item name="max_text_length" xsi:type="number">30</item>
+                                                                    </item>
+                                                                </item>
+                                                                <item name="street" xsi:type="array">
+                                                                    <item name="sortOrder" xsi:type="string">404</item>
+                                                                    <item name="exampleTmp" xsi:type="string" translate="true">Example: Chiyoda</item>
+                                                                    <item name="validation" xsi:type="array">
+                                                                        <item name="max_text_length" xsi:type="number">30</item>
+                                                                    </item>
+                                                                </item>
+                                                                <item name="apartment" xsi:type="array">
+                                                                    <item name="visible" xsi:type="boolean">false</item>
+                                                                    <item name="sortOrder" xsi:type="string">405</item>
+                                                                    <item name="validation" xsi:type="array">
+                                                                        <item name="max_text_length" xsi:type="number">40</item>
+                                                                    </item>
+                                                                </item>
+                                                                <item name="telephone" xsi:type="array">
+                                                                    <item name="sortOrder" xsi:type="string">406</item>
+                                                                    <item name="exampleTmp" xsi:type="string" translate="true">Example: 0782307000</item>
+                                                                    <item name="validation" xsi:type="array">
+                                                                        <item name="required-entry-telephone" xsi:type="string">true</item>
+                                                                        <item name="max_text_length" xsi:type="number">16</item>
+                                                                        <item name="validate-phone-number" xsi:type="boolean">true</item>
+                                                                    </item>
+                                                                </item>
+                                                                <item name="country_id" xsi:type="array">
+                                                                    <item name="sortOrder" xsi:type="string">407</item>
+                                                                </item>
+                                                                <item name="region" xsi:type="array">
+                                                                    <item name="sortOrder" xsi:type="string">500</item>
+                                                                </item>
+                                                                <item name="company" xsi:type="array">
+                                                                    <item name="visible" xsi:type="boolean">false</item>
+                                                                </item>
+                                                                <item name="vat_id" xsi:type="array">
+                                                                    <item name="visible" xsi:type="boolean">false</item>
+                                                                </item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                        <item name="billing-step" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="payment" xsi:type="array">
+                                                    <item name="config" xsi:type="array">
+                                                        <item name="title" xsi:type="string" translate="true">3. Please select payment method</item>
+                                                    </item>
+                                                    <item name="children" xsi:type="array">
+                                                        <item name="payments-list" xsi:type="array">
+                                                            <item name="children" xsi:type="array">
+                                                                <item name="before-place-order" xsi:type="array">
+                                                                    <item name="config" xsi:type="array">
+                                                                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                                    </item>
+                                                                </item>
+                                                            </item>
+                                                        </item>
+                                                        <item name="additional-payment-validators" xsi:type="array">
+                                                            <item name="children" xsi:type="array">
+                                                                <item name="agreements-validator" xsi:type="array">
+                                                                    <item name="config" xsi:type="array">
+                                                                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                                    </item>
+                                                                </item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                                <item name="discount" xsi:type="array">
+                                    <item name="sortOrder" xsi:type="string">40</item>
+                                    <item name="component" xsi:type="string">Amasty_Coupons/js/view/payment/discount</item>
+                                    <item name="displayArea" xsi:type="string">discount</item>
+                                </item>
+
+                                <item name="questionnaire" xsi:type="array">
+                                    <item name="sortOrder" xsi:type="string">90</item>
+                                    <item name="component" xsi:type="string">Riki_Checkout/js/view/questionnaire</item>
+                                    <item name="displayArea" xsi:type="string">questionnaire</item>
+                                </item>
+
+                                <item name="rewardPoints" xsi:type="array">
+                                    <item name="component" xsi:type="string">Riki_Loyalty/js/view/reward-point</item>
+                                    <item name="displayArea" xsi:type="string">reward-points</item>
+                                </item>
+
+                                <item name="cartSimulation" xsi:type="array">
+                                    <item name="sortOrder" xsi:type="string">50</item>
+                                    <item name="component" xsi:type="string">Riki_Checkout/js/view/single/cart-simulation</item>
+                                    <item name="displayArea" xsi:type="string">cart-simulation</item>
+                                </item>
+
+                                <item name="placeOrder" xsi:type="array">
+                                    <item name="component" xsi:type="string">Riki_Checkout/js/view/place-order</item>
+                                    <item name="displayArea" xsi:type="string">place-order</item>
+                                </item>
+
+                                <item name="shippingAddressText" xsi:type="array">
+                                    <item name="component" xsi:type="string">Riki_Checkout/js/view/shipping-address-text</item>
+                                    <item name="displayArea" xsi:type="string">shipping-address-text</item>
+                                </item>
+
+                                <item name="sidebar" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="summary" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="cart_items" xsi:type="array">
+                                                    <item name="config" xsi:type="array">
+                                                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                    </item>
+                                                </item>
+                                                <item name="totals" xsi:type="array">
+                                                    <item name="children" xsi:type="array">
+                                                        <item name="before_grandtotal" xsi:type="array">
+                                                            <item name="children" xsi:type="array">
+                                                                <item name="gift-wrapping-order-level" xsi:type="array">
+                                                                    <item name="config" xsi:type="array">
+                                                                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                                    </item>
+                                                                </item>
+                                                                <item name="printed-card" xsi:type="array">
+                                                                    <item name="config" xsi:type="array">
+                                                                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                                    </item>
+                                                                </item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                        <item name="shipping-information" xsi:type="array">
+                                            <item name="config" xsi:type="array">
+                                                <item name="componentDisabled" xsi:type="boolean">true</item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>

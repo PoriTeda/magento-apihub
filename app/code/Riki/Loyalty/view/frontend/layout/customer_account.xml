@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Rewards</title>
+    </head>
+    <body>
+        <referenceBlock name="customer_account_navigation">
+            <block after="customer-account-navigation-address-link" class="Magento\Framework\View\Element\Html\Link\Current" name="customer-account-loyalty-reward-point">
+                <arguments>
+                    <argument name="path" xsi:type="string">loyalty/reward</argument>
+                    <argument name="label" xsi:type="string" translate="true">Reward Points</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

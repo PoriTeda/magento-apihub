@@ -1,0 +1,29 @@
+<?php $_order = $block->getOrder() ?>
+<?php if ($_order): ?>
+    <?php foreach ($_order->getAllItems() as $_item): ?>
+        <?php
+        $gfPrice = 0;
+        $gfTax = 0;
+        try {
+            if ($_item->getData('gw_price')) {
+                 $gfPrice = $_item->getData('gw_price');
+            }
+
+            if ($_item->getData('gw_tax_amount')) {
+                $gfTax = $_item->getData('gw_tax_amount');
+            }
+
+            $gfPrice = $gfPrice + $gfTax;
+
+        } catch (\Exception $e) {
+            $gfPrice = 0;
+        }
+    ?>
+        <?php echo '【商品明細】';  ?> <?php echo "\r\n";?>
+        <?php echo '商品名：';?> <?php echo $_item->getName();?><?php echo "\r\n";?>
+        <?php echo '商品価格：';?> <?php echo $_item->getPriceInclTax() .__('円');?><?php echo "\r\n";?>
+        <?php echo '有料サービス:';?><?php ?><?php echo $gfPrice.__('円');?> <?php echo "\r\n";?>
+        <?php echo '有料サービス価格：';?><?php echo '0円';?><?php echo "\r\n";?>
+        <?php echo '数量：';?> <?php echo 1*$_item->getQtyOrdered();?><?php echo "\r\n";?><?php echo "\r\n";?>
+    <?php endforeach;?>
+<?php endif; ?>

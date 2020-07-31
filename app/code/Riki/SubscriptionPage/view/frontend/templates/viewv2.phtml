@@ -1,0 +1,514 @@
+<?php
+/** @var \Riki\SubscriptionPage\Block\SubscriptionView $block */
+$machineOption = $block->getMachineOption();
+$mainProductsAndCategories = $block->getListOfProductGroupByCategory();
+$arrProductGroupByCategory = isset($mainProductsAndCategories['product']) ? $mainProductsAndCategories['product'] : [];
+$arrMainCategories = isset($mainProductsAndCategories['category']) ? $mainProductsAndCategories['category'] : [];
+$additionalProductsAndCategories = $block->getListOfProductGroupByAdditionalCategory();
+$arrProductGroupByAdditionalCategory = isset($additionalProductsAndCategories['product']) ? $additionalProductsAndCategories['product'] : [];
+$arrAdditionalCategories = isset($additionalProductsAndCategories['category']) ? $additionalProductsAndCategories['category'] : [];
+$arrProductGroupByCategory[\Riki\SubscriptionPage\Block\SubscriptionView::CATEGORY_ID_FOR_PRODUCT_ADD_FROM_COURSE_TAB]
+    = $block->getProductAddByCourse();
+
+/* @var $checkRequestLineAppHelper \Riki\SubscriptionPage\Helper\CheckRequestLineApp */
+$checkRequestLineAppHelper = $this->helper('Riki\SubscriptionPage\Helper\CheckRequestLineApp');
+
+$isHanpukaiOutOfStock = $block->getHaveProductOutOfStockInHanpukai();
+
+if ($block->getSubscriptionType() === \Riki\SubscriptionCourse\Model\Course\Type::TYPE_MULTI_MACHINES) {
+    $courseType = "popup-multiple-machines";
+} else {
+    $courseType = "";
+}
+
+if ($block->isEnabled()): ?>
+    <?php $courseDescription = $block->getCourseDescription(); ?>
+    <form class="rk_listProduct"
+          action="<?php echo $checkRequestLineAppHelper->getLinkFormAction($block->getUrl('subscription-page/ajax/add')); ?>"
+          id="form-validate" enctype="multipart/form-data" method="post" data-bind="scope: 'subscriptionPageView'">
+        <div id="main-course-container">
+            <input name="form_key" type="hidden" id="form_key" value="<?php echo $block->getAddToCartFormKey(); ?>">
+            <input name="current_url" type="hidden" value="<?php echo $block->getCurrentSubPageViewUrl(); ?>">
+            <input name="riki_course_id" id="riki_course_id" type="hidden"
+                   value="<?php echo $block->getSubscriptionCourseId(); ?>">
+            <input name="pre_frequency_id" id="pre_frequency_id" type="hidden"
+                   value="<?php echo $block->getPreFrequency() ?>"/>
+            <input name="subscription_type" id="subscription-type" type="hidden"
+                   value="<?php echo $block->getSubscriptionType() ?>"/>
+
+            <?php if ($block->isNespresso()): ?>
+                <div class="<?php echo ($block->isHanpukai()) ? 'note' : '' ?>"><?php echo __('Please select products from the following.') ?></div>
+            <?php endif; ?>
+            <?php if ($block->isHanpukai()): ?>
+                <div class="note rk_mt-10"><?php echo $courseDescription; ?></div>
+            <?php endif; ?>
+
+            <!-- check if hanpukai create select box change hanpukai qty -->
+            <?php if ($block->isHanpukai()): ?>
+                <div class="sidebar subscription-left subscription-container multiple-quantity">
+                    <?php echo $block->render('Riki_SubscriptionPage::view/hanpukai-qty-selector.phtml', ['isHanpukaiOutOfStock' => $isHanpukaiOutOfStock]) ?>
+                </div>
+            <?php endif; ?>
+            <!-- end check if hanpukai create select box change hanpukai qty -->
+
+            <?php if (!$block->isHanpukai()): ?>
+                <div class="note note-bg hidden">
+                    <div class="note-frequence"><?php echo __('Please specify the purchase quantity after selecting the delivery interval first.'); ?></div>
+                    <div><?php echo __('The price may not show the discount amount, please go to "shipping and pay method" page to display the discount amount') ?></div>
+                </div>
+                <div class="note rk_mt-30"><?php echo $courseDescription; ?></div>
+            <?php endif; ?>
+
+            <div class="sidebar subscription-left subscription-container<?php echo ($block->isHanpukai()) ? ' no-display' : '' ?>">
+                <?php echo $block->render('Riki_SubscriptionPage::view/frequency-selector.phtml') ?>
+            </div>
+
+            <?php if ($machineOption): ?>
+                <div class="sidebar subscription-left subscription-container mobile-not-display">
+                    <?php echo $block->render(
+                        'Riki_SubscriptionPage::view/machine-selector.phtml', [
+                        'machineOption' => $machineOption, 'isHanpukaiOutOfStock' => $isHanpukaiOutOfStock
+                    ]) ?>
+                </div>
+            <?php elseif (is_array($machineOption)) :// array empty means machines out of stock ?>
+                <input type="hidden" name="machine_not_available" value="1"/>
+            <?php endif; ?>
+
+            <div class="subscription-main rk-product-grid category-change-mode">
+                <div class="table-wrapper">
+                    <div class="subscription_toolbar_block">
+                        <div class="subscription_toolbar">
+                            <div class="subscription_toolbar-label">
+                                <label for="SortBy" class="label-sortby">
+                                    <?php if (!$block->isHanpukai() && !$block->isNespresso()): ?>
+                                        <?php echo __('Please select products from the following.') ?>
+                                    <?php endif; ?>
+                                </label>
+                            </div>
+
+                            <div class="subscription_toolbar-view view-mode pull-right">
+                                <div class="subscription-toolbar-mode d-pc">
+                                    <?php if (count($arrProductGroupByCategory) > 0) : ?>
+                                        <?php if (!$block->isHanpukai()): ?>
+                                            <div>
+                                                <div class="subscription-toolbar top">
+                                                    <?php echo __('The quantity of all items') ?>
+                                                    <select name="action-1-top" class="action-change-qty" rel="1">
+                                                        <?php for ($i = 0; $i <= 99; $i++): ?>
+                                                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                                        <?php endfor; ?>
+                                                    </select>
+                                                    <?php echo __('to change') ?>
+                                                </div>
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="list-view">
+                                    <a href="#" class="modes modes-list">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                             viewBox="0 0 24 24">
+                                            <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
+                                            <path d="M0 0h24v24H0z" fill="none"/>
+                                        </svg>
+                                    </a>
+                                    <a href="#" class="modes modes-grid">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                             viewBox="0 0 24 24">
+                                            <path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/>
+                                            <path d="M0 0h24v24H0z" fill="none"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subscription-block">
+                        <?php if (!$block->isHanpukai() && !$block->isNespresso()): ?>
+                            <div class="note hidden">
+                                <?php echo __('Please select products from the following.') ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php if (count($arrProductGroupByCategory) > 0) : ?>
+                            <?php if (!$block->isHanpukai()): ?>
+                                <div>
+                                    <div class="subscription-toolbar top d-sp">
+                                        <?php echo __('The quantity of all items') ?>
+                                        <select name="action-1-top" class="action-change-qty" rel="1">
+                                            <?php for ($i = 0; $i <= 99; $i++): ?>
+                                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                            <?php endfor; ?>
+                                        </select>
+                                        <?php echo __('to change') ?>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+
+                            <!-- Loop Categories Here -->
+                            <?php foreach ($arrProductGroupByCategory as $categoryId => $listProduct): ?>
+                                <?php if (count($listProduct) <= 0): continue; endif; ?>
+                                <?php if ($categoryId == \Riki\SubscriptionPage\Block\SubscriptionView::CATEGORY_ID_FOR_PRODUCT_ADD_FROM_COURSE_TAB): ?>
+                                    <?php echo $block->render('Riki_SubscriptionPage::view/category.phtml', [
+                                        'listProduct' => $listProduct,
+                                        'categoryId' => $categoryId,
+                                        'categoryName' => $block->getCategoryById($categoryId)->getName(),
+                                        'categoryDescription' => $block->getViewModel()->filterText($block->getCategoryById($categoryId)->getDescription()),
+                                        'isAddition' => 0,
+                                        'thumbnail' => $block->getCategoryById($categoryId)->getImageUrl()
+                                    ]) ?>
+                                <?php else : ?>
+                                <?php echo $block->render('Riki_SubscriptionPage::view/category.phtml', [
+                                    'listProduct' => $listProduct,
+                                    'categoryId' => $categoryId,
+                                    'categoryName' => $arrMainCategories[$categoryId]->getData('name'),
+                                    'categoryDescription' => $block->getViewModel()->filterText($arrMainCategories[$categoryId]->getData('description')),
+                                    'isAddition' => 0,
+                                    'thumbnail' => $arrMainCategories[$categoryId]->getImageUrl()
+                                ]) ?>
+                                <?php endif; ?>
+
+                            <?php endforeach; ?>
+                            <!-- End Loop Here -->
+
+                            <?php if (!$block->isHanpukai()): ?>
+                                <div>
+                                    <div class="subscription-toolbar bottom hidden">
+                                        <?php echo __('The quantity of all items') ?>
+                                        <select name="action-1-bottom" class="action-change-qty" rel="1">
+                                            <?php for ($i = 0; $i <= 99; $i++): ?>
+                                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                            <?php endfor; ?>
+                                        </select>
+                                        <?php echo __('to change') ?>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+
+                        <?php else : ?>
+                            <?php echo __('There is no product in this subscription course'); ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <div class="check-offset"></div>
+
+                <?php if ($block->isHanpukai()): ?>
+                    <div class="subscription-block-bottom">
+                        <div class="subscription-pageTop" data-bind="click: moveToTop">
+                            <?php echo $this->getLayout()
+                                ->createBlock('Magento\Cms\Block\Block')
+                                ->setBlockId('riki-block-pagetop')
+                                ->toHtml();
+                            ?>
+                        </div>
+                    </div>
+                    <div class="actions-toolbar<?php if (count($arrProductGroupByAdditionalCategory)): ?> has-additional-course<?php endif; ?> actions-toolbar-hanpukai">
+
+                        <?php if ($block->hasProduct()): ?>
+                            <div class="primary">
+                                <?php if (count($arrProductGroupByAdditionalCategory)): ?>
+                                    <a class="action primary change-content"
+                                       title="<?php echo __('We also add other regular courses') ?>"
+                                       data-bind="event: {click: onRedirectAddition }">
+                                        <span><?php echo __('We also add other regular courses') ?></span>
+                                    </a>
+                                    <button data-action-event="Subscription Pages - Floating Buttons"
+                                            data-title="<?php echo __('カートに入れる | Put In Cart') ?>" type="submit"
+                                            class="tracking_floating_button action submit primary tocart"
+                                            title="<?php echo __('Continue to cart') ?>">
+                                        <span><?php echo __('Continue to cart') ?></span>
+                                    </button>
+                                <?php else: ?>
+                                    <button data-action-event="Subscription Pages - Floating Buttons"
+                                            data-title="<?php echo __('カートに入れる | Put In Cart') ?>" type="submit"
+                                            class="tracking_floating_button action submit primary tocart"
+                                            title="__('Continue to cart')" <?php if ($isHanpukaiOutOfStock) { ?> disabled <?php } ?>>
+                                        <span><?php echo __('Continue to cart') ?></span>
+                                    </button>
+                                <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
+                        <div class="secondary hidden"></div>
+                    </div>
+                    <div class="short-desc-hanpukai">
+                        <?php echo $block->getMetaDescription(); ?>
+                    </div>
+
+                <?php else: ?>
+                <div class="subscription-block-bottom">
+                    <?php if (!empty($arrProductGroupByAdditionalCategory)): ?>
+                        <div class="additional-category">
+                            <a class="action primary change-content"
+                               title="<?php echo __('We also add other regular courses') ?>"
+                               data-bind="event: {click: onRedirectAddition }">
+                                <span><?php echo __('We also add other regular courses') ?></span>
+                            </a>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="subscription-pageTop" data-bind="click: moveToTop">
+                        <?php echo $this->getLayout()
+                            ->createBlock('Magento\Cms\Block\Block')
+                            ->setBlockId('riki-block-pagetop')
+                            ->toHtml();
+                        ?>
+                    </div>
+
+                </div>
+                    <div class="actions-toolbar<?php if (!empty($arrProductGroupByCategory)): ?> has-additional-course<?php endif; ?>">
+                        <div id="navigation-scroll__nav" class="sub-navigation-scroll hidden">
+                            <label data-bind="text: currentSectionName"><?php echo __('Search subscription products by category button') ?></label>
+                            <div class="navigation-select">
+                                <select data-bind="value: currentSection, event:{ change: navigationScroll }">
+                                    <option value=""><?php echo __('Search subscription products by category button') ?></option>
+                                    <?php foreach ($arrProductGroupByCategory as $categoryId => $products): ?>
+                                        <?php if (empty($products)): continue; endif; ?>
+                                        <option value="section-<?php echo $categoryId ?>"><?php echo $block->getCategoryById($categoryId)->getName() ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <?php if ($block->hasProduct()): ?>
+                            <div class="primary">
+                                <?php if (!empty($arrProductGroupByCategory)): ?>
+                                    <div class="total-amount-block hidden">
+                                        <table class="table table-total-amount">
+                                            <tr>
+                                                <td class="mask"
+                                                    data-label="<?php echo $block->escapeHtml(__('(Incl. Tax)')); ?>">
+                                                    <?php if ($block->isHanpukai()): ?>
+                                                        <span class="no-display"><?php echo __('Initial payment amount') ?></span>
+                                                    <?php endif; ?>
+                                                    <?php echo __('Total Amount') ?>
+                                                </td>
+                                                <td class="value total-amount">0円</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <button data-action-event="Subscription Pages - Floating Buttons"
+                                            data-title="<?php echo __('カートに入れる | Put In Cart') ?>" type="submit"
+                                            class="tracking_floating_button action submit primary tocart riki-subscription-tocart"
+                                            title="<?php echo __('Proceed to order process') ?>">
+                                        <span><?php echo __('Proceed to order process') ?></span>
+                                    </button>
+                                <?php else: ?>
+                                    <button data-action-event="Subscription Pages - Floating Buttons"
+                                            data-title="<?php echo __('カートに入れる | Put In Cart') ?>" type="submit"
+                                            class="tracking_floating_button action submit primary tocart riki-subscription-tocart"
+                                            title="<?php echo __('Proceed to order process') ?>" <?php if ($isHanpukaiOutOfStock) { ?> disabled <?php } ?>>
+                                        <span><?php echo __('Proceed to order process') ?></span>
+                                    </button>
+                                <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
+                        <div class="secondary"></div>
+                    </div>
+
+                <?php endif; ?>
+
+            </div>
+        </div>
+        <?php if (count($arrProductGroupByAdditionalCategory)): ?>
+            <div id="additional-course-container">
+                <div id="add-another-course-popup" class="rk_listProduct">
+                    <div class="subscription-container free-html">
+                        <?php echo __('Please select products from the following categories.') ?><br/>
+                    </div>
+
+                    <!-- Loop Categories Here -->
+                    <?php foreach ($arrProductGroupByAdditionalCategory as $categoryId => $listProduct): ?>
+                        <?php if (count($listProduct) > 0): ?>
+                            <?php echo $block->render('Riki_SubscriptionPage::view/category.phtml', [
+                                'listProduct' => $listProduct,
+                                'categoryId' => $categoryId,
+                                'categoryName' => $arrAdditionalCategories[$categoryId]->getData('name'),
+                                'isAddition' => 1
+                            ]) ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                    <!-- End Loop Here -->
+
+                    <div class="check-offset"></div>
+                    <div class="actions-toolbar">
+                        <div class="total-amount-block">
+                            <table class="table table-total-amount">
+                                <tr>
+                                    <td class="mask" data-label="<?php echo $block->escapeHtml(__('(Incl. Tax)')); ?>">
+                                        <?php echo __('Total Amount') ?>
+                                    </td>
+                                    <td class="value total-amount">0円</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <?php if ($block->hasProduct()): ?>
+                            <div class="primary">
+                                <button type="submit" data-bind="click: submitAdditionalForm"
+                                        class="action submit primary tocart riki-subscription-tocart"
+                                        title="<?php echo __('Proceed to purchase') ?>">
+                                    <span><?php echo __('Proceed to purchase') ?></span>
+                                </button>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <?php echo $block->render('Riki_SubscriptionPage::view/product-detail.phtml', []) ?>
+
+        <script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Catalog/js/unsticky-cart": {}
+        }
+    }
+
+
+        </script>
+    </form>
+
+    <script type="text/javascript">
+        require([
+            'jquery',
+            'Magento_Customer/js/customer-data',
+            'mage/url',
+            'mage/mage',
+            'Magento_Catalog/product/view/validation',
+            'Riki_SubscriptionPage/js/catalog-add-to-cart',
+            'Riki_SubscriptionPage/js/multiple_machines',
+            'domReady!'
+        ], function ($, customerData, url, mage, validation, catalogCart, multiple_machines) {
+            'use strict';
+
+            $('.item.config input.qty').on('change', function () {
+                var self = $(this),
+                    qty = self.val(),
+                    swatchInput = self.parent().parent().parent().find('input.swatch-input');
+                if (qty < 1) {
+                    swatchInput.each(function () {
+                        $(this).attr('data-validate', '{required:false}');
+                    })
+                } else {
+                    swatchInput.each(function () {
+                        $(this).attr('data-validate', '{required:true}');
+                    })
+                }
+            });
+
+            <?php if($courseType === "") :?>
+            $('#form-validate').mage('validation', {
+                radioCheckboxClosest: '.nested',
+                submitHandler: function (form) {
+                    $('.minicart_content').removeClass('active');
+                    $('.minicart-screen').removeClass('active');
+                    $("body").trigger("processStart");
+
+                    var widget = $(form).catalogAddToCart({
+                        bindSubmit: false
+                    });
+                    widget.catalogAddToCart('submitForm', $(form));
+
+                    return false;
+                }
+            });
+            <?php endif; ?>
+            <?php if($courseType === "popup-multiple-machines") :?>
+            $('#machine').removeClass('validate-select-sub-page-machine');
+            $('#machine').removeClass('required-entry');
+            $('#form-validate').mage('validation', {
+                radioCheckboxClosest: '.nested',
+                submitHandler: function (form) {
+                    while ($('#main-course-container').find('#popup-machine').remove().length > 0) {
+                    }
+
+                    if ($("#subscription-type").val() == '<?php echo \Riki\SubscriptionCourse\Model\Course\Type::TYPE_MULTI_MACHINES; ?>') {
+                        if ($("#popup-machine").css('visibility') === 'hidden') {
+                            multiple_machines.call().showPopup();
+                            return;
+                        }
+                    }
+
+                    $('#popup-machine').modal("closeModal");
+                    $('.minicart_content').removeClass('active');
+                    $('.minicart-screen').removeClass('active');
+                    $("body").trigger("processStart");
+
+                    var machineClone = $('#popup-machine').clone();
+                    $('#main-course-container').append(machineClone);
+                    machineClone.hide();
+
+                    var widget = $(form).catalogAddToCart({
+                        bindSubmit: false
+                    });
+                    widget.catalogAddToCart('submitForm', $(form));
+
+                    return false;
+                }
+            });
+            <?php endif; ?>
+            return url.setBaseUrl('<?php /* @escapeNotVerified */ echo $block->getBaseUrl();?>');
+        });
+    </script>
+    <script>
+        window.subscriptionConfig = <?php /* @escapeNotVerified */ echo $block->getPriceFormat();?>;
+    </script>
+    <script type="text/x-magento-init">
+    {
+        "*": {
+           "Magento_Ui/js/core/app": {
+               "components": {
+                    "subscriptionPageView": {
+                    <?php if ($block->isHanpukai()): ?>
+                       "component": "Riki_SubscriptionPage/js/view/hanpukai-page-view",
+                       "cartData": <?php echo $block->getHanpukaiCartData() ?>
+                    <?php else: ?>
+                        "component": "Riki_SubscriptionPage/js/view/subscription-page-view"
+                    <?php endif; ?>
+                   },
+                   "subscriptionImageLazyLoad": {
+                       "component": "Riki_Catalog/js/catalog/image-lazy-loading"
+                   }
+               }
+            }
+       }
+    }
+
+
+    </script>
+<?php else: ?>
+    <?php echo $block->render('Riki_SubscriptionPage::view/message.phtml') ?>
+    <script type="text/javascript">
+        require([
+            'jquery'
+        ], function ($) {
+            'use strict';
+            $('body.subscription-view-index').addClass('loaded');
+        });
+    </script>
+<?php endif; ?>
+
+<div id="machines-popup">
+    <?php if ($courseType === 'popup-multiple-machines'): ?>
+        <div id="popup-machine" data-bind="scope:'<?= $courseType; ?>'">
+            <!-- ko template: getTemplate() --><!-- /ko -->
+        </div>
+        <script type="text/x-magento-init">
+        {
+            "*": {
+                "Magento_Ui/js/core/app": {
+                   "components": {
+                        "popup-multiple-machines": {
+                            "component": "Riki_SubscriptionPage/js/multiple_machines",
+                            "template" : "Riki_SubscriptionPage/popup-multiple-machines"
+                        }
+                    }
+                }
+            }
+        }
+
+
+        </script>
+    <?php endif; ?>
+</div>
+
+

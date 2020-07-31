@@ -1,0 +1,44 @@
+Xtento_XtCore
+
+-------------
+  CHANGELOG
+-------------
+
+===== 2.0.0 =====
+ * Initial stable M2 release
+
+===== 2.0.1 =====
+ + Added cron scheduler
+ * Various bug fixes, code optimizations
+ * Compatibility with Magento 2.0.2
+
+===== 2.0.2 =====
+ * Code optimizations
+ * Removed unnecessary, commented code
+
+===== 2.0.3 =====
+ * Established compatibility with Magento code compilation, some injected dependencies were declared twice or in $context already
+ * Fixed Magento Enterprise Edition check
+ * Code optimizations
+
+===== 2.0.4 =====
+ * Compatibility with Magento 2.1.0 established
+
+===== 2.0.5 =====
+ * Fixed bug related to date/timestamp to store timezone conversion in Date helper, timezone was wrong
+
+===== 2.0.6 =====
+ * Fixed bug with regards to wrong css path for base_admin.min.css file
+
+===== 2.0.7 =====
+ + Added warning in module configuration at System > Configuration if module output is disabled via "Disable Module Output" at System > Configuration > Advanced > Advanced
+
+===== 2.0.8 =====
+ + Added method getMagentoVersion (as a wrapper) in Helper\Utils.
+
+===== 2.0.9 =====
+ + Compatibility with Magento 2.2 established
+
+===== 2.1.0 =====
+ * Switched to 2.x.0 version schema so composer upgrades XtCore to "next-significant-release" version (applies for composer upgrades)
+ * Next release: 2.2.0

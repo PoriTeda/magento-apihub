@@ -1,0 +1,283 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/**
+ * @var \Riki\Theme\Block\Html\Header\Navigation $block
+ * @var \Riki\Theme\ViewModel\Header\Navigation $viewModel
+ */
+
+$viewModel = $block->getViewModel();
+$userUrl = $viewModel->getUserUrl();
+?>
+
+<div class="navbar-menu" data-bind="scope: 'navigation-profile'">
+    <span class="action nav-toggle mob-menu hidden" data-quicklink=0 data-bind="click: openMenu, touchstart: openMenu"><span><?php /* @escapeNotVerified */ echo __('Toggle Nav') ?></span></span>
+    <a class="navbar-icon mob-menu" data-quicklink=0 data-bind="click: openMenu, touchstart: openMenu">
+        <span class="icon-bar"></span>
+        <span class="icon-bar bar2"></span>
+        <span class="icon-bar"></span>
+
+    </a>
+    <p class="menu"><?= __('Menu Nav') ?></p>
+</div>
+<div class="navbar-content mob-content">
+    <div class="content-menu" data-bind="scope: 'customer'">
+
+        <div class="navbar-left__top clearfix text-right" data-bind="scope: 'navigation-profile'">
+            <div class="mob-close" data-bind="click: closeMenu, touchstart: closeMenu">
+                <i class="icon-remove">&nbsp;</i>
+            </div>
+        </div>
+        <div class="navn_item nav-login" data-bind="scope:'navigation-profile'">
+            <!-- ko if: $parent.customer().fullname -->
+            <span class="pull-left" data-bind="html: ('ようこそ' + $parent.customer().fullname + 'さん')"></span>
+            <a class="navn_item-lg"
+               data-bind="attr:{href: toggleFromQuicklink() ? '<?= $block->getUrl('subscriptions/profile/') ?>' : '<?= $block->getUrl('customer/account/') ?>'}"
+               ><?= __("My Page") ?></a>
+            <!-- /ko -->
+
+            <!-- ko ifnot: $parent.customer().fullname -->
+            <span class="pull-left"><?= $block->getDefaultWelcome() ?></span>
+            <a class="navn_item-lg" href="<?= $userUrl->getLoginUrl() ?>"><?= __("Login"); ?></a>
+            <!-- /ko -->
+
+        </div>
+        <div class="navbar-left__midde" data-bind="scope: 'navigation-profile'">
+            <div class="navbarlist__item navbarlist__service">
+                <a href="#">アカウントサービス
+                    <!-- ko ifnot: $parent.customer().fullname -->
+                    <span class="item-service">アカウントサービスはログイン後利用可能です</span>
+                    <!-- /ko -->
+                </a>
+            </div>
+
+            <!-- ko ifnot: profiles()[0] -->
+            <div class="navbarlist__item navbarlist__service">
+                <a href="#">定期お届け便のご注文内容確認
+                <!-- ko if: $parent.customer().fullname -->
+                    <span class="item-service">ご確認いただける定期便のご契約がございません</span>
+                <!-- /ko -->
+                </a>
+            </div>
+            <!-- /ko -->
+
+            <!-- ko if: profiles()[0] -->
+            <div class="navbarlist__item toggle-menu">
+
+                <a href="#" data-index=0 data-bind="click: toggleMenu, attr:{'data-profile-id': profiles()[0].course_id}"><?= __("Your Next Delivery 1"); ?>  <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></a>
+                <div class="navbarlist__submenu submenu_course">
+                    <div class="submenu_course-list">
+                        <div class="list_amount list_flex">
+                            <span><strong><?= __("Total amount") ?></strong></span>
+                            <span id="price-0" class="base-subtotal-incl-tax left-menu" data-bind="attr:{
+                                             'data-profile-id': profiles()[0].course_id,
+                                             }"></span>
+                        </div>
+                        <div class="list_delivery list_flex">
+                            <span><strong><?= __("Nex Delivery Date") ?></strong></span>
+                            <span data-bind="text: profiles()[0].next_delivery"></span>
+                        </div>
+                    </div>
+                    <div class="submenu_course-change" id="submenu_course-change-0" data-bind="attr:{
+                                             'data-profile-id': profiles()[0].course_id,
+                                             }">
+                        <p><strong><?= __("Make Change") ?></strong></p>
+                        <label><span><?= __("Delivery Date") ?></span></label>
+                        <div class="calendar-wrapper left-menu" id="calendar-0" data-bind="attr:{'data-profile-id': profiles()[0].course_id}"></div>
+                        <label><span><?= __("Delivery time") ?></span></label>
+                        <div class="select-wrapper">
+                            <select name="delivery_time_leftmenu" class="delivery_time_leftmenu input-new select-box profile_0" data-type="timeslot"
+                                    data-bind="value: profiles()[0].time_slot_id,
+                                        event: {change: updateTimeslot},
+                                        attr:{
+                                             'data-profile-id': profiles()[0].course_id,
+                                             'disabled': profiles()[0].changeable == 0 ? true : false
+                                             }">
+                                <?php foreach ($viewModel->getAllTimeSlot() as $strTime) :  ?>
+                                    <option value="<?php echo $strTime['value']  ?>" > <?php echo $strTime['label']  ?> </option>
+                                <?php endforeach;  ?>
+                            </select>
+                            <span class="timeslot-err" data-bind="timeslotErrMsg"></span>
+                        </div>
+                    </div>
+                    <div class="submenu_course-items" id="submenu_course-change-0" data-bind="attr:{
+                                             'data-profile-id': profiles()[0].course_id,
+                                             }">
+                        <p><strong><?= __("Next Delivery Items") ?></strong></p>
+                        <div class="list_product left-menu" id="list-product-0" data-bind="attr:{
+                                             'data-profile-id': profiles()[0].course_id,
+                                             }">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /ko -->
+
+            <!-- ko if: profiles()[1] -->
+            <div class="navbarlist__item toggle-menu">
+                <a href="#" data-index=1 data-bind="click: toggleMenu, attr:{'data-profile-id': profiles()[1].course_id}"><?= __("Your Next Delivery 2") ?>  <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></a>
+                <div class="navbarlist__submenu submenu_course">
+                    <div class="submenu_course-list">
+                        <div class="list_amount list_flex">
+                            <span><strong><?= __("Total amount") ?></strong></span>
+                            <span id="price-1" class="base-subtotal-incl-tax left-menu" data-bind="attr:{
+                                             'data-profile-id': profiles()[1].course_id,
+                                             }"></span>
+                        </div>
+                        <div class="list_delivery list_flex">
+                            <span><strong><?= __("Nex Delivery Date") ?></strong></span>
+                            <span data-bind="text: profiles()[1].next_delivery"></span>
+                        </div>
+                    </div>
+                    <div class="submenu_course-change" id="submenu_course-change-1" data-bind="attr:{
+                                             'data-profile-id': profiles()[1].course_id,
+                                             }">
+                        <p><strong><?= __("Make Change") ?></strong></p>
+                        <label><span><?= __("Delivery Date") ?></span></label>
+                        <div class="calendar-wrapper left-menu" id="calendar-1" data-bind="attr:{'data-profile-id': profiles()[1].course_id}"></div>
+                        <label><span><?= __("Delivery time") ?></span></label>
+                        <div class="select-wrapper">
+                            <select name="delivery_time_leftmenu" class="delivery_time_leftmenu input-new select-box profile_1"
+                                    data-bind="value: profiles()[1].time_slot_id,
+                                        event: {change: updateTimeslot},
+                                        attr:{
+                                             'data-profile-id': profiles()[1].course_id,
+                                             'disabled': profiles()[1].changeable == 0 ? true : false
+                                             }">
+                                <?php foreach ($viewModel->getAllTimeSlot() as $strTime) :  ?>
+                                    <option value="<?php echo $strTime['value']  ?>" > <?php echo $strTime['label']  ?> </option>
+                                <?php endforeach;  ?>
+                            </select>
+                            <span class="timeslot-err" data-bind="timeslotErrMsg"></span>
+                        </div>
+                    </div>
+                    <div class="submenu_course-items" id="submenu_course-items-1" data-bind="attr:{
+                                             'data-profile-id': profiles()[1].course_id,
+                                             }">
+                        <p><strong><?= __("Next Delivery Items") ?></strong></p>
+                        <div class="list_product left-menu" id="list-product-1" data-bind="attr:{
+                                             'data-profile-id': profiles()[1].course_id,
+                                             }">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /ko -->
+
+            <!-- ko ifnot: profiles()[1] -->
+            <div class="navbarlist__item empty">
+
+            </div>
+            <!-- /ko -->
+
+            <?php  if (!empty( $this->getLayout()->createBlock(\Magento\Cms\Block\Block::class)->setBlockId('nav_static-login')->toHtml())) : ?>
+            <div class="navbarlist__item empty">
+                <div id="owlslider-login">
+                    <?php echo $this->getLayout()->createBlock(\Magento\Cms\Block\Block::class)->setBlockId('nav_static-login')->toHtml();?>
+                </div>
+            </div>
+            <?php endif;?>
+
+            <?php  if (!empty( $this->getLayout()->createBlock(\Magento\Cms\Block\Block::class)->setBlockId('nav_static-logout')->toHtml())) : ?>
+                <div class="navbarlist__item empty">
+                    <div id="owlslider-logout">
+                        <?php echo $this->getLayout()->createBlock(\Magento\Cms\Block\Block::class)->setBlockId('nav_static-logout')->toHtml();?>
+                    </div>
+                </div>
+            <?php endif;?>
+
+            <div class="navbarlist__item menu">
+                <a href="#"><?= __("Help ")?></a>
+            </div>
+
+            <div class="navbarlist__item">
+                <a href="https://shop.nestle.jp/front/contents/guide/"><?= __("User's guide") ?></a>
+            </div>
+
+            <div class="navbarlist__item menu">
+                <a href="https://shop.nestle.jp/front/contents/faq/"><?= __("FAQ")?></a>
+            </div>
+
+            <div class="navbarlist__item">
+                <a href="https://nlc2.nestle.jp/autochat.html"><?= __("Contact us by chat") ?></a>
+            </div>
+
+            <div class="navbarlist__item">
+                <a href="https://shop.nestle.jp/front/contents/guide/ec/compliance/"><?= __("特定商取引法に基づく表示")?></a>
+            </div>
+
+            <!-- ko if: $parent.customer().fullname -->
+            <div class="navbarlist__item">
+                <a class="navn_item-lg" href="<?= $userUrl->getLogoutUrl() ?>"><?= __("Logout") ?></a>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+</div>
+<div class="mob-screen">&nbsp;</div>
+<script type="text/x-magento-init">
+{
+    ".content-menu": {
+        "Magento_Ui/js/core/app": {
+            "components": {
+                "navigation-profile": {
+                    "component": "Riki_Theme/js/view/navigation-profile"
+                },
+                "customer": {
+                    "component": "Riki_Theme/js/view/customer"
+                }
+            }
+        }
+    }
+}
+</script>
+
+<script id="course-template" type="text/x-magento-template">
+
+</script>
+
+<script type="text/javascript">
+    require([
+            'jquery',
+            'mage/translate',
+            'mage/calendar',
+            'domReady!'
+        ],
+        function($, $t) {
+            var self = this;
+            $('.navbarlist__item .toggle-menu').on('click', function(e){
+                e.preventDefault();
+                $('.submenu_course').style('display','block');
+            });
+
+            $('.mob-screen').click(function(e){
+                e.preventDefault();
+                $(this).toggleClass("active");
+                $('.mob-content').removeClass("active");
+                $('#main-course-container .actions-toolbar').removeClass("z_index");
+            });
+
+            $window = $(window);
+            $window.scroll(function() {
+                $scroll_position = $window.scrollTop();
+                header_height = $('#header').innerHeight();
+                if ($scroll_position > header_height) { // if body is scrolled down by 80 pixels
+                    $('#header').addClass('sticky');
+
+                    // to get rid of jerk
+                    header_height = $('#header').innerHeight();
+                    $('body').css('padding-top' , header_height);
+                } else {
+                    $('body').css('padding-top' , '0');
+                    $('#header').removeClass('sticky');
+                }
+            });
+
+        }
+    );
+</script>

@@ -1,0 +1,5 @@
+<!--@subject Stock importing notification for warehouse : {{var warehouse}}  @-->
+＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋
+Stock importing notification for warehouse: {{var warehouse}}
+＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋
+ {{var log_content}}

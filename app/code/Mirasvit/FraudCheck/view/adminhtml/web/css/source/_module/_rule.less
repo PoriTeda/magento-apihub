@@ -1,0 +1,55 @@
+.fraud-check-rule-edit {
+  #conditions_fieldset {
+    .admin__fieldset();
+
+    .legend {
+      .admin__legend();
+    }
+  }
+
+  .rule-tree-wrapper {
+    .rule-param-new-child {
+      a {
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        color: #03A500;
+
+        &:hover {
+          text-decoration: none;
+        }
+
+        &:before {
+          content: "\f055";
+        }
+
+        >img {
+          display: none;
+        }
+      }
+    }
+
+    a.rule-param-remove {
+      font: normal normal normal 14px/1 FontAwesome;
+      font-size: inherit;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: #e22626;
+
+      &:hover {
+        text-decoration: none;
+      }
+
+      &:before {
+        content: "\f057";
+      }
+
+      >img {
+        display: none;
+      }
+    }
+  }
+}

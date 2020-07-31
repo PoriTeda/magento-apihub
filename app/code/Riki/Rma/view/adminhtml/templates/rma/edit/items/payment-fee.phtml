@@ -1,0 +1,53 @@
+<?php /** @var \Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\PaymentFee $block */ ?>
+<div class="admin__fieldset-wrapper" data-bind="scope: 'paymentFeeExpr'">
+    <div class="admin__fieldset-wrapper-title">
+        <strong class="title">
+            <span><?php /* @escapeNotVerified */ echo __('Payment fee') ?></span>
+        </strong>
+    </div>
+    <div class="admin__fieldset-wrapper-content">
+        <fieldset class="admin__fieldset">
+            <div class="admin__field">
+                <label class="admin__field-label">
+                    <span><?php /* @escapeNotVerified */ echo __('Returned payment fee') ?></span>
+                </label>
+                <div class="admin__field-label" style="width: auto">
+                    <span data-bind="text: x"></span>
+                    <input type="hidden" name="return_payment_fee" id="return_payment_fee" data-bind="value: x" />
+                </div>
+            </div>
+            <div class="admin__field">
+                <label class="admin__field-label" for="return_payment_fee_adj">
+                    <span><?php /* @escapeNotVerified */ echo __('Payment fee adjustment') ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <input class="admin__control-text validate-number" type="text" name="return_payment_fee_adj" id="return_payment_fee_adj" data-bind="textInput: y">
+                </div>
+            </div>
+            <div class="admin__field">
+                <label class="admin__field-label">
+                    <span><?php /* @escapeNotVerified */ echo __('Final Returned payment fee') ?></span>
+                </label>
+                <div class="admin__field-label" style="width: auto">
+                    <span data-bind="text: result"></span>
+                    <input type="hidden" name="return_payment_fee_adjusted" id="return_payment_fee_adjusted" data-bind="value: result">
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "paymentFeeExpr": {
+                        "component": "Riki_Rma/js/view/rma/lib/sum-expr",
+                        "_x": <?php echo $block->getReturnPaymentFee() ?>,
+                        "_y": <?php echo $block->getReturnPaymentFeeAdj() ?>
+                    }
+                }
+            }
+        }
+    }
+</script>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="billing_method">
+            <block class="Riki\Sales\Block\Adminhtml\Order\Create\Billing\FreeFlag" template="order/create/billing/free_flag.phtml" name="payment_free_flag" before="-"/>
+        </referenceBlock>
+        <referenceBlock name="shipping_method">
+            <block class="Riki\Sales\Block\Adminhtml\Order\Create\Shipping\FreeFlag" template="order/create/shipping/free_flag.phtml" name="shipping_free_flag" before="-"/>
+        </referenceBlock>
+        <referenceBlock name="data">
+            <block class="Riki\Sales\Block\Adminhtml\Order\Create\AdditionalInfo" template="order/create/additional_info.phtml" name="additional-info"/>
+            <block class="Riki\Sales\Block\Adminhtml\Order\Create\Delivery" template="order/create/delivery.phtml" name="delivery_info"/>
+            <block class="Riki\Sales\Block\Adminhtml\Order\Create\Questionnaire" template="order/create/questionnaire.phtml" name="questionnaire"/>
+        </referenceBlock>
+        <referenceBlock name="form_account">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Riki_Sales::order/create/form/account.phtml</argument>
+            </action>
+        </referenceBlock>
+        <referenceBlock name="items_grid">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Magento_Sales::order/create/items/grid.phtml</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

@@ -1,0 +1,43 @@
+<?php /** @var $block \Riki\FairAndSeasonalGift\Block\Adminhtml\Recommend\Form*/ ?>
+
+<?php
+    $relatedFair = $block->getRelatedFair();
+    if( !empty( $relatedFair ) ):
+?>
+
+    <div>
+        <div class="admin__control-table-wrapper">
+            <div class="admin__field">
+                <label class="admin__field-label">
+                    <?php echo __('Choose related fair');?>
+                </label>
+                <div class="admin__field-control">
+                    <select class="admin__control-select" name="recommend_product[recommended_fair_id]" id="recommend_fair_select">
+                        <option value=""><?php echo __("Select Fair");?></option>
+                        <?php foreach ( $relatedFair as $fair ):?>
+                            <option value="<?php echo $fair['fair_related_id'];?>" >
+                                <?php echo  $fair['fair_name'];?>
+                            </option>
+                        <?php endforeach;?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="admin__field">
+                <label class="admin__field-label">
+                    <?php echo __('Choose recommend product');?>
+                </label>
+                <div class="admin__field-control">
+                    <select class="admin__control-select" name="recommend_product_id" id="recommend_product_select">
+                        <option value=""><?php echo __("Choose Product");?></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<?php
+    else:
+        echo __('Unable to find related fair.');
+    endif;
+?>

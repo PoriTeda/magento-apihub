@@ -1,0 +1,217 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** $block \Riki\Subscription\Block\Adminhtml\Simulate\Order\View */
+/*
+store view name = $_order->getStore()->getName()
+web site name = $_order->getStore()->getWebsite()->getName()
+store name = $_order->getStore()->getGroup()->getName()
+*/
+?>
+<?php
+    $_order = $block->getOrder();
+    /** @var \Riki\Subscription\Model\Profile\Profile $_profile */
+    $_profile = $block->getCurrentProfile();
+    $_shippingAddress = $_order->getShippingAddress();
+    $_billingAddress = $_order->getBillingAddress();
+    $_paymentMethod = $_order->getPayment()->getMethodInstance()->getTitle();
+
+    if($_billingAddress->getData('riki_nickname') != NULL){
+        $nickName =  $_billingAddress->getData('riki_nickname');
+    } else{
+        $nickName = '';
+    }
+    if(count($_billingAddress->getCustomAttribute('apartment')) != NULL){
+        $apartment=  $_billingAddress->getCustomAttribute('apartment')->getValue();
+    } else {
+        $apartment = '';
+    }
+    if($_billingAddress->getStreet()){
+        $street = implode(' ',$_shippingAddress->getStreet() );
+    }else{
+        $street = '';
+    }
+
+    $_billingAdd = [
+        ' 〒 '.$_billingAddress->getPostcode(),
+        $_billingAddress->getRegion(),
+        $_billingAddress->getCity(),
+        $street,
+        $apartment
+
+    ];
+    $_streetFull = $_billingAddress->getStreetFull() . ' ' . $_billingAddress->getRegion() . ' ' . $_billingAddress->getCity();
+?>
+
+<section class="admin__page-section order-view-account-information">
+    <div class="admin__page-section-title">
+        <span class="title"><?php /* @escapeNotVerified */ echo __('Order # %1', $_order->getRealOrderId()) ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item order-information">
+            <?php /* Order Information */?>
+            <div class="admin__page-section-item-title">
+                <span class="title">
+                    <?php /* @escapeNotVerified */ echo __('Customer Information') ?>
+                </span>
+            </div>
+            <div class="admin__page-section-item-content">
+                <table class="admin__table-secondary order-account-information-table">
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Customer Name') ?></th>
+                        <td>
+                            <?php echo $block->escapeHtml($_order->getCustomerName()) ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Street Address') ?></th>
+                        <td><?php echo @implode(", ", $_billingAdd); ?></td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Phone Number') ?></th>
+                        <td><?php echo $_billingAddress->getTelephone(); ?></td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Email') ?></th>
+                        <td><a href="mailto:<?php echo $block->escapeHtml($_order->getCustomerEmail()) ?>"><?php echo $block->escapeHtml($_order->getCustomerEmail()) ?></a></td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Payment method') ?></th>
+                        <td><?php echo $_paymentMethod; ?></td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Payment Day') ?></th>
+                        <td>
+                            <?php
+                                $paymentMethod = $_order->getPayment()->getMethod();
+                                echo $this->helper('Riki\Sales\Helper\OrderStatus')->getPaymentDate($paymentMethod,$_order->getData('entity_id'));
+                            ?>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="admin__page-section-item order-account-information">
+            <div class="admin__page-section-item-title">
+                <span class="title">
+                    <?php /* @escapeNotVerified */ echo __('Order Totals') ?>
+                </span>
+            </div>
+            <div class="admin__page-section-item-content">
+                <?php echo $block->getChildHtml('order_totals') ?>
+            </div>
+        </div>
+    </div>
+</section>
+
+<?php
+
+if ($_shippingAddress != null):
+if($_shippingAddress->getData('riki_nickname') != NULL){
+    $nickName =  $_shippingAddress->getData('riki_nickname');
+} else{
+    $nickName = '';
+}
+if(count($_shippingAddress->getCustomAttribute('apartment')) != NULL){
+    $apartment=  $_shippingAddress->getCustomAttribute('apartment')->getValue();
+} else {
+    $apartment = '';
+}
+if($_shippingAddress->getStreet()){
+    $street = implode(' ',$_shippingAddress->getStreet() );
+}else{
+    $street = '';
+}
+$_shippingAdd = [
+    ' 〒 '.$_shippingAddress->getPostcode(),
+    $_shippingAddress->getRegion(),
+    $_shippingAddress->getCity(),
+    $street,
+    $apartment
+]; ?>
+    <section class="admin__page-section order-addresses">
+        <div class="admin__page-section-content">
+            <div class="admin__page-section-item order-billing-address">
+                <div class="admin__page-section-item-title">
+                    <span class="title"><?php echo __("Address:");?> <?php echo $nickName.' '.$_shippingAddress->getFirstName()." ".$_shippingAddress->getLastName().' 様' ;?></span>
+                </div>
+                <div class="admin__page-section-item-content">
+                    <table class="admin__table-secondary order-account-information-table">
+                        <tr>
+                            <th><?php /* @escapeNotVerified */ echo __('Name') ?></th>
+                            <td><?php echo $_shippingAddress->getFirstName()." ".$_shippingAddress->getLastName(); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?php /* @escapeNotVerified */ echo __('Street Address') ?></th>
+                            <td><?php echo is_array($_shippingAdd) ? implode(", ", $_shippingAdd) : ''; ?></td>
+                        </tr>
+                        <tr>
+                            <th><?php /* @escapeNotVerified */ echo __('Phone Number') ?></th>
+                            <td><?php echo $_shippingAddress->getTelephone(); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?php /* @escapeNotVerified */ echo __('Postage (tax included)') ?></th>
+                            <td><?php echo $_order->formatPrice($_order->getShippingAmount()); ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+<?php endif; ?>
+
+<section class="admin__page-section">
+    <div class="admin__page-section-title"><span class="title"><?php echo __('Items Ordered') ?></span></div>
+    <div class="admin__table-wrapper">
+        <table class="data-table admin__table-primary edit-order-table">
+            <thead>
+            <tr class="headings">
+                <th class="col-product"><?php echo __('Product') ?></th>
+                <th class="col-price"><?php echo __('Price') ?></th>
+                <th class="col-paid-services"><?php echo __('Paid services') ?></th>
+                <th class="col-ordered-qty"><?php echo __('Qty') ?></th>
+                <th class="col-subtotal"><?php echo __('Subtotal') ?></th>
+            </tr>
+            </thead>
+            <?php $i = 0; foreach ($_order->getAllItems() as $_item): $i++ ?>
+                <tbody>
+                <tr>
+                    <td class="col-product">
+                        <?php echo $block->escapeHtml($_item->getName()) ?>
+                        <?php if ($_item->getGiftMessageId() && $_giftMessage = $this->helper('Magento\GiftMessage\Helper\Message')->getGiftMessage($_item->getGiftMessageId())): ?>
+                            <br /><strong><?php /* @escapeNotVerified */ echo __('Gift Message') ?></strong>
+                            <br /><?php /* @escapeNotVerified */ echo __('From:'); ?> <?php echo $block->escapeHtml($_giftMessage->getSender()) ?>
+                            <br /><?php /* @escapeNotVerified */ echo __('To:'); ?> <?php echo $block->escapeHtml($_giftMessage->getRecipient()) ?>
+                            <br /><?php /* @escapeNotVerified */ echo __('Message:'); ?><br /> <?php echo $block->escapeHtml($_giftMessage->getMessage()) ?>
+                        <?php endif; ?>
+                    </td>
+                    <td class="col-price"><?php /* @escapeNotVerified */ echo $_order->formatPrice($_item->getPriceInclTax()) ?></td>
+                    <td class="col-paid-services"><?php echo __('None [$ 0.00]') ?></td>
+                    <td class="col-ordered-qty">
+                        <?php if('CS' == $_item->getUnitCase()){ ?>
+                            <?php /* @escapeNotVerified */ echo $_item->getQtyOrdered()*1/((null != $_item->getUnitQty())?$_item->getUnitQty():1) ?>
+                            <?php echo ' ('.(__($_item->getUnitCase()).' ('.$_item->getUnitQty().' '.__('EA')).'))'; ?>
+                        <?php } else { ?>
+                            <?php /* @escapeNotVerified */ echo $_item->getQtyOrdered()*1 ?>
+                            <?php echo ' ('.((null != $_item->getUnitCase())?__($_item->getUnitCase()):__('EA')).')'; ?>
+                        <?php }?>
+                    </td>
+                    <td class="col-subtotal"><?php /* @escapeNotVerified */ echo $_order->formatPrice($_item->getRowTotalInclTax()) ?></td>
+                </tr>
+                </tbody>
+            <?php endforeach ?>
+        </table>
+    </div>
+    <div>
+        <a href="<?php echo $this->getUrl('profile/profile/edit', ['id' =>
+            $_profile->getProfileId()]);?>" class="button primary" style="float: right;">
+            <span><?php echo __('Go back'); ?></span>
+        </a>
+    </div>
+</section>

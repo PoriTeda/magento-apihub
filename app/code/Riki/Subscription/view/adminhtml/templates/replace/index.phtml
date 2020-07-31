@@ -1,0 +1,225 @@
+<?php
+    /**@var \Riki\Subscription\Block\Adminhtml\Replace\Index $block*/
+?>
+
+<div class="import-export-tax-rates">
+    <?php if (!$block->getIsReadonly()): ?>
+    <div class="import-tax-rates">
+        <?php if ($block->getUseContainer()): ?>
+        <form id="replace-form" class="admin__fieldset admin__scope-old" action="<?php /* @escapeNotVerified */ echo $block->getUrl('subscription/replace/submit') ?>" method="post">
+        <?php endif; ?>
+            <fieldset class="fieldset admin__fieldset">
+                <?php echo $block->getBlockHtml('formkey')?>
+                <div class="fieldset admin__field with-note">
+                    <label for="replace_discontinue_product" class="admin__field-label"><span><?php /* @escapeNotVerified */ echo __('Discontinued product') ?></span></label>
+                    <div class="admin__field-control">
+                        <input type="text" id="replace_discontinue_product" name="replace_discontinue_product" class="input-text admin__control-text required-entry"/>
+                        <div class="note">
+                            <?php echo $block->getButtonHtml(__('Search Product SKU'), '', 'discontinue_search_product_sku replace-grid-hide'); ?>
+                            <span id="replace_discontinue_product_name"></span>
+                        </div>
+                    </div>
+
+                    <div id="discontinue-product" style="display: none;" class="admin__page-section discontinue-product-items">
+                        <div class="admin__page-section-title">
+                            <span class="title"><?php /* @escapeNotVerified */ echo $block->getHeaderText() ?></span>
+                        </div>
+                        <?php echo $block->getChildHtml('discontinue_grid', true) ?>
+                    </div>
+                </div>
+                <div class="fieldset admin__field with-note">
+                    <label for="replace_replacement_product" class="admin__field-label"><span><?php /* @escapeNotVerified */ echo __('Replacement product') ?></span></label>
+                    <div class="admin__field-control">
+                        <input type="text" id="replace_replacement_product" name="replace_replacement_product" class="input-text admin__control-text required-entry"/>
+                        <div class="note">
+                            <?php echo $block->getButtonHtml(__('Search Product SKU'), '', 'replacement_search_product_sku replace-grid-hide'); ?>
+                            <span id="replace_replacement_product_name"></span>
+                        </div>
+                    </div>
+
+                    <div id="replacement-product" style="display: none;" class="admin__page-section replacement-product-items">
+                        <div class="admin__page-section-title">
+                            <span class="title"><?php /* @escapeNotVerified */ echo $block->getHeaderText() ?></span>
+                        </div>
+                        <?php echo $block->getChildHtml('replacement_grid', true) ?>
+                    </div>
+                </div>
+                <div class="fieldset admin__field with-note">
+                    <label class="admin__field-label"><span>&nbsp;</span></label>
+                    <div class="admin__field-control">
+                        <input type="checkbox" id="replace_send_email" name="replace_send_email" class="admin__control-checkbox"/>
+                        <label for="replace_send_email" class="admin__field-label"><span><?php /* @escapeNotVerified */ echo __('Send notification email') ?></span></label>
+                        <div class="note"><a href="<?php echo $block->getUrl('adminhtml/system_config/edit', ['section' => 'subscriptioncourse']) ?>"><?php /* @escapeNotVerified */ echo __('Configure email template and sender') ?></a></div>
+                    </div>
+                </div>
+                <div class="fieldset admin__field">
+                    <label class="admin__field-label"><span>&nbsp;</span></label>
+                    <div class="admin__field-control">
+                        <?php
+                            echo $block->getButtonHtml(__('Replace'), '', 'replace-submit');
+                            echo $block->getButtonHtml(__('Delete'), '', 'delete-submit');
+                        ?>
+                    </div>
+                </div>
+            </fieldset>
+        <?php if ($block->getUseContainer()): ?>
+        </form>
+        <?php endif; ?>
+    </div>
+    <?php endif; ?>
+</div>
+<script>
+    require([
+        'jquery',
+        "Magento_Ui/js/modal/confirm",
+        "mage/mage", "loadingPopup",
+        "jquery/validate"
+    ], function(jQuery, confirm){
+
+        jQuery.validator.addMethod('required-empty', function (value) {
+
+            if (value != "") {
+                return false;
+            }
+            return true;
+
+        }, jQuery.mage.__('Please empty the Replacement product field or use \"Replace\" function'));
+
+        var $form = jQuery('#replace-form'),
+            $replaceBtn = jQuery('.replace-submit'),
+            $deleteBtn = jQuery('.delete-submit'),
+            $replaceUrl = "<?php echo $block->getUrl('subscription/replace/submit');?>",
+            $deleteUrl = "<?php echo $block->getUrl('subscription/replace/delete');?>",
+            $discontinueSearchProductBtn = jQuery('.discontinue_search_product_sku'),
+            $discontinueProductArea = jQuery('#discontinue-product'),
+            $discontinueProductGrid = jQuery('#subscription_replace_discontinue_grid'),
+            $inputDiscontinueProductSku = jQuery('#replace_discontinue_product'),
+            $inputDiscontinueProductName = jQuery('#replace_discontinue_product_name'),
+            $replacementSearchProductBtn = jQuery('.replacement_search_product_sku'),
+            $replacementProductArea = jQuery('#replacement-product'),
+            $replacementProductGrid = jQuery('#subscription_replace_replacement_grid'),
+            $inputReplacementProductSku = jQuery('#replace_replacement_product'),
+            $inputReplacementProductName = jQuery('#replace_replacement_product_name');
+
+        $form.mage('form').mage('validation');
+
+        (function ($) {
+
+            $replaceBtn.click(function(){
+
+                $form.attr('action', $replaceUrl);
+
+                $('#replace_replacement_product').addClass('required-entry').removeClass('required-empty');
+
+                if ($form.valid()) {
+                    var title = $.mage.__('Replace discontinued products?');
+                    var content = $.mage.__('You cannot undo this action once you replace.');
+                    confirmPopup(title, content, $form);
+                }
+            });
+
+            $deleteBtn.click(function(){
+
+                $form.attr('action', $deleteUrl);
+
+                $('#replace_replacement_product').removeClass('required-entry').addClass('required-empty');
+
+                if ($form.valid()) {
+                    var title = $.mage.__('Delete discontinued products?');
+                    var content = $.mage.__('Are you sure you want to delete all the products defined as Discontinued product from subscription from profile?');
+                    confirmPopup(title, content, $form);
+                }
+            });
+
+            $discontinueSearchProductBtn.click(function() {
+                if ($(this).hasClass('replace-grid-hide')) {
+                    var title = $.mage.__('Hide Search Product SKU');
+                    searchProductSku(this, title, true, $discontinueProductArea);
+                } else {
+                    var title = $.mage.__('Search Product SKU');
+                    searchProductSku(this, title, false, $discontinueProductArea);
+                }
+            });
+
+            $discontinueProductGrid.on('click', function(event) {
+                var trElement = Event.findElement(event, 'tr');
+                if (trElement) {
+                    var productSku = trElement.select('.sku')[0];
+                    var productName = trElement.select('.name')[0];
+
+                    // Update discontinue product name and product
+                    if (productSku) {
+                        $inputDiscontinueProductSku.val(jQuery.trim(jQuery(productSku).text()));
+                    }
+
+                    if (productName) {
+                        $inputDiscontinueProductName.text('[' + jQuery.trim(jQuery(productName).text()) + ']');
+                    }
+                }
+            });
+
+            $replacementSearchProductBtn.click(function() {
+                if ($(this).hasClass('replace-grid-hide')) {
+                    var title = $.mage.__('Hide Search Product SKU');
+                    searchProductSku(this, title, true, $replacementProductArea);
+                } else {
+                    var title = $.mage.__('Search Product SKU');
+                    searchProductSku(this, title, false, $replacementProductArea);
+                }
+            });
+
+            $replacementProductGrid.on('click', function(event) {
+                var trElement = Event.findElement(event, 'tr');
+                if (trElement) {
+                    var productSku = trElement.select('.sku')[0];
+                    var productName = trElement.select('.name')[0];
+
+                    // Update replacement product name and product
+                    if (productSku) {
+                        $inputReplacementProductSku.val(jQuery.trim(jQuery(productSku).text()));
+                    }
+
+                    if (productName) {
+                        $inputReplacementProductName.text('[' + jQuery.trim(jQuery(productName).text()) + ']');
+                    }
+                }
+            });
+        })(jQuery);
+
+        function confirmPopup(title, content, form){
+            confirm({
+                title: title,
+                content: content,
+                actions: {
+                    confirm: function() {
+                        jQuery('body').loadingPopup({
+                            timeout: false
+                        });
+
+                        form.submit();
+                    },
+                    cancel: function() {
+                        return false;
+                    }
+                }
+            });
+        }
+
+        function searchProductSku(elementSearchBtn, title, isShowGrid, elementReplaceGrid) {
+            var spanElementSearchBtn = elementSearchBtn.select('span')[0];
+
+            // Show replace grid and change text of this button
+            if (isShowGrid) {
+                jQuery(elementSearchBtn).removeClass('replace-grid-hide');
+                jQuery(elementSearchBtn).attr('title', title);
+                jQuery(spanElementSearchBtn).text(title);
+                jQuery(elementReplaceGrid).show();
+            } else {
+                jQuery(elementSearchBtn).addClass('replace-grid-hide');
+                jQuery(elementSearchBtn).attr('title', title);
+                jQuery(spanElementSearchBtn).text(title);
+                jQuery(elementReplaceGrid).hide();
+            }
+        }
+    });
+</script>

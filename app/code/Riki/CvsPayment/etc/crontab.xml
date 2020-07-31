@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group	id="default">
+        <job name="riki_cvspayment_cancel_order" instance="Riki\CvsPayment\Cron\Order\Cancel" method="execute">
+            <config_path>cvspayment/cvspayment/cancel_cron_setting</config_path>
+        </job>
+    </group>
+</config>

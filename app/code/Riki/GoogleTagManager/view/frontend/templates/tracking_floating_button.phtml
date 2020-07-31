@@ -1,0 +1,54 @@
+<script type="text/javascript">
+    require([
+        'jquery'
+    ], function ($) {
+        'use strict';
+
+        $('body').on('click', '.tracking_floating_button', function () {
+            var eventLabel  = $(this).attr('data-title');
+            var eventAction ='Shopping Cart Action - Floating Buttons' ;
+            var attr = $(this).attr('data-action-event');
+            if (typeof attr !== typeof undefined && attr !== false) {
+                eventAction = attr;
+            }
+
+            dataLayer.push({
+                'event': 'customEvent',
+                'EventCatagory': 'User Engagement',
+                'EventAction': eventAction,
+                'EventLabel': eventLabel
+            });
+        })
+
+        $('body').on('click', '.tracking_floating_button_coupon', function () {
+            var eventLabel  = $(this).attr('data-title');
+            var eventAction ='Shopping Cart Action - Floating Buttons' ;
+            var attr = $(this).attr('data-action-event');
+            if (typeof attr !== typeof undefined && attr !== false) {
+                eventAction = attr;
+            }
+
+            var coupone = $('#coupon_code_fake').val();
+            if (coupone != '') {
+                eventLabel = eventLabel + ' - ' + coupone;
+            }
+
+            dataLayer.push({
+                'event': 'customEvent',
+                'EventCatagory': 'User Engagement',
+                'EventAction': eventAction,
+                'EventLabel': eventLabel
+            });
+        })
+
+        $('body').on('click', '#discount-coupon-form button.apply', function () {
+            $('.tracking_floating_button_coupon').trigger('click');
+
+        })
+
+        $('body').on('click', '.subscription-profile-discount button.applyCoupon', function () {
+            $('.tracking_floating_button_coupon').trigger('click');
+        })
+
+    });
+</script>

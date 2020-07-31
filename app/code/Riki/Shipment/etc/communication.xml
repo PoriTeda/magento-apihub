@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Communication/etc/communication.xsd">
+    <topic name="shipment.creator" request="Riki\Shipment\Api\ShipmentBuilder\ProfileBuilderInterface">
+        <handler name="shipment.creator.handler" type="Riki\Shipment\Model\Order\ShipmentBuilder\Creator" method="createShipmentFromQueue" />
+    </topic>
+</config>

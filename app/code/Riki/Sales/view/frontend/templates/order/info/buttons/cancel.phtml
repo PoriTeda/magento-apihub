@@ -1,0 +1,31 @@
+<?php
+/**  @var $block \Riki\Sales\Block\Order\Info\Buttons\Cancel*/
+
+?>
+<?php $_order = $block->getOrder();
+
+$pointExpiration = $block->checkExpiration($_order);
+?>
+<?php
+if ($_order->canCancel() && $block->canShowCancelButton($_order)): ?>
+    <a href="#" class="action cancel" id="openercancel" >
+        <span><?php /* @escapeNotVerified */ echo __('Cancel Order') ?></span>
+    </a>
+    <div id="reason-cancel-order">
+        <?php if ($pointExpiration == true ) {?>
+            <p><?php /* @escapeNotVerified */
+                echo __('If you cancel the order, you will lose '.$_order->getUsedPoint().' point. Do you really want to cancel?') ?>
+            </p>
+        <?php }else{ ?>
+            <p><?php /* @escapeNotVerified */
+                echo __('Are you sure you want to cancel this order?') ?>
+            </p>
+        <?php } ?>
+        <form id="frm-confirm-reason-cancel" action="<?php echo $block->getCancelUrl($_order) ?>" method="POST">
+            <?php echo $block->getBlockHtml('formkey')?>
+        </form>
+    </div>
+    <script>
+        require(['confirmcancel']);
+    </script>
+<?php endif; ?>

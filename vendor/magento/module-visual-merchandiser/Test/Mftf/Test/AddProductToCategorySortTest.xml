@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AddProductToCategorySortTest">
+        <annotations>
+            <features value="VisualMerchandiser"/>
+            <stories value="Products in category retain sort order"/>
+            <group value="VisualMerchandiser"/>
+            <title value="Products in category should remain in order after adding new products."/>
+            <description value="Using Visual Merchandiser; admin sorts products, adds new products and verifies that order remains correct."/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="MAGETWO-92061"/>
+            <skip>
+                <issueId value="MQE-1194"/>
+            </skip>
+        </annotations>
+        <before>
+            <!--Create perquisite categories-->
+            <createData entity="ApiCategory" stepKey="testCategory"/>
+            <createData entity="ApiCategory" stepKey="otherCategory"/>
+
+            <!--Create perquisite products-->
+            <createData entity="ApiSimpleProduct" stepKey="product1">
+                <field key="price">10</field>
+                <requiredEntity createDataKey="testCategory"/>
+            </createData>
+            <createData entity="ApiSimpleProduct" stepKey="product2">
+                <field key="price">100</field>
+                <requiredEntity createDataKey="testCategory"/>
+            </createData>
+            <createData entity="ApiSimpleProduct" stepKey="product3">
+                <field key="price">20</field>
+                <requiredEntity createDataKey="otherCategory"/>
+            </createData>
+            <createData entity="ApiSimpleProduct" stepKey="product4">
+                <field key="price">1</field>
+                <requiredEntity createDataKey="otherCategory"/>
+            </createData>
+            <createData entity="ApiSimpleProduct" stepKey="product5">
+                <field key="price">50</field>
+                <requiredEntity createDataKey="otherCategory"/>
+            </createData>
+            <createData entity="ApiSimpleProduct" stepKey="product6">
+                <field key="price">35</field>
+                <requiredEntity createDataKey="otherCategory"/>
+            </createData>
+            <createData entity="ApiSimpleProduct" stepKey="product7">
+                <field key="price">15</field>
+                <requiredEntity createDataKey="otherCategory"/>
+            </createData>
+        </before>
+        <after>
+            <!--Clean up-->
+            <deleteData createDataKey="product1" stepKey="deleteProduct1"/>
+            <deleteData createDataKey="product2" stepKey="deleteProduct2"/>
+            <deleteData createDataKey="product3" stepKey="deleteProduct3"/>
+            <deleteData createDataKey="product4" stepKey="deleteProduct4"/>
+            <deleteData createDataKey="product5" stepKey="deleteProduct5"/>
+            <deleteData createDataKey="product6" stepKey="deleteProduct6"/>
+            <deleteData createDataKey="product7" stepKey="deleteProduct7"/>
+            <deleteData createDataKey="testCategory" stepKey="deleteTestCategory"/>
+            <deleteData createDataKey="otherCategory" stepKey="deleteOtherCategory"/>
+        </after>
+
+        <actionGroup ref="LoginAsAdmin" stepKey="loginAsAdmin"/>
+        <!--Check initial state of category-->
+        <comment userInput="View initial state of category" stepKey="initialStateComment"/>
+        <amOnPage url="{{AdminCategoryPage.url}}" stepKey="onCategoryPageInitial"/>
+        <waitForPageLoad stepKey="waitForCategoryPageInitial"/>
+        <click selector="{{AdminCategorySidebarTreeSection.categoryInTree($$testCategory.name$$)}}" stepKey="clickCategoryToEditInitial"/>
+        <conditionalClick selector="{{AdminCategoryProductsSection.sectionHeader}}" dependentSelector="{{AdminCategoryProductsSection.addProducts}}" visible="false" stepKey="openProductsInCategoryInitial"/>
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('1')}}" userInput="$$product1.name$$" stepKey="seeProduct1FirstInitial"/>
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('2')}}" userInput="$$product2.name$$" stepKey="seeProduct2SecondInitial"/>
+        <dontSeeElement selector="{{AdminCategoryProductsGridSection.rowProductName('3')}}" stepKey="seeNoProduct3"/>
+        <!--Move product 2 to first position-->
+        <click selector="{{AdminCategoryProductsGridSection.rowPositionUp('2')}}" stepKey="moveProduct2Up"/>
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('1')}}" userInput="$$product2.name$$" stepKey="seeProduct2FirstAfterManualSort"/>
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('2')}}" userInput="$$product1.name$$" stepKey="seeProduct1SecondAfterManualSort"/>
+        <!--Add product3 using search-->
+        <comment userInput="Add new product and see that it is top of the list and others stay sorted" stepKey="addFirstNewProductComment"/>
+        <click selector="{{AdminCategoryProductsSection.addProducts}}" stepKey="clickAddProducts"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.searchAllProducts}}" stepKey="clickSearchProductsTab"/>
+        <actionGroup ref="filterProductGridBySku" stepKey="searchForProduct3">
+            <argument name="product" value="$$product3$$"/>
+        </actionGroup>
+        <click selector="{{AdminCategoryAddProductsModalSection.gridActionToggle}}" stepKey="clickToggleActionDropdown"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.gridSelectAll}}" stepKey="clickSelectAll"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.saveClose}}" stepKey="closeModalProduct3"/>
+        <!--Check that product 3 is at the top and other order remains-->
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('1')}}" userInput="$$product3.name$$" stepKey="seeProduct3FirstAfterAdd"/>
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('2')}}" userInput="$$product2.name$$" stepKey="seeProduct2Second"/>
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('3')}}" userInput="$$product1.name$$" stepKey="seeProduct1Third"/>
+        <click selector="{{AdminCategoryMainActionsSection.SaveButton}}" stepKey="saveCategory"/>
+        <!--Check on frontend-->
+        <comment userInput="Verify order is correct on storefront" stepKey="checkStorefrontOrderComment"/>
+        <amOnPage url="{{StorefrontCategoryPage.url($$testCategory.name$$)}}" stepKey="goToCategoryStorefront"/>
+        <waitForPageLoad stepKey="waitForCategoryStorefrontProduct3"/>
+        <see selector="{{StorefrontCategoryProductSection.ProductTitleByNumber('1')}}" userInput="$$product3.name$$" stepKey="seeProduct3FirstStorefront"/>
+        <see selector="{{StorefrontCategoryProductSection.ProductTitleByNumber('2')}}" userInput="$$product2.name$$" stepKey="seeProduct2SecondStorefront"/>
+        <see selector="{{StorefrontCategoryProductSection.ProductTitleByNumber('3')}}" userInput="$$product1.name$$" stepKey="seeProduct1ThirdStorefront"/>
+
+        <!--Sort products by price-->
+        <comment userInput="Use Sort Order to order products by price" stepKey="sortOrderComment"/>
+        <amOnPage url="{{AdminCategoryPage.url}}" stepKey="onCategoryPageSort"/>
+        <waitForPageLoad stepKey="waitForCategoryPageSort"/>
+        <click selector="{{AdminCategorySidebarTreeSection.categoryInTree($$testCategory.name$$)}}" stepKey="clickCategoryToEditSort"/>
+        <conditionalClick selector="{{AdminCategoryProductsSection.sectionHeader}}" dependentSelector="{{AdminCategoryProductsSection.addProducts}}" visible="false" stepKey="openProductsInCategorySort"/>
+        <selectOption selector="{{AdminCategoryProductsSection.sortOrder}}" userInput="Price: High to low" stepKey="selectSortByPriceDesc"/>
+        <click selector="{{AdminCategoryProductsSection.sort}}" stepKey="sortProductsByPriceDesc"/>
+        <click selector="{{AdminCategoryMainActionsSection.SaveButton}}" stepKey="saveCategoryAfterAutoSort"/>
+        <!--Check the order after sorting-->
+        <conditionalClick selector="{{AdminCategoryProductsSection.sectionHeader}}" dependentSelector="{{AdminCategoryProductsSection.addProducts}}" visible="false" stepKey="openProductsInCategoryAfterSort"/>
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('1')}}" userInput="$$product2.name$$" stepKey="seeProduct2FirstByPrice"/>
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('2')}}" userInput="$$product3.name$$" stepKey="seeProduct3SecondByPrice"/>
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('3')}}" userInput="$$product1.name$$" stepKey="seeProduct1ThirdByPrice"/>
+        <!--Assign product4 by sku -->
+        <click selector="{{AdminCategoryProductsSection.addProducts}}" stepKey="clickAddProductsBySku"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.addProductBySku}}" stepKey="clickAddBySkuTab"/>
+        <fillField selector="{{AdminCategoryAddProductsModalSection.productSkuInput}}" userInput="$$product4.sku$$" stepKey="enterProduct4Sku"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.assign}}" stepKey="assignProduct4"/>
+        <waitForAjaxLoad stepKey="waitForAjax"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.saveClose}}" stepKey="closeModalProduct4"/>
+        <!--Check that product 4 is at top and other products stay same-->
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('1')}}" userInput="$$product4.name$$" stepKey="seeProduct4FirstAfterAdd"/>
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('2')}}" userInput="$$product2.name$$" stepKey="seeProduct2SecondByPrice"/>
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('3')}}" userInput="$$product3.name$$" stepKey="seeProduct3ThirdByPrice"/>
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('4')}}" userInput="$$product1.name$$" stepKey="seeProduct1FourthByPrice"/>
+        <click selector="{{AdminCategoryMainActionsSection.SaveButton}}" stepKey="saveCategoryAfterAddProduct4"/>
+        <!--Check on frontend-->
+        <comment userInput="Verify order is correct on storefront" stepKey="checkStorefrontOrderByPriceComment"/>
+        <amOnPage url="{{StorefrontCategoryPage.url($$testCategory.name$$)}}" stepKey="goToCategoryStorefront2"/>
+        <waitForPageLoad stepKey="waitForCategoryStorefrontProduct4"/>
+        <see selector="{{StorefrontCategoryProductSection.ProductTitleByNumber('1')}}" userInput="$$product4.name$$" stepKey="seeProduct4FirstStorefront"/>
+        <see selector="{{StorefrontCategoryProductSection.ProductTitleByNumber('2')}}" userInput="$$product2.name$$" stepKey="seeProduct2SecondByPriceStorefront"/>
+        <see selector="{{StorefrontCategoryProductSection.ProductTitleByNumber('3')}}" userInput="$$product3.name$$" stepKey="seeProduct3ThirdByPriceStorefront"/>
+        <see selector="{{StorefrontCategoryProductSection.ProductTitleByNumber('4')}}" userInput="$$product1.name$$" stepKey="seeProduct1FourthByPriceStorefront"/>
+
+        <!--Add multiple products by sku-->
+        <comment userInput="When adding multiple SKUs they should be added in order specified" stepKey="multipleSkuComment"/>
+        <amOnPage url="{{AdminCategoryPage.url}}" stepKey="onCategoryPageMultiSku"/>
+        <waitForPageLoad stepKey="waitForCategoryPageMultiSku"/>
+        <click selector="{{AdminCategorySidebarTreeSection.categoryInTree($$testCategory.name$$)}}" stepKey="clickCategoryToEditMultiSku"/>
+        <conditionalClick selector="{{AdminCategoryProductsSection.sectionHeader}}" dependentSelector="{{AdminCategoryProductsSection.addProducts}}" visible="false" stepKey="openProductsInCategoryMultiSku"/>
+        <!--Assign product5/6/7 by sku -->
+        <click selector="{{AdminCategoryProductsSection.addProducts}}" stepKey="clickAddProductsBySkuMultiSku"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.addProductBySku}}" stepKey="clickAddBySkuTabMultiSku"/>
+        <fillField selector="{{AdminCategoryAddProductsModalSection.productSkuInput}}" userInput="$$product6.sku$$\n$$product5.sku$$\n$$product7.sku$$" stepKey="enterProductMultiSku"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.assign}}" stepKey="assignProductsMultiSku"/>
+        <waitForAjaxLoad stepKey="waitForAjaxMultiSku"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.saveClose}}" stepKey="closeModalProductMultiSku"/>
+        <comment userInput="Product should be at front of category in same order as skus in input" stepKey="skuOrderComment"/>
+        <!--Check that products are in correct order-->
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('1')}}" userInput="$$product6.name$$" stepKey="seeProduct6FirstAfterMultiSku"/>
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('2')}}" userInput="$$product5.name$$" stepKey="seeProduct5SecondAfterMultiSku"/>
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('3')}}" userInput="$$product7.name$$" stepKey="seeProduct7ThirdAfterMultiSku"/>
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('4')}}" userInput="$$product4.name$$" stepKey="seeProduct4FourthAfterMultiSku"/>
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('5')}}" userInput="$$product2.name$$" stepKey="seeProduct2FifthAfterMultiSku"/>
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('6')}}" userInput="$$product3.name$$" stepKey="seeProduct3SixthAfterMultiSku"/>
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('7')}}" userInput="$$product1.name$$" stepKey="seeProduct1LastAfterMultiSku"/>
+        <click selector="{{AdminCategoryMainActionsSection.SaveButton}}" stepKey="saveCategoryAfterMultiSku"/>
+        <!--Check on frontend-->
+        <comment userInput="Verify order is correct on storefront" stepKey="checkStorefrontOrderAfterMultiSku"/>
+        <amOnPage url="{{StorefrontCategoryPage.url($$testCategory.name$$)}}" stepKey="goToCategoryStorefrontAfterMultiSku"/>
+        <waitForPageLoad stepKey="waitForCategoryStorefrontMultiSku"/>
+        <see selector="{{StorefrontCategoryProductSection.ProductTitleByNumber('1')}}" userInput="$$product6.name$$" stepKey="seeProduct6FirstStorefront"/>
+        <see selector="{{StorefrontCategoryProductSection.ProductTitleByNumber('2')}}" userInput="$$product5.name$$" stepKey="seeProduct5SecondStorefront"/>
+        <see selector="{{StorefrontCategoryProductSection.ProductTitleByNumber('3')}}" userInput="$$product7.name$$" stepKey="seeProduct7ThirdStorefront"/>
+        <see selector="{{StorefrontCategoryProductSection.ProductTitleByNumber('4')}}" userInput="$$product4.name$$" stepKey="seeProduct4FourthStorefront"/>
+        <see selector="{{StorefrontCategoryProductSection.ProductTitleByNumber('5')}}" userInput="$$product2.name$$" stepKey="seeProduct2FifthStorefront"/>
+        <see selector="{{StorefrontCategoryProductSection.ProductTitleByNumber('6')}}" userInput="$$product3.name$$" stepKey="seeProduct3SixthStorefront"/>
+        <see selector="{{StorefrontCategoryProductSection.ProductTitleByNumber('7')}}" userInput="$$product1.name$$" stepKey="seeProduct1LastStorefront"/>
+    </test>
+</tests>

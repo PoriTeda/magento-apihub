@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="adminhtml_block_salesrule_actions_prepareform">
+        <observer name="riki_promo_handle_form_creation" instance="Riki\Promo\Observer\Admin\FormCreationObserver" />
+    </event>
+    <event name="sales_quote_remove_item">
+        <observer name="riki_promo_admin_quote_remove_item" instance="Amasty\Promo\Observer\QuoteRemoveItemObserver" />
+    </event>
+    <event name="sales_quote_address_collect_totals_after">
+        <observer name="riki_promo_admin_address_collect_totals_after" instance="Riki\Promo\Observer\AddressCollectTotalsAfterObserver" />
+    </event>
+    <event name="sales_quote_collect_totals_before">
+        <observer name="riki_promo_admin_collect_totals_before" instance="Amasty\Promo\Observer\FixWholeCartRuleObserver" />
+    </event>
+    <event name="sales_quote_collect_totals_after">
+        <observer name="riki_promo_admin_collect_totals_after" instance="Riki\Promo\Observer\CollectTotalsAfterObserver" />
+    </event>
+    <event name="salesrule_validator_process">
+        <observer name="riki_promo_set_flag_auto_add_first_item" instance="Riki\Promo\Observer\SetFlagAutoAddFirstItem" />
+    </event>
+</config>

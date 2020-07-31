@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
+    <system>
+        <section id="consumer_db_api_url" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="customer_wamb_setting" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>WAMB Cron Setting</label>
+                <field id="WAMB_enable_cron" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or Disable cron </comment>
+                </field>
+
+                <field id="WAMB_cron_setting" translate="label comment" type="text" sortOrder="1" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>The time cron schedule</label>
+                    <comment>Example: 0 1 * * * </comment>
+                </field>
+
+                <field id="WAMB_course_name" translate="label comment" type="text" sortOrder="1" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>WAMB Course Name</label>
+                </field>
+
+                <field id="WAMB_course_code" translate="label comment" type="text" sortOrder="1" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>WAMB Course Code</label>
+                </field>
+            </group>
+
+        </section>
+    </system>
+</config>

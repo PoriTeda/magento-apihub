@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="subscriptioncourse" translate="label" type="text" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Subscription</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_Subscription::config_subscription</resource>
+            <group id="subscriptionprofile" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Profile Setting</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable send mail when checkout order</comment>
+                </field>
+                <field id="sender" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="hanpukai_email_template" translate="label comment" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Hanpukai Email Template</label>
+                    <comment>Hanpukai email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="send_email_copy_to" translate="label" type="text" sortOrder="40" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Send Sub Profile Email Copy To</label>
+                    <comment>Comma-separated (Example: example1@mail.com,example2@mail.com,example3@mail.com)</comment>
+                </field>
+                <field id="send_email_copy_method" translate="label" type="select" sortOrder="50" showInDefault="1"
+                       showInStore="1" showInWebsite="1">
+                    <label>Send Sub Profile Email Copy Method</label>
+                    <source_model>Riki\SubscriptionEmail\Model\Config\Source\SubscriptionSendCopyEmailMethod</source_model>
+                </field>
+            </group>
+            <group id="subscriptionprofileedit" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Profile Setting Edit</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable send mail when edit profile</comment>
+                </field>
+                <field id="sender" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="send_email_copy_to" translate="label" type="text" sortOrder="40" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Send Sub Profile Email Copy To</label>
+                    <comment>Comma-separated (Example: example1@mail.com,example2@mail.com,example3@mail.com)</comment>
+                </field>
+                <field id="send_email_copy_method" translate="label" type="select" sortOrder="50" showInDefault="1"
+                       showInStore="1" showInWebsite="1">
+                    <label>Send Sub Profile Email Copy Method</label>
+                    <source_model>Riki\SubscriptionEmail\Model\Config\Source\SubscriptionSendCopyEmailMethod</source_model>
+                </field>
+            </group>
+            <group id="replaceproduct" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Subscription Discontinued Product Email</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable send mail to notify customers</comment>
+                </field>
+                <field id="sender" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="email_template" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Replace discontinue Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="delete_template" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Delete discontinue Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="send_email_copy_to" translate="label" type="text" sortOrder="40" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Send Email Copy To</label>
+                    <comment>Comma-separated (Example: example1@mail.com,example2@mail.com,example3@mail.com)</comment>
+                </field>
+                <field id="send_email_copy_method" translate="label" type="select" sortOrder="50" showInDefault="1"
+                       showInStore="1" showInWebsite="1">
+                    <label>Send Email Copy Method</label>
+                    <source_model>Riki\SubscriptionEmail\Model\Config\Source\SubscriptionSendCopyEmailMethod</source_model>
+                </field>
+            </group>
+        </section>
+
+    </system>
+</config>

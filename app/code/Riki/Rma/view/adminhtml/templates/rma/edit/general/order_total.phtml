@@ -1,0 +1,30 @@
+<?php
+/**
+ * @var $block \Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\General\OrderTotal
+ */
+
+?>
+<div class="admin__page-section-item order-shipping-method">
+    <div class="admin__page-section-item-title">
+        <span class="title"><?php /* @escapeNotVerified */ echo __('Order Totals') ?></span>
+    </div>
+    <div class="admin__page-section-item-content">
+        <table class="admin__table-secondary">
+            <tbody>
+                <tr>
+                    <th><?php echo __('Order Total') ?></th>
+                    <td><?php echo $block->getOrderTotal(); ?></td>
+                </tr>
+                <tr>
+                    <th><?php echo __('Total Returns Amount Of Order') ?></th>
+                    <td><?php echo $block->getReturnsTotalOfOrder(); ?></td>
+                </tr>
+                <tr>
+                    <th><?php echo __('Total Amount Of Return') ?></th>
+                    <td><?php echo $block->getTotalAmountOfCurrentReturn(); ?></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

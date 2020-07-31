@@ -1,0 +1,47 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!--@subject {{trans "%store_name: Return #%increment_id update" store_name=$store.getFrontendName() increment_id=$rma.increment_id}} @-->
+<!--@vars {
+"store url=\"customer\/account\/\"":"Customer Account URL",
+"var comment|escape|nl2br":"Customer Comment",
+"template config_path=\"design\/email\/footer_template\"":"Email Footer Template",
+"template config_path=\"design\/email\/header_template\"":"Email Header Template",
+"var logo_alt":"Email Logo Image Alt",
+"var logo_url":"Email Logo Image URL",
+"var comment":"Order Comment",
+"var rma.increment_id":"Return Id",
+"var store.getFrontendName()":"Store Name",
+"store url=\"\"":"Store URL"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+
+<p class="greeting">{{trans "%name," name=$order.getCustomerName()}}</p>
+<p>
+    {{trans
+        'You can check the status of your return <a href="%form_url">using your order number</a>.'
+
+        form_url="$this.getUrl($store, 'sales/guest/form/',[_nosid:1])"
+    |raw}}
+</p>
+<table class="message-info" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+        <td>
+            {{var comment|escape|nl2br}}
+        </td>
+    </tr>
+</table>
+<br />
+<p>
+    {{trans
+        'If you have any questions about your return, please contact us at <a href="mailto:%support_email">%support_email</a>.'
+
+        support_email="$store.getConfig('trans_email/ident_support/email')"
+    |raw}}
+</p>
+
+{{template config_path="design/email/footer_template"}}

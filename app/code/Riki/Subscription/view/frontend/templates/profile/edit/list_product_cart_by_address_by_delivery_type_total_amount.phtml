@@ -1,0 +1,292 @@
+<?php
+$arrProduct             = $block->getData("arrProduct");
+$isAllowChangeProduct   = $block->getData("isAllowChangeProduct");
+$allAddress             = $block->getData("allAddress");
+$addressId              = $block->getData("addressId");
+/** @var \Riki\Subscription\Block\Frontend\Profile\Edit $parentBlock */
+$parentBlock            = $block->getData("parentBlock");
+$isAllowChangeAddress   = $block->getData("isAllowChangeAddress");
+$isAllowChangeQty       = $block->getData("isAllowChangeQty");
+$addressOrder           = $block->getData('addressOrder');
+$deliveryType           = $block->getData("deliveryType");
+$isBtnUpdateAllChangesPressed = $block->getData('isBtnUpdateAllChangesPressed');
+$isHanpukaiSubscription = $block->getData('isHanpukaiSubscription');
+$dataFromSession = $block->getData('dataFromSession');
+$productDeliveryType = ''; // because all product in subscription is same product type
+$arrTotalSubAmount = array();
+$tentativePoint = $block->getData('tentativePoints');
+$totalAmount = $block->getData('totalAmount');
+$shippingFee = $block->getData('shippingFee');
+$wrappingFee = $block->getData('wrappingFee');
+$paymentFee = $block->getData('paymentFee');
+$currentDay = $block->getData('currentDay');
+$currentDayTime = strtotime($currentDay);
+$totalDeliveryType = $block->getData('totalDeliveryType');
+$countDeliveryType = $block->getData('countDeliveryType');
+$discountAmount = $block->getData('discountAmount');
+$listCouponApplied = $block->getData('listRuleApplied');
+$orderSimulator = $block->getData('simulatorOrder');
+$usedPointAmount = 0;
+if ($orderSimulator->getData('used_point_amount') != null) {
+    $usedPointAmount = $orderSimulator->getData('used_point_amount');
+}
+?>
+<table class="list-product">
+    <thead>
+    <tr>
+        <th class="product-image"><?php echo __('Product Image'); ?></th>
+        <th class="product-name">&nbsp;</th>
+        <th class="price-sub"><?php echo __("Item price") ?></th>
+        <th class="product-type"></th>
+        <th class="qty"><?php echo __("Qty") ?></th>
+        <th class="price"><?php echo __("Sub Total") ?></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <?php
+    $giftAvailable = $parentBlock->getGiftConfig();
+    $messageAvailable = $parentBlock->getMessageConfig();
+    $check = 0;
+    foreach($arrProduct as $arrP):
+        $productModel = $arrP['instance'];
+        $allowSkipSeasonalProduct = $productModel->getData('allow_seasonal_skip');
+        $seasonalSkipOptional = $productModel->getData('seasonal_skip_optional');
+        $productCartModel = $arrP['productcartInstance'];
+        $isSkipSeasonal = $productCartModel->getData('is_skip_seasonal');
+        $deliveryDate = $productCartModel->getData('delivery_date');
+        if($allowSkipSeasonalProduct and $seasonalSkipOptional == 0 and strtotime($productModel->getData('allow_skip_from')) <= strtotime($deliveryDate) and strtotime($deliveryDate) <= strtotime($productModel->getData('allow_skip_to'))){
+            continue;
+        }
+        if((isset($isSkipSeasonal) and $isSkipSeasonal and strtotime($productCartModel->getData('skip_from')) <= strtotime($deliveryDate) and strtotime($deliveryDate) <= strtotime($productCartModel->getData('skip_to')))) {
+            continue;
+        }
+        $arrAttribute = null;
+        $isFreeGift = isset($arrP['is_free_gift']) ? (bool) $arrP['is_free_gift'] : false;
+        $productDeliveryType = $arrP['instance']->getDeliveryType();
+        if($arrP['instance']->getData('gift_wrapping') != null){
+            $arrAttribute = $parentBlock->getAttributeArray($arrP['instance']->getData('gift_wrapping'));
+        }
+        if (isset($arrP['gift_message_id']) && $arrP['gift_message_id'] != null){
+            $message = $parentBlock->getMessage($arrP['gift_message_id']);
+        }
+        $productCatId = $arrP['productcat_id'];
+        if ($arrP['unit_case'] != \Riki\CreateProductAttributes\Model\Product\CaseDisplay::PROFILE_UNIT_CASE) {
+            $arrP['unit_qty'] = 1;
+        }
+        ?>
+        <tr class="tr-product item-has-seasonal-skip <?php echo ($check % 2 == 0) ? 'even' : 'odd' ?>" data-id="<?php echo $arrP['instance']->getId() ?>">
+            <td class="img-thumbnail-wrapper product-image" data-th="<?php echo __("商品名称")  ?>">
+                <?php echo $parentBlock->getImage($arrP['instance'], 'cart_page_product_thumbnail')->toHtml(); ?>
+            </td>
+            <td class="product-name text-left">
+                <span><?php echo $arrP['name']  ?></span>
+                <?php
+                $allowStockOrder = $arrP['instance']->getData('allow_spot_order');
+                if (!$allowStockOrder):
+                    ?>
+                    <div class="stock unavailable">
+                        <span>
+                            <b>
+                                <?php /* @escapeNotVerified */ echo __('Out of stock') ?>
+                            </b>
+                        </span>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!$isHanpukaiSubscription) : ?>
+                    <?php if($giftAvailable && isset($arrAttribute)) :?>
+                        <div class="wrapper">
+                            <?php foreach($arrAttribute->getData() as $gift) : ?>
+                                <?php if ($arrP['gw_id'] == $gift['wrapping_id']) : ?>
+                                    <span class="gift-wrap-blue-underline"><?php echo $gift['gift_name'] ?>【<?php echo $parentBlock->formatCurrency($parentBlock->calTax($gift['base_price'])) ?>】</span>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <?php if ($isHanpukaiSubscription) { ?>
+                    <input type="hidden" name="gift[<?php echo $addressId  ?>][<?php echo $productCatId  ?>]" value="<?php echo $arrP['gw_id']?>"/>
+                <?php } ?>
+
+            </td>
+            <td class="price-sub" data-th="<?php echo __("Item price")  ?>">
+                <span><?php echo $parentBlock->formatCurrency($arrP['amount']);  ?></span>
+            </td>
+            <td class="product-type">
+                <?php if ($arrP['is_spot']) : ?>
+                    <span class="tag_spot"><span><?php echo __('Spot tag') ?></span></span>
+                <?php endif; ?>
+            </td>
+            <td class="qty" data-th="<?php echo __("Qty")  ?>">
+                <!-- This attribute is center -->
+                <?php if (!$isFreeGift): ?>
+                    <input type="hidden" name="productcat_id[<?php echo $addressId  ?>][<?php echo $deliveryType ?>][]" value="<?php echo $productCatId  ?>">
+                <?php endif;?>
+                <?php if('CS' == $arrP['unit_case']) { ?>
+
+                    <!--show qty case-->
+                    <?php if(!$isBtnUpdateAllChangesPressed && !$isHanpukaiSubscription) { ?>
+                        <div class="select-wrapper">
+                            <select id="product_cart_id_case_<?php echo $productCatId ?>" productcartid=<?php echo $productCatId; ?> unitqty="<?php echo $arrP['unit_qty'];?>" name="product_qty_case[<?php echo $productCatId  ?>]" <?php echo $isAllowChangeQty ? '' : 'disabled';  ?> class="qty_case input-new select-box">
+                                <?php for ($i = 1; $i <= 99/$arrP['unit_qty']; $i++) : ?>
+                                    <?php
+                                    $select = '';
+                                    if ($arrP['qty'] / $arrP['unit_qty'] == $i) {
+                                        $select = 'selected="selected"';
+                                    }
+                                    ?>
+                                    <option <?php echo $select;?> value="<?php echo $i?>"><?php echo $i?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                        <div class="label-pc"><?php echo __('Case'); ?></div>
+                    <?php } else { ?>
+                        <?php echo $arrP['qty'] / $arrP['unit_qty']; ?>
+                    <?php } ?>
+
+                    <!--hide real qty-->
+                    <?php if(!$isBtnUpdateAllChangesPressed && !$isHanpukaiSubscription) { ?>
+                        <div class="select-wrapper">
+                            <select style="display: none" id="product_cart_id_<?php echo $productCatId ?>"
+                                    name="product_qty[<?php echo $productCatId ?>]
+                                    <?php echo $isAllowChangeQty ? '' : 'disabled';?>" class="input-new select-box">
+                                <?php for ($i = 1; $i <= 99; $i++) : ?>
+                                    <?php
+                                    $select = '';
+                                    if ($arrP['qty'] == $i) {
+                                        $select = 'selected="selected"';
+                                    }
+                                    ?>
+                                    <option <?php echo $select;?> value="<?php echo $i?>"><?php echo $i?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                        <div class="label-pc"><?php echo __('Piece'); ?></div>
+                    <?php } else { ?>
+                        <span style="display: none" ><?php echo $arrP['qty']; ?></span>
+                    <?php } ?>
+
+                <?php } else { ?>
+
+                    <?php if(!$isBtnUpdateAllChangesPressed && !$isHanpukaiSubscription) { ?>
+                        <div class="select-wrapper">
+                            <select name="product_qty[<?php echo $productCatId ?>]" <?php echo $isAllowChangeQty ? '' : 'disabled';?> class="input-new select-box">
+                                <?php for ($i = 1; $i <= 99; $i++) : ?>
+                                    <?php
+                                    $select = '';
+                                    if ($arrP['qty'] == $i) {
+                                        $select = 'selected="selected"';
+                                    }
+                                    ?>
+                                    <option <?php echo $select;?> value="<?php echo $i?>"><?php echo $i?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                        <div class="label-pc"><?php echo __('Piece'); ?></div>
+                    <?php } else { ?>
+                        <?php echo $arrP['qty']; ?>
+                    <?php } ?>
+
+                <?php } ?>
+
+            </td>
+            <td class="subtotal text-right" data-th="<?php echo __("Subtotal(tax included)")  ?>">
+                <span><?php echo $parentBlock->formatCurrency($arrP['amount'] * (int)$arrP['qty']/(isset($arrP['unit_qty'])?$arrP['unit_qty']:1));  ?></span>
+            </td>
+        </tr>
+        <?php $check++; endforeach; ?>
+    <?php if ($countDeliveryType == $totalDeliveryType): ?>
+        <tr class="ship-fee-type">
+            <td>&nbsp;</td>
+            <td class="text-left shipment-name"><?php echo __('Shipment Fee').' ' .__($productDeliveryType); ?></td>
+            <td class="shipping-price"><?php
+                if ($shippingFee == 0) {
+                    echo __('無料');
+                }
+                ?>
+            </td>
+            <td colspan="4" class="text-right shipping-price">
+                <?php if ($shippingFee > 0) {
+                    echo $parentBlock->formatCurrency($shippingFee);
+                } else {
+                    echo $parentBlock->formatCurrency(0);
+                }?>
+            </td>
+        </tr>
+        <tr class="payable">
+            <td>&nbsp;</td>
+            <td class="text-left payable-name"><?php echo __('Wrapping Fee (Tax included)'); ?></td>
+            <td colspan="5" class="payable-total text-right">
+                <?php echo $parentBlock->formatCurrency($wrappingFee); ?>
+            </td>
+        </tr>
+        <tr class="payable">
+            <td>&nbsp;</td>
+            <td class="text-left payable-name"><?php echo __('Payment Fee'); ?></td>
+            <td colspan="5" class="payable-total text-right">
+                <?php echo $parentBlock->formatCurrency($paymentFee); ?>
+            </td>
+        </tr>
+
+        <tr class="payable">
+            <td>&nbsp;</td>
+            <td class="text-left payable-name"><?php echo __('Apply point'); ?></td>
+            <td colspan="5" class="payable-total text-right">
+                <?php echo $usedPointAmount;?> <?php echo __('Point'); ?>
+            </td>
+        </tr>
+
+        <?php if ($discountAmount != 0): ?>
+            <tr class="payable">
+                <td>&nbsp;</td>
+                <td class="text-left payable-name"><?php echo __('Discount'); ?></td>
+                <td colspan="5" class="payable-total text-right">
+                    <?php echo $parentBlock->formatCurrency($discountAmount); ?>
+                </td>
+            </tr>
+        <?php endif; ?>
+        <tr class="payable">
+            <td>&nbsp;</td>
+            <td class="text-left payable-name"><?php echo __('Total Payable Amount'); ?></td>
+            <td colspan="5" class="payable-total text-right">
+                <?php echo $parentBlock->formatCurrency($totalAmount); ?>
+            </td>
+        </tr>
+    <?php endif; ?>
+    </tbody>
+</table>
+<?php if ($totalDeliveryType == $countDeliveryType): ?>
+    <div class="modification">
+        <div class="tentative_points">
+            <span class="title"><?php echo __('Tentative points'); ?></span>
+            <span><?php echo $tentativePoint .__('Points'); ?></span>
+        </div>
+        <div class="coupon-code txt-right">
+            <span class="title"><?php echo __('Planned use coupon'); ?></span>
+            <?php
+            if($listCouponApplied)
+            {
+                foreach($listCouponApplied as $itemCoupon)
+                {
+                    echo "<p><span>".$itemCoupon['code']."</span><span>".$itemCoupon['name']."</span></p><br>";
+                }
+            }
+            ?>
+        </div>
+    </div>
+<?php endif; ?>
+<script type="text/javascript">
+    require([
+        'jquery',
+        'mage/mage'
+    ], function ($) {
+        'use strict';
+        // check for change
+        $('.qty_case').on('change',function(){
+            var productcartid = $(this).attr('productcartid');
+            var unitqty = $('#product_cart_id_case_'+productcartid).attr('unitqty');
+            $('#product_cart_id_'+productcartid).val($('#product_cart_id_case_'+productcartid).val() * unitqty);
+        });
+    });
+</script>

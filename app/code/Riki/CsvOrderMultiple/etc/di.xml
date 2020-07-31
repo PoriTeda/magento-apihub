@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="CsvOrderImportGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\CsvOrderMultiple\Model\ResourceModel\Import\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">ImportCsvOrderMultipleGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="import_csv_order_listing_data_source" xsi:type="string">Riki\CsvOrderMultiple\Model\ResourceModel\Import\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Riki\CsvOrderMultiple\Model\ResourceModel\Import\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">riki_csv_order_import_history</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\CsvOrderMultiple\Model\ResourceModel\Import</argument>
+        </arguments>
+    </virtualType>
+    <!-- download-->
+    <virtualType name="CsvOrderDownloadGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\CsvOrderMultiple\Model\ResourceModel\CsvFile\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">CsvOrderDownloadGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="ui_import_csv_order_download_data_source" xsi:type="string">Riki\CsvOrderMultiple\Model\ResourceModel\CsvFile\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Riki\CsvOrderMultiple\Model\ResourceModel\CsvFile\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">riki_csv_order_import_history_download</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\CsvOrderMultiple\Model\ResourceModel\CsvFile</argument>
+        </arguments>
+    </virtualType>
+    <!-- download-->
+
+    <!-- defined connection to table-->
+    <type name="Riki\CsvOrderMultiple\Model\ResourceModel\Import">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+
+    <!-- defined connection to table-->
+    <type name="Riki\CsvOrderMultiple\Model\ResourceModel\CsvFile">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+
+    <!-- Disable plugin -->
+    <type name="Magento\CatalogInventory\Model\StockStateProvider">
+        <plugin name="Wyomind_AdvancedInventory_Model_CatalogInventory_StockStateProvider"  disabled="true"/>
+    </type>
+
+    <type name="Riki\ShippingProvider\Model\Carrier">
+        <plugin name="rikiImportMultipleShippingProviderModelCarrier" type="Riki\CsvOrderMultiple\Plugin\RikiShippingProvider\Model\Carrier" />
+    </type>
+
+    <type name="Riki\CsvOrderMultiple\Logger\LoggerOrder">
+        <arguments>
+            <argument name="name" xsi:type="string">Logger Import Multiple Create Order csv</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\CsvOrderMultiple\Logger\HandlerOrder</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\CsvOrderMultiple\Model\ImportHandler\Validator">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="order_type" xsi:type="object">Riki\CsvOrderMultiple\Model\ImportHandler\Validator\OrderType</item>
+                <item name="product" xsi:type="object">Riki\CsvOrderMultiple\Model\ImportHandler\Validator\Product</item>
+                <item name="payment" xsi:type="object">Riki\CsvOrderMultiple\Model\ImportHandler\Validator\Payment</item>
+                <item name="free_wbs" xsi:type="object">Riki\CsvOrderMultiple\Model\ImportHandler\Validator\FreeWbs</item>
+                <item name="customer" xsi:type="object">Riki\CsvOrderMultiple\Model\ImportHandler\Validator\Customer</item>
+                <item name="business_code" xsi:type="object">Riki\CsvOrderMultiple\Model\ImportHandler\Validator\BusinessCode</item>
+                <item name="warehouse_code" xsi:type="object">Riki\CsvOrderMultiple\Model\ImportHandler\Validator\WarehouseCode</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- syns data to sales_order_gird -->
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="original_unique_id" xsi:type="string">sales_order.original_unique_id</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Bluecom\PaymentFee\Model\Quote\Total\Fee">
+        <plugin name="rikiCsvOrderMultipleSetFreeCodFeeFlag" type="Riki\CsvOrderMultiple\Plugin\SetFreeCodFlag" />
+    </type>
+    <type name="Riki\AdvancedInventory\Helper\Assignation">
+        <plugin name="rikiAdvancedInventoryHelperAssignationImportOrder" type="Riki\CsvOrderMultiple\Plugin\AdvancedInventory\Helper\Assignation"/>
+    </type>
+
+</config>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Ui/etc/ui_configuration.xsd">
+
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">paygent_order_failed_listing.paygent_order_fail_listing_data_source</item>
+            <item name="deps" xsi:type="string">paygent_order_failed_listing.paygent_order_fail_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">paygent_columns</item>
+    </argument>
+
+    <dataSource name="paygent_order_fail_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">paygentorderfaildGridDataProvider</argument>
+            <argument name="name" xsi:type="string">paygent_order_fail_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">entity_id</argument>
+            <argument name="requestFieldName" xsi:type="string">entity_id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                </item>
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+
+    <container name="listing_top">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="template" xsi:type="string">ui/grid/toolbar</item>
+            </item>
+        </argument>
+
+        <!-- Filters -->
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsProvider" xsi:type="string">paygent_order_failed_listing.paygent_order_failed_listing.paygent_columns</item>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">paygent_order_failed_listing.paygent_order_failed_listing.listing_top.bookmarks</item>
+                        <item name="namespace" xsi:type="string">current.filters</item>
+                    </item>
+                    <item name="childDefaults" xsi:type="array">
+                        <item name="provider" xsi:type="string">paygent_order_failed_listing.paygent_order_failed_listing.listing_top.listing_filters</item>
+                        <item name="imports" xsi:type="array">
+                            <item name="visible" xsi:type="string">paygent_order_failed_listing.paygent_order_failed_listing.paygent_columns.${ $.index }:visible</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+        </filters>
+
+        <!--- paging -->
+        <paging name="listing_paging">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">paygent_order_failed_listing.paygent_order_failed_listing.listing_top.bookmarks</item>
+                        <item name="namespace" xsi:type="string">current.paging</item>
+                    </item>
+                    <item name="selectProvider" xsi:type="string">paygent_order_failed_listing.paygent_order_failed_listing.paygent_columns.ids</item>
+                </item>
+            </argument>
+        </paging>
+    </container>
+    <columns name="paygent_columns">
+        <column name="increment_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="sorting" xsi:type="string">desc</item>
+                    <item name="label" xsi:type="string" translate="true">Subscription order no</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="course_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">300</item>
+                    <item name="indexField" xsi:type="string">course_name</item>
+                    <item name="label" xsi:type="string" translate="true">Subscription course name</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="backend_message" class="Bluecom\Paygent\Ui\Component\DataProvider\SearchResult\Column\ReasonCode">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="resizeDefaultWidth" xsi:type="string">300</item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="indexField" xsi:type="string">backend_message</item>
+                    <item name="label" xsi:type="string" translate="true">Paygent error reason code (and description)</item>
+                </item>
+            </argument>
+        </column>
+        <column name="customer_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="sorting" xsi:type="string">desc</item>
+                    <item name="label" xsi:type="string" translate="true">Customer ID</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="telephone">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="sorting" xsi:type="string">desc</item>
+                    <item name="label" xsi:type="string" translate="true">Phone Number</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="customer_group_id">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Customer\Ui\Component\Listing\Column\Group\Options</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Customer Group</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="customer_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Name</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="grand_total" class="Magento\Sales\Ui\Component\Listing\Column\PurchasedPrice">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="label" xsi:type="string" translate="true">Amount</item>
+                </item>
+            </argument>
+        </column>
+        <actionsColumn name="actions" class="Bluecom\Paygent\Ui\Component\Error\Listing\Grid\Column\OrderAction">
+               <argument name="data" xsi:type="array">
+                   <item name="config" xsi:type="array">
+                       <item name="resizeEnabled" xsi:type="boolean">false</item>
+                       <item name="resizeDefaultWidth" xsi:type="string">107</item>
+                       <item name="indexField" xsi:type="string">entity_id</item>
+                   </item>
+               </argument>
+        </actionsColumn>
+    </columns>
+</listing>

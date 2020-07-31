@@ -1,0 +1,75 @@
+<script type="text/javascript">
+    require([
+        'jquery'
+    ], function ($) {
+        $(document).ready(function () {
+
+            //push data tracking event account
+            function pushTrackingData(item, title) {
+                var headerTitle = item.closest('.riki-tracking-dashboard').attr('data-title');
+                if (headerTitle !== undefined && title !== undefined) {
+                    var eventLabel = headerTitle + ' - ' + title.trim();
+                    dataLayer.push({
+                        'event': 'customEvent',
+                        'EventCatagory': 'User Engagement',
+                        'EventAction': 'My Account Page Interactions',
+                        'EventLabel': eventLabel
+                    });
+                }
+            }
+
+            //tracking event click
+            $('.riki-tracking-dashboard a').click(function () {
+                var item = $(this);
+                if (item.text() !== undefined) {
+                    pushTrackingData(item, item.text());
+                }
+                return true;
+            })
+
+            //tracking Setting the automatic use point
+            $('form#reward-point-setting button[type="submit"]').click(function () {
+                var item = $(this);
+                var title = item.closest('#reward-point-setting').find('li input:checked').next('label').text();
+                if (title !== undefined) {
+                    var parentSelect = item.closest('#reward-point-setting').find('li input:checked');
+                    var inputValue   = parentSelect.closest('li').find("input[name='reward_user_redeem']").val();
+                    if (inputValue !==undefined) {
+                        title = title.trim() + ' - ' + inputValue;
+                    }
+                    pushTrackingData(item, title);
+                }
+                return true;
+            })
+
+            //tracking serial code
+            $('.riki-tracking-dashboard #serial-code-button').click(function () {
+                var item = $(this);
+                var value = $('input[name="serial_code"]').val();
+                if (value !== undefined && value != '') {
+                    pushTrackingData(item, value);
+                }
+                return true;
+            });
+
+            //tracking button panel top
+            $('a.riki-tracking-button').click(function () {
+                var title = $(this).text();
+                var headerTitle = $(this).closest('.riki-tracking-panel').attr('data-title');
+                if (headerTitle !== undefined && headerTitle != '' && title !== undefined && title != '') {
+                    var eventLabel = headerTitle + ' - ' + title.trim();
+                    dataLayer.push({
+                        'event': 'customEvent',
+                        'EventCatagory': 'User Engagement',
+                        'EventAction': 'My Account Page Interactions',
+                        'EventLabel': eventLabel
+                    });
+                }
+                return true;
+            })
+
+
+        });
+    });
+
+</script>

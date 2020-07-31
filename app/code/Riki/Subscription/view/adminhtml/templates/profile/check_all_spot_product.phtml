@@ -1,0 +1,216 @@
+<?php
+$profileId = $block->getRequest()->getParam('id');
+$urlConfirm = $block->getUrl('profile/profile/confirmSpotProduct',['id'=>$profileId]);
+
+?>
+<script type='text/javascript'>
+    require([
+        'jquery',
+        'Magento_Ui/js/modal/alert',
+        'mage/translate'
+    ], function ($, alert, translate) {
+        'use strict';
+
+        var dataCheckSpot = {};
+        if (localStorage.dataCheckSpot) {
+            dataCheckSpot = localStorage.getItem("dataCheckSpot");
+            dataCheckSpot = JSON.parse(dataCheckSpot);
+        }else{
+            localStorage.setItem("dataCheckSpot",'{}');
+        }
+
+        function checkAllInputSpot() {
+            var flag = false;
+            $('td.spot-input-check input:checkbox:checked').each(function () {
+                if ($(this).is(':checked')) {
+                    flag = true;
+                }
+            })
+;
+            //check data another page
+            if(Object.keys(dataCheckSpot).length>0)
+            {
+                return true;
+            }
+
+            return flag;
+        }
+
+        function checkInputQuantity() {
+            var flag = true;
+            $('td.spot-input-check input:checkbox:checked').each(function () {
+                var qty = $(this).closest('tr').find('input.qty').val();
+                if ($(this).is(':checked') && qty == '') {
+                    flag = false;
+                }
+            })
+            return flag;
+        }
+
+        function checkInputQuantityNotZero() {
+            var flag = true;
+            $('td.spot-input-check input:checkbox:checked').each(function () {
+                var qty = $(this).closest('tr').find('input.qty').val();
+                if (!(!isNaN(parseFloat(qty)) && isFinite(qty)) || parseInt(qty) <= 0) {
+                    flag = false;
+                }
+            })
+            return flag;
+        }
+
+        function getDataCheckbox() {
+            var arrInput = dataCheckSpot;
+            $('td.spot-input-check input[type=checkbox]').each(function () {
+                var qty = $(this).closest('tr').find('input.qty').val();
+                var caseDisplay = $(this).closest('tr').find('select.case_display').val();
+                var unitQty = $(this).closest('tr').find('input.unit_qty').val();
+                var productId = parseInt($(this).val());
+                if ($(this).is(':checked') && qty != '' && caseDisplay != '') {
+                    arrInput[productId] = {
+                        'productId': productId,
+                        'qty': qty,
+                        'unit': unitQty,
+                        'case': caseDisplay
+                    };
+                }
+            })
+
+            return arrInput;
+        }
+
+        function addDataCheckbox()
+        {
+            dataCheckSpot = getDataCheckbox();
+            localStorage.setItem("dataCheckSpot", dataCheckSpot);
+            $('#submitCheckAkkSpot input[name="checkSpotIds"]').val(dataCheckSpot);
+        }
+
+        function loadDataCheckboxAfterReload()
+        {
+            var dataAfterLoad = getDataCheckbox();
+            $('td.spot-input-check input[type=checkbox]').each(function(){
+
+                var productId  = parseInt($(this).val());
+                var parentItem = $(this).closest('tr');
+                if (dataAfterLoad.hasOwnProperty(productId)) {
+                    $(this).prop("checked", true);
+                    parentItem.find('input[name=qty]').val(dataAfterLoad[productId]['qty']);
+                    parentItem.find('select.case_display').val(dataAfterLoad[productId]['case']);
+                }
+            })
+
+            var dataProductIdConvertString = JSON.stringify(dataAfterLoad);
+            localStorage.setItem("dataCheckSpot",dataProductIdConvertString);
+            $('#submitCheckAkkSpot input[name="checkSpotIds"]').val(dataProductIdConvertString);
+        }
+
+        function removeItemUncheck()
+        {
+            var data = getDataCheckbox();
+            $('td.spot-input-check input[type=checkbox]').each(function(){
+                var productId  = parseInt($(this).val());
+                if (data.hasOwnProperty(productId)) {
+                    if(!$(this).is(':checked'))
+                    {
+                        delete data[productId];
+                    }
+                }
+            })
+
+            localStorage.setItem("dataCheckSpot", JSON.stringify(data));
+            $('#submitCheckAkkSpot input[name="checkSpotIds"]').val(data);
+        }
+
+        $('body').on('click','.checkAllItem',function(){
+            if ($(this).is(':checked')) {
+                $('td.spot-input-check input[type=checkbox]').prop("checked", true);
+            } else {
+                $('td.spot-input-check input[type=checkbox]').prop("checked", false);
+            }
+        })
+
+        $('body').on('click','.button-add-spot-product',function(){
+            if (!checkAllInputSpot()) {
+                alert({content: translate("Please select at least one item?")});
+            } else {
+                if (!checkInputQuantity()) {
+                    alert({content: translate("The product quantity is not valid.")});
+                } else if (!checkInputQuantityNotZero()) {
+                    alert({content: translate("The value is greater than") + ' 0'});
+                } else {
+
+                    removeItemUncheck();
+                    loadDataCheckboxAfterReload();
+
+                    //remove data check
+                    localStorage.removeItem('dataCheckSpot');
+
+                    /**
+                     * submit form
+                     */
+                    $('body').trigger('processStart');
+                    $('#submitCheckAkkSpot').submit();
+                }
+            }
+        })
+
+        $('body').on('click','table#add_spot_product_table tr td:not(.spot-input-check)',function(){
+            var item = $(this).closest('tr').find('td.spot-input-check input[type=checkbox]');
+            if ($(this).find('input.qty').length <= 0) {
+                if (item.is(':checked')) {
+                    item.prop("checked", false);
+                } else {
+                    item.prop("checked", true);
+                }
+            }
+        })
+
+        $('.action-next,.action-previous').wrap('<div class="warpCheckConfirm" ></div>');
+        $('.warpCheckConfirm').css({
+            'display':'inline',
+            'position':'relative',
+            'width':'50px',
+            'cursor':'pointer'
+        }).append('<div class="checkConfirmSpot"></div>');
+
+        $('.checkConfirmSpot').css({
+            'position':'absolute',
+            'width': '44px',
+            'height': '3.4rem',
+            'top': '-7px',
+            'right': '0px'
+           // 'background':'red'
+        })
+        $('.checkConfirmSpot:first').css({'left':'0px'})
+
+        /**
+         * load check data check
+         */
+        $('body').on('click','.checkConfirmSpot',function() {
+            if (checkAllInputSpot())
+            {
+                if(!checkInputQuantity())
+                {
+                    alert({content: translate("The product quantity is not valid.")});
+                    return false;
+                }
+
+                removeItemUncheck();
+                loadDataCheckboxAfterReload();
+            }else{
+                removeItemUncheck();
+            }
+
+            $(this).prev().trigger('click');
+        })
+
+        $(window).load(function(){
+            loadDataCheckboxAfterReload();
+        })
+
+    });
+</script>
+<form method="post" id="submitCheckAkkSpot" action ="<?php echo $urlConfirm ?>" >
+    <input name='checkSpotIds' type='hidden' value="">
+    <input name='form_key' type='hidden' value="<?php /* @escapeNotVerified */ echo $block->getFormKey() ?>">
+</form>

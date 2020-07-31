@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <!-- The test with end date extends the one without in this instance because of MQE-1161 -->
+    <test name="AdminDownloadableProductUpdateTestEndDate" extends="AdminDownloadableProductUpdateTestNoEndDate">
+        <annotations>
+            <features value="DownloadableStaging"/>
+            <stories value="Admin manages staging update"/>
+            <title value="Admin should be able to create Single Future Update with end date from Downloadable Product Page"/>
+            <description value="Admin should be able to create Single Future Update with end date from Downloadable Product Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="MC-3263"/>
+            <group value="DownloadableStaging"/>
+            <skip>
+                <issueId value="MAGETWO-93300"/>
+            </skip>
+        </annotations>
+
+        <!-- Create the new staging update -->
+        <generateDate stepKey="generateEndDate" before="fillOutNewStaging" date="+1 week" format="m/d/Y g:i A"/>
+        <actionGroup stepKey="fillOutNewStaging" ref="createEntityNameStagingUpdate">
+            <argument name="stagingUpdate" value="_defaultStaging"/>
+            <argument name="endDate" value="{$generateEndDate}"/>
+        </actionGroup>
+    </test>
+
+    <test name="AdminDownloadableProductUpdateTestNoEndDate">
+        <annotations>
+            <features value="DownloadableStaging"/>
+            <stories value="Admin manages staging update"/>
+            <title value="Admin should be able to create Single Future Update with no end date from Downloadable Product Page"/>
+            <description value="Admin should be able to create Single Future Update with no end date from Downloadable Product Page"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="MC-3264"/>
+            <group value="DownloadableStaging"/>
+            <skip>
+                <issueId value="MQE-1187"/>
+            </skip>
+        </annotations>
+        <before>
+            <actionGroup ref="LoginAsAdmin" stepKey="loginAsAdmin"/>
+        </before>
+        <after>
+            <!-- Delete the product and log out -->
+            <actionGroup stepKey="deleteDownloadableProduct" ref="deleteProductBySku">
+                <argument name="sku" value="{{DownloadableProduct.sku}}"/>
+            </actionGroup>
+            <amOnPage url="{{AdminLogoutPage.url}}" stepKey="amOnLogoutPage"/>
+        </after>
+
+        <!-- Create product -->
+        <amOnPage url="{{AdminProductIndexPage.url}}" stepKey="adminProductIndexPageAdd"/>
+        <waitForPageLoad stepKey="waitForProductIndexPageLoad"/>
+        <actionGroup ref="goToCreateProductPage" stepKey="goToCreateProductPage">
+            <argument name="product" value="DownloadableProduct"/>
+        </actionGroup>
+        <actionGroup ref="fillMainProductFormNoWeight" stepKey="fillMainProductForm">
+            <argument name="product" value="DownloadableProduct"/>
+        </actionGroup>
+
+        <!-- Add downloadable links -->
+        <click selector="{{AdminProductDownloadableSection.sectionHeader}}" stepKey="openDownloadableSection"/>
+        <checkOption selector="{{AdminProductDownloadableSection.isDownloadableProduct}}" stepKey="checkIsDownloadable"/>
+        <fillField userInput="{{downloadableData.link_title}}" selector="{{AdminProductDownloadableSection.linksTitleInput}}" stepKey="fillDownloadableLinkTitle"/>
+        <checkOption selector="{{AdminProductDownloadableSection.isLinksPurchasedSeparately}}" stepKey="checkLinksPurchasedSeparately"/>
+        <fillField userInput="{{downloadableData.sample_title}}" selector="{{AdminProductDownloadableSection.samplesTitleInput}}" stepKey="fillDownloadableSampleTitle"/>
+        <actionGroup ref="addDownloadableProductLinkWithMaxDownloads" stepKey="addDownloadableLinkWithMaxDownloads">
+            <argument name="link" value="downloadableLinkWithMaxDownloads"/>
+        </actionGroup>
+        <actionGroup ref="addDownloadableProductLink" stepKey="addDownloadableLink">
+            <argument name="link" value="downloadableLink"/>
+        </actionGroup>
+
+        <!--Save product-->
+        <actionGroup ref="saveProductForm" stepKey="saveProduct1"/>
+        <see stepKey="assertSuccess1" selector="{{AdminProductMessagesSection.successMessage}}" userInput="You saved the product."/>
+
+        <!-- Create the new staging update -->
+        <actionGroup stepKey="fillOutNewStaging" ref="createEntityNameStagingUpdate">
+            <argument name="stagingUpdate" value="_defaultStaging"/>
+        </actionGroup>
+
+        <!-- Go to product storefront page to see the change applied-->
+        <amOnPage stepKey="goToCreatedProductPage" url="{{DownloadableProduct.sku}}.html"/>
+        <waitForPageLoad stepKey="waitForProductPageLoad2"/>
+        <see stepKey="seeNewTitle" selector="{{StorefrontProductInfoMainSection.productName}}" userInput="{{_defaultStaging.entityName}}"/>
+
+        <actionGroup stepKey="changeDashboardView" ref="changeStagingView">
+            <argument name="view" value="grid"/>
+        </actionGroup>
+
+        <actionGroup stepKey="filterByName" ref="filterProductGridByName2">
+            <argument name="name" value="{{_defaultStaging.name}}"/>
+        </actionGroup>
+
+        <!-- Check to make sure the update shows up and has all of the details -->
+        <seeElement stepKey="seeUpdateRow" selector="{{AdminStagingDashboardSection.nthStagingUpdateRow('1')}}"/>
+        <see stepKey="seeUpcoming" selector="{{AdminStagingDashboardSection.nthStagingUpdateCell('1', '1')}}" userInput="Active"/>
+        <see stepKey="seeUpdateTitle" selector="{{AdminStagingDashboardSection.nthStagingUpdateCell('1', '2')}}" userInput="{{_defaultStaging.name}}"/>
+    </test>
+</tests>

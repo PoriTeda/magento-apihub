@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
+    <system>
+        <section id="deliverydate" translate="label" type="text" sortOrder="240" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Delivery Date</label>
+            <tab>bluecom_cronjob</tab>
+            <!-- resource tag name which we have to defined in the acl.xml -->
+            <resource>Riki_DeliveryType::config_deliverydate</resource>
+            <group id="calendar_period" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Calendar Display Period</label>
+                <field id="day_period" translate="label" type="text"  sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Calendar Display Period</label>
+                    <validate>validate-number validate-greater-than-zero validate-digits</validate>
+                    <comment>Entering the integer number day of calendar display period</comment>
+                </field>
+                <field id="edit_profile_day_period" translate="label" type="text"  sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Calendar Display Period For Subscription Profile</label>
+                    <validate>validate-number validate-greater-than-zero validate-digits</validate>
+                    <comment>Entering the integer number day of calendar display period</comment>
+                </field>
+                <field id="maximum_edit_profile_day_period" translate="label" type="text"  sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Maximum Calendar Display Period For Subscription Profile</label>
+                    <validate>validate-number validate-greater-than-zero validate-digits</validate>
+                    <comment>Entering the integer number month of calendar display period</comment>
+                </field>
+            </group>
+            <group id="delivery_date_selection" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Disabling of calendar selection</label>
+                <field id="is_disabled_checkout" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Disabling of calendar selection on Checkout</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Only Apply For Checkout (Backend is always be allowed)</comment>
+                </field>
+                <field id="is_disabled_create_order_api" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Disabling of delivery date selection on create the order API</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Only Apply For Create The Order API (Backend is always be allowed)</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

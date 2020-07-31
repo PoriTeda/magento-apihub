@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <head>
+        <remove src="Wyomind_PointOfSale::js/edit.js"/>
+        <link src="Riki_PointOfSale::js/edit.js"/>
+        <css src="Wyomind_PointOfSale::css/edit.css"/>
+    </head>
+    <body>
+        <referenceContainer name="left">
+            <referenceBlock name="pointofsale_manage_edit_tabs">
+                <block class="Riki\PointOfSale\Block\Adminhtml\Manage\Edit\Tab\Holidaysetting" name="riki_pointofsale_manage_edit_tab_holidaysetting"/>
+                <block class="Riki\PointOfSale\Block\Adminhtml\Manage\Edit\Tab\Delitypesetting" name="riki_pointofsale_manage_edit_tab_delitypesetting"/>
+                <block class="Riki\PointOfSale\Block\Adminhtml\Manage\Edit\Tab\LeadTime" name="pointofsale_manage_edit_tab_leadtime" />
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">holidaysetting</argument>
+                    <argument name="block" xsi:type="string">riki_pointofsale_manage_edit_tab_holidaysetting</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">delitypesetting</argument>
+                    <argument name="block" xsi:type="string">riki_pointofsale_manage_edit_tab_delitypesetting</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">leadtime</argument>
+                    <argument name="block" xsi:type="string">pointofsale_manage_edit_tab_leadtime</argument>
+                </action>
+            </referenceBlock>
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" layout="1column">
+    <head>
+        <script src="Riki_Subscription::js/edit/edit_profile.js"/>
+    </head>
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="content">
+            <block cacheable="false" class="Riki\Subscription\Block\Frontend\Profile\SkipNextDelivery" template="Riki_Subscription::profile/subscription_profile_skip_next_delivery.phtml">
+            </block>
+        </referenceContainer>
+        <referenceContainer name="main.content">
+            <referenceBlock name="page.main.title.sub" remove="true" />
+        </referenceContainer>
+        <move element="page.main.title" destination="columns.top" before="-"/>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument name="title" translate="true" xsi:type="string">Skip next delivery confirm</argument>
+            </action>
+        </referenceBlock>
+        <move element="page.messages" destination="columns.top" after="page.main.title"/>
+    </body>
+</page>

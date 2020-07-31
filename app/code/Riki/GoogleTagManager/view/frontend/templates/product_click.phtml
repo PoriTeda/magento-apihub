@@ -1,0 +1,44 @@
+<?php /** @var $block \Riki\GoogleTagManager\Block\ProductClick **/ ?>
+<?php
+    $renderData = $block->getRenderData();
+    $renderDataProductClick = $block->getProductClickRenderData($renderData);
+    $renderDataScroll =  $block->getProductScrollRenderData($renderData);
+?>
+<?php if($renderDataProductClick && !$block->isCheckoutPage()):?>
+<script type="text/javascript">
+    var dataProductClick = Array();
+    <?php foreach($renderDataProductClick as $_key=>$_data):?>
+        dataProductClick[<?php echo $_key;?>] = <?php echo $_data;?>;
+    <?php endforeach;?>
+    require(['jquery', 'jquery/ui'], function($){
+        $(document).ready(function () {
+            $("a[layer-item-id]").click(function(){
+                var dataId = $(this).attr('layer-item-id');
+                if(dataId != '') {
+                    var productData = dataProductClick[dataId];
+                    dataLayer.push({
+                        'event': 'productClick',
+                        'ecommerce': {
+                            'currencyCode': 'JPY',
+                            'click': {
+                                'actionField': {'list': productData['actionfield']},
+                                'products': [productData]
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+<?php endif;?>
+<?php if($renderDataScroll  && !$block->isCheckoutPage()):?>
+<script>
+    var impressionsOnScroll = {
+        'currencyCode': 'JYP',
+        <?php foreach($renderDataScroll as $_key=>$_data):?>
+        '<?php echo $_key;?>':<?php echo $_data;?>,
+        <?php endforeach;?>
+    }
+</script>
+<?php endif; ?>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="DeleteGiftCardAccountActionGroup">
+        <arguments>
+            <argument name="giftCardAccountCode" type="string"/>
+        </arguments>
+        <amOnPage url="{{AdminGiftCardAccountGridPage.url}}" stepKey="amOnGiftCardAccountGridPage"/>
+        <click selector="{{AdminGiftCardAccountGridSection.resetFilter}}" stepKey="clickResetFilterButton"/>
+        <waitForLoadingMaskToDisappear stepKey="waitForLoadingMaskToDisappearAfterReset"/>
+        <fillField selector="{{AdminGiftCardAccountGridSection.giftCardCodeFilterField}}" userInput="{{giftCardAccountCode}}" stepKey="clickCodeField"/>
+        <click selector="{{AdminGiftCardAccountGridSection.search}}" stepKey="clickSearchButton"/>
+        <waitForLoadingMaskToDisappear stepKey="waitForLoadingMaskToDisappearOnSearch"/>
+        <click selector="{{AdminGiftCardAccountGridSection.row}}" stepKey="clickOnRow"/>
+        <waitForPageLoad stepKey="waitForEditPageLoad"/>
+        <click selector="{{AdminGiftCardAccountGridSection.delete}}" stepKey="clickDelete"/>
+        <waitForElementVisible selector="{{AdminConfirmationModalSection.ok}}" stepKey="waitForDeleteConfirmationPopup"/>
+        <click selector="{{AdminConfirmationModalSection.ok}}" stepKey="clickDeleteGiftCardAccount"/>
+        <waitForElementVisible selector="{{AdminGiftCardAccountGridSection.deletedGiftCardAccountMessage}}" stepKey="deletedGiftCardAccount"/>
+    </actionGroup>
+</actionGroups>

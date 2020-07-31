@@ -1,0 +1,47 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<?php
+/** @var \Magento\Catalog\Pricing\Render\FinalPriceBox $block */
+
+$productId = $block->getSaleableItem()->getId();
+
+/** @var \Magento\Catalog\Pricing\Price\RegularPrice $priceModel */
+$priceModel = $block->getPriceType('regular_price');
+
+/** @var \Magento\Catalog\Pricing\Price\FinalPrice $finalPriceModel */
+$finalPriceModel = $block->getPriceType('final_price');
+$idSuffix = $block->getIdSuffix() ? $block->getIdSuffix() : '';
+$schema = ($block->getZone() == 'item_view') ? true : false;
+?>
+<span class="no-display final-price" data-val="<?php echo floor($finalPriceModel->getAmount()->getValue()); ?>"></span>
+<?php if ($block->showMinimalPrice()): ?>
+    <span class="minimal-price-link">
+        <?php /* @escapeNotVerified */ echo $block->renderAmountMinimal(); ?>
+    </span>
+<?php endif; ?>
+<?php if ($block->hasSpecialPrice() && !$block->showMinimalPrice()): ?>
+    <span class="special-price">
+        <?php /* @escapeNotVerified */ echo $block->renderAmount($finalPriceModel->getAmount(), [
+            'display_label'     => __('Special Price'),
+            'price_id'          => $block->getPriceId('product-price-' . $idSuffix),
+            'price_type'        => 'finalPrice',
+            'include_container' => true,
+            'schema' => $schema
+        ]); ?>
+    </span>
+<?php else: ?>
+    <?php /* @escapeNotVerified */ echo $block->renderAmount($finalPriceModel->getAmount(), [
+        'price_id'          => $block->getPriceId('product-price-' . $idSuffix),
+        'price_type'        => 'finalPrice',
+        'include_container' => true,
+        'schema' => $schema
+    ]); ?>
+<?php endif; ?>

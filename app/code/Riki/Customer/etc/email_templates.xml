@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="cedyna_customer_hold_email_setting_email_template" label="Cedyna Customer Import Email" file="cedynacustomer.html" type="html" module="Riki_Customer" area="frontend"/>
+    <template id="cedyna_customer_hold_email_setting_email_template_error" label="Cedyna Customer Error Email" file="cedynacustomererror.html" type="html" module="Riki_Customer" area="frontend"/>
+</config>

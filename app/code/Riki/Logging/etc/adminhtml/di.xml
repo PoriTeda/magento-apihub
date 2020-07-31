@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Logging\Block\Adminhtml\Details" type="Riki\Logging\Block\Adminhtml\Details" />
+    <!--<preference for="Magento\Logging\Model\Processor" type="Riki\Logging\Model\Processor" />-->
+</config>

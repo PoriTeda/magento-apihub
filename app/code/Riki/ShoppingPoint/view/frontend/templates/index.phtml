@@ -1,0 +1,23 @@
+<form class="form reward-settings" action="<?php /* @escapeNotVerified */ echo $block->getUrl('shoppingpoint/index/save') ?>" method="post" id="form-validate">
+    <?php echo $block->getBlockHtml('formkey')?>
+    <fieldset class="fieldset" >
+<!--        <legend class="legend"><span>--><?php ///* @escapeNotVerified */ echo __('Shopping Point Settings'); ?><!--</span></legend><br />-->
+        <div class="field input">
+            <label class="label" for="""><?php echo __('Shopping point setting');?></label>
+            <div class="control" style="width:48%;">
+                <?php echo $block->getRewardUserSettingHtmlSelect();?>
+            </div>
+        </div>
+        <div class="field input">
+            <label class="label" for="reward_user_redeem"><?php echo __('Shopping point redeem number');?></label>
+            <div class="control" style="width:48%;">
+                <input maxlength="10" type="text" class="input-text validate-digits" name="reward_user_redeem" id="reward_user_redeem" value="<?php echo $block->getRewardUserRedeem();?>"/>
+            </div>
+        </div>
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" class="action save primary" title="<?php /* @escapeNotVerified */ echo __('Save') ?>"><span><?php /* @escapeNotVerified */ echo __('Save Settings') ?></span></button>
+        </div>
+    </div>
+</form>

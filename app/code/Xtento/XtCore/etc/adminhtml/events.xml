@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="controller_action_predispatch">
+        <observer name="xtcore_admin_notification" instance="Xtento\XtCore\Observer\PreDispatchFeedUpdateObserver"/>
+    </event>
+    <event name="config_data_save_after">
+        <observer name="xtcore_config_check" instance="Xtento\XtCore\Observer\ConfigurationUpdateCheckObserver"/>
+    </event>
+</config>
+<!--
+/**
+ * Product:       Xtento_XtCore (2.1.0)
+ * ID:            %!uniqueid!%
+ * Packaged:      %!packaged!%
+ * Last Modified: 2017-08-16T08:52:13+00:00
+ * File:          app/code/Xtento/XtCore/etc/adminhtml/events.xml
+ * Copyright:     Copyright (c) 2017 XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

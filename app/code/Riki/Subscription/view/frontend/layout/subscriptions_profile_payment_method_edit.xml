@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" layout="1column">
+    <head>
+        <script src="Riki_Subscription::js/edit/edit_profile.js"/>
+    </head>
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="main.content">
+            <block class="Riki\Subscription\Block\Frontend\Profile\Payment\Method\Title" name="page.main.title" template="html/title.phtml" before="-">
+                <action method="setPageTitle">
+                    <argument translate="true" name="title" xsi:type="string">Subscription Page</argument>
+                </action>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block cacheable="false" class="Riki\Subscription\Block\Frontend\Profile\Payment\Method\Edit" template="Riki_Subscription::profile/payment/method/edit.phtml" name="subscriptions.profile.payment.method.edit" >
+                <block cacheable="false" class="Riki\Subscription\Block\Frontend\Profile\Edit" template="Riki_Subscription::profile/payment/method/confirm-subscription.phtml" name="subscriptions.profile.edit">
+                    <block class="Riki\SubscriptionPage\Block\Catalog\Product\View\Type\Bundle" name="product.info.bundle.options" as="type_bundle_options" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/options.phtml">
+                        <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Select" name="product.info.bundle.options.select" as="select" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/select.phtml" />
+                        <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Multi" name="product.info.bundle.options.multi" as="multi" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/multi.phtml"/>
+                        <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Radio" name="product.info.bundle.options.radio" as="radio" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/radio.phtml"/>
+                        <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Checkbox" name="product.info.bundle.options.checkbox" as="checkbox" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/checkbox.phtml"/>
+                    </block>
+                    <block class="Magento\Cms\Block\Block" name="about-selectable-date">
+                        <arguments>
+                            <argument name="block_id" xsi:type="string">about-selectable-date</argument>
+                        </arguments>
+                    </block>
+                </block>
+                <block class="Riki\Subscription\Block\Frontend\Profile\ConfirmEditHanpukai"  template="Riki_Subscription::profile/payment/method/confirm-hanpukai.phtml" name="subscriptions.profile.hanpukai.edit">
+                    <block class="Magento\Cms\Block\Block" name="about-selectable-date-hanpukai">
+                        <arguments>
+                            <argument name="block_id" xsi:type="string">about-selectable-date</argument>
+                        </arguments>
+                    </block>
+                </block>
+                <block class="Magento\Framework\View\Element\Template" name="subscriptions.profile.payment.method.edit.paygent" template="Riki_Subscription::profile/payment/method/payment_method/paygent.phtml" />
+                <block class="Magento\Framework\View\Element\Template" name="subscriptions.profile.payment.method.edit.cashondelivery" template="Riki_Subscription::profile/payment/method/payment_method/cashondelivery.phtml" />
+                <block class="Magento\Framework\View\Element\Template" name="subscriptions.profile.payment.method.edit.cvspayment" template="Riki_Subscription::profile/payment/method/payment_method/cvspayment.phtml" />
+                <block class="Magento\Framework\View\Element\Template" name="subscriptions.profile.payment.method.edit.npatobarai" template="Riki_Subscription::profile/payment/method/payment_method/npatobarai.phtml" />
+            </block>
+        </referenceContainer>
+    </body>
+</page>

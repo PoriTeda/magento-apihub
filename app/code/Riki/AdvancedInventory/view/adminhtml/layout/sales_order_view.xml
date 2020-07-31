@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="order_tab_info">
+            <block template="Riki_AdvancedInventory::assignation/view.phtml" class="Wyomind\AdvancedInventory\Block\Adminhtml\Assignation\View" name="assignation_view"/>
+        </referenceBlock>
+        <referenceBlock name="sales_order_tabs">
+            <action method="addTab">
+                <argument name="name" xsi:type="string">out_of_stock</argument>
+                <argument name="block" xsi:type="string">sales_order_view_tab_out_of_stock</argument>
+            </action>
+            <block class="Riki\AdvancedInventory\Block\Adminhtml\Sales\Order\View\Tab\OutOfStocks" name="sales_order_view_tab_out_of_stock" template="sales/order/view/tab/outofstock/tab.phtml">
+                <block class="Riki\AdvancedInventory\Block\Adminhtml\OutOfStock\Grid" name="sales_order_view_tab_out_of_stock_view" />
+            </block>
+        </referenceBlock>
+    </body>
+</page>

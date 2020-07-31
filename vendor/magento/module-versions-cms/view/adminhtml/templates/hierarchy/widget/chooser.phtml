@@ -1,0 +1,80 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var \Magento\VersionsCms\Block\Adminhtml\Cms\Hierarchy\Widget\Chooser $block */
+
+$chooserJsObject = $block->escapeJs($block->getId());
+?>
+<div id="tree<?= $block->escapeHtmlAttr($block->getId()) ?>" class="cms-tree tree x-tree"></div>
+<!--[if IE]>
+<script id="ie-deferred-loader" defer="defer" src="//:"></script>
+<![endif]-->
+<script>
+    require(["extjs/ext-tree-checkbox", "prototype"], function() {
+        window.clickNode = function(node) {
+            $("tree-container").insert({before: node.text});
+            $("<?= /* @noEscape */ $chooserJsObject ?>").value = node.id;
+            treeRoot.collapse();
+        };
+
+        window.nodes = <?= /* @noEscape */ $block->getNodesJson() ?>;
+
+        if (nodes.length > 0) {
+            window.tree<?= /* @noEscape */ $chooserJsObject ?> = new Ext.tree
+                .TreePanel("tree<?= /* @noEscape */ $chooserJsObject ?>", {
+                    animate: false,
+                    enableDD: false,
+                    containerScroll: true,
+                    rootVisible: false,
+                    lines: true
+            });
+
+            window.treeRoot<?= /* @noEscape */ $chooserJsObject ?> = new Ext.tree.AsyncTreeNode({
+                text: "<?= $block->escapeJs($block->escapeHtml(__("Root"))) ?>",
+                id: "root",
+                allowDrop: true,
+                allowDrag: false,
+                expanded: true,
+                cls: "cms_node_root"
+            });
+
+            tree<?= /* @noEscape */ $chooserJsObject ?>.setRootNode(treeRoot<?= /* @noEscape */ $chooserJsObject ?>);
+
+            for (var i = 0; i < nodes.length; i++) {
+                window.cls = nodes[i].page_id ? "cms_page" : "cms_node";
+                window.node = new Ext.tree.TreeNode({
+                    id: nodes[i].node_id,
+                    text: nodes[i].label,
+                    cls: cls,
+                    expanded: nodes[i].page_exists,
+                    allowDrop: false,
+                    allowDrag: false,
+                    page_id: nodes[i].page_id
+                });
+                if (parentNode = tree<?= /* @noEscape */ $chooserJsObject ?>.getNodeById(nodes[i].parent_node_id)) {
+                    parentNode.appendChild(node);
+                } else {
+                    treeRoot<?= /* @noEscape */ $chooserJsObject ?>.appendChild(node);
+                }
+            }
+
+            tree<?= /* @noEscape */ $chooserJsObject ?>.addListener("click", function (node, event) {
+                <?= /* @noEscape */ $chooserJsObject ?>.setElementValue(node.id);
+                <?= /* @noEscape */ $chooserJsObject ?>.setElementLabel(
+                    node.text.escapeHTML().replace('\'', '&#039;').replace('"', '&quot;')
+                );
+                <?= /* @noEscape */ $chooserJsObject ?>.close();
+            });
+            tree<?= /* @noEscape */ $chooserJsObject ?>.render();
+            treeRoot<?= /* @noEscape */ $chooserJsObject ?>.expand();
+        }
+        else {
+            $("tree<?= /* @noEscape */ $chooserJsObject ?>").innerHTML = "<?= $block->escapeJs($block->escapeHtml(__('No nodes are available'))) ?>";
+        }
+    });
+</script>

@@ -1,0 +1,53 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<script>
+    require(['prototype', 'Magento_Rma/rma'], function () {
+        window.rma = new AdminRma();
+    });
+    require(['Magento_Rma/details-validator'], function () {});
+</script>
+
+<?php
+/**
+ * @see \Magento\Rma\Block\Adminhtml\Rma\Edit\Tab\General
+ */
+?>
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?= /* @escapeNotVerified */ __('Account &amp; Shipping Information') ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <?= $block->getChildHtml('request_details') ?>
+
+        <?= $block->getChildHtml('shipping_method') ?>
+    </div>
+</section>
+
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?= /* @escapeNotVerified */ __('Address Information') ?></span>
+    </div>
+
+    <div class="admin__page-section-content">
+        <?= $block->getChildHtml('shipping_address') ?>
+
+        <?= $block->getChildHtml('return_address') ?>
+    </div>
+</section>
+
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?= /* @escapeNotVerified */ __('RMA Totals') ?></span>
+    </div>
+
+    <div class="admin__page-section-content">
+        <?= $block->getChildHtml('comments_history') ?>
+    </div>
+</section>

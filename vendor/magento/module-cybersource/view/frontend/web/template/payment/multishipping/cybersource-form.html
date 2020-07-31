@@ -1,0 +1,33 @@
+<iframe width="0"
+        height="0"
+        data-bind="src: getSource(), attr: {id: getCode() + '-transparent-iframe', 'data-container': getCode() + '-transparent-iframe'}"
+        allowtransparency="true"
+        frameborder="0"
+        name="iframeTransparent"
+        class="payment-method-iframe">
+</iframe>
+<form class="form" id="co-transparent-form" action="#" method="post" data-bind="mageInit: {
+            'transparent':{
+                'context': context(),
+                'controller': getControllerName(),
+                'gateway': getCode(),
+                'orderSaveUrl':getPlaceOrderUrl(),
+                'cgiUrl': getCgiUrl(),
+                'dateDelim': getDateDelim(),
+                'cardFieldsMap': getCardFieldsMap(),
+                'nativeAction': getSaveOrderUrl(),
+                'expireYearLength': getExpireYearLength()
+            }, 'validation':[]}">
+
+    <!-- ko template: 'Magento_Payment/payment/cc-form' --><!-- /ko -->
+</form>
+<div class="actions-toolbar no-display">
+    <div class="primary">
+        <button data-role="review-save"
+                type="submit"
+                data-bind="{click: placeOrder}"
+                class="action primary checkout">
+            <span data-bind="i18n: 'Place Order'"></span>
+        </button>
+    </div>
+</div>

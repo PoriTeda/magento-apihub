@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/queue.xsd">
+    <broker topic="oos.order.generate" exchange="magento" type="amqp">
+        <queue name="oos_generate_order" consumer="startGenerateOrderOos" maxMessages="2"
+               consumerInstance="Riki\AdvancedInventory\Model\Queue\Consumer"
+               handler="Riki\AdvancedInventory\Model\Queue\OosConsumer::execute"/>
+    </broker>
+</config>

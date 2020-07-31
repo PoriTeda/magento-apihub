@@ -1,0 +1,9 @@
+<?php foreach ($block->getData('items') as $key => $item): ?>
+    <?php echo "-------------------------------------------------------------------------------\n"; ?>
+    <?php echo __('【order number】 %1', $item['orderIncrementId']) . "\n" ?>
+    <?php echo __('【transaction id】 %1', $item['tradingId']) . "\n" ?>
+    <?php echo __('【customer id】 %1', $item['consumerId']) . "\n" ?>
+    <?php echo __('【subscription course name】 %1', $item['subscriptionCourseName']) . "\n" ?>
+    <?php echo __('【error message】 %1', $item['errorMessage']) . "\n" ?>
+<?php endforeach; ?>
+-------------------------------------------------------------------------------

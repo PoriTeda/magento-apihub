@@ -1,0 +1,16 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<script>
+    require(<?= /* @noEscape */ json_encode([$block->getRequireModuleName()]) ?>, function() {
+        var config = {
+            map: {
+                '*': <?= /* @noEscape */ json_encode($block->getInjectionsList(), JSON_UNESCAPED_SLASHES) ?>
+            }
+        };
+        require.config(config);
+    });
+</script>

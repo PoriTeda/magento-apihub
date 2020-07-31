@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="subscriptioncourse_cutoffdate_email_template" label="Subscription Send email to notify about cut-off date for subscription delivery" file="subscription-cut-off-date.txt" type="text" module="Riki_SubscriptionCutOffEmail" area="frontend"/>
+</config>

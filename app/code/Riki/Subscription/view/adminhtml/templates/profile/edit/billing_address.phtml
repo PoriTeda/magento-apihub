@@ -1,0 +1,68 @@
+<?php
+/** @var \Riki\Subscription\Block\Adminhtml\Profile\Edit $editBlock */
+$editBlock = $block->getParentBlock();
+$address = $editBlock->getBillingAddressCustomer();
+?>
+<fieldset class="fieldset">
+    <div class="table-wrapper">
+        <div class="table table list admin__scope-old">
+            <div class="fieldset-wrapper customer-information">
+                <h2><strong><?php echo __('Billing address') ?></strong></h2>
+                <?php if ($address) : ?>
+                    <table class="admin__table-secondary">
+                        <tbody>
+                        <tr>
+                            <th><?php echo __('Customer ID') ?>:</th>
+                            <td><?php echo $address->getCustomerId() ?></td>
+                        </tr>
+                        <tr>
+                            <th><?php echo __('Last name (Kanji)') ?>:</th>
+                            <td><?php echo $address->getData('lastname') ?></td>
+                        </tr>
+                        <tr>
+                            <th><?php echo __('First name (Kanji)') ?>:</th>
+                            <td><?php echo $address->getData('firstname') ?></td>
+                        </tr>
+                        <tr>
+                            <th><?php echo __('Last name (Kana)') ?>:</th>
+                            <td><?php echo $address->getCustomAttribute('lastnamekana') ?
+                                    $address->getCustomAttribute('lastnamekana')->getValue() : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?php echo __('First name (Kana)') ?>:</th>
+                            <td><?php echo $address->getCustomAttribute('firstnamekana') ?
+                                    $address->getCustomAttribute('firstnamekana')->getValue() : '' ?></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <address>
+                        <table>
+                            <tr>
+                                <td><?php echo __('Email') ?>:</td>
+                                <td><?php echo $address->getCustomer()->getEmail();?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo __('Postcode') ?>:</td>
+                                <td><?php echo $address->getPostcode();?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo __('Prefecture') ?>:</td>
+                                <td><?php echo $address->getRegion();?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo __('Street Address') ?>:</td>
+                                <td><?php echo $address->getStreetFull();?></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo __('Telephone') ?>:</td>
+                                <td><?php echo $address->getTelephone();?></td>
+                            </tr>
+                        </table>
+                    </address>
+                <?php else : ?>
+                    <p><?php echo __('There is no billing address') ?></p>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</fieldset>

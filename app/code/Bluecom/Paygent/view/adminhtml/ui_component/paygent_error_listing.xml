@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Ui/etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">paygent_error_listing.paygent_error_listing_data_source</item>
+            <item name="deps" xsi:type="string">paygent_error_listing.paygent_error_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">paygent_columns</item>
+    </argument>
+    <dataSource name="paygent_error_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">paygenterrorGridDataProvider</argument>
+            <argument name="name" xsi:type="string">paygent_error_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">error_id</argument>
+            <argument name="requestFieldName" xsi:type="string">error_id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                </item>
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+    <container name="listing_top">
+       <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="template" xsi:type="string">ui/grid/toolbar</item>
+                <item name="stickyTmpl" xsi:type="string">ui/grid/sticky/toolbar</item>
+            </item>
+        </argument>
+        <paging name="listing_paging">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">paygent_error_listing.paygent_error_listing.listing_top.bookmarks</item>
+                        <item name="namespace" xsi:type="string">current.paging</item>
+                    </item>
+                    <item name="selectProvider" xsi:type="string">paygent_error_listing.paygent_error_listing.paygent_columns.ids</item>
+                </item>
+            </argument>
+        </paging>
+    </container>
+    <columns name="paygent_columns">
+        <column name="error_code">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="sorting" xsi:type="string">desc</item>
+                    <item name="label" xsi:type="string" translate="true">Code</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="backend_message">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="sorting" xsi:type="string">desc</item>
+                    <item name="label" xsi:type="string" translate="true">Backend message to store</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="email_message">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="sorting" xsi:type="string">desc</item>
+                    <item name="label" xsi:type="string" translate="true">Message to display in the email</item>
+                </item>
+            </argument>
+        </column>
+
+        <actionsColumn name="actions" class="Bluecom\Paygent\Ui\Component\Error\Listing\Grid\Column\Action">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="resizeEnabled" xsi:type="boolean">false</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">150</item>
+                    <item name="indexField" xsi:type="string">error_id</item>
+                </item>
+            </argument>
+        </actionsColumn>
+
+    </columns>
+</listing>

@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="mage/gallery/gallery.css"/>
+    </head>
+    <body>
+        <referenceBlock name="riki.minicart" remove="true"/>
+        <referenceBlock name="riki.search" remove="true"/>
+        <referenceBlock name="minicart-merge-quote" remove="true"/>
+        <referenceContainer name="header-wrapper">
+            <block class="Magento\Framework\View\Element\Template" name="page.subscription.category.search"
+                   before="riki.minicart" template="Riki_SubscriptionPage::header/category-search.phtml">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">
+                        Riki\SubscriptionPage\Block\ViewModel\ProductCategory
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <attribute name="class" value="multiple-category-campaign-view" />
+        <block class="Magento\Framework\Pricing\Render" name="product.price.render.default">
+            <arguments>
+                <argument name="price_render_handle" xsi:type="string">catalog_subscription_product_prices</argument>
+                <argument name="use_link_for_as_low_as" xsi:type="boolean">true</argument>
+            </arguments>
+        </block>
+        <referenceBlock name="breadcrumbs" remove="true"/>
+        <referenceContainer name="main.content">
+            <block class="Riki\Subscription\Block\Html\Title" name="page.main.title" template="html/title.phtml" before="-">
+                <action method="setPageTitle">
+                    <argument translate="true" name="title" xsi:type="string">Add multiple category page</argument>
+                </action>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Riki\Subscription\Block\Multiple\Category\View" template="Riki_Subscription::multiple/category/view.phtml" name="subscription_multiple_category_view">
+                <arguments>
+                    <argument name="jsLayout" xsi:type="array">
+                        <item name="components" xsi:type="array">
+                            <item name="adding-spot-subscription" xsi:type="array">
+                                <item name="component" xsi:type="string">Riki_Subscription/js/multiple/category/campaign/view/add-spot-to-subscription</item>
+                                <item name="children" xsi:type="array">
+                                    <item name="profile-information" xsi:type="array">
+                                        <item name="sortOrder" xsi:type="string">10</item>
+                                        <item name="component" xsi:type="string">Riki_Subscription/js/multiple/category/campaign/view/profile-information</item>
+                                        <item name="displayArea" xsi:type="string">profile-information</item>
+                                        <item name="config" xsi:type="array">
+                                            <item name="template" xsi:type="string">Riki_Subscription/multiple/category/campaign/view/profile-information</item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+                <block class="Riki\SubscriptionPage\Block\Catalog\Product\View\Type\Bundle" name="product.info.bundle.options" as="type_bundle_options" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/options.phtml">
+                    <block class="Riki\SubscriptionPage\Block\Catalog\Product\View\Type\Bundle\Option\Select" name="product.info.bundle.options.select" as="select" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/select.phtml" />
+                    <block class="Riki\SubscriptionPage\Block\Catalog\Product\View\Type\Bundle\Option\Multi" name="product.info.bundle.options.multi" as="multi" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/multi.phtml"/>
+                    <block class="Riki\SubscriptionPage\Block\Catalog\Product\View\Type\Bundle\Option\Radio" name="product.info.bundle.options.radio" as="radio" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/radio.phtml"/>
+                    <block class="Riki\SubscriptionPage\Block\Catalog\Product\View\Type\Bundle\Option\Checkbox" name="product.info.bundle.options.checkbox" as="checkbox" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/checkbox.phtml"/>
+                </block>
+                <block class="Magento\Framework\View\Element\Template" name="subscription_multiple_category_view_category" as="view_category" template="Riki_Subscription::multiple/category/view/category.phtml">
+                    <arguments>
+                        <argument name="view_model" xsi:type="object">
+                            Riki\SubscriptionPage\Block\ViewModel\ProductCategory
+                        </argument>
+                    </arguments>
+                    <block class="Magento\Framework\View\Element\Template" name="subscription_multiple_category_view_product_image" as="view_product_image" template="Riki_Subscription::multiple/category/view/product/image.phtml" />
+                    <block class="Magento\Framework\View\Element\Template" name="subscription_multiple_category_view_product_name" as="view_product_name" template="Riki_Subscription::multiple/category/view/product/name.phtml" />
+                    <block class="Magento\Framework\View\Element\Template" name="subscription_multiple_category_view_product_price" as="view_product_price" template="Riki_Subscription::multiple/category/view/product/price.phtml" />
+                    <block class="Riki\SubscriptionPage\Block\Catalog\Product\View\Qty" name="subscription_multiple_category_view_product_qty" as="product.view.qty"
+                           template="Riki_SubscriptionPage::view/product/qty.phtml">
+                        <arguments>
+                            <argument name="view_model" xsi:type="object">
+                                Riki\SubscriptionPage\Block\ViewModel\ProductCategory
+                            </argument>
+                        </arguments>
+                    </block>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

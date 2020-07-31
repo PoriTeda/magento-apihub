@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+     <type name="Magento\Checkout\Model\ShippingInformationManagement">
+        <plugin name="riki_save_delivery_date_to_session" type="Riki\DeliveryType\Plugin\Checkout\Model\ShippingInformationManagement" sortOrder="1"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="append_deliverytype_data_to_order" type="Riki\DeliveryType\Plugin\Quote\DelitypeItem"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\AbstractItem">
+        <plugin name="rikiDeliveryTypeQuoteModelQuoteItemAbstractItem" type="Riki\DeliveryType\Plugin\Quote\Model\Quote\Item\AbstractItem"/>
+    </type>
+    <preference for="Riki\DeliveryType\Api\Data\QuoteItemAddressDdateProcessorInterface"
+                type="Riki\DeliveryType\Model\QuoteItemAddressDdateProcessor" />
+
+    <type name="Riki\DeliveryType\Model\ResourceModel\Delitype">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Magento\ScalableOms\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="riki_delivery_type" xsi:type="string">riki_delivery_type</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

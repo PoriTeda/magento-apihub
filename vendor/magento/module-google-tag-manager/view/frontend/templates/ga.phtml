@@ -1,0 +1,63 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+?>
+<?php
+/** @var \Magento\GoogleTagManager\Block\Ga $block */
+
+$accountType = $block->getConfig(\Magento\GoogleTagManager\Helper\Data::XML_PATH_TYPE);
+$gtmAccountId = $block->getConfig(\Magento\GoogleTagManager\Helper\Data::XML_PATH_CONTAINER_ID);
+$gapAccountId = $block->getConfig(\Magento\GoogleTagManager\Helper\Data::XML_PATH_ACCOUNT);
+switch ($accountType) {
+    case \Magento\GoogleTagManager\Helper\Data::TYPE_TAG_MANAGER:
+        if (!empty($gtmAccountId)) {
+            ?>
+            <!-- GOOGLE TAG MANAGER -->
+            <noscript>
+                <iframe src="https://www.googletagmanager.com/ns.html?id=<?= /* @escapeNotVerified */ $gtmAccountId ?>" height="0" width="0"
+                        style="display:none;visibility:hidden"></iframe>
+            </noscript>
+            <script type="text/x-magento-init">
+            {
+                "*": {
+                    "Magento_GoogleTagManager/js/google-tag-manager": {
+                        "isCookieRestrictionModeEnabled": <?= (int)$block->isCookieRestrictionModeEnabled() ?>,
+                        "currentWebsite": <?= (int)$block->getCurrentWebsiteId() ?>,
+                        "cookieName": "<?= /* @escapeNotVerified */ \Magento\Cookie\Helper\Cookie::IS_USER_ALLOWED_SAVE_COOKIE ?>",
+                        "gtmAccountId": "<?= /* @escapeNotVerified */ $gtmAccountId ?>",
+                        "storeCurrencyCode": "<?= /* @escapeNotVerified */ $block->getStoreCurrencyCode() ?>",
+                        "ordersData": <?= /* @escapeNotVerified */ json_encode($block->getOrdersDataArray()) ?>
+                    }
+                }
+            }
+            </script>
+            <!-- END GOOGLE TAG MANAGER -->
+        <?php
+        }
+        break;
+    case \Magento\GoogleTagManager\Helper\Data::TYPE_UNIVERSAL:
+        if (!empty($gapAccountId)) {
+            ?>
+            <!-- BEGIN GOOGLE UNIVERSAL ANALYTICS CODE -->
+            <script type="text/x-magento-init">
+            {
+                "*": {
+                    "Magento_GoogleAnalytics/js/google-analytics": {
+                        "isCookieRestrictionModeEnabled": <?= (int)$block->isCookieRestrictionModeEnabled() ?>,
+                        "currentWebsite": <?= (int)$block->getCurrentWebsiteId() ?>,
+                        "cookieName": "<?= /* @escapeNotVerified */ \Magento\Cookie\Helper\Cookie::IS_USER_ALLOWED_SAVE_COOKIE ?>",
+                        "ordersTrackingData": <?= /* @escapeNotVerified */ json_encode($block->getOrdersTrackingData()) ?>,
+                        "pageTrackingData": <?= /* @escapeNotVerified */ json_encode($block->getPageTrackingData($gapAccountId)) ?>
+                    }
+                }
+            }
+            </script>
+            <!-- END GOOGLE UNIVERSAL ANALYTICS CODE -->
+        <?php
+        }
+        break;
+}

@@ -1,0 +1,81 @@
+<?php
+//@codingStandardsIgnoreFile
+/** @var $block \Mirasvit\FraudCheck\Block\Adminhtml\Order\View\Tab */
+
+if (!$block->getRequest()->isAjax()) {
+    return;
+}
+$facebook = $block->getFacebookUrl();
+$twitter = $block->getTwitterUrl();
+$linkedIn = $block->getLinkedInUrl();
+
+?>
+
+<table class="admin__table-secondary" style="width: 50%">
+    <tbody>
+    <tr>
+        <th>Facebook</th>
+        <td><a href="<?= $facebook ?>" target="_blank"><?= $facebook ?></a></td>
+    </tr>
+    <tr>
+        <th>Twitter</th>
+        <td><a href="<?= $twitter ?>" target="_blank"><?= $twitter ?></a></td>
+    </tr>
+    <tr>
+        <th>LinkedIn</th>
+        <td><a href="<?= $linkedIn ?>" target="_blank"><?= $linkedIn ?></a></td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="admin__page-section-title">
+    <span class="title"><?= __('Fraud Checklist') ?></span>
+</div>
+
+<div class="fc__order-view-tab">
+    <?php foreach ($block->getScore()->getUserRules() as $rule): ?>
+        <?php $status = $rule->getFraudStatus() ?>
+
+        <div class="row-indicator">
+            <div class="col-label">
+                <?= $rule->getName() ?>
+            </div>
+            <div class="col-indicators">
+                <?php if ($status): ?>
+                    <span class="fc__score-badge status-<?= $status ?>"><span><?= ucfirst($status) ?></span></span>
+                <?php else: ?>
+                    -
+                <?php endif ?>
+            </div>
+        </div>
+    <?php endforeach ?>
+
+    <?php foreach ($block->getScore()->getRules() as $rule): ?>
+        <div class="row-indicator">
+            <div class="col-label">
+                <?php echo $rule->getLabel() ?>
+            </div>
+
+            <div class="col-indicators">
+                <?php foreach ($rule->getIndicators() as $indicator): ?>
+                    <?php
+                    $class = '';
+                    if ($indicator->isPositive()) {
+                        $class = 'positive';
+                    } elseif ($indicator->isNeutral()) {
+                        $class = 'neutral';
+                    } else {
+                        $class = 'negative';
+                    }
+                    ?>
+                    <div class="indicator">
+                        <div class="score <?= $class ?>">
+                            <span class="fa fa-fw"></span>
+                        </div>
+                        <?= $indicator->getLabel() ?>
+                    </div>
+                <?php endforeach ?>
+            </div>
+        </div>
+    <?php endforeach ?>
+</div>

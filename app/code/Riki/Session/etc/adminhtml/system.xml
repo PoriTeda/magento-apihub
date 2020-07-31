@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="web">
+            <group id="cookie">
+                <field id="cookie_lifetime">
+                    <comment><![CDATA[
+                        <strong style="color:red">Warning</strong>: When using Redis as session handler,
+                        if this value is set to zero, make sure <b>min_lifetime</b> of Redis (usually is set in app/etc/env.php)
+                        equal or greater than default page reloading interval.
+                    ]]></comment>
+                </field>
+                <field id="cookie_secure" translate="label" type="select" sortOrder="45" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Use Cookie Secure</label>
+                    <comment><![CDATA[
+                        <strong style="color:red">Warning</strong>: Set to "Yes" only when HTTPS are enabled for all urls.
+                    ]]></comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="page_reloading" translate="label" type="text" sortOrder="55" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Page Reloading Setting</label>
+                <field id="default_interval" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default Interval</label>
+                    <comment>This will be used when cookie lifetime equal zero.</comment>
+                </field>
+                <field id="extra_interval" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Extra Interval</label>
+                    <comment>This will be plus with default interval.</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

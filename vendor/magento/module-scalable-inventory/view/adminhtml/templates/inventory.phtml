@@ -1,0 +1,345 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Catalog\Block\Adminhtml\Product\Edit\Tab\Inventory */
+
+$_readonly = $block->isReadonly() ? ' disabled="disabled" ' : '';
+
+?>
+
+<fieldset class="fieldset form-inline">
+<legend class="legend"><span><?= /* @escapeNotVerified */ __('Advanced Inventory') ?></span></legend>
+<div id="table_cataloginventory" data-readonly="<?= /* @escapeNotVerified */ $block->isReadonly() ? 'true' : 'false' ?>">
+<div class="field">
+    <label class="label" for="inventory_manage_stock">
+        <span><?= /* @escapeNotVerified */ __('Manage Stock') ?></span>
+    </label>
+    <div class="control">
+        <select id="inventory_manage_stock" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][manage_stock]" <?= /* @escapeNotVerified */ $_readonly ?>>
+            <option value="1"><?= /* @escapeNotVerified */ __('Yes') ?></option>
+            <option value="0"<?php if ($block->getFieldValue('manage_stock') == 0): ?> selected="selected"<?php endif; ?>><?= /* @escapeNotVerified */ __('No') ?></option>
+        </select>
+        <input type="hidden" id="inventory_manage_stock_default" value="<?= /* @escapeNotVerified */ $block->getDefaultConfigValue('manage_stock') ?>">
+        <div class="control-inner-wrap">
+            <?php $_checked = ($block->getFieldValue('use_config_manage_stock') || $block->IsNew()) ? 'checked="checked"' : '' ?>
+            <input type="checkbox" id="inventory_use_config_manage_stock" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][use_config_manage_stock]" data-switch-for="inventory_manage_stock"  value="1" <?= /* @escapeNotVerified */ $_checked ?> <?= /* @escapeNotVerified */ $_readonly ?>>
+            <label for="inventory_use_config_manage_stock"><?= /* @escapeNotVerified */ __('Use Config Settings') ?></label>
+        </div>
+    </div>
+    <?php if (!$block->isSingleStoreMode()): ?>
+    <div class="field-service"><?= /* @escapeNotVerified */ __('[GLOBAL]') ?></div>
+    <?php endif; ?>
+</div>
+
+<?php if (!$block->getProduct()->isComposite()): ?>
+<div class="field">
+    <label class="label" for="inventory_qty">
+        <span><?= /* @escapeNotVerified */ __('Qty') ?></span>
+    </label>
+    <div class="control">
+        <?php if (!$_readonly): ?>
+        <input type="hidden" id="original_inventory_qty" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][original_inventory_qty]" value="<?= /* @escapeNotVerified */ $block->getFieldValue('qty') * 1 ?>">
+        <?php endif;?>
+        <input type="text" class="input-text validate-number" id="inventory_qty" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][qty]" value="<?= /* @escapeNotVerified */ $block->getFieldValue('qty') * 1 ?>" <?= /* @escapeNotVerified */ $_readonly ?>>
+    </div>
+    <?php if (!$block->isSingleStoreMode()): ?>
+    <div class="field-service"><?= /* @escapeNotVerified */ __('[GLOBAL]') ?></div>
+    <?php endif; ?>
+</div>
+
+<div class="field">
+    <label class="label" for="inventory_min_qty">
+        <span><?= /* @escapeNotVerified */ __('Out-of-Stock Threshold') ?></span>
+    </label>
+    <div class="control">
+        <input type="text" class="input-text validate-number" id="inventory_min_qty" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][min_qty]" value="<?= /* @escapeNotVerified */ $block->getFieldValue('min_qty') * 1 ?>" <?= /* @escapeNotVerified */ $_readonly ?>>
+
+        <div class="control-inner-wrap">
+            <?php $_checked = ($block->getFieldValue('use_config_min_qty') || $block->IsNew()) ? 'checked="checked"' : '' ?>
+            <input type="checkbox" id="inventory_use_config_min_qty" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][use_config_min_qty]" data-switch-for="inventory_min_qty"  value="1" <?= /* @escapeNotVerified */ $_checked ?> <?= /* @escapeNotVerified */ $_readonly ?>>
+            <label for="inventory_use_config_min_qty"><?= /* @escapeNotVerified */ __('Use Config Settings') ?></label>
+        </div>
+
+    </div>
+    <?php if (!$block->isSingleStoreMode()): ?>
+    <div class="field-service"><?= /* @escapeNotVerified */ __('[GLOBAL]') ?></div>
+    <?php endif; ?>
+</div>
+
+<div class="field">
+    <label class="label" for="inventory_min_sale_qty">
+        <span><?= /* @escapeNotVerified */ __('Minimum Qty Allowed in Shopping Cart') ?></span>
+    </label>
+    <div class="control">
+        <input type="text" class="input-text validate-number" id="inventory_min_sale_qty"
+               name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][min_sale_qty]"
+               value="<?= /* @escapeNotVerified */ $block->getFieldValue('min_sale_qty') * 1 ?>" <?= /* @escapeNotVerified */ $_readonly ?>>
+        <div class="control-inner-wrap">
+        <?php $_checked = ($block->getFieldValue('use_config_min_sale_qty') || $block->IsNew()) ? 'checked="checked"' : '' ?>
+            <input type="checkbox" id="inventory_use_config_min_sale_qty" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][use_config_min_sale_qty]" data-switch-for="inventory_min_sale_qty"  value="1" <?= /* @escapeNotVerified */ $_checked ?> class="checkbox" <?= /* @escapeNotVerified */ $_readonly ?>>
+            <label for="inventory_use_config_min_sale_qty"><?= /* @escapeNotVerified */ __('Use Config Settings') ?></label>
+        </div>
+    </div>
+    <?php if (!$block->isSingleStoreMode()): ?>
+    <div class="field-service"><?= /* @escapeNotVerified */ __('[GLOBAL]') ?></div>
+    <?php endif; ?>
+</div>
+
+<div class="field">
+    <label class="label" for="inventory_max_sale_qty">
+        <span><?= /* @escapeNotVerified */ __('Maximum Qty Allowed in Shopping Cart') ?></span>
+    </label>
+    <div class="control">
+        <input type="text" class="input-text validate-number" id="inventory_max_sale_qty" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][max_sale_qty]" value="<?= /* @escapeNotVerified */ $block->getFieldValue('max_sale_qty') * 1 ?>" <?= /* @escapeNotVerified */ $_readonly ?>>
+        <?php $_checked = ($block->getFieldValue('use_config_max_sale_qty') || $block->IsNew()) ? 'checked="checked"' : '' ?>
+        <div class="control-inner-wrap">
+            <input type="checkbox" id="inventory_use_config_max_sale_qty" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][use_config_max_sale_qty]" data-switch-for="inventory_max_sale_qty"  value="1" <?= /* @escapeNotVerified */ $_checked ?> class="checkbox" <?= /* @escapeNotVerified */ $_readonly ?>>
+            <label for="inventory_use_config_max_sale_qty"><?= /* @escapeNotVerified */ __('Use Config Settings') ?></label>
+        </div>
+    </div>
+    <?php if (!$block->isSingleStoreMode()): ?>
+    <div class="field-service"><?= /* @escapeNotVerified */ __('[GLOBAL]') ?></div>
+    <?php endif; ?>
+</div>
+
+    <?php if ($block->canUseQtyDecimals()): ?>
+    <div class="field">
+        <label class="label" for="inventory_is_qty_decimal">
+            <span><?= /* @escapeNotVerified */ __('Qty Uses Decimals') ?></span>
+        </label>
+        <div class="control">
+            <select id="inventory_is_qty_decimal" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][is_qty_decimal]" <?= /* @escapeNotVerified */ $_readonly ?>>
+                <option value="0"><?= /* @escapeNotVerified */ __('No') ?></option>
+                <option value="1"<?php if ($block->getFieldValue('is_qty_decimal') == 1): ?> selected="selected"<?php endif; ?>><?= /* @escapeNotVerified */ __('Yes') ?></option>
+            </select>
+        </div>
+        <?php if (!$block->isSingleStoreMode()): ?>
+        <div class="field-service"><?= /* @escapeNotVerified */ __('[GLOBAL]') ?></div>
+        <?php endif; ?>
+    </div>
+
+    <?php if (!$block->isVirtual()) : ?>
+    <div class="field">
+        <label class="label" for="inventory_is_decimal_divided">
+            <span><?= /* @escapeNotVerified */ __('Allow Multiple Boxes for Shipping') ?></span>
+        </label>
+        <div class="control">
+            <select id="inventory_is_decimal_divided" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][is_decimal_divided]" <?= /* @escapeNotVerified */ $_readonly ?>>
+                <option value="0"><?= /* @escapeNotVerified */ __('No') ?></option>
+                <option value="1"<?php if ($block->getFieldValue('is_decimal_divided') == 1): ?> selected="selected"<?php endif; ?>><?= /* @escapeNotVerified */ __('Yes') ?></option>
+            </select>
+        </div>
+        <?php if (!$block->isSingleStoreMode()): ?>
+        <div class="field-service"><?= /* @escapeNotVerified */ __('[GLOBAL]') ?></div>
+        <?php endif; ?>
+    </div>
+        <?php endif; ?>
+    <?php endif; ?>
+
+<div class="field">
+    <label class="label" for="inventory_backorders">
+        <span><?= /* @escapeNotVerified */ __('Backorders') ?></span>
+    </label>
+    <div class="control">
+        <select id="inventory_backorders" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][backorders]" <?= /* @escapeNotVerified */ $_readonly ?>
+            data-config-value="<?= /* @escapeNotVerified */ $block->getDefaultConfigValue('backorders') ?>"
+            >
+            <?php foreach ($block->getBackordersOption() as $option): ?>
+            <?php $_selected = ($option['value'] == $block->getFieldValue('backorders')) ? 'selected="selected"' : '' ?>
+            <option value="<?= /* @escapeNotVerified */ $option['value'] ?>" <?= /* @escapeNotVerified */ $_selected ?>><?= /* @escapeNotVerified */ $option['label'] ?></option>
+            <?php endforeach; ?>
+        </select>
+
+
+        <div class="control-inner-wrap">
+            <?php $_checked = ($block->getFieldValue('use_config_backorders') || $block->IsNew()) ? 'checked="checked"' : '' ?>
+            <input type="checkbox" id="inventory_use_config_backorders" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][use_config_backorders]" data-switch-for="inventory_backorders"  value="1" <?= /* @escapeNotVerified */ $_checked ?> <?= /* @escapeNotVerified */ $_readonly ?>>
+            <label for="inventory_use_config_backorders"><?= /* @escapeNotVerified */ __('Use Config Settings') ?></label>
+        </div>
+
+    </div>
+    <?php if (!$block->isSingleStoreMode()): ?>
+    <div class="field-service"><?= /* @escapeNotVerified */ __('[GLOBAL]') ?></div>
+    <?php endif; ?>
+</div>
+
+<div class="field">
+    <label class="label" for="inventory_deferred_stock_update">
+        <span><?= /* @escapeNotVerified */ __('Use deferred Stock update') ?></span>
+    </label>
+    <div class="control">
+        <?php $deferredStockUpdate = $block->getFieldValue('deferred_stock_update'); ?>
+        <select id="inventory_deferred_stock_update" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][deferred_stock_update]" <?= /* @escapeNotVerified */ $_readonly ?>>
+            <option value="0"<?php if (!$deferredStockUpdate): ?> selected="selected"<?php endif; ?>><?= /* @escapeNotVerified */ __('No') ?></option>
+            <option value="1"<?php if ($deferredStockUpdate): ?> selected="selected"<?php endif; ?>><?= /* @escapeNotVerified */ __('Yes') ?></option>
+        </select>
+
+        <div class="control-inner-wrap">
+            <?php $_checked = ($block->getFieldValue('use_config_deferred_stock_update') || $block->IsNew()) ? 'checked="checked"' : '' ?>
+            <input type="hidden" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][use_config_deferred_stock_update]" value="0" <?= /* @escapeNotVerified */ $_readonly ?>>
+            <input type="checkbox" id="inventory_use_config_deferred_stock_update" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][use_config_deferred_stock_update]" data-switch-for="inventory_deferred_stock_update"  value="1" <?= /* @escapeNotVerified */ $_checked ?> <?= /* @escapeNotVerified */ $_readonly ?>>
+            <label for="inventory_use_config_deferred_stock_update"><?= /* @escapeNotVerified */ __('Use Config Settings') ?></label>
+        </div>
+    </div>
+    <?php if (!$block->isSingleStoreMode()): ?>
+        <div class="field-service"><?= /* @escapeNotVerified */ __('[GLOBAL]') ?></div>
+    <?php endif; ?>
+</div>
+
+<div class="field">
+    <label class="label" for="inventory_notify_stock_qty">
+        <span><?= /* @escapeNotVerified */ __('Notify for Quantity Below') ?></span>
+    </label>
+    <div class="control">
+        <input type="text" class="input-text validate-number" id="inventory_notify_stock_qty" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][notify_stock_qty]" value="<?= /* @escapeNotVerified */ $block->getFieldValue('notify_stock_qty') * 1 ?>" <?= /* @escapeNotVerified */ $_readonly ?>>
+
+        <div class="control-inner-wrap">
+            <?php $_checked = ($block->getFieldValue('use_config_notify_stock_qty') || $block->IsNew()) ? 'checked="checked"' : '' ?>
+            <input type="checkbox" id="inventory_use_config_notify_stock_qty" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][use_config_notify_stock_qty]" data-switch-for="inventory_notify_stock_qty"  value="1" <?= /* @escapeNotVerified */ $_checked ?> <?= /* @escapeNotVerified */ $_readonly ?>>
+            <label for="inventory_use_config_notify_stock_qty"><?= /* @escapeNotVerified */ __('Use Config Settings') ?></label>
+        </div>
+    </div>
+    <?php if (!$block->isSingleStoreMode()): ?>
+    <div class="field-service"><?= /* @escapeNotVerified */ __('[GLOBAL]') ?></div>
+    <?php endif; ?>
+</div>
+
+    <?php endif; ?>
+<div class="field">
+    <label class="label" for="inventory_enable_qty_increments">
+        <span><?= /* @escapeNotVerified */ __('Enable Qty Increments') ?></span>
+    </label>
+    <div class="control">
+        <?php $qtyIncrementsEnabled = $block->getFieldValue('enable_qty_increments'); ?>
+        <select id="inventory_enable_qty_increments" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][enable_qty_increments]" <?= /* @escapeNotVerified */ $_readonly ?>>
+            <option value="1"<?php if ($qtyIncrementsEnabled): ?> selected="selected"<?php endif; ?>><?= /* @escapeNotVerified */ __('Yes') ?></option>
+            <option value="0"<?php if (!$qtyIncrementsEnabled): ?> selected="selected"<?php endif; ?>><?= /* @escapeNotVerified */ __('No') ?></option>
+        </select>
+        <input type="hidden" id="inventory_enable_qty_increments_default" value="<?= /* @escapeNotVerified */ $block->getDefaultConfigValue('enable_qty_increments') ?>">
+
+        <div class="control-inner-wrap">
+            <?php $_checked = ($block->getFieldValue('use_config_enable_qty_inc') || $block->IsNew()) ? 'checked="checked"' : '' ?>
+            <input type="checkbox" id="inventory_use_config_enable_qty_increments" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][use_config_enable_qty_increments]" data-switch-for="inventory_enable_qty_increments"  value="1" <?= /* @escapeNotVerified */ $_checked ?> <?= /* @escapeNotVerified */ $_readonly ?>>
+            <label for="inventory_use_config_enable_qty_increments"><?= /* @escapeNotVerified */ __('Use Config Settings') ?></label>
+        </div>
+    </div>
+    <?php if (!$block->isSingleStoreMode()): ?>
+    <div class="field-service"><?= /* @escapeNotVerified */ __('[GLOBAL]') ?></div>
+    <?php endif; ?>
+</div>
+
+<div class="field">
+    <label class="label" for="inventory_qty_increments">
+        <span><?= /* @escapeNotVerified */ __('Qty Increments') ?></span>
+    </label>
+    <div class="control">
+        <input type="text" class="input-text validate-digits" id="inventory_qty_increments" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][qty_increments]" value="<?= /* @escapeNotVerified */ $block->getFieldValue('qty_increments') * 1 ?>" <?= /* @escapeNotVerified */ $_readonly ?>>
+        <div class="control-inner-wrap">
+            <?php $_checked = ($block->getFieldValue('use_config_qty_increments') || $block->IsNew()) ? 'checked="checked"' : '' ?>
+            <input type="checkbox" id="inventory_use_config_qty_increments" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][use_config_qty_increments]" data-switch-for="inventory_qty_increments"  value="1" <?= /* @escapeNotVerified */ $_checked ?> <?= /* @escapeNotVerified */ $_readonly ?>>
+            <label for="inventory_use_config_qty_increments"><?= /* @escapeNotVerified */ __('Use Config Settings') ?></label>
+        </div>
+    </div>
+    <?php if (!$block->isSingleStoreMode()): ?>
+    <div class="field-service"><?= /* @escapeNotVerified */ __('[GLOBAL]') ?></div>
+    <?php endif; ?>
+</div>
+
+<div class="field">
+    <label class="label" for="inventory_stock_availability">
+        <span><?= /* @escapeNotVerified */ __('Stock Availability') ?></span>
+    </label>
+    <div class="control">
+        <select id="inventory_stock_availability" name="<?= /* @escapeNotVerified */ $block->getFieldSuffix() ?>[stock_data][is_in_stock]" <?= /* @escapeNotVerified */ $_readonly ?>>
+            <?php foreach ($block->getStockOption() as $option): ?>
+            <?php $_selected = ($block->getFieldValue('is_in_stock') !== null && $option['value'] == $block->getFieldValue('is_in_stock')) ? 'selected="selected"' : '' ?>
+            <option value="<?= /* @escapeNotVerified */ $option['value'] ?>" <?= /* @escapeNotVerified */ $_selected ?>><?= /* @escapeNotVerified */ $option['label'] ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <?php if (!$block->isSingleStoreMode()): ?>
+    <div class="field-service"><?= /* @escapeNotVerified */ __('[GLOBAL]') ?></div>
+    <?php endif; ?>
+</div>
+</div>
+</fieldset>
+
+<script>
+require(["jquery"], function($) {
+    var isVirtual = <?= /* @escapeNotVerified */ $block->isVirtual() ? 'true' : 'false' ?>;
+    var catalogInventoryNotManageStockFields = {
+        inventory_min_sale_qty: true,
+        inventory_max_sale_qty: true,
+        inventory_enable_qty_increments : true,
+        inventory_qty_increments: true
+    };
+    var container = $('#table_cataloginventory');
+    container.on('click change init.magento', '[data-switch-for]', function() {
+        var switchElementId = $(this).data('switch-for');
+        container.find('#' + switchElementId).prop('disabled', $(this).is(':checked'));
+    });
+    container.find('[data-switch-for]').trigger('init.magento');
+    
+    container.find('#inventory_manage_stock, #inventory_use_config_manage_stock')
+        .on('change init.magento', function() {
+            var manageStock = $('#inventory_use_config_manage_stock').is(':checked')
+                    ? $('#inventory_manage_stock_default').val()
+                    : $('#inventory_manage_stock').val();
+
+            container.find('.field').each(function() {
+                var element = $(this).find(':input:eq(0)');
+                if (element.length == 0
+                    || element.is('#inventory_manage_stock')
+                    || element.attr('id') in  catalogInventoryNotManageStockFields
+                ) {
+                    return;
+                }
+                $(this)[manageStock == 1 ? 'show' : 'hide']();
+            });
+        }).trigger('init.magento');
+
+
+    //Delegation is used because of events, which are not firing while the input is disabled
+    $('#inventory_enable_qty_increments, #inventory_use_config_enable_qty_increments')
+        .on('change init.magento', function () {
+            var enableQtyIncrements = $('#inventory_use_config_enable_qty_increments').is(':checked')
+                ? $('#inventory_enable_qty_increments_default').val()
+                : $('#inventory_enable_qty_increments').val();
+            $('#inventory_qty_increments').closest('.field')[enableQtyIncrements == 1 ? 'show' : 'hide']();
+        }).trigger('init.magento');
+    
+    if (!isVirtual) {
+        $('#inventory_is_decimal_divided').closest('.field').hide();
+    }
+    $('#inventory_is_qty_decimal').on('change init.magento', function () {
+        $('#inventory_qty_increments').removeClass('validate-digits').addClass('validate-number');
+        $('#inventory_min_sale_qty').removeClass('validate-digits').removeClass('validate-number');
+        if ($('#inventory_is_qty_decimal').val() == 1) {
+            if (!isVirtual) {
+                $('#inventory_is_decimal_divided').closest('.field').show();
+            }
+            $('#inventory_qty_increments').addClass('validate-number');
+            $('#inventory_min_sale_qty').addClass('validate-number');
+        } else {
+            $('#inventory_qty_increments').addClass('validate-digits');
+            $('#inventory_min_sale_qty').addClass('validate-digits');
+        }
+    }).trigger('init.magento');
+
+
+    $('#inventory_backorders, #inventory_use_config_backorders')
+        .on('change init.magento', function () {
+
+            var enableQtyIncrements = $('#inventory_use_config_backorders').is(':checked')
+                ? $('#inventory_backorders').data('config-value')
+                : $('#inventory_backorders').val();
+            $('#inventory_deferred_stock_update').closest('.field')[enableQtyIncrements == 0 ? 'addClass' : 'removeClass']('removed');
+        }).trigger('init.magento');
+
+});
+</script>

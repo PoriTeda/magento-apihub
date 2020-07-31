@@ -1,0 +1,26 @@
+<div class="no-display" id="copy-customer-popup">
+    <?php echo $block->getChildHtml() ?>
+</div>
+<script>
+    require([
+        'jquery',
+        'uiRegistry',
+        'Magento_Ui/js/modal/modal'
+    ], function ($, registry) {
+        $('#copy-customer-popup').modal({
+            title: 'Copy Customer',
+            modalClass: 'magento',
+            type: 'slide',
+            buttons: [],
+            close: function () {
+                self.closeDialogWindow(this);
+            }
+        });
+        $('#copy_customer_button').prop('onclick',null).on('click', function (e) {
+            e.preventDefault();
+            $('#copy-customer-popup').modal('openModal');
+        });
+
+
+    });
+</script>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="config" type="configType" />
+
+    <xs:complexType name="configType">
+        <xs:sequence>
+            <xs:element type="provider" name="provider" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="provider">
+        <xs:annotation>
+            <xs:documentation>SMTP provider</xs:documentation>
+        </xs:annotation>
+
+        <xs:all>
+            <xs:element name="title" type="xs:string" />
+            <xs:element name="server" type="xs:string" />
+            <xs:element name="port" type="xs:string" />
+            <xs:element name="encryption" type="xs:string" />
+            <xs:element name="auth" type="xs:string" />
+        </xs:all>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="sales_order_tabs">
+            <action method="addTab">
+                <argument name="name" xsi:type="string">np_transaction</argument>
+                <argument name="block" xsi:type="string">sales_order_view_tab_np_transaction</argument>
+            </action>
+            <block class="Riki\NpAtobarai\Block\Adminhtml\Order\View\Tab\NpTransaction" name="sales_order_view_tab_np_transaction" template="order/view/tab/nptransaction.phtml" >
+                <uiComponent name="np_transaction_listing"/>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

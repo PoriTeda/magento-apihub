@@ -1,0 +1,4 @@
+<!--@subject Out Of Stock Notification - Free gift @-->
+
+Order No: #{{var order.getIncrementId()|raw}}
+{{block class='Magento\\Framework\\View\\Element\\Template' area='frontend' template='Riki_AdvancedInventory::email-handle-out-of-stock-free-gift.phtml' outOfStocks=$outOfStocks area="frontend"}}

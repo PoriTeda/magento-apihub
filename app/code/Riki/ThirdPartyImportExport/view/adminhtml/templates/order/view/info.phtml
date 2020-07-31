@@ -1,0 +1,250 @@
+<?php
+/** @var \Riki\ThirdPartyImportExport\Model\Order $order */
+/** @var \Riki\ThirdPartyImportExport\Block\Adminhtml\Order\View\Info $block */
+$order = $block->getOrder();
+$shippings = $order->getShippings();
+$arrAttachProduct = array();
+$isHanpukai = false;
+if ($order->getData('plan_type') == 1) {
+    $isHanpukai = true;
+}
+?>
+<section class="admin__page-section order-view-account-information">
+    <div class="admin__page-section-title">
+        <span class="title"><?php /* @escapeNotVerified */ echo __('Order & Account Information') ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item order-information">
+            <div class="admin__page-section-item-title">
+                <span class="title">
+                    <?php /* @escapeNotVerified */ echo __('Order # %1', $order->getId()) ?>
+                </span>
+            </div>
+            <div class="admin__page-section-item-content">
+                <table class="admin__table-secondary order-information-table">
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Order Date') ?></th>
+                        <td><?php /* @escapeNotVerified */ echo $block->formatDate($order->getOrderDatetime(), \IntlDateFormatter::MEDIUM) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Order Status') ?></th>
+                        <td><?php /* @escapeNotVerified */ echo $order->getStatusLabel() ?></td>
+                    </tr>
+                </table>
+            </div>
+            <?php /* Account Information */?>
+            <div class="admin__page-section-item-title">
+                <span class="title"><?php /* @escapeNotVerified */ echo __('Customer Information') ?></span>
+            </div>
+            <div class="admin__page-section-item-content">
+                <table class="admin__table-secondary order-account-information-table">
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Customer Name') ?></th>
+                        <td>
+                            <?php echo $block->escapeHtml($order->getBillingName()) ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Street Address') ?></th>
+                        <td><?php echo $block->escapeHtml($order->getBillingAddress()) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Phone Number') ?></th>
+                        <td><?php echo $block->escapeHtml($order->getPhoneNumber()) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Email') ?></th>
+                        <td><a href="mailto:<?php echo $block->escapeHtml($order->getEmail()) ?>"><?php echo $block->escapeHtml($order->getEmail()) ?></a></td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Payment Method') ?></th>
+                        <td><?php echo $block->escapeHtml($order->getPaymentMethodName()) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Payment Date') ?></th>
+                        <td><?php echo $block->formatDate($order->getPaymentDate(), \IntlDateFormatter::MEDIUM) ?></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="admin__page-section-item order-account-information">
+            <?php /* Account Information */?>
+            <div class="admin__page-section-item-title">
+                <span class="title"><?php /* @escapeNotVerified */ echo __('Order Totals') ?></span>
+            </div>
+            <div class="admin__page-section-item-content">
+                <table class="admin__table-secondary order-account-information-table">
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Total Amount Product') ?></th>
+                        <td>
+                            <?php echo $order->formatPrice($order->getTotalAmountProduct()) ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Wrapping Fee') ?></th>
+                        <td>
+                            <?php echo $order->formatPrice($order->getWrappingFee()) ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Shipping Fee') ?></th>
+                        <td><?php echo $order->formatPrice($order->getShippingCharge()) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Payment Fee') ?></th>
+                        <td><?php echo $order->formatPrice($order->getPaymentCommission()) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Point Used') ?></th>
+                        <td><?php echo $order->getUsedPoint() ?></td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Grand Total') ?></th>
+                        <td><?php echo $order->formatPrice($order->getGrandTotal()) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Earned Point') ?></th>
+                        <td><?php echo $order->getTotalAquiredPoint() ?></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?php /* @escapeNotVerified */ echo __('Shipping & Payment Information') ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <?php foreach($shippings as $shipping): ?>
+        <div class="admin__page-section-item order-information">
+            <div class="admin__page-section-item-title">
+                <span class="title">
+                    <?php /* @escapeNotVerified */ echo __("Address:");?> <?php echo $shipping->getShippingName() ?>
+                </span>
+            </div>
+            <div class="admin__page-section-item-content">
+                <table class="admin__table-secondary order-information-table">
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Name') ?></th>
+                        <td><?php /* @escapeNotVerified */ echo $shipping->getShippingName() ?></td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Address') ?></th>
+                        <td><?php /* @escapeNotVerified */ echo $shipping->getShippingAddress() ?></td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Phone number') ?></th>
+                        <td><?php /* @escapeNotVerified */ echo $shipping->getPhoneNumber(); ?></td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Delivery date') ?></th>
+                        <td><?php /* @escapeNotVerified */ echo $block->formatDate($shipping->getDeliveryAppointedDate(), \IntlDateFormatter::MEDIUM) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Shipment number') ?></th>
+                        <td><?php /* @escapeNotVerified */ echo $shipping->getId(); ?></td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Ship-out date') ?></th>
+                        <td><?php /* @escapeNotVerified */ echo $block->formatDate($shipping->getShippingDate(), \IntlDateFormatter::MEDIUM) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Completion Date') ?></th>
+                        <td><?php /* @escapeNotVerified */ echo $block->formatDate($shipping->getDeliveryDate(), \IntlDateFormatter::MEDIUM) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */ echo __('Tracking number') ?></th>
+                        <td><?php /* @escapeNotVerified */ echo $shipping->getDeliverySlipNo(); ?></td>
+                    </tr>
+                    <?php if (!is_null($order->getData('plan_type')) || strlen($order->getData('plan_type'))): ?>
+                        <tr>
+                            <th><?php echo __("Regularly will / will be enacted") ?></th>
+                            <td><?php echo __('%1', $order->getSubscriptionTypeLabel()) ?> <?php echo $order->getData('order_count') ?> 回目のお届け→ 定期便のお届け内容確認・変更</td>
+                        </tr>
+                    <?php endif; ?>
+                </table>
+            </div>
+            <br>
+        </div>
+            <div class="admin__table-wrapper">
+                <div class="admin__page-section-title">
+                    <span class="title"><?php /* @escapeNotVerified */ echo __('Items Ordered') ?></span>
+                </div>
+                <table class="data-table admin__table-primary edit-order-table">
+                    <thead>
+                    <tr class="headings">
+                        <th class="col-product"><span><?php /* @escapeNotVerified */ echo __('Product') ?></span></th>
+                        <th class="col-product"><span><?php /* @escapeNotVerified */ echo __('Price') ?></span></th>
+                        <th class="col-price"><span><?php /* @escapeNotVerified */ echo __('Gift Wrapping') ?></span></th>
+                        <th class="col-price"><span><?php /* @escapeNotVerified */ echo __('Qty') ?></span></th>
+                        <th class="col-ordered-qty"><span><?php /* @escapeNotVerified */ echo __('Row Price') ?></span></th>
+                    </tr>
+                    </thead>
+
+                    <?php $items = $shipping->getItems($isHanpukai);?>
+                    <?php $i = 0; foreach ($items as $item):
+                        $i++;
+                        if ($item->getData("attach_type") == 1) {
+                            $arrAttachProduct[] = $item;
+                        } else {
+                            if (!$isHanpukai) {
+                                ?>
+
+                                <tbody class="<?php /* @escapeNotVerified */ echo $i%2 ? 'even' : 'odd' ?>">
+                                <td><?php echo $item->getCommodityName()  ?></td>
+                                <td><?php echo $item->formatPrice($item->getData('retail_price')); ?></td>
+                                <td><?php echo $item->getGiftName() ? $item->getGiftName() . ' [' . $order->formatPrice($item->getGiftPrice()) . ']' : '' ?></td>
+                                <td><?php echo $item->getPurchasingAmount() ?></td>
+                                <td><strong><?php echo $item->formatPrice($item->getGrandTotal()) ?></strong></td>
+                                </tbody>
+                            <?php } else { ?>
+                                <tbody class="<?php /* @escapeNotVerified */ echo $i%2 ? 'even' : 'odd' ?>">
+                                <td><?php echo $item->getCommodityName()  ?></td>
+                                <td>
+                                    <?php if ($item->getData('sku_code') != 'HANPUKAIDISCOUNT') : ?>
+                                        <?php echo $item->formatPrice($item->getData('unit_price')); ?>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?php if ($item->getData("sku_code") != 'HANPUKAIDISCOUNT') : ?>
+                                    <?php echo $item->getGiftName() ? $item->getGiftName() . ' [' . $order->formatPrice($item->getGiftPrice()) . ']' : '' ?>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?php if ($item->getData('sku_code') != "HANPUKAIDISCOUNT") : ?>
+                                        <?php echo $item->getPurchasingAmount() ?>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?php if ($item->getData('sku_code') != 'HANPUKAIDISCOUNT') : ?>
+                                        <strong><?php echo $item->formatPrice($item->getGrandTotal($isHanpukai)) ?></strong>
+                                    <?php endif; ?>
+                                </td>
+                                </tbody>
+                            <?php } ?>
+                        <?php } ?>
+                    <?php endforeach; ?>
+                </table>
+                <?php if (count($arrAttachProduct) > 0) : ?>
+                    <div class="present-title"><?php echo __("Present");?></div>
+                    <table class="data-table admin__table-primary edit-order-table">
+                        <thead>
+                        <tr class="headings">
+                            <th class="col-product"><span><?php /* @escapeNotVerified */ echo __('Product Name') ?></span></th>
+                            <th class="col-ordered-qty"><span><?php /* @escapeNotVerified */ echo __('Qty') ?></span></th>
+                        </tr>
+                        </thead>
+                        <?php $i = 0; foreach ($arrAttachProduct as $item): $i++; ?>
+                            <tbody class="<?php /* @escapeNotVerified */ echo $i%2 ? 'even' : 'odd' ?>">
+                            <td><?php echo $item->getCommodityName()  ?></td>
+                            <td><?php echo $item->getPurchasingAmount() ?></td>
+                            </tbody>
+                        <?php endforeach; ?>
+                    </table>
+                <?php endif; ?>
+            </div>
+        <?php $arrAttachProduct = array(); endforeach; ?>
+</section>

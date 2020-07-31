@@ -1,0 +1,73 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+?>
+<?php /** @var \Riki\Checkout\Block\Checkout\Onepage\Success $block*/ ?>
+<?php
+$orderTime = $block->getCreatedAt();
+$customerId = $block->getOrder()->getData('customer_id');
+$urlTopPage = $block->getUrlTopPage();
+$checkOrderHaveMachineRentalAdd = $block->checkOrderHaveMachineRentalAdd();
+?>
+<div id="checkout">
+    <div class="checkout-messenger">
+        <h2><?php echo __('Thank you for your order'); ?></h2>
+    </div>
+    <div class="checkout-success">
+        <h2><?php echo __('Thank you for your order'); ?></h2>
+        <div class="left">
+            <?php if ($block->getOrderId()):?>
+                <?php if ($block->getCanViewOrder()) :?>
+                    <p><?php echo __('Your order number is: %1.', sprintf('<a href="%s" class="order-number"><strong>【%s】</strong></a>', $block->escapeHtml($block->getViewOrderUrl()), $block->escapeHtml($block->getOrderId()))) ?><?php echo sprintf(__('(Order date and time %s)'), $orderTime) ?></p>
+                <?php  else :?>
+                    <p><?php echo __('Your order number is: %1.', $block->escapeHtml($block->getOrderId())) ?><?php echo sprintf(__('(Order date and time %s)'), $orderTime) ?></p>
+                <?php endif;?>
+                <p>
+                    <?php /* @escapeNotVerified */ echo __('※ The details of the order contents, please check from my page.') ?><br />
+                    <?php /* @escapeNotVerified */ echo __('※ We will send an order confirmation email to Thank your registered e-mail address.') ?>
+                </p>
+            <?php endif;?>
+        </div>
+        <?php echo $block->getAdditionalInfoHtml() ?>
+    </div>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <a class="action primary continue success-btn" href="<?php echo $urlTopPage; ?>"><span><?php /* @escapeNotVerified */ echo __('Nestle Online Shop TOP') ?></span></a>
+        </div>
+    </div>
+    <?php if($checkOrderHaveMachineRentalAdd): ?>
+        <?php echo $block->getChildHtml('machine-rental-add') ?>
+    <?php endif; ?>
+
+    <?php
+    $questionnaireArr = $block->getListQuestionnaireBySKUsOrder();
+    if (!empty($questionnaireArr['questionnaire'])):
+
+        ?>
+        <div id="questionnaires-container">
+            <div data-bind="scope: 'questionnaireOnSuccess'">
+                <!-- ko template: getTemplate() --><!-- /ko -->
+            </div>
+            <script type="text/x-magento-init">
+        {
+            "*": {
+                "Magento_Ui/js/core/app": {
+                    "components": {
+                        "questionnaireOnSuccess": {
+                            "component": "Riki_Checkout/js/view/questionnaire-on-success",
+                            "questionnaireData":<?php /* @escapeNotVerified */ echo \Zend_Json::encode($questionnaireArr); ?>,
+                            "order_id":"<?php /* @escapeNotVerified */ echo $block->escapeHtml($block->getOrder()->getId()); ?>",
+                            "customer_id":"<?php /* @escapeNotVerified */ echo $block->escapeHtml($block->getOrder()->getCustomerId()); ?>"
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+        </div>
+    <?php endif; ?>
+</div>

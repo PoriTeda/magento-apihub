@@ -1,0 +1,26 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var  $block \Magento\Sales\Block\Order\View*/?>
+
+
+<div class="order-details-items ordered">
+    <?php $_order = $block->getOrder() ?>
+    <div class="order-title">
+        <strong><?php /* @escapeNotVerified */ echo __('Delivery commodity') ?></strong>
+    </div>
+    <?php echo $block->getChildHtml('order_items') ?>
+    <div class="actions-toolbar">
+        <div class="secondary">
+            <a class="action back" href="<?php /* @escapeNotVerified */ echo $block->getUrl('*/*/view' , [ 'id' => $block->getRequest()->getParam('profile_id')]) ?>">
+                <span><?php /* @escapeNotVerified */ echo $block->getBackTitle() ?></span>
+            </a>
+        </div>
+    </div>
+</div>

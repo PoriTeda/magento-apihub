@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+ * Copyright © 2016 Wyomind. All rights reserved.
+ * See LICENSE.txt for license details.
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="advancedinventory_journal_clean" instance="Wyomind\AdvancedInventory\Model\Journal" method="clean">
+            <schedule>*/5 * * * *</schedule>
+        </job>
+    </group>
+</config>

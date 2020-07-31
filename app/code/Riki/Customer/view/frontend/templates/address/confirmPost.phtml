@@ -1,0 +1,110 @@
+<?php
+// @codingStandardsIgnoreFile
+?>
+<?php
+/**
+ * Customer address confirm save template
+ *
+ * @var $block \Magento\Customer\Block\Address\Edit
+ */
+$returnAppUrl = $block->getRequest()->getParam('return_app_url');
+?>
+<form class="form-address-confirm-save" action="<?php /* @escapeNotVerified */ echo $block->getSaveUrl() ?>" method="post" id="form-validate" enctype="multipart/form-data" data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>">
+
+        <?php echo $block->getBlockHtml('formkey')?>
+        <input type="hidden" name="success_url" value="<?php /* @escapeNotVerified */ echo $block->getSuccessUrl() ?>"/>
+        <input type="hidden" name="error_url" value="<?php /* @escapeNotVerified */ echo $block->getErrorUrl() ?>"/>
+
+        <input type="hidden" id="lastname" value="<?php echo $block->escapeHtml($block->getAddress()->getLastname());?>" name="lastname" />
+        <input type="hidden" id="firstname" value="<?php echo $block->escapeHtml($block->getAddress()->getFirstname());?>" name="firstname" />
+        <input type="hidden" id="katakana_lastname" value="<?php echo $block->escapeHtml($this->getKatakanaLastName());?>" name="lastnamekana" />
+        <input type="hidden" id="katakana_firstname" value="<?php echo $block->escapeHtml($this->getKatakanaFirstName());?>" name="firstnamekana" />
+        <input type="hidden" name="riki_nickname" id="nickname-address" value="<?php echo $block->escapeHtml($this->getNickNameAddress());?>" />
+        <?php if($this->checkAmbassador() === 1) {?>
+            <input type="hidden" name="riki_type_address" id="riki_type_address" value="<?php echo $block->escapeHtml($this->getRikiTypeAddress());?>" />
+        <?php } ?>
+        <input type="hidden" name="postcode" value="<?php echo $block->escapeHtml($block->getAddress()->getPostcode()) ?>" id="zip" maxlength="8" />
+        <input type="hidden" id="region" name="region" value="<?php echo $block->escapeHtml($block->getRegionName($block->getRegionId())) ?>"  />
+        <input type="hidden" id="region_id" name="region_id" value="<?php echo $block->escapeHtml($block->getRegionId()) ?>"  />
+        <input type="hidden" name="city" value="<?php echo "None" ?>" id="city"/>
+        <input type="hidden" name="street[]" value="<?php echo $block->escapeHtml($block->getStreetLine(1)) ?>" id="street_1" />
+        <input type="hidden" name="telephone" value="<?php echo $block->escapeHtml($block->getAddress()->getTelephone()) ?>" id="telephone"/>
+        <input type="hidden" name="country_id" value="<?php echo $this->getCountryId(); ?>" />
+        <input type="hidden" id="primary_billing" value="<?php echo  $block->isDefaultBilling();?>" name="default_billing"/>
+        <input type="hidden" id="primary_shipping" value="1" name="default_shipping"/>
+        <?php if($returnAppUrl) :?>
+            <input type="hidden" name="return_app_url" value="<?= $returnAppUrl; ?>">
+        <?php endif; ?>
+
+    <fieldset class="fieldset">
+        <legend class="legend"><?php echo __("Confirm the delivery address");?></legend>
+
+            <div class="field first">
+                <label class="label name" for="name"><?php echo __("Register name");?></label>
+                <div class="name val">
+                    <?php echo $block->escapeHtml($block->getAddress()->getLastname())." ".$block->escapeHtml($block->getAddress()->getFirstname());?>
+                </div>
+            </div>
+        <div class="field">
+                <label class="label katakana_name" for="katakana_name"><?php echo __("Name in katakana");?></label>
+                <div class="katakana-name val">
+                    <?php echo $block->escapeHtml($this->getKatakanaLastName())." ".$block->escapeHtml($this->getKatakanaFirstName()); ?>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label nickname-address" for="nickname-address"> <?php echo __("Nickname of this address");?></label>
+                <div class="nickname-address val"><?php echo $block->escapeHtml($this->getNickNameAddress());?> </div>
+            </div>
+            <div class="field">
+                <label class="label postcode" for="postcode"><?php echo __('ZIP code') ?></label>
+                <div class="postcode val"><?php echo $block->escapeHtml($block->getAddress()->getPostcode()) ?></div>
+            </div>
+            <div class="field">
+                <label class="label prefecture" for="prefecture"><?php echo __('Prefecture') ?></label>
+                <div class="prefecture val"><?php echo $block->escapeHtml($block->getRegionName($block->getRegionId())) ?></div>
+            </div>
+            <div class="field">
+                <label class="label town-name" for="town-name"><?php echo __('Town name • address (em)')?> </label>
+                <div class="town-name val"><?php echo $block->escapeHtml($block->getStreetLine(1)) ?></div>
+            </div>
+            <div class="field last">
+                <label class="label phone-number" for="phone-number"><?php echo __('Phone Number')?> </label>
+                <div class="phone-number val"><?php echo $block->escapeHtml($block->getAddress()->getTelephone()) ?></div>
+            </div>
+
+    </fieldset>
+
+
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" class="action submit primary" data-action="save-address" title="<?php /* @escapeNotVerified */ echo __('Save Address') ?>">
+                <span><?php /* @escapeNotVerified */ echo __('Save') ?></span>
+            </button>
+        </div>
+        <div class="secondary">
+            <a class="action back" href="<?php echo $block->escapeUrl($block->getBackUrl()) ?>">
+                <span><?php /* @escapeNotVerified */ echo __('Return previous') ?></span>
+            </a>
+        </div>
+    </div>
+
+</form>
+<script type="text/x-magento-init">
+    {
+        "#form-validate": {
+            "validation": {}
+        },
+        "#country": {
+            "regionUpdater": {
+                "optionalRegionAllowed": <?php /* @escapeNotVerified */ echo($block->getConfig('general/region/display_all') ? 'true' : 'false'); ?>,
+                "regionListId": "#region_id",
+                "regionInputId": "#region",
+                "postcodeId": "#zip",
+                "form": "#form-validate",
+                "regionJson": <?php /* @escapeNotVerified */ echo $this->helper('Magento\Directory\Helper\Data')->getRegionJson() ?>,
+                "defaultRegion": "<?php /* @escapeNotVerified */ echo $block->getRegionId() ?>",
+                "countriesWithOptionalZip": <?php /* @escapeNotVerified */ echo $this->helper('Magento\Directory\Helper\Data')->getCountriesWithOptionalZip(true) ?>
+            }
+        }
+    }
+</script>

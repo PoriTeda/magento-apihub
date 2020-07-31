@@ -1,0 +1,56 @@
+Xtento_TwoFactorAuth
+
+-------------
+  CHANGELOG
+-------------
+
+===== 2.0.0 =====
+ * Initial stable M2 release
+
+===== 2.0.1 =====
+ * Compatibility with Magento 2.0.2
+ * Several code optimizations, code cleanup
+ * Updated Xtento_XtCore
+
+===== 2.0.2 =====
+ * Updated Xtento_XtCore to 2.0.3
+
+===== 2.0.3 =====
+ * Fixed bug that could lead to TFA can't be disabled anymore for an user after enabling it
+ * Compatibility with Magento 2.1.0 established
+
+===== 2.0.4 =====
+ * Bugfix release
+
+===== 2.0.5 =====
+ * Updated composer.json to require XTENTO "XtCore" base module
+
+===== 2.0.6 =====
+ * Fixed error message "Please enter your security code" that was shown after editing an admin user
+
+===== 2.0.7 ======
+ * Fixed bug after saving user role
+
+===== 2.0.8 ======
+ * Added ability to change password at "My Account" without TFA prompt
+
+===== 2.0.9 =====
+ * Fixed composer.json / PHP version requirement now according to Magento 2 requirements
+
+===== 2.1.0 =====
+ * Fixed IP whitelisting for NginX SSL offloading into Varnish into NginX as PHP-FPM loadbalancer. The resulting IP was <ip>, 127.0.0.1
+
+===== 2.1.1 =====
+ * Updated Xtento_XtCore to version 2.0.7 ("Added warning in module configuration at System > Configuration if module output is disabled via "Disable Module Output" at System > Configuration > Advanced > Advanced")
+
+===== 2.1.2 =====
+ * Updated Xtento_XtCore to version 2.0.8
+
+===== 2.1.3 =====
+ + Compatibility with Magento 2.2 established
+
+===== 2.1.4 =====
+ + Added ability to send QR code via email when enabling TFA for a (remote, not locally located, for example) admin user
+
+===== 2.1.5 =====
+ * Updated Xtento_XtCore to version 2.1

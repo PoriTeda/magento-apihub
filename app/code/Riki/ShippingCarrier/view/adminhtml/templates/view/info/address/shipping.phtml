@@ -1,0 +1,26 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var $block \Riki\ShippingCarrier\Block\Adminhtml\View\Address\Shipping */ ?>
+
+<?php $_address = $block->getShipmentAddress(); ?>
+<?php $_order = $block->getOrder(); ?>
+
+<div class="admin__page-section-item order-shipping-address">
+    <?php /* Shipping Address */ ?>
+    <div class="admin__page-section-item-title">
+        <span class="title"><?php /* @escapeNotVerified */ echo __('Shipping Address') ?></span>
+    </div>
+    <address class="admin__page-section-item-content">
+        <?php
+             $address = $_address? $_address : $_order->getShippingAddress();
+             echo $block->getFormattedShippingAddress($_order, $address);
+        ?>
+    </address>
+</div>

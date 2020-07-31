@@ -1,0 +1,37 @@
+<?php /** @var $block \Riki\Questionnaire\Block\Adminhtml\Order\View\Questionnaire */ ?>
+
+<?php $answers = $block->getQuestionnaireAnswer(); ?>
+<?php if (!empty($answers)): ?>
+    <div class="admin__page-section-title">
+        <strong class="title"><?php echo __('Questionnaire') ?></strong>
+    </div>
+
+    <div>
+        <ul>
+            <?php
+            $i = 1;
+            foreach ($answers as $replies) :
+                if (!empty($replies)):
+                    foreach ($replies as $_value): ?>
+                        <li class="item-reply">
+                            <div class="question-label">
+                                <?php
+                                if (isset($_value['question']) && $_value['question'] != '') {
+                                    echo '<p><strong>'.__('Question %1: ', $i) . $_value['question'].'</strong></p>';
+                                }
+                                ?>
+                            </div>
+                            <div class="answer-content">
+                                <?php
+                                if (isset($_value['replies']) && !empty($_value['replies'])) {
+                                    echo $block->renderReply($_value['replies']);
+                                }
+                                ?>
+                            </div>
+                        </li>
+                        <?php $i++; endforeach; ?>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>

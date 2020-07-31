@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Framework\Mail\Template\TransportBuilder"
+                type="Riki\EmailMarketing\Framework\Mail\Template\TransportBuilder"/>
+
+    <preference for="Magento\Framework\Mail\TransportInterface" type="Riki\EmailMarketing\Model\Transport" />
+
+    <type name="Amasty\Smtp\Model\Transport">
+        <plugin name="riki-email-marketing-set-return-path" type="Riki\EmailMarketing\Plugin\SetReturnPath" />
+    </type>
+
+    <type name="Amasty\Smtp\Model\Logger\MessageLogger">
+        <plugin name="riki-email-marketing-publish-email-log" type="Riki\EmailMarketing\Plugin\PublishEmailLog" />
+    </type>
+
+    <preference for="Magento\Email\Block\Adminhtml\Template\Edit\Form"
+                type="Riki\EmailMarketing\Block\Adminhtml\Template\Edit\Form"/>
+
+    <preference for="Magento\Email\Controller\Adminhtml\Email\Template\Save"
+                type="Riki\EmailMarketing\Controller\Adminhtml\Email\Template\Save"/>
+
+    <preference for="Magento\ProductAlert\Model\Email"
+                type="Riki\EmailMarketing\Model\Email"/>
+
+    <preference for="Magento\ProductAlert\Model\Observer"
+                type="Riki\EmailMarketing\Model\Observer"/>
+
+    <virtualType name="SalesOrderSendEmails" type="Riki\EmailMarketing\Model\EmailSenderHandler">
+        <arguments>
+            <argument name="emailSender" xsi:type="object">Magento\Sales\Model\Order\Email\Sender\OrderSender</argument>
+            <argument name="entityResource" xsi:type="object">Magento\Sales\Model\ResourceModel\Order</argument>
+            <argument name="entityCollection" xsi:type="object" shared="false">Magento\Sales\Model\ResourceModel\Order\Collection</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="SalesOrderInvoiceSendEmails" type="Riki\EmailMarketing\Model\EmailSenderHandler">
+        <arguments>
+            <argument name="emailSender" xsi:type="object">Magento\Sales\Model\Order\Email\Sender\InvoiceSender</argument>
+            <argument name="entityResource" xsi:type="object">Magento\Sales\Model\ResourceModel\Order\Invoice</argument>
+            <argument name="entityCollection" xsi:type="object" shared="false">Magento\Sales\Model\ResourceModel\Order\Invoice\Collection</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="SalesOrderShipmentSendEmails" type="Riki\EmailMarketing\Model\EmailSenderHandler">
+        <arguments>
+            <argument name="emailSender" xsi:type="object">Magento\Sales\Model\Order\Email\Sender\ShipmentSender</argument>
+            <argument name="entityResource" xsi:type="object">Magento\Sales\Model\ResourceModel\Order\Shipment</argument>
+            <argument name="entityCollection" xsi:type="object" shared="false">Magento\Sales\Model\ResourceModel\Order\Shipment\Collection</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="SalesOrderCreditmemoSendEmails" type="Riki\EmailMarketing\Model\EmailSenderHandler">
+        <arguments>
+            <argument name="emailSender" xsi:type="object">Magento\Sales\Model\Order\Email\Sender\CreditmemoSender</argument>
+            <argument name="entityResource" xsi:type="object">Magento\Sales\Model\ResourceModel\Order\Creditmemo</argument>
+            <argument name="entityCollection" xsi:type="object" shared="false">Magento\Sales\Model\ResourceModel\Order\Creditmemo\Collection</argument>
+        </arguments>
+    </virtualType>
+    <type name="Riki\EmailMarketing\Helper\Data">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+
+    <preference for="Magento\Cron\Model\Config" type="Riki\EmailMarketing\Model\ConfigSendEmailOrder" />
+
+    <preference for="Amasty\Smtp\Model\Logger\MessageLogger" type="Riki\EmailMarketing\Model\Smtp\Logger\MessageLogger" />
+    <preference for="Riki\EmailMarketing\Api\MailLog\ItemInterface" type="Riki\EmailMarketing\Model\MailLog\Item" />
+</config>

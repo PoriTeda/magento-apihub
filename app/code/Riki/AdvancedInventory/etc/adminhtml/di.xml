@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Wyomind\AdvancedInventory\Controller\Adminhtml\Assignation\Update" type="Riki\AdvancedInventory\Controller\Adminhtml\Assignation\Update"/>
+    <preference for="Wyomind\AdvancedInventory\Controller\Adminhtml\Assignation\Run" type="Riki\AdvancedInventory\Controller\Adminhtml\Assignation\Run"/>
+    <type name="Magento\Catalog\Ui\DataProvider\Product\ProductDataProvider">
+        <arguments>
+            <argument name="addFieldStrategies" xsi:type="array">
+                <item name="as_available_qty" xsi:type="object">Riki\AdvancedInventory\Ui\DataProvider\Product\AddAvailableQtyFieldToCollection</item>
+            </argument>
+            <argument name="addFilterStrategies" xsi:type="array">
+                <item name="as_available_qty" xsi:type="object">Riki\AdvancedInventory\Ui\DataProvider\Product\AddAvailableQtyFilterToCollection</item>
+            </argument>
+            <argument name="collectionFactory" xsi:type="object">Riki\AdvancedInventory\Model\ResourceModel\Catalog\Product\CollectionFactory</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Sales\Block\Adminhtml\Order\Create\Search\Grid">
+        <arguments>
+            <argument name="productFactory" xsi:type="object">Riki\AdvancedInventory\Model\Catalog\ProductFactory</argument>
+        </arguments>
+        <plugin name="riki_advancedinventoryAdminOrderCreateProductGrid" type="Riki\AdvancedInventory\Plugin\Sales\Block\Adminhtml\Order\Create\Search\Grid" />
+    </type>
+    <type name="Magento\CatalogInventory\Model\Quote\Item\QuantityValidator">
+        <plugin name="riki_advancedinventoryMagentoCatalogInventoryModelQuoteItemQuantityValidator" type="Riki\AdvancedInventory\Plugin\CatalogInventory\Model\Quote\Item\QuantityValidator" />
+    </type>
+    <type name="Riki\Sales\Observer\AdminOrderProcessDataBefore">
+        <plugin name="riki_advancedinventoryRikiSalesObserverAdminOrderProcessDataBefore" type="Riki\AdvancedInventory\Plugin\Riki\Sales\Observer\AdminOrderProcessDataBefore" />
+    </type>
+    <type name="Magento\Sales\Block\Adminhtml\Order\Create\Messages">
+        <plugin name="riki_advanced-inventory_sales_block_adminhtml_order_create_messages" type="Riki\AdvancedInventory\Plugin\Sales\Block\Adminhtml\Order\Create\Messages\OosWarning" sortOrder="10" />
+    </type>
+    <type name="Magento\Catalog\Controller\Adminhtml\Product\Initialization\Helper">
+        <plugin name="AdvancedInventory" type="Riki\AdvancedInventory\Plugin\Catalog\Controller\Adminhtml\Product\Initialization\Helper"/>
+    </type>
+    <type name="Magento\Catalog\Controller\Adminhtml\Product\Save">
+        <plugin name="riki_advancedinventory_validate_stock_permission" type="Riki\AdvancedInventory\Plugin\AdvancedInventory\Controller\Adminhtml\Catalog\Product\Save\ValidateStockPermission" sortOrder="0"/>
+        <plugin name="riki_advancedinventory_prepare_stock_data" type="Riki\AdvancedInventory\Plugin\AdvancedInventory\Controller\Adminhtml\Catalog\Product\Save\PrepareStockData" sortOrder="100"/>
+    </type>
+</config>

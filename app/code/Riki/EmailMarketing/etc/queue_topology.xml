@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
+    <exchange name="riki.mail" type="topic" connection="amqp">
+        <binding id="rikiMailResend" topic="riki.mail.resend" destinationType="queue" destination="riki_mail_resend" />
+    </exchange>
+</config>

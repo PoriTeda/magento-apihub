@@ -1,0 +1,39 @@
+<?php /** @var $block \Riki\Questionnaire\Block\Adminhtml\Answers\View\Tab\Answer */ ?>
+<?php $listReply = $block->getAnswerValues() ?>
+<div class="fieldset-wrapper" id="questionnaire-answer-options-wrapper" data-block="questionnaire-answer-options">
+    <div class="fieldset-wrapper-title">
+        <strong class="title">
+            <span><?php /* @escapeNotVerified */ echo __('Answers Options') ?></span>
+        </strong>
+    </div>
+    <div class="fieldset-wrapper-content" id="questionaire-answer-options-content" data-role="questionnaire-answer-options-content">
+        <fieldset class="fieldset">
+            <div id="answer_options_container" class="sortable-wrapper">
+                <ul id="answer_options_container_top">
+                    <?php if (!empty($listReply)): ?>
+                        <?php
+                        $i = 1;
+                        foreach ($listReply as $_value): ?>
+                            <li class="item-reply">
+                                <div class="question-label">
+                                    <?php
+                                        if (isset($_value['question']) && $_value['question'] != '') {
+                                            echo __('Question %1: ', $i).$_value['question'];
+                                        }
+                                    ?>
+                                </div>
+                                <div class="answer-content">
+                                    <?php
+                                        if (isset($_value['replies']) && !empty($_value['replies'])) {
+                                            echo $block->renderReply($_value['replies']);
+                                        }
+                                    ?>
+                                </div>
+                            </li>
+                        <?php $i++; endforeach; ?>
+                     <?php endif; ?>
+                </ul>
+            </div>
+        </fieldset>
+    </div>
+</div>

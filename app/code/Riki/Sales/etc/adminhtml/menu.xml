@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_Sales::sales_subscription_order"
+             title="Subscription Orders"
+             module="Riki_Sales"
+             sortOrder="10"
+             parent="Magento_Sales::sales_operation"
+             action="riki_sales/subscription"
+             resource="Riki_Sales::sales_subscription_order"/>
+        <add id="Riki_Sales::shipping_reason"
+             title="Shipping Reason"
+             module="Riki_Sales"
+             sortOrder="1010"
+             action="riki_sales/shippingreason/index"
+             resource="Riki_Sales::shipping_reason"
+             parent="Riki::sales_operation_extend"/>
+        <add id="Riki_Sales::shipping_cause"
+             title="Shipping Cause"
+             module="Riki_Sales"
+             sortOrder="1009"
+             parent ="Riki::sales_operation_extend"
+             resource="Riki_Sales::shipping_cause"
+             action="riki_sales/shippingcause/index"/>
+    </menu>
+</config>

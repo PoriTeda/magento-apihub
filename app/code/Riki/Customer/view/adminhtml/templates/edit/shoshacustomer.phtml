@@ -1,0 +1,6 @@
+<script type="text/javascript">
+    window.adminhtml_shoshacustomer_acl = <?php echo $block->checkAuthorizeCreateShoshaCustomer();?>;
+    window.current_date = '<?php echo $block->getCurrentDate(); ?>';
+    window.is_edit_customer = <?php echo $block->isEdit();?>;
+    window.current_locale = '<?php echo $block->getAreaForCreateCustomer();?>';
+</script>

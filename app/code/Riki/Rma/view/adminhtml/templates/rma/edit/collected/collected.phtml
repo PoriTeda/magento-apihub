@@ -1,0 +1,14 @@
+<div class="admin__page-section-item rma-request-details rma-return">
+    <div class="admin__page-section-item-content">
+        <div class="returned_date admin__fieldset">
+            <div class="field returned_date required _required admin__field">
+                <label for="collected_date" id="collected_date_label" class="label admin__field-label">
+                    <span><?php /* @escapeNotVerified */ echo __('Collected Date'); ?></span>
+                </label>
+                <div class="control admin__field-control">
+                    <input class="input-text admin__control-text required-entry" type="text" name="returned_date" id="returned_date" data-mage-init='{"calendar": {"showTime": true, "dateFormat":"yy-mm-dd"}}' value="<?php echo $block->getRmaData('returned_date') ?>">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

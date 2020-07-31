@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @package Amasty_Promo
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_quote_address_collect_totals_after">
+        <observer name="amasty_promo_address_collect_totals_after" instance="Amasty\Promo\Observer\AddressCollectTotalsAfterObserver" />
+    </event>
+    <event name="sales_quote_collect_totals_before">
+        <observer name="amasty_promo_collect_totals_before" instance="Amasty\Promo\Observer\FixWholeCartRuleObserver" />
+    </event>
+    <event name="sales_quote_collect_totals_after">
+        <observer name="amasty_promo_collect_totals_after" instance="Amasty\Promo\Observer\CollectTotalsAfterObserver" />
+    </event>
+    <event name="sales_quote_remove_item">
+        <observer name="amasty_promo_quote_remove_item" instance="Amasty\Promo\Observer\QuoteRemoveItemObserver" />
+    </event>
+</config>

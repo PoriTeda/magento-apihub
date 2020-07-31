@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Communication/etc/communication.xsd">
+    <topic name="oos.order.generate" request="Riki\AdvancedInventory\Model\Queue\OosQueueSchemaInterface">
+        <handler name="oos.order.generate.handler" type="Riki\AdvancedInventory\Model\Queue\OosConsumer" method="execute" />
+    </topic>
+</config>

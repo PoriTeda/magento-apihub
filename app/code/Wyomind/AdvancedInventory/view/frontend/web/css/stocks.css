@@ -1,0 +1,14 @@
+.in_stock{
+    color:green;
+}
+.out_of_stock{
+    color:red;
+}
+.backorder{
+    color:orange;
+}
+
+.notice{
+    font-size: 11px;
+    color: red;
+}

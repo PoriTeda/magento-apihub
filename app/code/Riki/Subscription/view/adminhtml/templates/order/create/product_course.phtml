@@ -1,0 +1,36 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<div id="order-product_course"  class="admin__page-section order-search-items">
+    <div class="admin__page-section-title">
+        <span class="title"><?php /* @escapeNotVerified */ echo $block->getHeaderText() ?></span>
+        <?php if($block->getButtonsHtml()): ?>
+            <div class="actions"><?php echo $block->getButtonsHtml() ?></div>
+        <?php endif; ?>
+    </div>
+    <?php echo $block->getChildHtml('course_frequency') ?>
+    <?php echo $block->getChildHtml('course_hanpukai_quantity') ?>
+    <?php echo $block->getChildHtml('course_machine') ?>
+    <?php echo $block->getChildHtml('grid') ?>
+
+    <?php    $isAdditional = $block->checkCourseHasAdditionalCategory(); ?>
+    <?php if($isAdditional) :?>
+        <span class="title">
+            <?php echo __('We also add other regular courses') ?>
+        </span>
+        <?php echo $block->getChildHtml('additional_product'); ?>
+    <?php endif;?>
+
+</div>
+
+<script type="text/javascript">
+    require([
+        'Riki_Subscription/js/order/create/scripts'
+    ], function () { });
+</script>

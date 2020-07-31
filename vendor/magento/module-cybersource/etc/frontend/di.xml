@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Payment\Model\CcGenericConfigProvider">
+        <arguments>
+            <argument name="methodCodes" xsi:type="array">
+                <item name="cybersource" xsi:type="string">cybersource</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="CybersourceIframeCcConfigProvider" type="Magento\Payment\Model\IframeConfigProvider">
+        <arguments>
+            <argument name="methodCode" xsi:type="string">cybersource</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Checkout\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="cybersource_iframe_cc_config_provider" xsi:type="object">CybersourceIframeCcConfigProvider</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Cybersource\Controller\SilentOrder\TokenRequest">
+        <arguments>
+            <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Cybersource\Block\Info">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item xsi:type="string" name="is_secure_mode">1</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Multishipping\Model\Checkout\Type\Multishipping\PlaceOrderPool">
+        <arguments>
+            <argument name="services" xsi:type="array">
+                <item name="cybersource" xsi:type="string">Magento\Cybersource\Model\Multishipping\PlaceOrder</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

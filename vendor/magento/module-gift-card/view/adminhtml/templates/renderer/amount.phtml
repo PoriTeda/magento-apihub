@@ -1,0 +1,186 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php $_htmlId      = $block->getElement()->getHtmlId() ?>
+<?php $_htmlClass   = $block->getElement()->getClass() ?>
+<?php $_htmlName    = $block->getElement()->getName() ?>
+<?php $_readonly    = $block->getElement()->getReadonly() ?>
+<?php $_multiWebsite = $block->isMultiWebsites(); ?>
+<div id="attribute-<?= /* @escapeNotVerified */ $_htmlId ?>-container" data-attribute-code="<?= /* @escapeNotVerified */ $_htmlId ?>" class="field"
+     data-apply-to="<?= $block->escapeHtml(
+         $this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode(
+             $block->getElement()->hasEntityAttribute() ? $block->getElement()->getEntityAttribute()->getApplyTo() : []
+         )
+     )?>">
+    <label class="label"><span><?= /* @escapeNotVerified */ $block->getElement()->getLabel() ?></span></label>
+    <div class="control">
+        <table class="data-table" id="<?= /* @escapeNotVerified */ $_htmlId ?>_table">
+            <thead>
+                <tr class="headings">
+                    <th class="col-website <?php if (!$_multiWebsite): ?>no-display<?php endif; ?>">
+                        <?= /* @escapeNotVerified */ __('Website') ?>
+                    </th>
+                    <th class="col-amount required-entry">
+                        <?= /* @escapeNotVerified */ __('Amount') ?>
+                    </th>
+                    <th class="col-actions">
+                        <?= /* @escapeNotVerified */ __('Action') ?>
+                    </th>
+                </tr>
+                
+            </thead>
+            <tfoot>
+                <tr>
+                    <td class="col-actions col-actions-add" colspan="<?= /* @escapeNotVerified */ $_multiWebsite ? 3 : 2 ?>">
+                        <?= $block->getAddButtonHtml() ?>
+                    </td>
+                </tr>
+            </tfoot>
+            <tbody id="<?= /* @escapeNotVerified */ $_htmlId ?>_container">
+            </tbody>
+        </table>
+        <input type="hidden" id="giftcard_amounts_total" name="giftcard_amounts_total" value="" <?php if (!$_readonly): ?>class="required-entry"<?php endif; ?>>
+    </div>
+    <script id="<?= /* @escapeNotVerified */ $_htmlId ?>_add_template" type="text/x-magento-template">
+        <tr>
+            <td class="col-website <?php if (!$_multiWebsite): ?>no-display<?php endif; ?>">
+                <select
+                    disabled="no-template"
+                    class="<?= /* @escapeNotVerified */ $_htmlClass ?> required-entry"
+                    name="<?= /* @escapeNotVerified */ $_htmlName ?>[<%- data.index %>][website_id]"
+                    id="<%- data.prefix %>_giftcard_amounts_row_<%- data.index %>_website">
+                    <?php foreach ($block->getWebsites() as $_websiteId => $_info): ?>
+                    <option value="<?= /* @escapeNotVerified */ $_websiteId ?>"><?= /* @escapeNotVerified */ $_info['name'] ?><?php if (!empty($_info['currency'])): ?> [<?= /* @escapeNotVerified */ $_info['currency'] ?>]<?php endif; ?></option>
+                    <?php endforeach ?>
+                </select>
+            </td>
+            <td class="col-amount">
+                <input
+                    disabled="no-template"
+                    class="<?= /* @escapeNotVerified */ $_htmlClass ?> required-entry validate-greater-than-zero"
+                    type="text"
+                    name="<?= /* @escapeNotVerified */ $_htmlName ?>[<%- data.index %>][price]"
+                    value="'<%- data.price %>'" />
+            </td>
+            <td class="col-actions">
+                <input
+                    type="hidden"
+                    name="<?= /* @escapeNotVerified */ $_htmlName ?>[<%- data.index %>][delete]"
+                    class="delete"
+                    disabled="no-template"
+                    value=""
+                    id="<%- data.prefix %>_giftcard_amounts_row_<%- data.index %>_delete" />
+
+                <button
+                    title="<?= /* @escapeNotVerified */ __('Delete Amount') ?>"
+                    type="button"
+                    class="action-delete delete-product-option"
+                    onclick="giftcardAmountsControl.deleteItem('<?= /* @escapeNotVerified */ $_htmlId ?>', event);return false">
+
+                    <span><?= /* @escapeNotVerified */ __('Delete') ?></span>
+                </button>
+            </td>
+        </tr>
+    </script>
+<script>
+require([
+    'jquery',
+    'mage/template',
+    'prototype'
+], function(jQuery, mageTemplate){
+
+//<![CDATA[
+    if (typeof itemsCount == 'undefined') {
+        itemsCount = 0;
+    }
+    giftcardAmountsControl = {
+        deleteButton: false,
+        addItem : function () {
+            var data = {};
+            data.prefix = '';
+            data.website_id = 0;
+            data.price      = '';
+            data.index      = itemsCount++;
+            if(arguments.length == 3) {
+                data.prefix     = arguments[0];
+                data.website_id = arguments[1];
+                data.price      = arguments[2];
+            } else if (arguments.length == 1) {
+                data.prefix     = arguments[0];
+            }
+
+            var template = mageTemplate($(data.prefix + '_add_template').innerHTML.replace(/ disabled="?no-template"?/g, '').replace(/ disabled/g, '').replace(/="'([^']*)'"/g, '="$1"'));
+            Element.insert($(data.prefix + '_container'), {
+                'bottom': template({
+                    data: data
+                })
+            });
+
+            $(data.prefix + '_giftcard_amounts_row_'+data.index+'_website').value = data.website_id;
+            <?php if ($_readonly): ?>
+            $('<?= /* @escapeNotVerified */ $_htmlId ?>_container').select('input', 'select')
+                .each(this.disableElement);
+            $('<?= /* @escapeNotVerified */ $_htmlId ?>_container').select('button')
+                .each(this.disableElement);
+            <?php endif; ?>
+            this.updateTotalAmounts();
+        },
+        disableElement: function(elem) {
+            elem.disabled = true;
+            $(elem).addClassName('disabled');
+        },
+
+        deleteItem : function(prefix, event) {
+            var tr = Event.findElement(event, 'tr');
+            if (tr) {
+                Element.select(tr, '.delete').each(function(elem){elem.value='1'});
+                Element.select(tr, ['input', 'select']).each(function(elem){elem.hide()});
+                Element.hide(tr);
+                Element.addClassName(tr, 'ignore-validate');
+            }
+            this.updateTotalAmounts();
+        },
+
+        updateTotalAmounts: function() {
+            var count = $('giftcard_amounts_container').select('tr:not(.ignore-validate)').length;
+            $('giftcard_amounts_total').value = count > 0 ? count : '';
+        }
+    };
+
+    <?php foreach ($block->getValues() as $_item): ?>
+    giftcardAmountsControl.addItem('<?= /* @escapeNotVerified */ $_htmlId ?>', '<?= /* @escapeNotVerified */ $_item['website_id'] ?>', '<?= /* @escapeNotVerified */ sprintf('%.2f', $_item['value']) ?>');
+    <?php endforeach; ?>
+
+    updatePriceAmountValidation = function() {
+        if($('allow_open_amount')) {
+            if ($('allow_open_amount').checked) {
+                jQuery('#giftcard_amounts_total').trigger('resetElement');
+                Element.removeClassName($('giftcard_amounts_total'), 'required-entry');
+            } else {
+                if (!Element.hasClassName($('giftcard_amounts_total'), 'required-entry')) {
+                    Element.addClassName($('giftcard_amounts_total'), 'required-entry');
+                }
+            }
+        }
+    }
+
+    setupPriceAmountEvents = function() {
+        if ($('allow_open_amount')) {
+            Event.observe('allow_open_amount', 'change', updatePriceAmountValidation);
+        }
+        updatePriceAmountValidation();
+    }
+    <?php if (!$_readonly): ?>
+    Event.observe(window, 'load', setupPriceAmountEvents);
+    <?php endif; ?>
+//]]>
+
+});
+</script>
+</div>

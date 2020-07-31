@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 MagePal. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="checkout_onepage_controller_success_action">
+        <observer name="riki_tag_google_analytics_order_success" instance="Riki\GoogleTagManager\Observer\Frontend\OrderSuccessPageViewObserver" />
+    </event>
+
+
+    <event name="controller_action_postdispatch">
+        <observer name="riki_googleanalytics_postdispatch" instance="Riki\GoogleTagManager\Observer\Frontend\SendCookieOnCartActionCompleteObserver" />
+    </event>
+
+    <event name="customer_login">
+        <observer name="riki_customer_save_ga_client_id" instance="Riki\GoogleTagManager\Observer\Frontend\SaveGaClientIdObserver" />
+    </event>
+    <event name="checkout_cart_update_items_after">
+        <observer name="riki_tag_google_analytics_update_item_cart_to_up" instance="Riki\GoogleTagManager\Observer\Frontend\UpdateItemsAfter"/>
+    </event>
+</config>

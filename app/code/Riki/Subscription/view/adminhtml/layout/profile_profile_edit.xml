@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <head>
+        <link src="Bluecom_Paygent::js/ivr/ivr.js"/>
+    </head>
+    <body>
+        <referenceContainer name="after.body.start">
+            <block class="Magento\Catalog\Block\Adminhtml\Product\Composite\Configure" template="Magento_Catalog::catalog/product/composite/configure.phtml"/>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block cacheable="false" class="Riki\Subscription\Block\Adminhtml\Profile\Edit" name="subscription-profile-edit"
+                   template="Riki_Subscription::profile/subscription-profile-edit-new.phtml">
+                <block name="form-key" class="Magento\Framework\View\Element\FormKey" />
+                <arguments>
+                    <argument name="jsLayout" xsi:type="array">
+                        <item name="components" xsi:type="array">
+                            <item name="subscription-form-edit" xsi:type="array">
+                                <item name="component" xsi:type="string">Riki_Subscription/js/view/form-edit</item>
+                                <item name="config" xsi:type="array">
+                                    <item name="template" xsi:type="string">Riki_Subscription/form-edit</item>
+                                </item>
+                                <item name="children" xsi:type="array">
+                                     <item name="basic-information" xsi:type="array">
+                                         <item name="sortOrder" xsi:type="string">10</item>
+                                         <item name="component" xsi:type="string">Riki_Subscription/js/view/basic-information</item>
+                                         <item name="displayArea" xsi:type="string">basic-information</item>
+                                         <item name="config" xsi:type="array">
+                                             <item name="template" xsi:type="string">Riki_Subscription/basic-information</item>
+                                         </item>
+                                     </item>
+
+                                    <item name="frequency-information" xsi:type="array">
+                                        <item name="sortOrder" xsi:type="string">11</item>
+                                        <item name="component" xsi:type="string">Riki_Subscription/js/view/frequency-information</item>
+                                        <item name="displayArea" xsi:type="string">frequency-information</item>
+                                        <item name="config" xsi:type="array">
+                                            <item name="template" xsi:type="string">Riki_Subscription/frequency-information</item>
+                                        </item>
+                                    </item>
+
+                                    <item name="payment-information" xsi:type="array">
+                                        <item name="sortOrder" xsi:type="string">12</item>
+                                        <item name="component" xsi:type="string">Riki_Subscription/js/view/payment-information</item>
+                                        <item name="displayArea" xsi:type="string">payment-information</item>
+                                        <item name="config" xsi:type="array">
+                                            <item name="template" xsi:type="string">Riki_Subscription/payment-information</item>
+                                        </item>
+                                    </item>
+
+                                    <item name="billing-information" xsi:type="array">
+                                        <item name="sortOrder" xsi:type="string">13</item>
+                                        <item name="component" xsi:type="string">Riki_Subscription/js/view/billing-information</item>
+                                        <item name="displayArea" xsi:type="string">billing-information</item>
+                                        <item name="config" xsi:type="array">
+                                            <item name="template" xsi:type="string">Riki_Subscription/billing-information</item>
+                                        </item>
+                                    </item>
+
+                                    <item name="items-information" xsi:type="array">
+                                        <item name="sortOrder" xsi:type="string">14</item>
+                                        <item name="component" xsi:type="string">Riki_Subscription/js/view/items-information</item>
+                                        <item name="displayArea" xsi:type="string">items-information</item>
+                                        <item name="config" xsi:type="array">
+                                            <item name="template" xsi:type="string">Riki_Subscription/items-information</item>
+                                        </item>
+                                    </item>
+
+                                    <item name="total-information" xsi:type="array">
+                                        <item name="sortOrder" xsi:type="string">15</item>
+                                        <item name="component" xsi:type="string">Riki_Subscription/js/view/total-information</item>
+                                        <item name="displayArea" xsi:type="string">total-information</item>
+                                        <item name="config" xsi:type="array">
+                                            <item name="template" xsi:type="string">Riki_Subscription/total-information</item>
+                                        </item>
+                                    </item>
+
+                                    <item name="confirmation" xsi:type="array">
+                                        <item name="sortOrder" xsi:type="string">16</item>
+                                        <item name="component" xsi:type="string">Riki_Subscription/js/view/confirmation</item>
+                                        <item name="displayArea" xsi:type="string">confirmation</item>
+                                        <item name="config" xsi:type="array">
+                                            <item name="template" xsi:type="string">Riki_Subscription/confirmation</item>
+                                        </item>
+                                    </item>
+
+
+                                </item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+                <block class="Riki\Subscription\Block\Adminhtml\Profile\Edit\MainProduct\Grid" name="product_main.grid" as="grid_main"/>
+                <block class="Riki\Subscription\Block\Adminhtml\Profile\Edit\AdditionalCategories\Grid" name="product_additional.grid" as="grid_additional"/>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

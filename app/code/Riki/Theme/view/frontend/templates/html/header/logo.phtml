@@ -1,0 +1,51 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/**
+ * @var \Riki\Theme\Block\Html\Header\Logo $block
+ */
+
+$moduleName = $block->getRequest()->getModuleName();
+$controller = $block->getRequest()->getControllerName();
+$action     = $block->getRequest()->getActionName();
+$route      = $block->getRequest()->getRouteName();
+$lineapp    = $block->getRequest()->getParam('lineapp');
+$isPDP = false; // Product Detail page
+$isCheckout = false;
+$isSubscription = false;
+if($moduleName=="catalog" && ($controller=="product" || $controller=="multiple") && $action=="view" && $lineapp)
+{
+    $isPDP = true;
+}
+if($moduleName=="subscription-page" && $lineapp)
+{
+    $isSubscription =  true;
+}
+if($moduleName=="checkout" && $controller=="cart" && $lineapp)
+{
+    $isCheckout =  true;
+}
+?>
+<?php $storeName = $block->getThemeName() ? $block->getThemeName() : $block->getLogoAlt();?>
+<span data-action="toggle-nav" class="action nav-toggle"><span><?php /* @escapeNotVerified */ echo __('Toggle Nav') ?></span></span>
+<?php if ($block->isHomePage() || $isPDP || $isSubscription || $isCheckout):?>
+    <strong class="logo">
+<?php else: ?>
+    <a class="logo" href="<?php echo $block->getLinkBlockCart(); ?>" title="<?php /* @escapeNotVerified */ echo $storeName ?>">
+<?php endif ?>
+        <img class="hidden" src="<?php /* @escapeNotVerified */ echo $block->getLogoSrc() ?>"
+             alt="<?php /* @escapeNotVerified */ echo $block->getLogoAlt() ?>"
+             <?php echo $block->getLogoWidth() ? 'width="' . $block->getLogoWidth() . '"' : '' ?>
+             <?php echo $block->getLogoHeight() ? 'height="' . $block->getLogoHeight() . '"' : '' ?>
+        />
+        <img class="" src='<?php echo $this->getViewFileUrl('images/logo-sp.svg'); ?>' alt="Demo">
+<?php if ($block->isHomePage() || $isPDP || $isSubscription || $isCheckout):?>
+    </strong>
+<?php else:?>
+    </a>
+<?php endif?>

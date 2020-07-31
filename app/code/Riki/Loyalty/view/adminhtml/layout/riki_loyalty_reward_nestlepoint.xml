@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <container name="root">
+        <block class="Magento\Backend\Block\Template" name="customer.nestle_shopping_point.header" template="Riki_Loyalty::reward/tab/nestle_point.phtml"/>
+        <block class="Magento\Backend\Block\Widget\Grid" name="customer.nestle_shopping_point.edit.tab">
+            <arguments>
+                <argument name="dataSource" xsi:type="object">Riki\Loyalty\Model\ResourceModel\Reward\Collection\NestlePoint</argument>
+                <argument name="id" xsi:type="string">nestlePointGrid</argument>
+                <argument name="pager_visibility" xsi:type="boolean">false</argument>
+                <argument name="use_ajax" xsi:type="string">true</argument>
+                <argument name="default_sort" xsi:type="string">id</argument>
+                <argument name="grid_url" xsi:type="url" path="*/*/nestlepoint">
+                    <param name="_current">1</param>
+                </argument>
+                <argument name="product_configuration_helpers" xsi:type="array">
+                    <item name="default" xsi:type="string">Magento\Catalog\Helper\Product\Configuration</item>
+                </argument>
+            </arguments>
+            <block class="Magento\Backend\Block\Widget\Grid\ColumnSet" as="grid.columnSet" name="customer.nestle_shopping_point.edit.tab.columnSet">
+                <arguments>
+                    <argument name="empty_text" xsi:type="string" translate="true">No Items Found</argument>
+                    <argument name="filter_visibility" xsi:type="boolean">false</argument>
+                </arguments>
+                <block class="Magento\Backend\Block\Widget\Grid\Column" as="order_no">
+                    <arguments>
+                        <argument name="header" xsi:type="string" translate="true">Order no</argument>
+                        <argument name="index" xsi:type="string">order_no</argument>
+                        <argument name="id" xsi:type="string">order_no</argument>
+                        <argument name="sortable" xsi:type="boolean">false</argument>
+                        <argument name="renderer" xsi:type="string">Riki\Loyalty\Block\Adminhtml\Reward\Widget\Grid\Renderer\OrderNo</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Backend\Block\Widget\Grid\Column" as="point_type">
+                    <arguments>
+                        <argument name="header" xsi:type="string" translate="true">Point type</argument>
+                        <argument name="index" xsi:type="string">point_type</argument>
+                        <argument name="id" xsi:type="string">point_type</argument>
+                        <argument name="sortable" xsi:type="boolean">false</argument>
+                        <argument name="renderer" xsi:type="string">Riki\Loyalty\Block\Adminhtml\Reward\Widget\Grid\Renderer\ConsumerDb\Type</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Backend\Block\Widget\Grid\Column" as="point_issue_type">
+                    <arguments>
+                        <argument name="header" xsi:type="string" translate="true">Point issue type</argument>
+                        <argument name="index" xsi:type="string">point_issue_type</argument>
+                        <argument name="id" xsi:type="string">point_issue_type</argument>
+                        <argument name="sortable" xsi:type="boolean">false</argument>
+                        <argument name="renderer" xsi:type="string">Riki\Loyalty\Block\Adminhtml\Reward\Widget\Grid\Renderer\ConsumerDb\IssueType</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Backend\Block\Widget\Grid\Column" as="point_issue_status">
+                    <arguments>
+                        <argument name="header" xsi:type="string" translate="true">Point status</argument>
+                        <argument name="index" xsi:type="string">point_issue_status</argument>
+                        <argument name="id" xsi:type="string">point_issue_status</argument>
+                        <argument name="sortable" xsi:type="boolean">false</argument>
+                        <argument name="renderer" xsi:type="string">Riki\Loyalty\Block\Adminhtml\Reward\Widget\Grid\Renderer\ConsumerDb\Status</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Backend\Block\Widget\Grid\Column" as="issued_point">
+                    <arguments>
+                        <argument name="header" xsi:type="string" translate="true">Number of point</argument>
+                        <argument name="index" xsi:type="string">issued_point</argument>
+                        <argument name="id" xsi:type="string">issued_point</argument>
+                        <argument name="sortable" xsi:type="boolean">false</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Backend\Block\Widget\Grid\Column" as="description">
+                    <arguments>
+                        <argument name="header" xsi:type="string" translate="true">Description</argument>
+                        <argument name="index" xsi:type="string">description</argument>
+                        <argument name="id" xsi:type="string">description</argument>
+                        <argument name="sortable" xsi:type="boolean">false</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Backend\Block\Widget\Grid\Column" as="point_issue_datetime">
+                    <arguments>
+                        <argument name="header" xsi:type="string" translate="true">Date</argument>
+                        <argument name="index" xsi:type="string">point_issue_datetime</argument>
+                        <argument name="id" xsi:type="string">point_issue_datetime</argument>
+                        <argument name="sortable" xsi:type="boolean">false</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Backend\Block\Widget\Grid\Column" as="scheduled_expired_date">
+                    <arguments>
+                        <argument name="header" xsi:type="string" translate="true">Expiration date</argument>
+                        <argument name="index" xsi:type="string">scheduled_expired_date</argument>
+                        <argument name="id" xsi:type="string">scheduled_expired_date</argument>
+                        <argument name="sortable" xsi:type="boolean">false</argument>
+                    </arguments>
+                </block>
+            </block>
+        </block>
+    </container>
+</layout>

@@ -1,0 +1,172 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/**
+ * @var \Magento\Sales\Block\Adminhtml\Order\Create\Billing\Address|\Magento\Sales\Block\Adminhtml\Order\Create\Shipping\Address $block
+ */
+
+$collection = $block->getAddressCollection();
+
+if(count($collection)){
+
+if ($block->getIsShipping()):
+    $_fieldsContainerId = 'order-shipping_address_fields';
+    $_addressChoiceContainerId = 'order-shipping_address_choice';
+    ?>
+    <script>
+        require(["Magento_Sales/order/create/form"], function(){
+
+            order.shippingAddressContainer = '<?php /* @escapeNotVerified */ echo $_fieldsContainerId ?>';
+            order.setAddresses(<?php /* @escapeNotVerified */ echo $block->getAddressCollectionJson() ?>);
+
+        });
+    </script>
+    <?php
+else:
+    $_fieldsContainerId = 'order-billing_address_fields';
+    $_addressChoiceContainerId = 'order-billing_address_choice';
+    ?>
+    <script>
+        require(["Magento_Sales/order/create/form"], function(){
+            order.billingAddressContainer = '<?php /* @escapeNotVerified */ echo $_fieldsContainerId ?>';
+        });
+    </script>
+    <?php
+endif; ?>
+
+<?php $isMultipleAddressOrder = $this->helper('Riki\Sales\Helper\Admin')->isMultipleShippingAddressCart(); ?>
+
+<fieldset class="admin__fieldset" <?php if($block->getIsShipping() && $isMultipleAddressOrder): ?> style="display: none;" <?php endif; ?>>
+    <legend class="admin__legend <?php /* @escapeNotVerified */ echo $block->getHeaderCssClass() ?>">
+        <span><?php /* @escapeNotVerified */ echo $block->getHeaderText() ?></span>
+    </legend><br>
+
+    <fieldset id="<?php /* @escapeNotVerified */ echo $_addressChoiceContainerId ?>" class="admin__fieldset order-choose-address">
+        <?php if ($block->getIsShipping()): ?>
+            <div class="admin__field admin__field-option">
+                <?php if($isMultipleAddressOrder): ?>
+                    <input type="checkbox" id="order-shipping_same_as_billing" name="shipping_same_as_billing"
+                            class="admin__control-checkbox" checked="checked" />
+                <?php else: ?>
+                    <input type="checkbox" id="order-shipping_same_as_billing" name="shipping_same_as_billing"
+                           onclick="order.setShippingAsBilling(this.checked)" class="admin__control-checkbox"
+                           <?php if ($block->getIsAsBilling()): ?>checked<?php endif; ?> />
+                <?php endif; ?>
+
+                <label for="order-shipping_same_as_billing" class="admin__field-label">
+                    <?php /* @escapeNotVerified */ echo __('Same As Billing Address') ?>
+                </label>
+            </div>
+        <?php endif; ?>
+        <div class="admin__field">
+            <label class="admin__field-label"><?php /* @escapeNotVerified */ echo __('Select from existing customer addresses:') ?></label>
+            <?php $_id = $block->getForm()->getHtmlIdPrefix() . 'customer_address_id' ?>
+            <div class="admin__field-control">
+                <select id="<?php /* @escapeNotVerified */ echo $_id ?>"
+                        name="<?php echo $block->getForm()->getHtmlNamePrefix() ?>[customer_address_id]"
+                        style="width: 97.5%;" onchange="order.selectAddress(this, '<?php /* @escapeNotVerified */ echo $_fieldsContainerId ?>')"
+                        class="admin__control-select required-entry">
+                    <option value=""><?php /* @escapeNotVerified */ echo __('Please select an Address') ?></option>
+                    <?php foreach ($block->getAddressCollection() as $_address): ?>
+                        <?php //if($block->getAddressAsString($_address)!=$block->getAddressAsString($block->getAddress())): ?>
+                        <option
+                            value="<?php /* @escapeNotVerified */ echo $_address->getId() ?>"<?php if ($_address->getId() == $block->getAddressId()): ?> selected="selected"<?php endif; ?>>
+                            <?php /* @escapeNotVerified */ echo $block->getAddressAsString($_address) ?>
+                        </option>
+                        <?php //endif; ?>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="order-address admin__fieldset" id="<?php /* @escapeNotVerified */ echo $_fieldsContainerId ?>">
+        <?php echo $block->getForm()->toHtml() ?>
+
+    </div>
+    <?php $hideElement = 'address-' . ($block->getIsShipping() ? 'shipping' : 'billing') . '-overlay'; ?>
+    <div style="display: none;" id="<?php /* @escapeNotVerified */ echo $hideElement ?>" class="order-methods-overlay">
+        <span><?php /* @escapeNotVerified */ echo __('You don\'t need to select a shipping address.') ?></span>
+    </div>
+
+    <script>
+        require(["Magento_Sales/order/create/form"], function(){
+            order.bindAddressFields('<?php /* @escapeNotVerified */ echo $_fieldsContainerId ?>');
+            order.bindAddressFields('<?php /* @escapeNotVerified */ echo $_addressChoiceContainerId ?>');
+            <?php if ($block->getIsShipping() && $block->getIsAsBilling()): ?>
+            order.disableShippingAddress(true);
+            <?php endif; ?>
+        });
+    </script>
+</fieldset>
+<script type="text/javascript">
+    require([
+        'jquery',
+        'ajaxzip3',
+        'prototype',
+        'Riki_ZipcodeValidation/js/zipcode-formatter',
+        'Riki_ZipcodeValidation/js/lib/mage/validation/rules',
+        'Riki_Customer/js/lib/mage/validation/rules'
+    ], function (jQuery, AjaxZip3) {
+        <?php if ($this->getIsShipping()): ?>
+        //jQuery('input[name="order[shipping_address][firstname]"]').addClass('max_text_length_custom').prop('maxlength', 25);
+        //jQuery('input[name="order[shipping_address][lastname]"]').addClass('max_text_length_custom').prop('maxlength', 25);
+        jQuery('input[name="order[shipping_address][firstnamekana]"]').addClass('validate-katakana max_text_length_custom').prop('maxlength', 40);
+        jQuery('input[name="order[shipping_address][lastnamekana]"]').addClass('validate-katakana max_text_length_custom').prop('maxlength', 40);
+        jQuery('input[name="order[shipping_address][riki_nickname]"]').addClass('max_text_length_custom').prop('maxlength', 20);
+        jQuery('input[name="order[shipping_address][city]"]').addClass('max_text_length_custom').prop('maxlength', 30);
+        jQuery('input[name*="order[shipping_address][street]"]').addClass('max_text_length_custom').prop('maxlength', 30);
+        jQuery('input[name="order[shipping_address][apartment]"]').addClass('max_text_length_custom').prop('maxlength', 40);
+        jQuery('input[name="order[shipping_address][telephone]"]').addClass('validate-phone-number');
+        jQuery('#order-shipping_address_postcode')
+            .prop('maxlength', 8)
+            .attr('validate-custom-postal-code', true)
+            .on('keyup', function () {
+                if (jQuery('#order-shipping_address_postcode').val().replace('-', '').length == 7) {
+                    jQuery('#order-shipping_address_country_id').val('JP');
+                    $('order-shipping_address_country_id').changeUpdater();
+                    AjaxZip3.zip2addr('order[shipping_address][postcode]', '', 'order[shipping_address][region_id]', 'order[shipping_address][city]', 'order[shipping_address][street][0]', '', '');
+                }
+            })
+            .zipcodeFormatter();
+
+        <?php if($isMultipleAddressOrder && !$block->getIsAsBilling()): ?>
+            order.setShippingAsBilling(1);
+        <?php endif; ?>
+
+        <?php else: ?>
+        //jQuery('input[name="order[billing_address][firstname]"]').addClass('max_text_length_custom').prop('maxlength', 25);
+        //jQuery('input[name="order[billing_address][lastname]"]').addClass('max_text_length_custom').prop('maxlength', 25);
+        jQuery('input[name="order[billing_address][firstnamekana]"]').addClass('validate-katakana max_text_length_custom').prop('maxlength', 40);
+        jQuery('input[name="order[billing_address][lastnamekana]"]').addClass('validate-katakana max_text_length_custom').prop('maxlength', 40);
+        jQuery('input[name="order[billing_address][riki_nickname]"]').addClass('max_text_length_custom').prop('maxlength', 20);
+        jQuery('input[name="order[billing_address][city]"]').addClass('max_text_length_custom').prop('maxlength', 30);
+        jQuery('input[name*="order[billing_address][street]"]').addClass('max_text_length_custom').prop('maxlength', 30);
+        jQuery('input[name="order[billing_address][apartment]"]').addClass('max_text_length_custom').prop('maxlength', 40);
+        jQuery('input[name="order[billing_address][telephone]"]').addClass('validate-phone-number');
+        jQuery('#order-billing_address_postcode')
+            .prop('maxlength', 8)
+            .attr('validate-custom-postal-code', true)
+            .on('keyup', function () {
+                if (jQuery('#order-billing_address_postcode').val().replace('-', '').length == 7) {
+                    jQuery('#order-billing_address_country_id').val('JP').trigger('change');
+                    $('order-billing_address_country_id').changeUpdater();
+                    AjaxZip3.zip2addr('order[billing_address][postcode]', '', 'order[billing_address][region_id]', 'order[billing_address][city]', 'order[billing_address][street][0]', '', '');
+                }
+            })
+            .zipcodeFormatter();
+        <?php endif; ?>
+    });
+</script>
+
+<?php }else{?>
+    <?php if (!$block->getIsShipping()): ?>
+    <input type="hidden" value="" class="required-entry" />
+    <div><?php echo __("Please create new address for this customer.") ?></div>
+        <?php endif; ?>
+<?php } ?>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="riki_subs_create_order">
+        <job name="cron_subscription_create_order" instance="Riki\Subscription\Cron\PublishMessageProfileOrder" method="execute">
+            <config_path>subscriptioncourse/createorder/expressioncreate</config_path>
+        </job>
+        <job name="cron_subscription_start_consumer" instance="Riki\Subscription\Cron\StartConsumer" method="execute">
+            <config_path>subscriptioncourse/createorder/startconsumer</config_path>
+        </job>
+        <job name="cron_subscription_collect_log" instance="Riki\Subscription\Cron\LogCollector" method="execute">
+            <config_path>subscriptioncourse/createorder/expressioncollectlog</config_path>
+        </job>
+        <job name="cron_subscription_reindex" instance="Riki\Subscription\Cron\Indexer\StartReindex" method="execute">
+            <config_path>subscriptioncourse/indexer/crontab</config_path>
+        </job>
+        <!--RMM-377 merge profile-->
+        <job name="cron_subscription_merge_profile" instance="Riki\Subscription\Cron\MergeProfile" method="execute">
+            <config_path>subscriptioncourse/merge_profile/expression</config_path>
+        </job>
+        <job name="cancel_incomplete_generate_profile_order" instance="Riki\Subscription\Cron\CancelIncompleteGenerateProfileOrder" method="execute">
+            <config_path>subscriptioncourse/createorder/delete_incomplete_generate_profile_order_schedule</config_path>
+        </job>
+    </group>
+</config>

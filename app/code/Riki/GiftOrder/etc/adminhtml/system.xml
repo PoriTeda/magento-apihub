@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
+    <system>
+        <section id="giftorder" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Gift Order</label>
+            <tab>bluecom_cronjob</tab>
+            <!-- resource tag name which we have to defined in the acl.xml -->
+            <resource>Riki_GiftOrder::config_giftorder</resource>
+            <group id="general" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Gift Order Setting</label>
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable Add Gift Option</comment>
+                </field>
+                <field id="gift_options" translate="label" type="select" sortOrder="5" showInDefault="1"
+                       showInStore="1" showInWebsite="1">
+                    <label>Select Gift Option</label>
+                    <source_model>Riki\GiftOrder\Model\Config\Source\GiftOption</source_model>
+                    <comment>Select gift option</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

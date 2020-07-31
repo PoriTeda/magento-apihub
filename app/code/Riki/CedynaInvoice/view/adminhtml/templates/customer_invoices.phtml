@@ -1,0 +1,86 @@
+<?php
+/** @var \Riki\CedynaInvoice\Block\Adminhtml\Customer $block */
+    $invoices = $block->getMonthlyInvoices();
+    $generalInformation = $block->getInvoicesInformation($invoices);
+?>
+<?php if ($invoices) :?>
+<div class="cedyna-invoice-detail">
+    <div class="cedyna-invoice-detail-header">
+        <span><?php echo $block->formatInvoiceDate($invoices[0]);?></span>
+    </div>
+    <div class="cedyna-invoice-list">
+        <div class="invoice-total">
+            <?php echo __(
+                'Invoice detail total : %1 (tax include)',
+                $block->formatPrice($generalInformation['total'])
+            );
+            ?>
+        </div>
+        <div class="general-invoice">
+            <div class="general-invoice-left">
+                <div class="grid-csv-download">
+                    <a href="<?php echo $block->getDownloadInvoiceListUrl();?>"
+                       class="btn-green"><?php echo __('Download CSV');?></a>
+                </div>
+                <div class="table">
+                    <table class="data-table">
+                        <thead>
+                        <tr>
+                            <th><?php echo __('INVOICE DETAIL SHIPMENT INCREMENT ID');?></th>
+                            <th><?php echo __('INVOICE DETAIL ORDER CREATED');?></th>
+                            <th><?php echo __('SHIPPED OUT DATE / RETURNED DATE');?></th>
+                            <th><?php echo __('INVOICE DETAIL PRODUCT LINE NAME');?></th>
+                            <th><?php echo __('INVOICE DETAIL UNIT PRICE');?></th>
+                            <th><?php echo __('INVOICE DETAIL QTY');?></th>
+                            <th><?php echo __('INVOICE DETAIL ROW TOTAL');?></th>
+                            <th><?php echo __('INVOICE DETAIL SHIPPING ADDRESS');?></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($invoices as $invoice) :?>
+                            <tr>
+                                <td><?php echo $invoice['increment_id'];?></td>
+                                <td><?php echo $block->getOrderCreatedDate($invoice) ?></td>
+                                <td><?php echo $block->getShipmentDate($invoice) ?></td>
+                                <td><?php echo $invoice['product_line_name'];?></td>
+                                <?php if (!$block->highlightItemPrice($invoice['data_type'])): ?>
+                                    <td><?php echo (int)$invoice['unit_price'];?></td>
+                                    <td><?php echo (int)$invoice['qty'];?></td>
+                                    <td><?php echo (int)$invoice['row_total'];?></td>
+                                <?php else: ?>
+                                    <td><span class="red-dot">-<?php echo (int)$invoice['unit_price'];?></span></td>
+                                    <td><?php echo (int)$invoice['qty'];?></td>
+                                    <td><span class="red-dot">-<?php echo (int)$invoice['row_total'];?></span></td>
+                                <?php endif; ?>
+                                <td><?php echo $invoice['riki_nickname'];?></td>
+                            </tr>
+                        <?php endforeach;?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="general-invoice-right">
+                <div class="group-csv-download">
+                    <a href="<?php echo $block->getDownloadInvoiceSummaryUrl();?>"
+                       class="btn-green">
+                        <?php echo __('Download CSV');?>
+                    </a>
+                    <div><strong><?php echo __('Shipping Group Total');?></strong></div>
+                </div>
+                <!-- group shipping address -->
+                <?php if (isset($generalInformation['riki_nickname_group'])) :?>
+                    <table class="more-detail">
+                        <?php foreach ($generalInformation['riki_nickname_group'] as $groupName => $groupTotal) :?>
+                            <tr>
+                                <td><?php echo $groupName;?></td>
+                                <td><?php echo $block->formatPrice($groupTotal);?></td>
+                            </tr>
+                        <?php endforeach;?>
+                    </table>
+
+                <?php endif;?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif;?>

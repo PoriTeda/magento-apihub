@@ -1,0 +1,19 @@
+※このメールは自動で送信されています※
+ 
+各位
+　下記の顧客さまに対してのマシン同梱出荷に関しまして、エラーが発生しています。
+　内容をご確認いただきますよう、よろしくお願い申し上げます。
+ 
+***** 同梱エラー情報 *****
+　顧客コード：<consumer db id>
+　対象マシン：<product>（[<SKU>]）
+　エラー内容：マシン同梱エラー(在庫切れ)　【倉庫コード：<warehouse code>】
+ (this is for machines that are out of stock, refer to "Check if the SKU is in stock")
+　顧客コード：<consumer db id>
+　対象マシン：<product>
+　エラー内容：マシン同梱エラー(対象外定期便購入)　
+(this is for when a subscription that does not cover this machine was chosen, refer to "Check the subscription course")
+　顧客コード：<consumer db id>
+　対象マシン：<machine type>
+　エラー内容：マシン同梱エラー(対象商品未購入)　 
+(this is when condition doesn't apply for the free machine, refer to "Check if the condition apply for the free machine")

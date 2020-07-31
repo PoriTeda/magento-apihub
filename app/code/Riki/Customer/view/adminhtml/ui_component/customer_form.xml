@@ -1,0 +1,2007 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="buttons" xsi:type="array">
+            <item name="copy_customer_button" xsi:type="string">Riki\Customer\Block\Adminhtml\Edit\CloneCustomerButton</item>
+        </item>
+    </argument>
+    <settings>
+        <layout>
+            <type>riki_customer_tabs</type>
+        </layout>
+    </settings>
+    <fieldset name="customer">
+
+        <!-- Hide some unused field -->
+        <field name="sendemail_store_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="prefix">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="middlename">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="suffix">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="disable_auto_group_change">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="fieldGroup" xsi:type="string">group_id</item>
+                    <item name="dataType" xsi:type="string">boolean</item>
+                    <item name="formElement" xsi:type="string">checkbox</item>
+                    <item name="source" xsi:type="string">customer</item>
+                </item>
+            </argument>
+        </field>
+        <!-- END Hide some unused field -->
+        <field name="amb_type">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">select</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-type</item>
+                    <item name="sortOrder" xsi:type="string">1</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="label" translate="true" xsi:type="string">Is Ambassador?</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="amb_sale">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">2</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="commission">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-commission" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="b2b_flag">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">select</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-shosha-select</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="offline_customer">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">39</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/offline-customer</item>
+                </item>
+            </argument>
+        </field>
+        <field name="lastname">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="validation" xsi:type="array">
+                        <item name="max_text_length" xsi:type="number">25</item>
+                        <item name="validate-double_byte" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="lastnamekana">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="validation" xsi:type="array">
+                        <item name="max_text_length" xsi:type="number">20</item>
+                        <item name="validate-katakana" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="firstname">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!--<item name="sortOrder" xsi:type="string">35</item>-->
+                    <item name="validation" xsi:type="array">
+                        <item name="max_text_length" xsi:type="number">25</item>
+                        <item name="validate-double_byte" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="firstnamekana">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!--<item name="sortOrder" xsi:type="string">40</item>-->
+                    <item name="validation" xsi:type="array">
+                        <item name="max_text_length" xsi:type="number">40</item>
+                        <item name="validate-katakana" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="email_1_type">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/email_type_1</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                </item>
+            </argument>
+        </field>
+        <field name="email">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/email1</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">false</item>
+                        <item name="max_text_length" xsi:type="number">50</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="email_2_type">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/email_type_2</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                </item>
+            </argument>
+        </field>
+        <field name="email_2">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/email2</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="max_text_length" xsi:type="number">50</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="dob">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">85</item>
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/dob</item>
+                    <item name="formElement" xsi:type="string">date</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <!-- Guardian approval -->
+        <field name="GARDIAN_APPROVAL" >
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <!--customScope is used to group elements within a single form (e.g. they can be validated separately)-->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/guardian_approval</item>
+
+                    <item name="dataType" xsi:type="string">boolean</item>
+                    <item name="formElement" xsi:type="string">checkbox</item>
+                    <item name="template" xsi:type="string">ui/form/field_checkbox</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/checkbox</item>
+                    <item name="label" xsi:type="string" translate="true">Guardian Approved</item>
+                    <item name="sortOrder" xsi:type="string">86</item>
+                </item>
+            </argument>
+        </field>
+        <!-- END Guardian approval -->
+
+        <field name="gender">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">87</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="KEY_JOB_TITLE">
+            <argument name="data" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/element/select</item>
+                <item name="config" xsi:type="array">
+                    <!-- Mandatory options. Required by the Field UI component -->
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="dataScope" xsi:type="string">KEY_JOB_TITLE</item>
+                    <!-- Optional checkbox-specific options -->
+                    <item name="label" xsi:type="string">Occupation</item>
+                    <item name="sortOrder" xsi:type="string">88</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+                <item name="options" xsi:type="array">
+                    <item name="6" xsi:type="array">
+                        <item name="label" xsi:type="string">データを登録しない</item>
+                        <item name="value" xsi:type="string">99</item>
+                    </item>
+                    <item name="1" xsi:type="array">
+                        <item name="label" xsi:type="string">フルタイム/</item>
+                        <item name="value" xsi:type="string">1</item>
+                    </item>
+                    <item name="2" xsi:type="array">
+                        <item name="label" xsi:type="string">パートタイム/</item>
+                        <item name="value" xsi:type="string">2</item>
+                    </item>
+                    <item name="3" xsi:type="array">
+                        <item name="label" xsi:type="string">特に収入を伴う仕事はしていない/</item>
+                        <item name="value" xsi:type="string">3</item>
+                    </item>
+                    <item name="4" xsi:type="array">
+                        <item name="label" xsi:type="string">学生/</item>
+                        <item name="value" xsi:type="string">4</item>
+                    </item>
+                    <item name="5" xsi:type="array">
+                        <item name="label" xsi:type="string">その他/</item>
+                        <item name="value" xsi:type="string">5</item>
+                    </item>
+
+                </item>
+            </argument>
+        </field>
+
+        <field name="KEY_MARITAL_STAT_CODE">
+            <argument name="data" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/element/select</item>
+                <item name="config" xsi:type="array">
+                    <!-- Mandatory options. Required by the Field UI component -->
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="dataScope" xsi:type="string">KEY_MARITAL_STAT_CODE</item>
+                    <!-- Optional checkbox-specific options -->
+                    <item name="label" xsi:type="string">Marital status</item>
+                    <item name="sortOrder" xsi:type="string">95</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+                <item name="options" xsi:type="array">
+                    <item name="3" xsi:type="array">
+                        <item name="label" xsi:type="string">不明</item>
+                        <item name="value" xsi:type="string">3</item>
+                    </item>
+                    <item name="1" xsi:type="array">
+                        <item name="label" xsi:type="string">既婚</item>
+                        <item name="value" xsi:type="string">1</item>
+                    </item>
+                    <item name="2" xsi:type="array">
+                        <item name="label" xsi:type="string">未婚</item>
+                        <item name="value" xsi:type="string">2</item>
+                    </item>
+
+                </item>
+            </argument>
+        </field>
+
+        <!--Machine registration-->
+
+        <field name="MD0000" component="Magento_Ui/js/form/element/boolean" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">96</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/form/element/checkbox</elementTmpl>
+                <dataType>boolean</dataType>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <description translate="true">Dolche Gusto</description>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="PM0000" component="Magento_Ui/js/form/element/boolean" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">97</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/form/element/checkbox</elementTmpl>
+                <dataType>boolean</dataType>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <description translate="true">Barista</description>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="SPM0000" component="Magento_Ui/js/form/element/boolean" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">98</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/form/element/checkbox</elementTmpl>
+                <dataType>boolean</dataType>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <description translate="true">Barista i </description>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="NM0000" component="Magento_Ui/js/form/element/boolean" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">99</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/form/element/checkbox</elementTmpl>
+                <dataType>boolean</dataType>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <description translate="true">Nespresso</description>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="ST0000" component="Magento_Ui/js/form/element/boolean" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">100</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/form/element/checkbox</elementTmpl>
+                <dataType>boolean</dataType>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <description translate="true">Special-T</description>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="OT0000" component="Magento_Ui/js/form/element/boolean" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">101</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/form/element/checkbox</elementTmpl>
+                <dataType>boolean</dataType>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <description translate="true">Other</description>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <!--END Machine registration -->
+
+        <field name="KEY_EPS_FLG">
+            <argument name="data" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/element/select</item>
+                <item name="config" xsi:type="array">
+                    <!-- Mandatory options. Required by the Field UI component -->
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="dataScope" xsi:type="string">KEY_EPS_FLG</item>
+                    <!-- Optional checkbox-specific options -->
+                    <item name="description" xsi:type="string">Using newsletter option</item>
+                    <item name="label" xsi:type="string">Opt in/out</item>
+                    <item name="sortOrder" xsi:type="string">102</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+                <item name="options" xsi:type="array">
+                    <item name="0" xsi:type="array">
+                        <item name="label" xsi:type="string">accept</item>
+                        <item name="value" xsi:type="string">0</item>
+                    </item>
+                    <item name="1" xsi:type="array">
+                        <item name="label" xsi:type="string">unacceptable</item>
+                        <item name="value" xsi:type="string">1</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="USE_POINT_TYPE">
+            <argument name="data" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/element/select</item>
+                <item name="config" xsi:type="array">
+                    <!--customScope is used to group elements within a single form (e.g. they can be validated separately)-->
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="customScope" xsi:type="string">USE_POINT_TYPE</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/select</item>
+                    <item name="value" xsi:type="string">0</item>
+                    <item name="dataScope" xsi:type="string">USE_POINT_TYPE</item>
+                    <item name="label" xsi:type="string">Shopping point preference</item>
+                    <item name="sortOrder" xsi:type="string">103</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+                <item name="options" xsi:type="array">
+                    <item name="0" xsi:type="array">
+                        <item name="label" xsi:type="string">Please select value</item>
+                        <item name="value" xsi:type="string"></item>
+                    </item>
+                    <item name="1" xsi:type="array">
+                        <item name="label" xsi:type="string">not use points</item>
+                        <item name="value" xsi:type="string">0</item>
+                    </item>
+                    <item name="2" xsi:type="array">
+                        <item name="label" xsi:type="string">automatically use all points</item>
+                        <item name="value" xsi:type="string">1</item>
+                    </item>
+                    <item name="3" xsi:type="array">
+                        <item name="label" xsi:type="string">automatically redeem a specified</item>
+                        <item name="value" xsi:type="string">2</item>
+                    </item>
+                </item>
+                <!-- value element allows to specify default value of the form field -->
+
+            </argument>
+        </field>
+
+        <field name="USE_POINT_AMOUNT">
+            <argument name="data" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/element/select</item>
+                <item name="config" xsi:type="array">
+                    <!--customScope is used to group elements within a single form (e.g. they can be validated separately)-->
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="customScope" xsi:type="string">USE_POINT_AMOUNT</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                    <item name="dataScope" xsi:type="string">USE_POINT_AMOUNT</item>
+                    <item name="label" xsi:type="string">Shopping point preference - Number of point</item>
+                    <item name="sortOrder" xsi:type="string">104</item>
+                </item>
+
+            </argument>
+        </field>
+
+
+        <field name="KEY_CAUTION">
+            <argument name="data" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/element/abstract</item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="formElement" xsi:type="string">textarea</item>
+                    <item name="customScope" xsi:type="string">KEY_CAUTION</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/textarea</item>
+                    <item name="sortOrder" xsi:type="string">105</item>
+                    <item name="label" xsi:type="string">Caution</item>
+                    <item name="dataScope" xsi:type="string">KEY_CAUTION</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="EDIT_MESSAGE">
+            <argument name="data" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/element/abstract</item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="formElement" xsi:type="string">textarea</item>
+                    <item name="customScope" xsi:type="string">EDIT_MESSAGE</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/textarea</item>
+                    <item name="sortOrder" xsi:type="string">106</item>
+                    <item name="label" xsi:type="string">Comment for modify</item>
+                    <item name="dataScope" xsi:type="string">EDIT_MESSAGE</item>
+                </item>
+            </argument>
+        </field>
+
+
+
+        <field name="customer_company_name">
+            <argument name="data" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/element/input</item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="customScope" xsi:type="string">customer_company_name</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                    <item name="sortOrder" xsi:type="string">107</item>
+                    <item name="label" xsi:type="string">Company name</item>
+                    <item name="dataScope" xsi:type="string">customer_company_name</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="KEY_POST_NAME">
+            <argument name="data" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/element/input</item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="customScope" xsi:type="string">KEY_POST_NAME</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                    <item name="sortOrder" xsi:type="string">108</item>
+                    <item name="label" xsi:type="string">Company department name</item>
+                    <item name="dataScope" xsi:type="string">KEY_POST_NAME</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="key_work_ph_num">
+            <argument name="data" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/element/input</item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="customScope" xsi:type="string">key_work_ph_num</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                    <item name="sortOrder" xsi:type="string">109</item>
+                    <item name="label" xsi:type="string">Company phone number</item>
+                    <item name="dataScope" xsi:type="string">key_work_ph_num</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-phone-number" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="KEY_ASST_PH_NUM">
+            <argument name="data" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/element/date</item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="customScope" xsi:type="string">KEY_ASST_PH_NUM</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                    <item name="sortOrder" xsi:type="string">110</item>
+                    <item name="label" xsi:type="string">Company fax number</item>
+                    <item name="dataScope" xsi:type="string">KEY_ASST_PH_NUM</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-company-fax-number" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="shosha_business_code">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">111</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-shosha-business-code" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="PETSHOP_CODE">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!-- Mandatory options. Required by the Field UI component -->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/petshop-code</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="dataScope" xsi:type="string">PETSHOP_CODE</item>
+                    <!-- Optional checkbox-specific options -->
+                    <item name="description" xsi:type="string">Petshop</item>
+                    <item name="label" xsi:type="string" translate="true">Petshop Code</item>
+                    <item name="sortOrder" xsi:type="string">112</item>
+                </item>
+                <!--<item name="options" xsi:type="array">-->
+                <!--<item name="1" xsi:type="array">-->
+                <!--<item name="label" xsi:type="string">猫を飼っている</item>-->
+                <!--<item name="value" xsi:type="string">1</item>-->
+                <!--</item>-->
+                <!--<item name="2" xsi:type="array">-->
+                <!--<item name="label" xsi:type="string">犬を飼っている</item>-->
+                <!--<item name="value" xsi:type="string">2</item>-->
+                <!--</item>-->
+                <!--<item name="3" xsi:type="array">-->
+                <!--<item name="label" xsi:type="string">犬も猫も飼っている</item>-->
+                <!--<item name="value" xsi:type="string">3</item>-->
+                <!--</item>-->
+                <!--<item name="4" xsi:type="array">-->
+                <!--<item name="label" xsi:type="string">ペットは飼っていない</item>-->
+                <!--<item name="value" xsi:type="string">4</item>-->
+                <!--</item>-->
+                <!--<item name="5" xsi:type="array">-->
+                <!--<item name="label" xsi:type="string">その他のペットを飼っている</item>-->
+                <!--<item name="value" xsi:type="string">5</item>-->
+                <!--</item>-->
+                <!--<item name="6" xsi:type="array">-->
+                <!--<item name="label" xsi:type="string">データを登録しない</item>-->
+                <!--<item name="value" xsi:type="string">6</item>-->
+                <!--</item>-->
+                <!--</item>-->
+            </argument>
+        </field>
+
+        <field name="PETSHOP_APPLICATION_DATE">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/jp_date_picker</item>
+                    <item name="formElement" xsi:type="string">date</item>
+                    <item name="customScope" xsi:type="string">PETSHOP_APPLICATION_DATE</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/date</item>
+                    <item name="sortOrder" xsi:type="string">113</item>
+                    <item name="label" xsi:type="string" translate="true">Petshop application date</item>
+                    <item name="dataScope" xsi:type="string">PETSHOP_APPLICATION_DATE</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="PETSHOP_AUTHORIZED_DATE">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/jp_date_picker</item>
+                    <item name="formElement" xsi:type="string">date</item>
+                    <item name="customScope" xsi:type="string">PETSHOP_AUTHORIZED_DATE</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/date</item>
+                    <item name="sortOrder" xsi:type="string">114</item>
+                    <item name="label" xsi:type="string" translate="true">Petshop authorized date</item>
+                    <item name="dataScope" xsi:type="string">PETSHOP_AUTHORIZED_DATE</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="PET_NAME">
+            <argument name="data" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/element/input</item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="customScope" xsi:type="string">PET_NAME</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                    <item name="sortOrder" xsi:type="string">115</item>
+                    <item name="label" xsi:type="string" translate="true">Pet name</item>
+                    <item name="dataScope" xsi:type="string">PET_NAME</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="max_text_length" xsi:type="number">20</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="PET_BREED">
+            <argument name="data" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/element/input</item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="customScope" xsi:type="string">PET_BREED</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                    <item name="sortOrder" xsi:type="string">116</item>
+                    <item name="label" xsi:type="string" translate="true">Pet type</item>
+                    <item name="dataScope" xsi:type="string">PET_BREED</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="max_text_length" xsi:type="number">100</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="PET_SEX">
+            <argument name="data" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/element/select</item>
+                <item name="config" xsi:type="array">
+                    <!-- Mandatory options. Required by the Field UI component -->
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="dataScope" xsi:type="string">PET_SEX</item>
+                    <!-- Optional checkbox-specific options -->
+                    <item name="label" xsi:type="string" translate="true">Pet gender</item>
+                    <item name="sortOrder" xsi:type="string">117</item>
+                </item>
+                <item name="options" xsi:type="array">
+                    <item name="0" xsi:type="array">
+                        <item name="label" xsi:type="string" translate="true">Undefined</item>
+                        <item name="value" xsi:type="string">0</item>
+                    </item>
+                    <item name="1" xsi:type="array">
+                        <item name="label" xsi:type="string" translate="true">Male</item>
+                        <item name="value" xsi:type="string">1</item>
+                    </item>
+                    <item name="2" xsi:type="array">
+                        <item name="label" xsi:type="string" translate="true">Female</item>
+                        <item name="value" xsi:type="string">2</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="PET_BIRTH_DT">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/jp_date_picker</item>
+                    <item name="formElement" xsi:type="string">date</item>
+                    <item name="customScope" xsi:type="string">PET_BIRTH_DT</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/date</item>
+                    <item name="sortOrder" xsi:type="string">118</item>
+                    <item name="label" xsi:type="string" translate="true">Pet birth date</item>
+                    <item name="dataScope" xsi:type="string">PET_BIRTH_DT</item>
+                </item>
+            </argument>
+        </field>
+
+
+        <field name="shosha_in_charge_kana">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-katakana" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="invoice_postode">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-custom-postal-code" xsi:type="string">true</item>
+                    </item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="invoice_address1">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="invoice_address2">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="invoice_address1_kana">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-katakana" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="invoice_address2_kana">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-katakana" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="shosha_phone">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-phone-number" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="shosha_in_charge">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <!--<field name="shosha_code">-->
+        <!--<argument name="data" xsi:type="array">-->
+        <!--<item name="js_config" xsi:type="array">-->
+        <!--<item name="extends" xsi:type="string">input</item>-->
+        <!--</item>-->
+        <!--<item name="config" xsi:type="array">-->
+        <!--<item name="component" xsi:type="string">Riki_Customer/js/form/element/shosha-input</item>-->
+        <!--<item name="formElement" xsi:type="string">select</item>-->
+        <!--</item>-->
+        <!--</argument>-->
+        <!--</field>-->
+        <field name="shosha_dept_kana">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-katakana" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="shosha_dept">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="shosha_cmp_kana">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-katakana" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="shosha_code">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">select</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="shosha_first_code">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">select</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="shosha_second_code">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">select</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="shosha_comission">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-commission" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+
+        <!--Ambassador-->
+        <field name="EMPLOYEES">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-input</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="customScope" xsi:type="string">EMPLOYEES</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                    <item name="sortOrder" xsi:type="string">540</item>
+                    <item name="label" xsi:type="string">Number of amb office members</item>
+                    <item name="dataScope" xsi:type="string">EMPLOYEES</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-number" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="COM_POSTAL_CODE">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-post-code</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="customScope" xsi:type="string">COM_POSTAL_CODE</item>
+                    <item name="elementTmpl" xsi:type="string">Riki_ZipcodeValidation/form/element/input-postcode</item>
+                    <item name="sortOrder" xsi:type="string">541</item>
+                    <item name="label" xsi:type="string" translate="true">Amb company zipcode</item>
+                    <item name="dataScope" xsi:type="string">COM_POSTAL_CODE</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-postal-code-format" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="COM_ADDRESS1">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Riki\Customer\Model\ResourceModel\AmbAddress\Region</item>
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">select</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-prefecture-select</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="customScope" xsi:type="string">COM_ADDRESS1</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/select</item>
+                    <item name="sortOrder" xsi:type="string">542</item>
+                    <item name="label" xsi:type="string" translate="true">Amb company prefecture</item>
+                    <item name="dataScope" xsi:type="string">COM_ADDRESS1</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="COM_ADDRESS2">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-input</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="customScope" xsi:type="string">COM_ADDRESS2</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                    <item name="sortOrder" xsi:type="string">543</item>
+                    <item name="label" xsi:type="string" translate="true">Amb company address 2</item>
+                    <item name="dataScope" xsi:type="string">COM_ADDRESS2</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="COM_ADDRESS3">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-input</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="customScope" xsi:type="string">COM_ADDRESS3</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                    <item name="sortOrder" xsi:type="string">544</item>
+                    <item name="label" xsi:type="string" translate="true">Amb company address 3</item>
+                    <item name="dataScope" xsi:type="string">COM_ADDRESS3</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="COM_ADDRESS4">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-input</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="customScope" xsi:type="string">COM_ADDRESS4</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                    <item name="sortOrder" xsi:type="string">545</item>
+                    <item name="label" xsi:type="string" translate="true">Amb company address 4</item>
+                    <item name="dataScope" xsi:type="string">COM_ADDRESS4</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="NJL_CHARGE_COMPANY">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-input</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="customScope" xsi:type="string">NJL_CHARGE_COMPANY</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                    <item name="sortOrder" xsi:type="string">549</item>
+                    <item name="label" xsi:type="string">njl company name</item>
+                    <item name="dataScope" xsi:type="string">NJL_CHARGE_COMPANY</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-double_byte" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="NJL_CHARGE">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-input</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="customScope" xsi:type="string">NJL_CHARGE</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                    <item name="sortOrder" xsi:type="string">550</item>
+                    <item name="label" xsi:type="string">njl person in charge</item>
+                    <item name="dataScope" xsi:type="string">NJL_CHARGE</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-double_byte" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+         <field name="CHARGE_PERSON">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-input</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="customScope" xsi:type="string">CHARGE_PERSON</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                    <item name="sortOrder" xsi:type="string">570</item>
+                    <item name="label" xsi:type="string">Name of person in charge</item>
+                    <item name="dataScope" xsi:type="string">CHARGE_PERSON</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-double_byte" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="AMB_REFERENCE_CUS_CODE">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-input</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="customScope" xsi:type="string">AMB_REFERENCE_CUS_CODE</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                    <item name="sortOrder" xsi:type="string">580</item>
+                    <item name="label" xsi:type="string">Introducer id</item>
+                    <item name="dataScope" xsi:type="string">AMB_REFERENCE_CUS_CODE</item>
+                </item>
+            </argument>
+        </field>
+
+
+        <field name="INTRODUCER_E_MAIL">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-input</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="customScope" xsi:type="string">INTRODUCER_E_MAIL</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                    <item name="sortOrder" xsi:type="string">600</item>
+                    <item name="label" xsi:type="string">Introducer email</item>
+                    <item name="dataScope" xsi:type="string">INTRODUCER_E_MAIL</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-email" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="DAY_CONTACT_TEL">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-input</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="customScope" xsi:type="string">DAY_CONTACT_TEL</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                    <item name="sortOrder" xsi:type="string">610</item>
+                    <item name="label" xsi:type="string">Convenience phone number</item>
+                    <item name="dataScope" xsi:type="string">DAY_CONTACT_TEL</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-phone-number" xsi:type="boolean">true</item>
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+
+
+        <field name="AMB_APPLICATION_DATE">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">date</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-date</item>
+                    <item name="formElement" xsi:type="string">date</item>
+                    <item name="customScope" xsi:type="string">AMB_APPLICATION_DATE</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/date</item>
+                    <item name="sortOrder" xsi:type="string">620</item>
+                    <item name="label" xsi:type="string">Amb application date</item>
+                    <item name="dataScope" xsi:type="string">AMB_APPLICATION_DATE</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="AMB_STOP_DATE">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">date</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb_resignment_date</item>
+                    <item name="formElement" xsi:type="string">date</item>
+                    <item name="customScope" xsi:type="string">AMB_STOP_DATE</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/date</item>
+                    <item name="sortOrder" xsi:type="string">630</item>
+                    <item name="label" xsi:type="string">Amb resignment date</item>
+                    <item name="dataScope" xsi:type="string">AMB_STOP_DATE</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="AMB_STOP_REASON">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">textarea</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <!-- customScope is used to group elements within a single form (e.g. they can be validated separately) -->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb_resignment_reason</item>
+                    <item name="formElement" xsi:type="string">textarea</item>
+                    <item name="customScope" xsi:type="string">AMB_STOP_REASON</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/textarea</item>
+                    <item name="sortOrder" xsi:type="string">640</item>
+                    <item name="label" xsi:type="string">Amb resignment reason</item>
+                    <item name="dataScope" xsi:type="string">AMB_STOP_REASON</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="amb_com_name">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">541</item>
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-input</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <!--<item name="required-entry" xsi:type="boolean">true</item>-->
+                        <item name="validate-double_byte" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="amb_com_division_name">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">542</item>
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-input</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-double_byte" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+
+        <field name="REQUEST_COURSE_TYPE">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">select</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">543</item>
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-input-read-only</item>
+                    <item name="customScope" xsi:type="string">REQUEST_COURSE_TYPE</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Application course name</item>
+                </item>
+
+                <item name="options" xsi:type="array">
+                    <item name="6" xsi:type="array">
+                        <item name="label" xsi:type="string" translate="true">None</item>
+                        <item name="value" xsi:type="string"></item>
+                    </item>
+                    <item name="0" xsi:type="array">
+                        <item name="label" xsi:type="string" translate="true">Barista course</item>
+                        <item name="value" xsi:type="string">0</item>
+                    </item>
+                    <item name="1" xsi:type="array">
+                        <item name="label" xsi:type="string" translate="true">Barista &amp; Dolche course</item>
+                        <item name="value" xsi:type="string">1</item>
+                    </item>
+                    <item name="2" xsi:type="array">
+                        <item name="label" xsi:type="string" translate="true">Barista &amp; Special.T course</item>
+                        <item name="value" xsi:type="string">2</item>
+                    </item>
+                    <item name="3" xsi:type="array">
+                        <item name="label" xsi:type="string" translate="true">Barista  Dolche &amp; Special. course</item>
+                        <item name="value" xsi:type="string">3</item>
+                    </item>
+                    <item name="4" xsi:type="array">
+                        <item name="label" xsi:type="string" translate="true">Summer Campaign Barista &amp; Refrigerator course</item>
+                        <item name="value" xsi:type="string">4</item>
+                    </item>
+                    <item name="5" xsi:type="array">
+                        <item name="label" xsi:type="string" translate="true">Summer Campaign Barista &amp; IceMachine course</item>
+                        <item name="value" xsi:type="string">5</item>
+                    </item>
+
+                </item>
+            </argument>
+        </field>
+        <field name="amb_ph_num">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">input</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">544</item>
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-input</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-phone-number" xsi:type="boolean">true</item>
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+
+        <!-- Additional AMB -->
+        <field name="AMB_FRIENDS" >
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">select</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <!--customScope is used to group elements within a single form (e.g. they can be validated separately)-->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-boolean</item>
+                    <item name="formElement" xsi:type="string">checkbox</item>
+                    <item name="template" xsi:type="string">ui/form/field_checkbox</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/checkbox</item>
+                    <item name="label" xsi:type="string" translate="true">Membership - FriendAmbassador</item>
+                    <!--<item name="sortOrder" xsi:type="string"></item>-->
+                </item>
+            </argument>
+        </field>
+
+        <field name="SATELLITE_AMB" >
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">select</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <!--customScope is used to group elements within a single form (e.g. they can be validated separately)-->
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-boolean</item>
+                    <item name="formElement" xsi:type="string">checkbox</item>
+                    <item name="template" xsi:type="string">ui/form/field_checkbox</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/checkbox</item>
+                    <item name="label" xsi:type="string" translate="true">Membership - SatelliteAmbassador</item>
+                    <!--<item name="sortOrder" xsi:type="string"></item>-->
+                </item>
+            </argument>
+        </field>
+
+        <!-- END Additional AMB -->
+        <!-- AMB Machine status -->
+        <field name="LENDING_STATUS_NBA">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">select</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">710</item>
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-machine</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Machine rental status (Barista)</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="LENDING_STATUS_NDG">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">select</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">720</item>
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-machine</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Machine rental status (Dolce gusto)</item>
+                </item>
+
+            </argument>
+        </field>
+
+        <field name="LENDING_STATUS_SPT">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">select</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">730</item>
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-machine</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Machine rental status (Special T)</item>
+                </item>
+
+            </argument>
+        </field>
+        <field name="LENDING_STATUS_ICS">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">select</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">740</item>
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-machine</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Machine rental status (BLC)</item>
+                </item>
+
+            </argument>
+        </field>
+        <field name="LENDING_STATUS_NSP">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">select</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">750</item>
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-machine</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Machine rental status (Nespresso)</item>
+                </item>
+
+            </argument>
+        </field>
+        <field name="LENDING_STATUS_DUO">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="extends" xsi:type="string">select</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">760</item>
+                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-machine</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Machine rental status (DUO)</item>
+                </item>
+            </argument>
+        </field>
+        <!-- AMB Machine status END -->
+        <!--Ambassador END-->
+
+        <!--PASSWORD-->
+        <field name="KEY_PASSWORD">
+            <argument name="data" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/element/input</item>
+                <item name="config" xsi:type="array">
+                    <!--customScope is used to group elements within a single form (e.g. they can be validated separately)-->
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="customScope" xsi:type="string">KEY_PASSWORD</item>
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                    <item name="dataScope" xsi:type="string">KEY_PASSWORD</item>
+                    <item name="label" xsi:type="string">Password</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <!--END-->
+
+<!--        New field WELLNESSCLUB_AMB for m2.3-->
+        <field name="WELLNESSCLUB_AMB" component="Magento_Ui/js/form/element/boolean" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/form/element/checkbox</elementTmpl>
+                <dataType>boolean</dataType>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <description translate="true">Membership - WellnessAmbassador</description>
+                        <prefer>checkbox</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+<!--        End new field WELLNESSCLUB_AMB for m2.3-->
+
+<!--        <field name="WELLNESSCLUB_AMB" >-->
+<!--            <argument name="data" xsi:type="array">-->
+<!--                <item name="js_config" xsi:type="array">-->
+<!--                    <item name="extends" xsi:type="string">select</item>-->
+<!--                </item>-->
+<!--                <item name="config" xsi:type="array">-->
+<!--                    &lt;!&ndash;customScope is used to group elements within a single form (e.g. they can be validated separately)&ndash;&gt;-->
+<!--&lt;!&ndash;                    <item name="component" xsi:type="string">Riki_Customer/js/form/element/amb-boolean</item>&ndash;&gt;-->
+<!--                    <item name="formElement" xsi:type="string">checkbox</item>-->
+<!--                    <item name="template" xsi:type="string">ui/form/field_checkbox</item>-->
+<!--                    <item name="elementTmpl" xsi:type="string">ui/form/element/checkbox</item>-->
+<!--                    <item name="label" xsi:type="string" translate="true">Membership - WellnessAmbassador </item>-->
+<!--&lt;!&ndash;                    <item name="dataScope" xsi:type="string">WELLNESSCLUB_AMB</item>&ndash;&gt;-->
+<!--                    <item name="source" xsi:type="string">customer</item>-->
+<!--&lt;!&ndash;                    <item name="sortOrder" xsi:type="string"></item>&ndash;&gt;-->
+<!--                </item>-->
+<!--            </argument>-->
+<!--        </field>-->
+
+        <field name="ALLEGRIA_STATUS" component="Magento_Ui/js/form/element/boolean" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/form/element/checkbox</elementTmpl>
+                <dataType>boolean</dataType>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <description translate="true">Membership - ALEGRIA</description>
+                        <prefer>checkbox</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="CHOCOLLATORY_FLG" component="Magento_Ui/js/form/element/boolean" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/form/element/checkbox</elementTmpl>
+                <dataType>boolean</dataType>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <description translate="true">Membership - Chocolatory</description>
+                        <prefer>checkbox</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="KITKAT_CLUB_FLG" component="Magento_Ui/js/form/element/boolean" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/form/element/checkbox</elementTmpl>
+                <dataType>boolean</dataType>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <description translate="true">Membership - Kitkat</description>
+                        <prefer>checkbox</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="MILANO_STATUS" component="Magento_Ui/js/form/element/boolean" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/form/element/checkbox</elementTmpl>
+                <dataType>boolean</dataType>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <description translate="true">Membership - MILANO</description>
+                        <prefer>checkbox</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="SATELLITE_FLG" component="Magento_Ui/js/form/element/boolean" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/form/element/checkbox</elementTmpl>
+                <dataType>boolean</dataType>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <description translate="true">Membership - Satellite</description>
+                        <prefer>checkbox</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="NescafeStandFlg" component="Magento_Ui/js/form/element/boolean" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">customer</item>
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/form/element/checkbox</elementTmpl>
+                <dataType>boolean</dataType>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <description translate="true">Membership - NescafeStand</description>
+                        <prefer>checkbox</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <!-- END Membership -->
+    </fieldset>
+    <fieldset name="address">
+        <field name="firstname">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">25</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="max_text_length" xsi:type="number">25</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="firstnamekana">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">35</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="max_text_length" xsi:type="number">35</item>
+                        <item name="validate-katakana" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="lastname">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!--<item name="sortOrder" xsi:type="string">40</item>-->
+                </item>
+            </argument>
+        </field>
+
+        <field name="lastnamekana">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="validation" xsi:type="array">
+                        <item name="max_text_length" xsi:type="number">40</item>
+                        <item name="validate-katakana" xsi:type="boolean">true</item>
+                    </item>
+                    <!--<item name="sortOrder" xsi:type="string">41</item>-->
+                </item>
+            </argument>
+        </field>
+        <field name="riki_nickname">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="max_text_length" xsi:type="number">20</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="city">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="max_text_length" xsi:type="number">30</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <container name="street_container">
+            <field name="street">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataScope" xsi:type="string">0</item>
+                        <item name="dataType" xsi:type="string">text</item>
+                        <item name="formElement" xsi:type="string">input</item>
+                        <item name="source" xsi:type="string">address</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                </argument>
+            </field>
+        </container>
+        <field name="apartment">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="max_text_length" xsi:type="number">40</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="string">45</item>
+                </item>
+            </argument>
+        </field>
+        <field name="telephone">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">address</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-phone-number" xsi:type="boolean">true</item>
+                        <item name="max_text_length" xsi:type="number">16</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="suffix">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">address</item>
+                    <item name="sortOrder" xsi:type="string">41</item>
+                </item>
+            </argument>
+        </field>
+        <field name="company">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">address</item>
+                    <item name="sortOrder" xsi:type="string">42</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="min_text_length" xsi:type="number">0</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <container name="street_container">
+            <argument name="data" xsi:type="array">
+                <item name="type" xsi:type="string">group</item>
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/form/components/group</item>
+                    <item name="label" xsi:type="string" translate="true">Street Address</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="dataScope" xsi:type="string">street</item>
+                    <item name="sortOrder" xsi:type="string">47</item>
+                </item>
+            </argument>
+            <field name="street">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataScope" xsi:type="string">0</item>
+                        <item name="dataType" xsi:type="string">text</item>
+                        <item name="formElement" xsi:type="string">input</item>
+                        <item name="source" xsi:type="string">address</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                            <item name="validate-double_byte" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                </argument>
+            </field>
+            <field name="street_second">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="visible" xsi:type="boolean">false</item>
+                        <item name="dataScope" xsi:type="string">1</item>
+                        <item name="dataType" xsi:type="string">text</item>
+                        <item name="formElement" xsi:type="string">input</item>
+                        <item name="source" xsi:type="string">address</item>
+                    </item>
+                </argument>
+            </field>
+        </container>
+        <field name="country_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">address</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="string">42</item>
+                </item>
+            </argument>
+        </field>
+        <field name="region">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">address</item>
+                </item>
+            </argument>
+        </field>
+        <field name="region_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">address</item>
+                    <item name="customEntry" xsi:type="string">region</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="filterBy" xsi:type="array">
+                        <item name="target" xsi:type="string">${ $.provider }:${ $.parentScope }.country_id</item>
+                        <item name="field" xsi:type="string">country_id</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="string">43</item>
+                </item>
+            </argument>
+        </field>
+        <field name="vat_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="prefix">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="middlename">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </field>
+        <field name="postcode">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="string">40</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+
+</form>

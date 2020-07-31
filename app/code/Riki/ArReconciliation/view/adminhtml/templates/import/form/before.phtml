@@ -1,0 +1,140 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+?>
+<?php
+/** @var $block \Magento\ImportExport\Block\Adminhtml\Import\Edit\Before */
+?>
+<script type="text/javascript">
+require([
+    'jquery',
+    'Magento_Ui/js/modal/alert',
+    'prototype'
+], function(jQuery, alert){
+
+//<![CDATA[
+    // Temporary Class will be replaced after refactoring of import/export functionality
+    varienImport = {
+        
+        ifrElemName: 'import_post_target_frame',
+
+        postToFrame: function(newActionUrl) {
+           
+            if (!jQuery('[name="' + this.ifrElemName + '"]').length) {
+                jQuery('body').append('<iframe name="' + this.ifrElemName + '" id="' + this.ifrElemName
+                    + '" style="display:none;"/>');
+            }
+            jQuery('body')
+                .loader({
+                    icon: jQuery('#loading_mask_loader img').attr('src')
+                })
+                .loader('show');
+            var form = jQuery('#edit_form')
+                .one('invalid-form.validate', function(e){jQuery('body').loader('hide')});
+            newActionUrl = (newActionUrl ? newActionUrl : form.attr('action')) +
+                (form.attr('action').lastIndexOf('?') != -1 ? '&' : '?')+
+                'form_key=' + encodeURIComponent(form.find('[name="form_key"]').val());
+            form.trigger('save', [{
+                action: newActionUrl,
+                target: this.ifrElemName
+            }]);
+        },
+
+        /**
+         * Actions after data post complete. Hide load mask, remove iframe, run response processing method.
+         * @param {Object} response
+         */
+        postToFrameComplete: function(response) {
+            jQuery('body').loader('hide');
+            jQuery('#' + this.ifrElemName).remove();
+            this.postToFrameProcessResponse(response);
+        },
+
+        /**
+         * Process response JSON.
+         * @param {Object} response
+         */
+        postToFrameProcessResponse: function(response) {
+            if ('object' != typeof(response)) {
+                alert({
+                    content: 'Invalid response'
+                });
+
+                return false;
+            }
+            $H(response).each(function(pair) {
+                switch (pair.key) {
+                    case 'show':
+                    case 'clear':
+                    case 'hide':
+                        $H(pair.value).each(function(val) {
+                            if ($(val.value)) {
+                                $(val.value)[pair.key]();
+                            }
+                        });
+                        break;
+                    case 'innerHTML':
+                    case 'value':
+                        $H(pair.value).each(function(val) {
+                            var el = $(val.key);
+                            if (el) {
+                                el[pair.key] = val.value;
+                                // if element does not visible
+                                el.offsetWidth || el.up('div.entry-edit').show();
+                            }
+                        });
+                        break;
+                    case 'removeClassName':
+                    case 'addClassName':
+                        $H(pair.value).each(function(val) {
+                            if ($(val.key)) $(val.key)[pair.key](val.value);
+                        });
+                        break;
+                    default:
+                        alert({
+                            content: pair.key + ': ' + pair.value
+                        });
+                        break;
+                }
+            });
+        },
+
+        /**
+         * Send form data to Start action when file is validated.
+         * @param {string} newActionUrl
+         * @param {string} sourceFileField
+         */
+        startImport: function(newActionUrl, sourceFileField) {
+            jQuery('#' + sourceFileField).removeClass('required-entry');
+            this.postToFrame(newActionUrl);
+            jQuery('#' + sourceFileField).addClass('required-entry');
+        },
+
+        /*redirect current page to success page after save*/
+        redirectAfterSave: function(redirectUrl) {
+            window.location.href = redirectUrl;
+        },
+
+        hideValidateForm: function () {
+            jQuery('#import_validation_container').css('display', 'none');
+            jQuery('#import_validation_messages').html('');
+        }
+    };
+
+    jQuery('#edit_form #page_payment_type').on('change',function () {
+        varienImport.hideValidateForm();
+    })
+
+    jQuery('#edit_form #page_csv_file').on('change',function () {
+        varienImport.hideValidateForm();
+    })
+
+
+//]]>
+
+});
+</script>

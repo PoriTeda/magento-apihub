@@ -1,0 +1,15 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!-- ko if: pointAmount() > 0 -->
+<tr class="totals rewards point-used">
+    <th class="mark" colspan="1" scope="row" data-bind="text: title"></th>
+    <td class="amount" colspan="1">
+        <span class="price" data-bind="text: pointAmount()"></span>
+        <span data-bind="i18n: 'Point'"></span>
+    </td>
+</tr>
+<!-- /ko -->

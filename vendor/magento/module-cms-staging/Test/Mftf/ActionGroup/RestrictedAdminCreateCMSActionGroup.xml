@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="../../../../../../../dev/tests/acceptance/vendor/magento/magento2-functional-testing-framework/src/Magento/FunctionalTestingFramework/Test/etc/actionGroupSchema.xsd">
+
+    <!--Go To Stores/All Stores-->
+    <actionGroup name="GoToAllStores" >
+        <click selector="{{AdminNewWebsiteSection.stores}}" stepKey="clickOnStoresfromDashboard"/>
+        <waitForPageLoad stepKey="waitForPageIsLoaded"/>
+        <click selector="{{AdminNewWebsiteSection.allStores}}" stepKey="chooseAllStoreItem"/>
+        <waitForPageLoad stepKey="waitForStoresPageIsLoaded"/>
+    </actionGroup>
+
+    <!--Create new website-->
+    <actionGroup name="AdminCreateWebsite">
+        <arguments>
+            <argument name="newWebsiteName" type="string"/>
+            <argument name="websiteCode" type="string"/>
+        </arguments>
+        <!--Fill required fields-->
+        <click selector="{{AdminNewWebsiteSection.addWebSite}}" stepKey="clickOnCreateWebsiteButton"/>
+        <waitForPageLoad stepKey="waitFormToBeOpened"/>
+        <fillField selector="{{AdminNewWebsiteSection.name}}" userInput="{{newWebsiteName}}" stepKey="enterWebsiteName" />
+        <fillField selector="{{AdminNewWebsiteSection.code}}" userInput="{{websiteCode}}" stepKey="enterWebsiteCode" />
+        <click selector="{{AdminNewWebsiteActionsSection.saveWebsite}}" stepKey="clickSaveWebsite" />
+        <waitForElementVisible selector="{{AdminStoresGridSection.websiteFilterTextField}}" stepKey="waitForStoreGridToReload"/>
+        <see userInput="You saved the website." stepKey="seeSavedMessage" />
+    </actionGroup>
+
+    <!--Create new store-->
+    <actionGroup name="AdminCreateNewStore">
+        <arguments>
+            <argument name="website" type="string"/>
+            <argument name="storeGroupName" type="string"/>
+            <argument name="storeGroupCode" type="string"/>
+        </arguments>
+        <!--Fill required fields-->
+        <click selector="{{AdminNewStoreGroupSection.create}}" stepKey="clickOnCreateStore"/>
+        <waitForPageLoad stepKey="waitFormToBeOpened"/>
+        <selectOption selector="{{AdminNewStoreGroupSection.storeGrpWebsiteDropdown}}" userInput="{{website}}" stepKey="selectWebsite" />
+        <fillField selector="{{AdminNewStoreGroupSection.storeGrpNameTextField}}" userInput="{{storeGroupName}}" stepKey="enterStoreGroupName" />
+        <fillField selector="{{AdminNewStoreGroupSection.storeGrpCodeTextField}}" userInput="{{storeGroupCode}}" stepKey="enterStoreGroupCode" />
+        <selectOption selector="{{AdminNewStoreGroupSection.storeRootCategoryDropdown}}" userInput="Default Category" stepKey="chooseRootCategory" />
+        <click selector="{{AdminStoreGroupActionsSection.saveButton}}" stepKey="clickSaveStoreGroup" />
+        <waitForElementVisible selector="{{AdminStoresGridSection.storeGrpFilterTextField}}" stepKey="waitForStoreGridReload"/>
+        <see userInput="You saved the store." stepKey="seeSavedMessage" />
+    </actionGroup>
+
+    <!--Create store view-->
+    <actionGroup name="AdminCreateStoreView">
+        <arguments>
+            <argument name="StoreGroup" defaultValue="_defaultStoreGroup"/>
+            <argument name="customStore" defaultValue="customStore"/>
+        </arguments>
+        <!--Fill required fields-->
+        <click selector="{{AdminNewStoreSection.create}}" stepKey="clickOnCreateStoreView"/>
+        <waitForPageLoad stepKey="waitFormToBeOpened"/>
+        <selectOption selector="{{AdminNewStoreSection.storeGrpDropdown}}" userInput="{{StoreGroup.name}}" stepKey="selectStore" />
+        <fillField selector="{{AdminNewStoreSection.storeNameTextField}}" userInput="{{customStore.name}}" stepKey="enterStoreViewName" />
+        <fillField selector="{{AdminNewStoreSection.storeCodeTextField}}" userInput="{{customStore.code}}" stepKey="enterStoreViewCode" />
+        <selectOption selector="{{AdminNewStoreSection.statusDropdown}}" userInput="Enabled" stepKey="setStatus" />
+        <click selector="{{AdminNewStoreViewActionsSection.saveButton}}" stepKey="clickSaveStoreView" />
+        <waitForElementVisible selector="{{AdminConfirmationModalSection.ok}}" stepKey="waitForModal" />
+        <see selector="{{AdminConfirmationModalSection.title}}" userInput="Warning message" stepKey="seeWarning" />
+        <click selector="{{AdminConfirmationModalSection.ok}}" stepKey="dismissModal" />
+        <waitForElementVisible selector="{{AdminStoresGridSection.storeFilterTextField}}" stepKey="waitForPageReload"/>
+        <see userInput="You saved the store view." stepKey="seeSavedMessage" />
+    </actionGroup>
+
+    <!--Go to System/Roles-->
+    <actionGroup name="GoToUserRoles">
+        <click selector="#menu-magento-backend-system" stepKey="clickOnSystemIcon"/>
+        <waitForPageLoad stepKey="waitForSystemsPageToOpen"/>
+        <click selector="//span[contains(text(), 'User Roles')]" stepKey="clickToSelectUserRoles"/>
+        <waitForPageLoad stepKey="waitForUserRolesPageToOpen"/>
+    </actionGroup>
+
+    <!--Create new role-->
+    <actionGroup name="AdminCreateRole">
+        <arguments>
+            <argument name="role" type="string" defaultValue=""/>
+            <argument name="resource" type="string" defaultValue="All"/>
+            <argument name="scope" type="string" defaultValue="Custom"/>
+            <argument name="websites" defaultValue="Main Website"/>
+        </arguments>
+        <click selector="{{AdminCreateRoleSection.create}}" stepKey="clickToAddNewRole"/>
+        <fillField selector="{{AdminCreateRoleSection.name}}" userInput="{{role}}" stepKey="setRoleName"/>
+        <fillField stepKey="setPassword" selector="{{AdminCreateRoleSection.password}}" userInput="{{_ENV.MAGENTO_ADMIN_PASSWORD}}"/>
+        <click selector="{{AdminCreateRoleSection.roleResources}}" stepKey="clickToOpenRoleResources"/>
+        <waitForPageLoad stepKey="waitForRoleResourcePage"/>
+        <click selector="{{AdminCreateRoleSection.roleResource}}" stepKey="clickToExpandResourceAccess"/>
+        <click selector="{{AdminCreateRoleSection.resourceValue(scope)}}" stepKey="clickToSelectResourceAccess"/>
+        <click selector="{{AdminCreateRoleSection.roleScope}}" stepKey="clickToExpandScopeAccess"/>
+        <click selector="{{AdminCreateRoleSection.scopeValue(resource)}}" stepKey="clickToSelectScopeAccess"/>
+        <click selector="{{AdminCreateRoleSection.website(websites)}}" stepKey="clickToSelectWebsite"/>
+        <click selector="{{AdminCreateRoleSection.save}}" stepKey="clickToSaveRole"/>
+        <waitForPageLoad stepKey="waitForPageLoad" />
+        <see userInput="You saved the role." stepKey="seeSuccessMessage" />
+    </actionGroup>
+
+    <!--Go to all users-->
+    <actionGroup name="GoToAllUser">
+        <click selector="{{AdminCreateUserSection.system}}" stepKey="clickOnSystemIcon"/>
+        <waitForPageLoad stepKey="waitForSystemsPageToOpen"/>
+        <click selector="{{AdminCreateUserSection.allUsers}}" stepKey="clickToSelectUserRoles"/>
+        <waitForPageLoad stepKey="waitForUserRolesPageToOpen"/>
+    </actionGroup>
+
+    <!--Create new user with specified role-->
+    <actionGroup name="AdminCreateUser">
+        <arguments>
+            <argument name="role"/>
+            <argument name="User" defaultValue="newAdmin"/>
+        </arguments>
+        <click selector="{{AdminCreateUserSection.create}}" stepKey="clickToCreateNewUser"/>
+        <fillField selector="{{AdminCreateUserSection.usernameTextField}}" userInput="{{newAdmin.username}}" stepKey="enterUserName" />
+        <fillField selector="{{AdminCreateUserSection.firstNameTextField}}" userInput="{{newAdmin.firstName}}" stepKey="enterFirstName" />
+        <fillField selector="{{AdminCreateUserSection.lastNameTextField}}" userInput="{{newAdmin.lastName}}" stepKey="enterLastName" />
+        <fillField selector="{{AdminCreateUserSection.emailTextField}}" userInput="{{newAdmin.username}}@magento.com" stepKey="enterEmail" />
+        <fillField selector="{{AdminCreateUserSection.passwordTextField}}" userInput="{{newAdmin.password}}" stepKey="enterPassword" />
+        <fillField selector="{{AdminCreateUserSection.pwConfirmationTextField}}" userInput="{{newAdmin.password}}" stepKey="confirmPassword" />
+        <fillField selector="{{AdminCreateUserSection.currentPasswordField}}" userInput="{{_ENV.MAGENTO_ADMIN_PASSWORD}}" stepKey="enterCurrentPassword" />
+        <scrollToTopOfPage stepKey="scrollToTopOfPage" />
+        <click selector="{{AdminCreateUserSection.userRoleTab}}" stepKey="clickUserRole" />
+        <fillField selector="{{AdminCreateRoleSection.roleNameFilterTextField}}" userInput="{{role.name}}" stepKey="filterRole" />
+        <click selector="{{AdminCreateRoleSection.searchButton}}" stepKey="clickSearch" />
+        <waitForLoadingMaskToDisappear stepKey="waitForLoadingMaskToDisappear1"/>
+        <click selector="{{AdminCreateRoleSection.searchResultFirstRow}}" stepKey="selectRole" />
+        <click selector="{{AdminCreateUserSection.saveButton}}" stepKey="clickSaveUser" />
+        <waitForPageLoad stepKey="waitForPageLoad2" />
+        <see userInput="You saved the user." stepKey="seeSuccessMessage" />
+    </actionGroup>
+    <!--GO to blocks-->
+    <actionGroup name="goToBlocks">
+        <click selector="{{CmsNewPageSection.content}}" stepKey="clickOnContentIcon"/>
+        <waitForPageLoad stepKey="waitForSystemsPageToOpen"/>
+        <click selector="{{CmsNewPageSection.blocks}}" stepKey="clickToSelectBlocks"/>
+        <waitForPageLoad stepKey="waitForUserRolesPageToOpen"/>
+    </actionGroup>
+
+    <!--Create CMS Block by restricted admin-->
+    <actionGroup name="RestrictedAdminCreateCMSActionGroup">
+        <arguments>
+            <argument name="title" type="string" defaultValue=""/>
+            <argument name="id" type="string" defaultValue=""/>
+            <argument name="storeView" type="string" defaultValue=""/>
+        </arguments>
+        <click selector="{{CmsNewPageSection.create}}" stepKey="clockToCreateBlock"/>
+        <waitForPageLoad stepKey="waitForBlockFormLoaded"/>
+        <fillField selector="{{CmsNewPageSection.block}}" userInput="{{title}}" stepKey="setBlockTitle"/>
+        <fillField selector="{{CmsNewPageSection.id}}" userInput="{{title}}" stepKey="setIdentifier"/>
+        <click selector="{{CmsNewPageSection.storeView(storeView)}}" stepKey="selectStoreView"/>
+        <waitForPageLoad stepKey="WaitForFrame"/>
+        <switchToIFrame selector="{{CmsNewPageSection.frame}}" stepKey="switchToFrame"/>
+        <fillField selector="{{CmsNewPageSection.description}}" userInput="description" stepKey="addDescription"/>
+        <switchToIFrame stepKey="switchBackToWindow"/>
+        <click selector="{{CmsNewPageSection.save}}" stepKey="saveBlock"/>
+        <waitForPageLoad stepKey="waitForPageLoad"/>
+        <see userInput="You saved the block." stepKey="seeSuccessMessage" />
+    </actionGroup>
+
+    <!--Sign out-->
+    <actionGroup name="SignOut">
+        <click selector="{{SignOutSection.admin}}" stepKey="clickToAdminProfile"/>
+        <click selector="{{SignOutSection.logout}}" stepKey="clickToLogOut"/>
+        <waitForPageLoad stepKey="waitForPageLoad" />
+        <see userInput="You have logged out." stepKey="seeSuccessMessage" />
+    </actionGroup>
+
+    <!--Login as any user-->
+    <actionGroup name="LoginAsAnyUser">
+        <arguments>
+            <argument name="uname" type="string" defaultValue="{{_ENV.MAGENTO_ADMIN_USERNAME}}"/>
+            <argument name="passwd" type="string" defaultValue="{{_ENV.MAGENTO_ADMIN_PASSWORD}}"/>
+        </arguments>
+        <amOnPage url="{{_ENV.MAGENTO_BACKEND_NAME}}" stepKey="navigateToAdmin"/>
+        <fillField userInput="{{uname}}" selector="{{LoginFormSection.username}}" stepKey="fillUsername"/>
+        <fillField userInput="{{passwd}}" selector="{{LoginFormSection.password}}" stepKey="fillPassword"/>
+        <click selector="{{LoginFormSection.signIn}}" stepKey="clickLogin"/>
+    </actionGroup>
+
+    <actionGroup name="AdminDeleteWebsite">
+        <arguments>
+            <argument name="websiteName" type="string"/>
+        </arguments>
+        <fillField stepKey="fillSearchWebsiteField" selector="{{AdminStoresGridSection.websiteFilterTextField}}" userInput="{{websiteName}}"/>
+        <click stepKey="clickSearchButton" selector="{{AdminStoresGridSection.searchButton}}"/>
+        <see stepKey="verifyThatCorrectWebsiteFound" selector="{{AdminStoresGridSection.websiteNameInFirstRow}}" userInput="{{websiteName}}"/>
+        <click stepKey="clickEditExistingStoreRow" selector="{{AdminStoresGridSection.websiteNameInFirstRow}}"/>
+        <waitForPageLoad stepKey="waitForStoreToLoad"/>
+        <click stepKey="clickDeleteWebsiteButtonOnEditWebsitePage" selector="{{AdminStoresMainActionsSection.deleteButton}}"/>
+        <selectOption stepKey="setCreateDbBackupToNo" selector="{{AdminStoresDeleteStoreGroupSection.createDbBackup}}" userInput="No"/>
+        <click stepKey="clickDeleteWebsiteButton" selector="{{AdminStoresDeleteStoreGroupSection.deleteStoreGroupButton}}"/>
+        <waitForElementVisible stepKey="waitForStoreGridToReload" selector="{{AdminStoresGridSection.websiteFilterTextField}}"/>
+        <see stepKey="seeSavedMessage" userInput="You deleted the website."/>
+    </actionGroup>
+
+    <actionGroup name="AdminDeleteRoleActionGroup">
+        <arguments>
+            <argument name="role" defaultValue=""/>
+        </arguments>
+        <click stepKey="clickToAddNewRole" selector="{{AdminDeleteRoleSection.role(role.name)}}"/>
+        <fillField stepKey="TypeCurrentPassword" selector="{{AdminDeleteRoleSection.current_pass}}" userInput="{{_ENV.MAGENTO_ADMIN_PASSWORD}}"/>
+        <click stepKey="clickToDeleteRole" selector="{{AdminDeleteRoleSection.delete}}"/>
+        <click stepKey="clickToConfirm" selector="{{AdminDeleteRoleSection.confirm}}"/>
+        <waitForPageLoad stepKey="waitForPageLoad"/>
+        <see stepKey="seeSuccessMessage" userInput="You deleted the role."/>
+    </actionGroup>
+
+    <actionGroup name="AdminDeleteUserActionGroup">
+        <arguments>
+        <argument name="role" defaultValue=""/>
+        </arguments>
+        <click stepKey="clickToAddNewRole" selector="{{AdminDeleteUserSection.role(role.name)}}"/>
+        <fillField stepKey="TypeCurrentPassword" selector="{{AdminDeleteUserSection.password}}" userInput="{{_ENV.MAGENTO_ADMIN_PASSWORD}}"/>
+        <scrollToTopOfPage stepKey="scrollToTop"/>
+        <click stepKey="clickToDeleteRole" selector="{{AdminDeleteUserSection.delete}}"/>
+        <click stepKey="clickToConfirm" selector="{{AdminDeleteUserSection.confirm}}"/>
+        <waitForPageLoad stepKey="waitForPageLoad"/>
+        </actionGroup>
+
+    <actionGroup name="RestrictedAdminDeleteCMSActionGroup">
+        <arguments>
+            <argument name="blockName" defaultValue=""/>
+        </arguments>
+        <click stepKey="clickToSelectBlock" selector="{{RestrictedAdminDeleteCmsSection.block(blockName)}}"/>
+        <click stepKey="clickToSelectAction" selector="{{RestrictedAdminDeleteCmsSection.action}}"/>
+        <click stepKey="clickToDeleteBlock" selector="{{RestrictedAdminDeleteCmsSection.delete}}"/>
+        <waitForPageLoad stepKey="waitForConfirmation"/>
+        <click stepKey="clickToConfirm" selector="{{RestrictedAdminDeleteCmsSection.confirm}}"/>
+    </actionGroup>
+
+
+
+</actionGroups>

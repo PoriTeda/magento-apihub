@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="AdminStagingSlideOutSection">
+        <element name="scheduleNewUpdateBtn" type="button" selector="#staging_update_new" timeout="30"/>
+        <element name="scheduledChanges" selector="div.block-schedule.block" type="block"/>
+        <element name="preview" type="button" selector="//a[text()='Preview']"/>
+        <element name="nthPreviewLink" selector="tbody.schedule-item:nth-of-type({{var}}) a:nth-of-type(2)" type="button" parameterized="true" timeout="30"/>
+        <element name="title" type="text" selector="//span[text()='Schedule Update']"/>
+        <element name="updateName" type="input" selector="input[name='staging[name]']"/>
+        <element name="updateDescription" type="textarea" selector="textarea[name='staging[description]']"/>
+        <element name="startDate" type="input" selector="input[name='staging[start_time]']"/>
+        <element name="endDate" type="input" selector="input[name='staging[end_time]']"/>
+        <element name="contentTab" type="button" selector="//aside[contains(@class,'_show')]//div[@data-role='content']//span[text()='Content']"/>
+        <element name="save" type="button" selector=".modals-wrapper button#save" timeout="30"/>
+        <element name="changeStoreButton" type="button" selector=".modal-header #store-change-button" timeout="10"/>
+        <element name="selectStoreView" type="button" selector="//header[@class='modal-header']//ul[@data-role='stores-list']/li/a[normalize-space(.)='{{var1}}']" timeout="10" parameterized="true"/>
+        <element name="scheduleErrorMessage" type="text" selector=".modal-content .message-error"/>
+        <!-- Product details selectors -->
+        <element name="price" type="input" selector="input[name='product[price]']"/>
+        <element name="name" type="input" selector=".scheduled-changes-modal-slide input[name='product[name]']"/>
+        <element name="removeFromUpdate" type="button" selector="button[id='remove']" timeout="20"/>
+        <element name="datepickerStartDate" type="button" selector="[data-index='staging_save_start_date'] button" timeout="30"/>
+        <element name="datepickerGoToday" type="button" selector="#ui-datepicker-div button.ui-datepicker-current" timeout="30"/>
+        <element name="datepickerClose" type="button" selector="#ui-datepicker-div button.ui-datepicker-close" timeout="30"/>
+    </section>
+    <section name="CatalogStagingSlideOutSection">
+        <element name="contentTab" type="text" selector="//div[@class='modal-component']//span[text()='Content']"/>
+    </section>
+</sections>

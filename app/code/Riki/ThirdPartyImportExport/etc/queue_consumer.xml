@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/consumer.xsd">
+    <consumer name="inventoryQtyCounter" queue="inventory_qty_counter_queue" handler="Magento\ScalableInventory\Model\ResourceModel\QtyCounterConsumer::processMessage" consumerInstance="Magento\Framework\MessageQueue\Consumer" connection="db" />
+</config>

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="rikifraud" translate="label" type="text" sortOrder="161809" showInDefault="1" showInWebsite="1" showInStore="1">
+            <resource>Riki_Fraud::config</resource>
+            <class>separator-top</class>
+            <label>Cedyna Threshold</label>
+            <tab>bluecom_cronjob</tab>
+            <group id="general" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Cedyna threshold config</label>
+                <field id="cedyna_threshold" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cedyna threshold</label>
+                </field>
+            </group>
+            <group id="email" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Email Configuration</label>
+                <field id="received_email" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Warning Email Address</label>
+                    <comment>Email address which will receive the warning email. Each email separated by a semicolon ";"</comment>
+                </field>
+                <field id="cedyna_threshold_notification" translate="label" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Warning Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+            <group id="cron" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Cron Configuration</label>
+                <field id="schedule" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cron To Reset Customer Cedyna threshold</label>
+                    <comment>Exp: 0 0 1 * *</comment>
+                </field>
+            </group>
+        </section>
+        <section id="fraud_check">
+            <group id="threshold" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="10">
+                <label>Order Threshold Value Limit</label>
+                <field id="cedyna_threshold" translate="label" type="text" sortOrder="20" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Cedyna Threshold</label>
+                    <comment>Exp: 700000</comment>
+                </field>
+                <field id="order_threshold" translate="label" type="text" sortOrder="20" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Total Order Threshold</label>
+                    <comment>Maximum order value limit (300000)</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

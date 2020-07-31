@@ -1,0 +1,108 @@
+<?php
+/* @var Riki\Subscription\Block\Frontend\Profile\Hanpukai $block */
+$listProfile = $block->getListProfile();
+$threeDeliveryNumber = $block->threeDeliveryDate();
+$contactLink = 'https://shop.nestle.jp/front/contents/inquiry/';
+?>
+<div class="note"><?php echo __('For changes to the addressee / payment method of Fragile & Chocolate Distribution (All three courses), please contact <a href="%1">Nestle Mail Order Call Center.</a>', $contactLink) ?></div>
+<div class="fieldset-wrapper customer-subscription-profile">
+    <div class="customer-subscription-profile-info">
+        <div class="customer-subscription-profile">
+            <table class="data table-list-sub-profile hanpukai">
+                <colgroup>
+                    <col width="20%">
+                    <col width="20%">
+<!--                    <col width="10%">-->
+                    <col width="15%">
+                    <col width="15%">
+                    <col width="15%">
+                    <col width="15%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th class="action-desktop"></th>
+                        <th><?php echo __('Promulgation name');?></th>
+<!--                        <th>--><?php //echo __('Next payment schedule amount (tax included)');?><!--</th>-->
+                        <th><?php echo __('Next scheduled delivery date and time');?></th>
+                        <th class="action-mobile"></th>
+                        <th><?php echo __('Delivery schedule date and time one after another');?></th>
+                        <th><?php echo __('Delivery schedule after the next and later schedule');?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php if ($listProfile->getSize() > 0): ?>
+                <?php foreach($listProfile as $profile) :
+                        $data = $threeDeliveryNumber[$profile->getData('profile_id')];
+                        ?>
+                    <tr>
+                        <td class="action-desktop">
+                            <a href="<?php echo $block->getUrl('subscriptions/profile/hanpukaiPlan', ['id' => $profile->getData('profile_id')]) ?>">
+                                <span><?php echo __('Confirm delivery schedule information') ?></span>
+                            </a>
+                            <a href="<?php echo $block->getUrl('subscriptions/profile/editHanpukai',['id' => $profile->getData('profile_id')]) ?>">
+                                <span><?php echo __('Changing payment method'); ?></span>
+                            </a>
+                        </td>
+                        <td class="name" data-th="<?php echo __('Promulgation name');?>">
+                            <span><?php echo $data['course_name']; ?></span>
+                        </td>
+<!--                        <td class="a-right"  data-th="--><?php //echo __('Next payment schedule amount (tax included)');?><!--">-->
+<!--                            <span>--><?php //echo $block->formatCurrency($data['next_delivery_amount']['total_amount']) ?><!--</span>-->
+<!--                        </td>-->
+                        <td data-th="<?php echo __('Next scheduled delivery date and time');?>">
+                            <span>
+                                <?php if ($data['next_delivery_1']['is_stop'] == false){ ?>
+                                    <?php echo $block->convertDateToTrueFormat($data['next_delivery_1']['delivery_date'])?>
+                                <?php } else {
+                                    echo __('None');
+                                } ?>
+                            </span>
+                        </td>
+                        <td class="action-mobile">
+                            <a href="<?php echo $block->getBaseUrlSubcriptionProfile($profile->getData('profile_id')); ?>">
+                                <span><?php echo __('Confirm delivery schedule information') ?></span>
+                            </a>
+                            <a class="no-padding-left" href="<?php echo $block->getUrl('subscriptions/profile/editHanpukai',['id' => $profile->getData('profile_id')]) ?>">
+                                <span><?php echo __('Changing payment method'); ?></span>
+                            </a>
+                        </td>
+                        <td data-th="<?php echo __('Delivery schedule date and time one after another');?>">
+                           <span>
+                                <?php if ($data['next_delivery_2']['is_stop'] == false){ ?>
+                                    <?php echo $block->convertDateToTrueFormat($data['next_delivery_2']['delivery_date'])?>
+                                <?php } else {
+                                    echo __('None');
+                                } ?>
+                            </span>
+                        </td>
+                        <td data-th="<?php echo __('Delivery schedule after the next and later schedule');?>">
+                            <span>
+                                <?php if ($data['next_delivery_3']['is_stop'] == false){ ?>
+                                    <?php echo $block->convertDateToTrueFormat($data['next_delivery_3']['delivery_date'])?>
+                                <?php } else {
+                                    echo __('None');
+                                } ?>
+                            </span>
+                        </td>
+                    </tr>
+                        <?php $showChangePaymentMethodLink = $block ->showChangePaymentMethodLink($profile->getData('profile_id')); ?>
+                        <?php if ($showChangePaymentMethodLink) : ?>
+                        <tr>
+                            <td colspan="8" class="payment-method-error-container">
+                                <div class="payment-method-error">
+                                    <div><?php echo __('* Because you can not do deal with your credit card used last time, you can not change the order now.<br/>Sorry for your inconvenience but please update your card information from <a href="%1">here</a>.', $block->getUrl('subscriptions/profile/payment_method_edit/id/'.$profile->getData('profile_id'))) ?></div>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+                <?php endif; ?>
+                </tbody>
+            </table>
+
+            <a href="#" class="list-sub-profile--button__back" onclick="window.history.go(-1); return false;">
+                <span><?php echo __("Go back") ?></span>
+            </a>
+        </div>
+    </div>
+</div>

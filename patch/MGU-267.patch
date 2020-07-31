@@ -1,0 +1,17 @@
+diff --git a/app/code/Riki/SapIntegration/Cron/Exporter/Orders.php b/app/code/Riki/SapIntegration/Cron/Exporter/Orders.php
+index 4d3b6d6..fd08516 100644
+--- a/app/code/Riki/SapIntegration/Cron/Exporter/Orders.php
++++ b/app/code/Riki/SapIntegration/Cron/Exporter/Orders.php
+@@ -414,9 +414,9 @@ class Orders
+     public function createBackupFile($xmlData, $exportStatus)
+     {
+         /*export to SAP failed*/
+-        if (!$exportStatus) {
+-            return;
+-        }
++//        if (!$exportStatus) {
++//            return;
++//        }
+ 
+         $this->createBackupXml($xmlData);
+     }

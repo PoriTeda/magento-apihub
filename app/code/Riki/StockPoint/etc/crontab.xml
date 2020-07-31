@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="riki_stock_point">
+        <job name="send_bucket_order_to_stock_point" instance="Riki\StockPoint\Cron\SendOrderToStockPointSystem" method="execute">
+            <config_path>subscriptioncourse/stockpoint/send_bucket_order_to_stock_point_cron_expression</config_path>
+        </job>
+        <job name="auto_assign_stock_point_for_sub_profile" instance="Riki\StockPoint\Cron\AutoAssignStockPointForSubProfile" method="execute">
+            <config_path>subscriptioncourse/stockpoint/auto_assign_stock_point_for_sub_profile_schedule_expresssion</config_path>
+        </job>
+    </group>
+</config>

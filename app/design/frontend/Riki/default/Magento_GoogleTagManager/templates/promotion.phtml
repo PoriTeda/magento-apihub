@@ -1,0 +1,37 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+
+<?php
+/** @var \Magento\GoogleTagManager\Block\ListJson $block */
+$bannerCollection =  $block->getBannerCollection();
+$position = $block->getBannerPosition();
+?>
+
+<?php if ($bannerCollection != null && $bannerCollection->count()) { ?>
+    <script>
+        var <?php /* @escapeNotVerified */ echo $block->getVariableName() ?> =
+        <?php /* @escapeNotVerified */ echo $block->getVariableName() ?> ||
+        [];
+        <?php /* @escapeNotVerified */ echo $block->getVariableName() ?>
+        = [
+    <?php
+    foreach ($bannerCollection as $banner) {
+        ?>
+            {
+                'id': '<?php /* @escapeNotVerified */ echo $banner->getBannerId() ?>',
+                'name': '<?php /* @escapeNotVerified */ echo $block->escapeQuote($banner->getName(),true); ?>',
+                'creative': '<?php /* @escapeNotVerified */ echo $banner->getGaCreative() ?>',
+                'position': '<?php /* @escapeNotVerified */ echo $position ?>',
+                'activated': '<?php /* @escapeNotVerified */ echo $banner->getIsGaEnabled() ?>'
+            },
+    <?php
+    }
+    ?>
+        ];
+    </script>
+    <?php
+}

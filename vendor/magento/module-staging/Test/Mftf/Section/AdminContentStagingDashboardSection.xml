@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+   * Copyright © Magento, Inc. All rights reserved.
+   * See COPYING.txt for license details.
+   */
+-->
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="../../../../../../../dev/tests/acceptance/vendor/magento/magento2-functional-testing-framework/src/Magento/FunctionalTestingFramework/Page/etc/SectionObject.xsd">
+    <section name="AdminContentStagingDashboardSection">
+        <element name="timeLineEvent" type="input" selector=".timeline-event"/>
+        <element name="stagingEventsActions" type="text" selector="//div[text()='{{var1}}']/parent::div//div[@class='staging-events-actions']//span[text()='{{var2}}']" parameterized="true" timeout="30"/>
+    </section>
+</sections>

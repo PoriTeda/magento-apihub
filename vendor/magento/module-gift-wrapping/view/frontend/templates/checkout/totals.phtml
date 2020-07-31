@@ -1,0 +1,19 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php foreach ($block->getValues() as $label => $value):?>
+<tr class="totals giftwrapping">
+    <th class="mark" colspan="<?= /* @escapeNotVerified */ $block->getColspan() ?>" scope="row">
+        <span><?= /* @escapeNotVerified */ $label ?></span>
+    </th>
+    <td class="amount" data-th="<?= $block->escapeHtml($label) ?>">
+        <?= /* @escapeNotVerified */ $this->helper('Magento\Checkout\Helper\Data')->formatPrice($value) ?>
+    </td>
+</tr>
+<?php endforeach; ?>

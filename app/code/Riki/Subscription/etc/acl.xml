@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Riki_SubscriptionFrequency::subscription" title="Subscription" sortOrder="45">
+                    <resource id="Riki_Subscription::replace_product" title="Discontinued products" sortOrder="35" />
+                    <resource id="Riki_Subscription::product_course" title="Subscription course product" sortOrder="55" />
+                    <resource id="Riki_Subscription::profile" title="Subscription Profile" sortOrder="65" >
+                        <resource id="Riki_Subscription::profile_edit" title="Subscription Profile Edit" sortOrder="651">
+                            <resource id="Riki_Subscription::change_earn_point" title="Change earn point on order" />
+                            <resource id ="Riki_Subscription::edit_sales_count" title="Edit Sales Count" />
+                            <resource id ="Riki_Subscription::add_spot_product" title="Add Spot Product" />
+                            <resource id ="Riki_Subscription::edit_payment_method" title="Change Payment Method" />
+                        </resource>
+                    </resource>
+                    <resource id="Riki_Subscription::multiple_category_campaign" title="Manage Multiple Categories" sortOrder="60" >
+                        <resource id="Riki_Subscription::multiple_category_campaign_listview" title="View Multiple Categories" />
+                        <resource id ="Riki_Subscription::multiple_category_campaign_edit" title="Add/Edit Multiple Categories" />
+                        <resource id ="Riki_Subscription::multiple_category_campaign_delete" title="Delete Multiple Categories" />
+                    </resource>
+                    <resource id="Riki_Subscription::landing_page_management" title="Landing Page Management" sortOrder="60" >
+                        <resource id="Riki_Subscription::landing_page_listview" title="View Landing Pages" />
+                        <resource id ="Riki_Subscription::landing_page_edit" title="Add/Edit Landing Pages" />
+                        <resource id ="Riki_Subscription::landing_page_delete" title="Delete Landing Pages" />
+                    </resource>
+                    </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

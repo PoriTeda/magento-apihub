@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- add time field -->
+    <preference for="Magento\CatalogRule\Block\Adminhtml\Promo\Catalog\Edit\Tab\Main" type="Riki\CatalogRule\Block\Adminhtml\Promo\Catalog\Edit\Tab\Main" />
+    <!-- format/validate time when saving -->
+    <preference for="Magento\CatalogRule\Controller\Adminhtml\Promo\Catalog\Save" type="Riki\CatalogRule\Controller\Adminhtml\Promo\Catalog\Save" />
+    <!-- adjust to load time data for form -->
+    <preference for="Magento\Framework\Data\Form\Element\Time" type="Riki\Rule\Data\Form\Element\Time" />
+    <!-- don't show machine rule -->
+    <preference for="Magento\CatalogRule\Model\ResourceModel\Grid\Collection" type="Riki\CatalogRule\Model\ResourceModel\Grid\Collection" />
+</config>

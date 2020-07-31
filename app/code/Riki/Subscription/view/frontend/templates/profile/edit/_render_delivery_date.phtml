@@ -1,0 +1,450 @@
+<?php
+$isAllowChangeNextDelivery = $block->getData("isAllowChangeNextDelivery");
+$hanpukaiDeliveryDateAllowed = $block->getData('hanpukai_delivery_date_allowed');
+$isAllowSpToChangeDl = $block->getData("isAllowSpToChangeDl");
+$addressId = $block->getData("addressId");
+$arrProductByAddress = $block->getData("arrProduct");
+$parentBlock = $block->getData("parentBlock");
+$dataFromSession = $parentBlock->getSession();
+$deliveryType = $block->getData("deliveryType");
+$allTimeSlot = $parentBlock->getAllTimeSlot();
+$timeSlotLabel = null;
+foreach ($allTimeSlot as $timeSlot){
+    if($timeSlot['value'] == $arrProductByAddress['delivery_date']['time_slot']){
+        $timeSlotLabel =  $timeSlot['label'];
+        break;
+    }
+}
+$hanpukaiDeliveryDateFrom = $block->getData('hanpukaiDeliveryDateFrom');
+$hanpukaiDeliveryDateTo = $block->getData('hanpukaiDeliveryDateTo');
+$nextDeliveryDateCalculationOption = $block->getData('nextDeliveryDateCalculationOption');
+$storeId = $block->getData('store_id');
+$isAdmin = $block->getData('isAdmin');
+$attrDisableNextDelivery = $isAllowChangeNextDelivery;
+$attrDisableTimeslot = $isAllowChangeNextDelivery && $deliveryType !== \Riki\DeliveryType\Model\Delitype::DM ? '' : 'disabled';
+$addressOrder = $block->getData('addressOrder');
+$isBtnUpdateAllChangesPressed = $block->getData('isBtnUpdateAllChangesPressed');
+$isSubscriptionHanpukai = $block->getData('isSubscriptionHanpukai');
+$frequencyUnit = $block->getData('frequency_unit');
+$frequencyInterval = $block->getData('frequency_interval');
+$nextDeliveryDate = $block->getData('next_delivery_date');
+if($arrProductByAddress['delivery_date']['next_delivery_date'] != null){
+    $nextDeliveryDate = $arrProductByAddress['delivery_date']['next_delivery_date'];
+}
+$deliveryDate = $arrProductByAddress['delivery_date']['next_delivery_date']!=null?$arrProductByAddress['delivery_date']['next_delivery_date']:$nextDeliveryDate;
+$deliveryDate = strtotime($frequencyInterval." ".$frequencyUnit,strtotime($deliveryDate));
+$nextOfNextDeliveryDate = ($parentBlock->getMainDeliveryDateForText() != null)?strtotime($frequencyInterval." ".$frequencyUnit,strtotime($parentBlock->getMainDeliveryDateForText())):$deliveryDate;
+$nextOfNextDeliveryDate = date('Y-m-d',$deliveryDate);
+
+/*profile id*/
+$profileId = $block->getData('profileId');
+/*subscription profile data*/
+$profileData = $parentBlock->getEntity();
+/** @var \Riki\Subscription\Helper\Profile\DeliveryDateGenerateHelper $deliveryDateGenerateHelper */
+$deliveryDateGenerateHelper =  $this->helper('\Riki\Subscription\Helper\Profile\DeliveryDateGenerateHelper');
+
+$subsciptionCourse = $parentBlock->getCourse();
+$excludeBufferDays = $subsciptionCourse->getData('exclude_buffer_days');
+$bufferDay = null;
+if ($excludeBufferDays) {
+    $bufferDay = 0;
+}
+
+/*calculate again $nextOfNextDeliveryDate*/
+if ($parentBlock->isShowDeliveryMessage()) {
+    $nextOfNextDeliveryDate = $deliveryDateGenerateHelper->getLastDateOfMonth(
+        $nextOfNextDeliveryDate,
+        $nextDeliveryDate
+    );
+
+    if ($nextDeliveryDate == $block->getData('next_delivery_date')
+        && $profileData->getData('day_of_week') != null
+        && $profileData->getData('nth_weekday_of_month') != null
+    ) {
+        $dayOfWeek = $profileData->getData('day_of_week');
+        $nthWeekdayOfMonth = $profileData->getData('nth_weekday_of_month');
+    } else {
+        $dayOfWeek = date('l', strtotime($nextDeliveryDate));
+        $nthWeekdayOfMonth = $deliveryDateGenerateHelper->calculateNthWeekdayOfMonth($nextDeliveryDate);
+    }
+    $nextOfNextDeliveryDate = $deliveryDateGenerateHelper->getDeliveryDateForSpecialCase($nextOfNextDeliveryDate, $dayOfWeek, $nthWeekdayOfMonth);
+    $nextOfNextDeliveryDateObject = $deliveryDateGenerateHelper->convertDateStringToDateObject($nextOfNextDeliveryDate);
+} else {
+    $nextOfNextDeliveryDateObject = $deliveryDateGenerateHelper->getDeliveryDateWithFrequencyUnitMonth($frequencyUnit,$nextOfNextDeliveryDate,$nextDeliveryDate);
+}
+
+/*Calculate Available end date*/
+$objMaxDate = $parentBlock->calculateAvailableEndDate();
+$maxDate = $objMaxDate->format(\Magento\Framework\Stdlib\DateTime::DATE_PHP_FORMAT);
+
+$isDisableDatePicker = false;
+if ($isSubscriptionHanpukai) {
+    if ($isAdmin && $hanpukaiDeliveryDateAllowed == 1 && $isAllowChangeNextDelivery == 1) {
+        $isDisableDatePicker = false;
+    } else {
+        $isDisableDatePicker = true;
+    }
+} else {
+    if ($isAllowChangeNextDelivery == 1) {
+        $isDisableDatePicker = false;
+    } else {
+        $isDisableDatePicker = true;
+    }
+}
+// Get Calendar Config
+if (!$isBtnUpdateAllChangesPressed) {
+    $nextDeliveryDateMain = $parentBlock->getNextDeliveryDateOfMain();
+    $_checkCalendar = $parentBlock->getHelperCalculateDateTime()->getCalendar($addressId, $arrProductByAddress, $deliveryType, $bufferDay, $nextDeliveryDateMain);
+    $calendarPeriod = $parentBlock->getHelperCalculateDateTime()->getCalendarPeriod();
+    if (!$calendarPeriod) {
+        //set default 30days
+        $calendarPeriod = 29;
+    } else {
+        $calendarPeriod = (int)$calendarPeriod + count($_checkCalendar) - 1;
+    }
+    /*Calculate Available start date*/
+    $objMinDate = $parentBlock->calculateAvailableStartDate($_checkCalendar);
+
+    if ($objMaxDate->getTimestamp() < $objMinDate->getTimestamp()) {
+        $calendarPeriodForEdit = $parentBlock->getHelperCalculateDateTime()->getEditProfileCalendarPeriod() ?: 0;
+        $objMaxDate = clone $objMinDate;
+        $objMaxDate->add(new \DateInterval(sprintf('P%sD', $calendarPeriodForEdit)));
+        $maxDate = $objMaxDate->format(\Magento\Framework\Stdlib\DateTime::DATE_PHP_FORMAT);
+    }
+}
+
+/* @var \Riki\StockPoint\Helper\ValidateStockPointProduct $stockPointHelper */
+$stockPointHelper = $this->helper('Riki\StockPoint\Helper\ValidateStockPointProduct');
+$isShowStockPoint = false;
+if ($stockPointHelper->checkProfileExistStockPoint($profileData) && $profileId) {
+    $isShowStockPoint = true;
+}
+
+?>
+<div class="label no-border">
+    <h4><?php echo __("Delivery schedule date and time") ?></h4>
+    <div class="available-note">
+        <div delivery-type="<?php echo $deliveryType; ?>" class="textDeliveryChange"><?php echo sprintf(__('Available From <span>%s</span> - To <span>%s</span>'),  __("%1-%2-%3",$objMinDate->format('Y'),$objMinDate->format('m'),$objMinDate->format('d')), __("%1-%2-%3",$objMaxDate->format('Y'),$objMaxDate->format('m'),$objMaxDate->format('d'))) ?></div>
+        <div><a href="#" title="<?php echo __('About Selectable Date') ?>" class="about-selectable-date"><?php echo __('About Selectable Date') ?></a></div>
+    </div>
+</div>
+<div class="current-shipping-address delivery-block block-delivery-item" delivery-type="<?php echo $deliveryType; ?>" >
+    <div class="wrapper">
+        <div class="delivery-type">
+            <div class="title">
+                <strong>&nbsp;</strong>
+            </div>
+            <div class="content">
+                <span><?php echo __($deliveryType. ' delivery') ?></span>
+            </div>
+        </div>
+        <div class="delivery-date">
+            <div class="title">
+                <strong><?php echo __('Delivery Date'); ?></strong>
+            </div>
+            <?php if(!$isBtnUpdateAllChangesPressed && (!$isSubscriptionHanpukai || $hanpukaiDeliveryDateAllowed)) : ?>
+                <div class="calendar-wrapper">
+                    <input name="next_delivery[<?php echo $addressId  ?>][<?php echo $deliveryType  ?>]" id="<?php echo 'calendar_inputField_'. $addressOrder. '_' . $deliveryType ; ?>" class="input-text input-new current-delivery-date" type="text" readonly="readonly" onfocus="this.blur()"
+                           value="<?php
+                           if ($isAllowChangeNextDelivery) {
+                               echo $arrProductByAddress['delivery_date']['next_delivery_date'];
+                           } else {
+                               if ($arrProductByAddress['delivery_date']['next_delivery_date'] != null) {
+                                   echo $arrProductByAddress['delivery_date']['next_delivery_date'];
+                               } else {
+                                   echo $nextDeliveryDate;
+                               }
+                           }
+                           ?>" />
+                    <!-- make input hidden case not delivery_date -->
+                    <?php
+                    if (!$isAllowChangeNextDelivery) {?>
+                        <input type="hidden" name="next_delivery[<?php echo $addressId  ?>][<?php echo $deliveryType  ?>]"
+                               value="<?php
+                               if ($arrProductByAddress['delivery_date']['next_delivery_date'] != null) {
+                                   echo $arrProductByAddress['delivery_date']['next_delivery_date'];
+                               } else {
+                                   echo $nextDeliveryDate;
+                               }
+                               ?>"
+                        />
+                    <?php } ?>
+                </div>
+                <div class="message-change-delivery" style="color:red;"></div>
+                <script type="text/javascript">
+                    require([
+                        "jquery",
+                        'mage/translate',
+                        "mage/calendar"
+                    ], function($, $t){
+                        var restrictArray = <?php echo json_encode($_checkCalendar); ?>;
+                        var hanpukaiAllowChangeDeliveryDate = '<?php echo $hanpukaiDeliveryDateAllowed; ?>';
+                        var minDate = "<?php echo $objMinDate->format('Y-m-d') ?>";
+                        var maxDate = "<?php echo $maxDate ?>";
+                        var arrDayOfWeek = <?php echo json_encode($parentBlock->getDayOfWeekTranslate(), JSON_UNESCAPED_UNICODE) ?>;
+                        var arrNthWeekdayOfMonth = <?php echo json_encode($parentBlock->getNthWeekdayOfMonthTranslate(), JSON_UNESCAPED_UNICODE) ?>;
+
+                        //set config retrict calendar
+                        window.customDataCalendar = {"minDateTrigger":0,"currentMin":0,"maxDate":0, "minDate":0,"restrictDate":[]};
+
+                        //set global value for max date
+                        window.customDataCalendar.maxDate = maxDate;
+                        window.customDataCalendar.minDate = minDate;
+
+                        if (hanpukaiAllowChangeDeliveryDate == 1) {
+                            maxDate = new Date('<?php echo $hanpukaiDeliveryDateTo ?>');
+                        }
+
+                        var isDayOfWeekAndIntervalUnitMonthAndNotStockPoint = function(unitFrequency, nextDeliveryDateCalculationOption, isStockPoint){
+                            if (unitFrequency === 'month' && nextDeliveryDateCalculationOption === 'day_of_week' && !isStockPoint) {
+                                return true;
+                            }
+
+                            return false;
+                        };
+
+                        var getDayOfWeek = function(date_string) {
+                            if (!isNaN(date_string)) {
+                                return arrDayOfWeek[date_string];
+                            } else {
+                                var d = new Date(date_string);
+                                return arrDayOfWeek[d.getDay()];
+                            }
+                        };
+
+                        var calculateNthWeekdayOfMonth = function(date_string){
+                            if (!isNaN(date_string)) {
+                                return arrNthWeekdayOfMonth[date_string];
+                            } else {
+                                var d = new Date(date_string);
+                                return arrNthWeekdayOfMonth[Math.ceil(d.getDate() / 7)];
+                            }
+                        };
+
+                        var getDeliveryMessage = function(deliveryDate, profileNextDeliveryDate, profileDayOfWeek, profileNthWeekdayOfMonth){
+                            var deliveryMessage = '',
+                                nthWeekdayOfMonth = '',
+                                dayOfWeek = '',
+                                lang = $('html').attr('lang');
+                            if (deliveryDate != '') {
+                                if (deliveryDate == profileNextDeliveryDate
+                                    && profileNthWeekdayOfMonth != ''
+                                    && profileDayOfWeek != ''
+                                ) {
+                                    nthWeekdayOfMonth = calculateNthWeekdayOfMonth(profileNthWeekdayOfMonth);
+                                    dayOfWeek = getDayOfWeek(profileDayOfWeek);
+                                } else {
+                                    nthWeekdayOfMonth = calculateNthWeekdayOfMonth(deliveryDate);
+                                    dayOfWeek = getDayOfWeek(deliveryDate);
+                                }
+
+                                if (lang == 'ja-JP') {
+                                    // deliveryMessage = nthWeekdayOfMonth + dayOfWeek + $t('every');
+                                    deliveryMessage = nthWeekdayOfMonth + dayOfWeek + '<?php echo __('every'); ?>'
+                                } else {
+                                    // deliveryMessage = $t('every') + ' ' + nthWeekdayOfMonth + ' ' + dayOfWeek;
+                                    deliveryMessage = '<?php echo __('every'); ?>' + ' ' + nthWeekdayOfMonth + ' ' + dayOfWeek;
+                                }
+                            } else {
+                                deliveryMessage += $t('');
+                            }
+                            return deliveryMessage;
+                        };
+
+                        var options = {
+                            firstDay: 1,
+                            dateFormat: "yy-mm-dd",
+                            showOn: "button",
+                            <?php if($isDisableDatePicker): ?>
+                            disabled: true,
+                            <?php endif; ?>
+                            buttonText: "",
+                            showAnim: "",
+                            changeMonth: true,
+                            changeYear: true,
+                            buttonImageOnly: null,
+                            buttonImage: null,
+                            showButtonPanel: false,
+                            showOtherMonths: true,
+                            showWeek: false,
+                            timeFormat: '',
+                            showTime: false,
+                            showHour: false,
+                            showMinute: false,
+                            minDate: minDate,
+                            maxDate: maxDate,
+                            beforeShowDay: function(date, hanpukaiAllowChangeDeliveryDate){
+                                var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+                                return [ restrictArray.indexOf(string) == -1 ]
+                            },
+                            onSelect: function(delivery_date) {
+                                var next_delivery_date = $('#next_delivery_date_selected').attr('content');
+                                if( (new Date(next_delivery_date).getTime() != new Date(delivery_date).getTime())) {
+                                    $('#next_delivery_date_selected').attr('content',delivery_date);
+                                    date = new Date(delivery_date);
+                                    $("#next_delivery_date_selected").text(formatDateJP(date.getFullYear(), date.getMonth() + 1, date.getDate()));
+                                }
+                                $('.show_change_next').hide();
+                                $('.show_change_next').parent('li').hide();
+                                $('.text-for-option-change').hide();
+                                $('input#change_profile_type_2').prop('checked', true);
+                                $('.delivery-images label[for="change_profile_type_1"]').removeClass('active');
+                                $('.delivery-images label[for="change_profile_type_2"]').addClass('active');
+
+                                // Show delivery message and next delivery date message
+                                // If subscription course setup with Next Delivery Date Calculation Option = "day of the week"
+                                // AND interval_unit="month" AND not stock point
+                                if (isDayOfWeekAndIntervalUnitMonthAndNotStockPoint("<?php echo $frequencyUnit; ?>", "<?php echo $nextDeliveryDateCalculationOption; ?>", "<?php echo $isShowStockPoint; ?>")) {
+                                    var message = getDeliveryMessage(
+                                        delivery_date,
+                                        "<?php echo $profileData->getData('next_delivery_date'); ?>",
+                                        "<?php echo date('w', strtotime($profileData->getData('day_of_week'))); ?>",
+                                        "<?php echo $profileData->getData('nth_weekday_of_month'); ?>"
+                                    );
+                                    $("div.delivery-message span").text(message);
+
+                                    // Call ajax to update next delivery date in message
+                                    var profileId = '<?php echo $profileId; ?>';
+                                    var deliveryDateSelected = delivery_date;
+                                    var url = '<?php echo $parentBlock->getUrlUpdateNextDeliveryDate();?>';
+                                    var spanElement = 'span.next-delivery-date-val-' + '<?php echo $addressId; ?>' + '-' + '<?php echo $deliveryType; ?>'
+                                    $.ajax({
+                                        url: url,
+                                        data: {
+                                            form_key: FORM_KEY,
+                                            profile_id: profileId,
+                                            delivery_date_selected: deliveryDateSelected
+                                        },
+                                        dataType: 'json',
+                                        success: function(data) {
+                                            if(data.result == true){
+                                                $("div.next-delivery-date " + spanElement).text(data.message);
+                                            }
+                                        },
+                                        context: $('body'),
+                                        showLoader: true
+                                    });
+                                }
+                            },
+                            beforeShow :function(){
+                                var deliveryType = $(this).closest('.block-delivery-item').attr('delivery-type');
+                                if(customDataCalendar.restrictDate.hasOwnProperty(deliveryType))
+                                {
+                                    var calculateMinDatePicker = function (restrictDate)
+                                    {
+                                        var dates = restrictDate.map(function(item) {
+                                            customDataCalendar.currentMin = item;
+                                            var newDate = new Date(item);
+                                            return newDate;
+                                        });
+
+                                        var latest = new Date(Math.max.apply(null,dates));
+                                        var minDateRank = 0;
+                                        var minDate = new Date();
+                                        var oneDay = 1000 * 60 * 60 * 24;
+                                        var currentDayTmp = new Date(minDate.getTime());
+                                        var firstDDTmp = new Date(latest.getTime());
+                                        var differenceMs = Math.abs(currentDayTmp - firstDDTmp);
+                                        minDateRank = Math.round(differenceMs/oneDay) + 1;
+                                        minDate.setDate(minDate.getDate() + minDateRank);
+                                        return minDate;
+                                    }
+
+                                    var maxDate = customDataCalendar.maxDate ;
+                                    var minDate = calculateMinDatePicker(customDataCalendar.restrictDate[deliveryType]);
+                                    restrictArray = customDataCalendar.restrictDate[deliveryType];
+                                    $(this).datepicker('option', { minDate: minDate, maxDate: maxDate });
+                                }
+
+                                //set value current min date from calendar after trigger event click
+                                customDataCalendar.minDateTrigger = $(this).datepicker( "option", "minDate" );
+                            }
+                        };
+
+                        if($('html').attr('lang') == 'ja-JP') {
+                            options.closeText = "閉じる";
+                            options.prevText = "&#x3C;前";
+                            options.nextText = "次&#x3E;";
+                            options.currentText = "今日";
+                            options.monthNames = [ "1月","2月","3月","4月","5月","6月",
+                                "7月","8月","9月","10月","11月","12月" ];
+                            options.monthNamesShort = [ "1月","2月","3月","4月","5月","6月",
+                                "7月","8月","9月","10月","11月","12月" ];
+                            options.dayNames = [ "日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日" ];
+                            options.dayNamesShort = [ "日","月","火","水","木","金","土" ];
+                            options.dayNamesMin = [ "日","月","火","水","木","金","土" ];
+                            options.weekHeader = "週";
+                        }
+
+                        calendarPickerObj = $("<?php echo '#calendar_inputField_'. $addressOrder. '_' . $deliveryType ; ?>").datepicker(options);
+                        $('.ui-datepicker').addClass('notranslate');
+
+                        // Show delivery message
+                        // If subscription course setup with Next Delivery Date Calculation Option = "day of the week"
+                        // AND interval_unit="month" AND not stock point
+                        if (isDayOfWeekAndIntervalUnitMonthAndNotStockPoint("<?php echo $frequencyUnit; ?>", "<?php echo $nextDeliveryDateCalculationOption; ?>", "<?php echo $isShowStockPoint; ?>")) {
+                            var message = getDeliveryMessage(
+                                "<?php echo $nextDeliveryDate; ?>",
+                                "<?php echo $profileData->getData('next_delivery_date'); ?>",
+                                "<?php echo date('w', strtotime($profileData->getData('day_of_week'))); ?>",
+                                "<?php echo $profileData->getData('nth_weekday_of_month'); ?>"
+                            );
+                            $("div.delivery-message span").text(message);
+                        }
+                    });
+                </script>
+            <?php else: ?>
+                <div class="content">
+                    <?php echo $arrProductByAddress['delivery_date']['next_delivery_date']; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="delivery-time">
+            <div class="title">
+                <strong><?php echo __('Delivery Time'); ?></strong>
+            </div>
+            <?php
+            if(!$isBtnUpdateAllChangesPressed) { ?>
+                <div class="select-wrapper">
+                    <select name="time_slot[<?php echo $addressId  ?>][<?php echo $deliveryType  ?>]"
+                            id="time_slot<?php echo $addressId.'_'. $deliveryType ?>" <?php echo $attrDisableTimeslot  ?>
+                            data-validate="{required:true}"
+                            class="input-new select-box">
+                        <?php foreach($allTimeSlot as $strTime):  ?>
+                            <option value="<?php echo $strTime['value']  ?>" <?php echo $strTime['value'] === $arrProductByAddress['delivery_date']['time_slot'] ? 'selected' : ''  ?> > <?php echo $strTime['label']  ?> </option>
+                        <?php endforeach;  ?>
+                    </select>
+                </div>
+            <?php } else { ?>
+                <div class="content">
+                    <?php echo $timeSlotLabel?>
+                </div>
+            <?php } ?>
+        </div>
+        <div class="delivery-type next-delivery-date">
+            <div class="title">
+                <strong>&nbsp;</strong>
+            </div>
+            <div>
+                <?php if ($parentBlock->isShowDeliveryMessage()) : ?>
+                <div class="delivery-message">
+                    <span></span>
+                </div>
+                <?php endif; ?>
+                <div class="next-delivery-date">
+                    <?php if ($isShowStockPoint && !$isAllowSpToChangeDl): ?>
+                        <div class="stock_point_delivery_information">
+                             <?php echo $stockPointHelper->getDataStockPointDeliveryInformation($profileData); ?>
+                        </div>
+                    <?php else: ?>
+                    <span><?php echo __('Delivery schedule day after next:') ?>&nbsp;</span>
+                    <span class="next-delivery-date-val-<?php echo $addressId  ?>-<?php echo $deliveryType  ?>">
+                        <?php echo __("%1-%2-%3",$nextOfNextDeliveryDateObject->format('Y'),$nextOfNextDeliveryDateObject->format('m'),$nextOfNextDeliveryDateObject->format('d')); ?>
+                    </span>&nbsp;
+                    <span class="next-timeslot-val-<?php echo $addressId  ?>-<?php echo $deliveryType  ?>"><?php echo $timeSlotLabel ?></span>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

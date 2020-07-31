@@ -1,0 +1,17 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php if ($block->canDisplayGiftWrappingForItem()): ?>
+<div class="gift-options-tooltip-content no-display">
+    <?php if ($block->getDesign()): ?>
+        <div><strong><?php /* @escapeNotVerified */ echo __('Gift Wrapping Design')?></strong>:</div>
+        <div><?php /* @escapeNotVerified */ echo $block->getDesign() ?></div>
+    <?php endif; ?>
+</div>
+<?php endif; ?>

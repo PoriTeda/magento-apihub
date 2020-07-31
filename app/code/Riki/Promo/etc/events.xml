@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_quote_item_set_product">
+        <observer name="rikiPromo_product_point_quote" instance="Riki\Promo\Observer\SalesQuoteItemSetCustomAttribute"/>
+    </event>
+    <event name="controller_action_predispatch_checkout_cart_index">
+        <observer name="rikiPromo_controller_action_predispatch_checkout_cart_index" instance="Riki\Promo\Observer\CheckoutCartPreDispatch"/>
+    </event>
+    <event name="controller_action_postdispatch_checkout_cart_index">
+        <observer name="rikiPromo_controller_action_postdispatch_checkout_cart_index" instance="Riki\Promo\Observer\CheckoutCartPostDispatch"/>
+    </event>
+    <event name="riki_salesrule_condition_product_validate_before">
+        <observer name="riki_promo_remove_free_gift" instance="Riki\Promo\Observer\RemoveFreeGift" />
+    </event>
+    <event name="sales_quote_item_qty_set_after">
+        <observer name="inventory" instance="Magento\CatalogInventory\Observer\QuantityValidatorObserver"  disabled="true"/>
+        <observer name="riki_promo_inventory" instance="Riki\Promo\Observer\QuantityValidatorObserver"/>
+    </event>
+</config>

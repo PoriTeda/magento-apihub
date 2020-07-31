@@ -1,0 +1,68 @@
+<?php /** @var \Riki\Questionnaire\Block\Adminhtml\Answers\View\Tab\Main $block */ ?>
+<?php $_answers = $block->getAnswers(); ?>
+<?php $_questionnaire = $block->getQuestionnaireCurrent(); ?>
+<?php $_customer = $block->getCustomerCurrent(); ?>
+
+<input type="hidden" name="answer_id" value="<?php /* @escapeNotVerified */ echo $_answers->getId() ?>"/>
+
+<section class="admin__page-section answers-main-information">
+    <div class="admin__page-section-title">
+        <span class="title"><?php /* @escapeNotVerified */ echo __('Answer Information') ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item-content">
+            <table class="admin__table-secondary answer-main-information-table">
+                <tr>
+                    <th><?php /* @escapeNotVerified */ echo __('Enquete Code') ?></th>
+                    <td>
+                        <?php echo $block->renderEnqueteCode() ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th><?php /* @escapeNotVerified */ echo __('Enquete Name') ?></th>
+                    <td>
+                        <?php echo $block->renderEnqueteName() ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th><?php /* @escapeNotVerified */ echo __('Customer ID') ?></th>
+                    <td>
+                        <?php echo $block->renderCustomerId() ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th><?php /* @escapeNotVerified */ echo __('Customer Code') ?></th>
+                    <td>
+                        <?php echo $block->renderCustomerCode() ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th><?php /* @escapeNotVerified */ echo __('Entity Type') ?></th>
+                    <td>
+                        <?php echo $block->renderEntityType() ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th><?php /* @escapeNotVerified */ echo __('Entity ID') ?></th>
+                    <td>
+                        <?php echo $block->renderEntityId() ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th><?php /* @escapeNotVerified */ echo __('SKU,Course Code') ?></th>
+                    <td>
+                        <?php echo $block->renderSKU() ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th><?php /* @escapeNotVerified */ echo __('Created At') ?></th>
+                    <td><?php echo $_answers->getCreatedAt() ?></td>
+                </tr>
+                <tr>
+                    <th><?php /* @escapeNotVerified */ echo __('Updated At') ?></th>
+                    <td><?php echo $_answers->getUpdatedAt() ?></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</section>

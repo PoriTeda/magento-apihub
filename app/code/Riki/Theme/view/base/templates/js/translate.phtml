@@ -1,0 +1,7 @@
+<?php /** @var $block \Riki\Theme\Block\Js\Translation */ ?>
+
+<?php if ($block->dictionaryEnabled()): ?>
+    <script>
+        window.translateData = JSON.parse(JSON.stringify(<?php echo $block->getTranslationFromFile(); ?>));
+    </script>
+<?php endif; ?>

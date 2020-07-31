@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Bluecom_Paygent::paygenterrorhandling"
+             title="Paygent Error Handling"
+             module="Bluecom_Paygent"
+             sortOrder="10"
+             parent="Magento_Logging::system_magento_logging"
+             action="paygent/error/index"
+             dependsOnModule="Magento_Logging"
+             resource="Bluecom_Paygent::paygenterrorhandling"
+        />
+        <add id="Bluecom_Paygent::system_magento_paygent_order_failed" title="Recurring order failed"
+             module="Bluecom_Paygent" sortOrder="35"
+             parent="Riki_SubscriptionFrequency::subscription"
+             action="paygent/orderfailed/index"
+             resource="Bluecom_Paygent::orderfailed"/>
+    </menu>
+</config>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Sales\Block\Adminhtml\Order\Create\Totals" template="Magento_Sales::order/create/totals.phtml" name="totals">
+                <block class="Riki\Loyalty\Block\Adminhtml\Order\Create\Totals\ApplyPoint" template="Riki_Loyalty::sales/order/create/totals/apply_point.phtml" name="apply_point_total_renderer"/>
+                <block class="Magento\Sales\Block\Adminhtml\Order\Create\Totals\DefaultTotals" template="Riki_Loyalty::sales/order/create/totals/point_earn.phtml" name="earn_point_total_renderer"/>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

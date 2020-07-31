@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @package Amasty_Rewards
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" layout="2columns-left">
+	<update handle="customer_account"/>
+	<head>
+		<title>Shopping Point Settings</title>
+	</head>
+	<body>
+		<referenceContainer name="content">
+			<block cacheable="false" class="Riki\ShoppingPoint\Block\Index" template="index.phtml">
+			</block>
+		</referenceContainer>
+	</body>
+</page>

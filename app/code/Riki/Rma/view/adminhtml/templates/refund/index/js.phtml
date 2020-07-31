@@ -1,0 +1,46 @@
+<script>
+    require([
+        'jquery',
+        'mage/url'
+    ], function (
+        $,
+        urlBuilder
+    ) {
+        window.updateRefundMethod = function (element) {
+            var url = urlBuilder.build('/rest/V1/rikiRma/rma/refundMethod'),
+                element = $(element);
+            var preSelected = element.find('[data-selected]'),
+                selected = element.find(':selected');
+            selected.text('updating...');
+            var params = {
+                entity: {
+                    entity_id: element.data('id'),
+                    increment_id: element.data('increment-id'),
+                    refund_method: element.val()
+                }
+            };
+            element.prop('disabled', true);
+            $.ajax({
+                url: url,
+                method: 'POST',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(params),
+                beforeSend: function () {},
+                headers: {
+                    Authorization: "Bearer <?php echo $this->helper(\Riki\Rma\Helper\Authorization::class)->getApiToken() ?>"
+                }
+            }).done(function (response) {
+                selected.text(selected.data('title'));
+                if (response.hasOwnProperty('refund_method')) {
+                    element.val(response.refund_method);
+                }
+            }).fail(function () {
+                selected.text(selected.data('title'));
+                element.val(preSelected.prop('value'));
+            }).always(function () {
+                element.prop('disabled', false);
+            });
+        };
+    });
+</script>

@@ -1,0 +1,157 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Logging\Block\Adminhtml\Details */
+?>
+
+<?php
+$event = $block->getCurrentEvent();
+?>
+
+<div class="entry-edit form-inline">
+    <fieldset class="fieldset">
+        <legend class="legend">
+            <span><?php /* @escapeNotVerified */
+                echo __('Admin User Data'); ?></span>
+        </legend>
+        <br/>
+
+        <div id="log_details_fieldset" class="field log-details">
+            <table class="admin__table-secondary">
+                <colgroup>
+                    <col width="25%"/>
+                    <col/>
+                </colgroup>
+                <tbody>
+                <tr>
+                    <th><?php /* @escapeNotVerified */
+                        echo __('Aggregated Information'); ?></th>
+                    <td>
+                        <?php
+                        $eventInfo = $block->getEventInfo();
+                        if (is_bool($eventInfo)) {
+                            /* @escapeNotVerified */
+                            echo($dataArray ? 'true' : 'false');
+                        } elseif (is_array($eventInfo)) {
+                            if (isset($eventInfo['general'])) {
+                                if (!is_array($eventInfo['general'])) {
+                                    $eventInfo['general'] = [$eventInfo['general']];
+                                }
+                                echo $block->escapeHtml(implode(', ', $eventInfo['general']));
+                            }
+                            ?>
+                            <?php if (isset($eventInfo['additional'])): ?><br/><?php endif;
+                            ?>
+                            <?php
+                            if (isset($eventInfo['additional'])) {
+                                foreach ($eventInfo['additional'] as $modelName => $modelsData) {
+                                    foreach ($modelsData as $mdoelId => $data) {
+                                        echo $block->escapeHtml(implode(', ', $data));
+                                    }
+                                }
+                            }
+                        } else {
+                            echo $block->escapeHtml($eventInfo);
+                        }
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th><?php /* @escapeNotVerified */
+                        echo __('Admin User ID'); ?></th>
+                    <td>
+                        <?php if ($block->getEventUser()) {
+                            ?>
+                            #<?php /* @escapeNotVerified */
+                            echo $event->getUserId();
+                            ?>
+                            <?php
+                        } else {
+                            ?>
+                            N/A
+                            <?php
+                        } ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th><?php /* @escapeNotVerified */
+                        echo __('Admin User Name'); ?></th>
+                    <td>
+                        <?php if ($block->getEventUser()) {
+                            ?>
+                            <a href="<?php /* @escapeNotVerified */
+                            echo $block->getUrl('adminhtml/user/edit', ['user_id' => $event->getUserId()]);
+                            ?>"><?php echo $block->escapeHtml($event->getUser());
+                                ?></a>
+                            <?php
+                        } else {
+                            ?>
+                            <?php echo $block->escapeHtml($event->getUser());
+                            ?>
+                            <?php
+                        } ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th><?php /* @escapeNotVerified */
+                        echo __('IP-Address'); ?></th>
+                    <td><?php /* @escapeNotVerified */
+                        echo $block->getEventIp(); ?></td>
+                </tr>
+                <tr>
+                    <th><?php /* @escapeNotVerified */
+                        echo __('Session hash'); ?></th>
+                    <td><?php /* @escapeNotVerified */
+                        echo $block->getSessionHash(); ?></td>
+                </tr>
+                <?php if ($block->getEventXForwardedIp()) {
+                    ?>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */
+                            echo __('X-Forwarded For');
+                            ?></th>
+                        <td><?php /* @escapeNotVerified */
+                            echo $block->getEventXForwardedIp();
+                            ?></td>
+                    </tr>
+                    <?php
+                } ?>
+                <?php if ($block->getEventError()) {
+                    ?>
+                    <tr>
+                        <th><?php /* @escapeNotVerified */
+                            echo __('Error Message');
+                            ?></th>
+                        <td><?php /* @escapeNotVerified */
+                            echo $block->getEventError();
+                            ?></td>
+                    </tr>
+                    <?php
+                } ?>
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+
+    <?php if ($event->hasChanges()) {
+        ?>
+        <fieldset class="fieldset">
+            <legend class="legend">
+            <span><?php /* @escapeNotVerified */
+                echo __('Related Changes');
+                ?></span>
+            </legend>
+            <br/>
+
+            <div class="field log-details-grid">
+                <?php echo $block->getChildHtml('details_grid') ?>
+            </div>
+        </fieldset>
+        <?php
+    } ?>
+</div>

@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
+    <system>
+        <section id="subscriptioncourse" translate="label" type="text" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Subscription</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_Subscription::config_subscription</resource>
+            <group id="cutoffdate" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Cut-off Date</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable send email to notify about cut-off date for subscription delivery </comment>
+                </field>
+                <field id="x_days_before_cut_off_date" translate="label" type="text"  sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>X days before cut-off date (days)</label>
+                    <validate>validate-number validate-greater-than-zero validate-digits</validate>
+                    <comment>Entering the integer number of X days before cut-off date</comment>
+                </field>
+                <field id="y_days_before_cut_off_date" translate="label" type="text"  sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Y days before cut-off date (days)</label>
+                    <validate>validate-number validate-greater-than-zero validate-digits</validate>
+                    <comment>Entering the integer number of Y days before cut-off date</comment>
+                </field>
+                <field id="email_template" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="sender" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="send_email_copy_to" translate="label" type="text" sortOrder="30" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Send Cut-off Date Email Copy To</label>
+                    <comment>Comma-separated (Example: example1@mail.com,example2@mail.com,example3@mail.com)</comment>
+                </field>
+                <field id="send_email_copy_method" translate="label" type="select" sortOrder="35" showInDefault="1"
+                       showInStore="1" showInWebsite="1">
+                    <label>Send Cut-off Date Email Copy Method</label>
+                    <source_model>Riki\SubscriptionEmail\Model\Config\Source\SubscriptionSendCopyEmailMethod</source_model>
+                </field>
+                <field id="expression" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Schedule Expression</label>
+                    <comment>Expression time setting for cron job schedule</comment>
+                </field>
+                <field id="is_active_cron_send_cut_off_email" translate="label" type="select" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled Log Cron Send Cut Off Email</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

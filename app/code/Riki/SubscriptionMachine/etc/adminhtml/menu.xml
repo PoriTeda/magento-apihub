@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_SubscriptionMachine::machine_skus"
+             title="Machine Skus"
+             module="Riki_SubscriptionMachine"
+             sortOrder="46"
+             action="machine/skus"
+             parent="Riki_SubscriptionFrequency::subscription"
+             resource="Riki_SubscriptionMachine::machine_skus"/>
+        <add id="Riki_SubscriptionMachine::machine_customer"
+             title="Machine Customer"
+             module="Riki_SubscriptionMachine"
+             sortOrder="47"
+             action="machine/customer"
+             parent="Riki_SubscriptionFrequency::subscription"
+             resource="Riki_SubscriptionMachine::machine_customer"/>
+        <add id="Riki_SubscriptionMachine::machine_conditionrule"
+             title="Machine Condition Rule"
+             module="Riki_SubscriptionMachine"
+             sortOrder="48"
+             action="machine/conditionRule"
+             parent="Riki_SubscriptionFrequency::subscription"
+             resource="Riki_SubscriptionMachine::machine_conditionRule"/>
+    </menu>
+</config>

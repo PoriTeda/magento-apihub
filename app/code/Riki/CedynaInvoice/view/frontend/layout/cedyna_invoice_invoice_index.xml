@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" layout="1column">
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="content">
+            <block
+                    cacheable="false"
+                    class="Riki\CedynaInvoice\Block\Invoice"
+                    name="cedyna_invoice_invoice_index"
+                    template="invoice.phtml"
+            />
+        </referenceContainer>
+        <referenceContainer name="main.content">
+            <referenceBlock name="page.main.title.sub" remove="true" />
+        </referenceContainer>
+        <move element="page.main.title" destination="columns.top" before="-"/>
+        <move element="page.messages" destination="main" before="-"/>
+    </body>
+</page>

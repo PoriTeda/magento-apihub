@@ -1,0 +1,79 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!-- ko foreach: getRegion('authentication') -->
+<!-- ko template: getTemplate() --><!-- /ko -->
+<!--/ko-->
+
+
+
+<div class="checkout-inner-container sidebar0">
+
+    <!-- ko foreach: getRegion('estimation') -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <!--/ko-->
+
+    <!-- ko foreach: getRegion('messages') -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <!--/ko-->
+    <div class="opc-wrapper">
+        <ol class="opc" id="checkoutSteps">
+
+            <!-- ko foreach: getRegion('checkoutTitle') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+
+            <!-- ko foreach: getRegion('shipping-address-text') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+
+            <!-- ko foreach: getRegion('steps') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+
+            <!-- ko foreach: getRegion('discount') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+
+            <!-- ko foreach: getRegion('reward-points') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+
+            <!-- ko foreach: getRegion('questionnaire') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+
+            <!-- ko foreach: getRegion('item-detail') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+            <div class="opc_btn--logout d-pc">
+                <a data-bind="attr: { href: urlLogout()}"><!-- ko i18n: 'Logout'--><!-- /ko --></a>
+            </div>
+        </ol>
+        <div class="opc_sidebar-fixed">
+
+            <!-- ko foreach: getRegion('cart-simulation') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+
+            <!-- ko foreach: getRegion('sidebar') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+            <div class="opc_sidebar_btn">
+                <!-- ko foreach: getRegion('place-order') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+                <!--/ko-->
+            </div>
+        </div>
+
+
+        <div class="opc_btn--logout d-sp">
+            <a data-bind="attr: { href: urlLogout()}"><!-- ko i18n: 'Logout'--><!-- /ko --></a>
+        </div>
+
+    </div>
+
+</div>

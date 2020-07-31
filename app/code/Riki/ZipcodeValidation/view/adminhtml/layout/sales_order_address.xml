@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="sales_order_address.form.container">
+            <block name="sales_order_address.form" as="form" class="Magento\Sales\Block\Adminhtml\Order\Address\Form" template="Riki_ZipcodeValidation::sales/order/address/form.phtml" />
+        </referenceBlock>
+    </body>
+</page>

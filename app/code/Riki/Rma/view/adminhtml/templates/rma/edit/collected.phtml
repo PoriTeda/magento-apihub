@@ -1,0 +1,19 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var $block \Magento\Rma\Block\Adminhtml\Rma\Edit\Tab\Items */ ?>
+
+<div class="admin__page-section-item">
+    <div class="admin__page-section-item-title">
+        <span class="title <?php echo($block->getHeaderCssClass()) ? $block->getHeaderCssClass() . ' icon-head' : '' ?>"><?php /* @escapeNotVerified */ echo $block->getHeaderText() ?></span>
+    </div>
+    <div class="admin__page-section-content collected-items">
+        <?php echo $block->getChildHtml('', true) ?>
+    </div>
+</div>

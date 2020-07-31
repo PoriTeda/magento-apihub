@@ -1,0 +1,40 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <shipmentexporter>
+            <secommon>
+                <shipmentexport_enable>1</shipmentexport_enable>
+                <shipmentexport_logger_enable>0</shipmentexport_logger_enable>
+            </secommon>
+            <seftp>
+                <shipmentexport_ftp_ip>192.168.0.73</shipmentexport_ftp_ip>
+                <shipmentexport_ftp_port>22</shipmentexport_ftp_port>
+                <shipmentexport_ftp_user>riki</shipmentexport_ftp_user>
+                <shipmentexport_ftp_pass>3poFYTiW</shipmentexport_ftp_pass>
+            </seftp>
+            <selocation>
+                <shipmentexport_shipment_folder>Demo/Riki/Shipment/Export/remote</shipmentexport_shipment_folder>
+                <shipmentexport_shipment_backup>Demo/Riki/Shipment/Export/backup</shipmentexport_shipment_backup>
+                <shipmentexport_local_sap_folder>var/shipment/export/local</shipmentexport_local_sap_folder>
+                <shipmentexport_local_sap_copy_folder>var/shipment/export/copy</shipmentexport_local_sap_copy_folder>
+            </selocation>
+            <seexp>
+                <shipmentexport_cron_expression1>* 0 * * *</shipmentexport_cron_expression1>
+                <shipmentexport_cron_expression2>0 0 * * *</shipmentexport_cron_expression2>
+                <shipmentexport_cron_expression3>0 0 * * *</shipmentexport_cron_expression3>
+                <shipmentexport_cron_shipcreatorbyqueue>*/15 * * * *</shipmentexport_cron_shipcreatorbyqueue>
+                <shipmentexport_cron_exp1_limit>3000</shipmentexport_cron_exp1_limit>
+                <shipmentexport_cron_exp2_limit>500</shipmentexport_cron_exp2_limit>
+                <shipmentexport_cron_exp3_limit>100</shipmentexport_cron_exp3_limit>
+            </seexp>
+            <seemail>
+                <shipmentexport_email_alert>shipadmin@riki-test.com</shipmentexport_email_alert>
+                <shipmentexport_email_subject>Riki shipment exporting</shipmentexport_email_subject>
+                <shipmentexport_email_template></shipmentexport_email_template>
+            </seemail>
+            <shipmentqueue>
+                <number_message_per_consumer>10000</number_message_per_consumer>
+                <setting_crontab_consumer>*/15 * * * *</setting_crontab_consumer>
+            </shipmentqueue>
+        </shipmentexporter>
+    </default>
+</config>

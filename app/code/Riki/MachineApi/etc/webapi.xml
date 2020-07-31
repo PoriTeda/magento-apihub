@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+
+    <!-- Step 2 add item to cart -->
+    <route url="/V1/mm/carts/:cartId/items" method="POST">
+        <service class="Riki\MachineApi\Api\CartItemRepositoryInterface" method="save"/>
+        <resources>
+            <!--<resource ref="Magento_Catalog::products" />-->
+            <resource ref="Riki_MachineApi::call_machine_api"/>
+        </resources>
+    </route>
+
+    <!-- Step 3 : Add shipping and billing address to cart -->
+    <route url="/V1/mm/carts/:cartId/shipping-information" method="POST">
+        <service class="Riki\MachineApi\Api\ShippingInformationManagementInterface" method="processAddressInformation"/>
+        <resources>
+            <resource ref="Riki_MachineApi::call_machine_api"/>
+        </resources>
+    </route>
+
+    <!-- Step 4 : Assign customer to cart -->
+    <route url="/V1/mm/cart-to-customer" method="POST">
+        <service class="Riki\MachineApi\Api\ApiCustomerRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Riki_MachineApi::call_machine_api"/>
+        </resources>
+        <data>
+            <parameter name="cartId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
+
+    <!-- Step 5 : Add payment method and place order -->
+    <route url="/V1/mm/carts/order/payment-information" method="POST">
+        <service class="Riki\MachineApi\Api\PaymentInformationManagementInterface" method="savePaymentInformationAndPlaceOrder"/>
+        <resources>
+            <resource ref="Riki_MachineApi::call_machine_api"/>
+        </resources>
+    </route>
+
+</routes>

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link src="Riki_SubscriptionCourse::js/grid.js"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Riki\MachineApi\Block\Adminhtml\B2c\Edit" name="machine_b2c_skus_edit"/>
+        </referenceContainer>
+        <referenceContainer name="left">
+            <block class="Riki\MachineApi\Block\Adminhtml\B2c\Edit\Tabs" name="machine_b2c_sku_edit_tabs">
+                <block class="Riki\MachineApi\Block\Adminhtml\B2c\Edit\Tab\Main" name="machine_b2c_edit_tab_main"/>
+                <block class="Riki\MachineApi\Block\Adminhtml\B2c\Edit\Tab\Machines" name="machine_b2c_edit_tab_machines"/>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">main_section</argument>
+                    <argument name="block" xsi:type="string">machine_b2c_edit_tab_main</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">machines_section</argument>
+                    <argument name="block" xsi:type="array">
+                        <item name="label" xsi:type="string">Machines</item>
+                        <item name="title" xsi:type="string">Machines</item>
+                        <item name="url" xsi:type="helper" helper="Riki\MachineApi\Helper\Data::getMachineUrl"/>
+                        <item name="class" xsi:type="string">ajax</item>
+                    </argument>
+                </action>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="js">
+            <block class="Magento\Framework\View\Element\Text" name="riki_machine_api_wbs_rule_validate">
+                <arguments>
+                    <argument name="text" xsi:type="string"><![CDATA[
+                    <script>require(["Riki_Rule/js/validation/rules"]);</script>
+                    ]]></argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

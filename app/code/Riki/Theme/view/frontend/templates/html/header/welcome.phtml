@@ -1,0 +1,16 @@
+<div class="txtwelcome" data-bind="scope: 'customer'">
+    <span data-bind="html: customer().fullname ? ('ようこそ<strong>' + customer().fullname + '</strong>さん') : '<?php echo $block->getDefaultWelcome() ?>'"></span>
+</div>
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Magento_Ui/js/core/app": {
+            "components": {
+                "customer": {
+                    "component": "Magento_Customer/js/view/customer"
+                }
+            }
+        }
+    }
+}
+</script>

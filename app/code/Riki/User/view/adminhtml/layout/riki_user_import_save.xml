@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <container name="root">
+        <block class="Riki\User\Block\Adminhtml\Password\Import\Frame\Result" template="import/frame/result.phtml" name="user.import.frame.result" as="user_import_frame_result"/>
+    </container>
+</layout>

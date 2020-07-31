@@ -1,0 +1,58 @@
+<?php
+/* @var \Riki\Subscription\Block\Profiles\Success $block */
+$totalAmount = $block->getTotalAmountOfAddedProducts();
+$profileId = $block->getProfileId();
+$courseCode = $block->getCourseCode();
+$timestamp = $block->getTimestamp();
+$addedProducts = $block->getAddedProducts();
+?>
+
+<script>
+    var dataLayer = dataLayer || [];
+    dataLayer.push({
+        'event': 'addProductCampaign',
+        'EventCategory': 'Add Product Campaign',
+        'EventAction': 'SPOT',
+        'EventLabel': '<?= $totalAmount; ?>',
+        'existingSubscription': '<?=  $courseCode; ?>',
+        'profileID': '<?=  $profileId; ?>+<?= $timestamp; ?>'
+    });
+
+    <?php if(!empty($addedProducts)): ?>
+    <?php foreach ($addedProducts as $product): ?>
+    dataLayer.push({
+        'event': 'addProductCampaign',
+        'EventCategory': 'Add Product Campaign ProductList',
+        'EventAction': '<?= $product['name'] ?>',
+        'EventLabel': '<?= $product['qty'] ?>'
+    });
+    <?php endforeach; ?>
+    <?php endif; ?>
+</script>
+
+<div id="add-spot-success-container">
+    <div class="add-spot-success">
+        <p class="add-spot-content">
+            <span class="add-spot-error">
+                <?= __('ご利用ありがとうございます。') ?>
+            </span><br/>
+            <span>
+                <?= __('お届けにご注文商品を追加しました。') ?>
+            </span>
+        </p>
+        <p class="add-spot-campaign">
+            <span>
+                <strong><?= __('お届け予定日') ?></strong>
+                <?= __('の') ?><br/>
+                <?= __('確認・変更はこちら') ?>
+            </span>
+        </p>
+        <a href="<?= $block->getUrl('customer/account') ?>"
+           type="submit" class="action save primary"
+           title="<?= __('マイページへ') ?>">
+            <span><?= __('マイページへ') ?></span>
+        </a>
+        <img class="cart-ty-page" alt="<?= __('マイページへ') ?>"
+             src='<?= $this->getViewFileUrl('Riki_Subscription::images/cart-thank-you-page.png'); ?>'/>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Sales\Block\Adminhtml\Order\Create\Search\Grid">
+        <plugin name="riki_preorder_orderCreateProductGrid" type="Riki\Preorder\Plugin\AdminOrderCreateProductGrid" />
+    </type>
+    <type name="Riki\Sales\Block\Adminhtml\Order\Create\Delivery">
+        <plugin name="riki_preorderRikiSalesBlockAdminhtmlOrderCreateDelivery" type="Riki\Preorder\Plugin\RikiSales\Block\Adminhtml\Order\Create\Delivery" />
+    </type>
+    <type name="Riki\Sales\Block\Adminhtml\Order\View\DeliveryInfo">
+        <plugin name="riki_preorderRikiSalesBlockAdminhtmlOrderViewDeliveryInfo" type="Riki\Preorder\Plugin\RikiSales\Block\Adminhtml\Order\View\DeliveryInfo" />
+    </type>
+    <type name="Magento\Catalog\Ui\DataProvider\Product\ProductDataProvider">
+        <arguments>
+            <argument name="addFieldStrategies" xsi:type="array">
+                <item name="backorders" xsi:type="object">Riki\Preorder\Ui\DataProvider\Product\AddBackOrderFieldToCollection</item>
+            </argument>
+            <argument name="addFilterStrategies" xsi:type="array">
+                <item name="backorders" xsi:type="object">Riki\Preorder\Ui\DataProvider\Product\AddBackOrderFilterToCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\Sales\Helper\Address">
+        <plugin name="riki_preorderAddressHelper" type="Riki\Preorder\Plugin\RikiSales\Helper\Address" />
+    </type>
+    <type name="Magento\Sales\Model\AdminOrder\Product\Quote\Initializer">
+        <plugin name="riki_preorderMagentoSalesModelAdminOrderProductQuoteInitializer" type="Riki\Preorder\Plugin\Sales\Model\AdminOrder\Product\Quote\Initializer" />
+    </type>
+    <type name="Magento\CatalogInventory\Model\Stock\StockItemRepository">
+        <plugin name="rikiPreorderMagentoCatalogInventoryModelStockStockItemRepository" type="Riki\Preorder\Plugin\CatalogInventory\Model\Stock\StockItemRepository" />
+    </type>
+    <type name="Riki\DeliveryType\Model\DeliveryDate">
+        <plugin name="riki_preorderDeliveryTypeModelDeliveryDate" type="Riki\Preorder\Plugin\DeliveryType\Model\DeliveryDate" />
+    </type>
+    <type name="Riki\ShipLeadTime\Helper\Data">
+        <plugin name="riki_preorder_skip_validate_region_for_quote_item" type="Riki\Preorder\Plugin\ShipLeadTime\ValidateRegionForQuoteItem" />
+    </type>
+</config>

@@ -1,0 +1,93 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/** @var $block \Riki\Sales\Block\Shipment\History  */
+?>
+<?php $_shipments = $block->getShipments(); ?>
+<?php $_isLegacy = $block->isLegacyRequest(); ?>
+<?php echo $block->getChildHtml('info');?>
+<div class="orders-history">
+    <div class="orders data items">
+        <div class="data item title <?php if(!$_isLegacy): ?>active<?php endif; ?>"
+             aria-labeledby="tab-label-title"
+             data-role="collapsible" id="tab-label">
+            <a class="data switch"
+               tabindex="-1"
+               data-toggle="switch"
+               href="<?php echo $_isLegacy? $block->escapeUrl($block->getMagentoShipmentUrl()) : 'javascript:void(0);'; ?>"
+               id="tab-label--title">
+                <?php  echo __('After 6/14'); ?>
+            </a>
+        </div>
+        <div class="data item content" data-role="content">
+            <?php if ($_shipments && $_shipments->getSize()): ?>
+                <?php if ($block->getPagerHtml()): ?>
+                    <div class="order-products-toolbar toolbar toolbar-products top"><?php echo $block->getPagerHtml(); ?></div>
+                <?php endif ?>
+                <div class="table-wrapper orders-history">
+                    <table class="data table table-order-items history" id="my-orders-table">
+                        <caption class="table-caption"><?php /* @escapeNotVerified */ echo __('Orders') ?></caption>
+                        <thead>
+                        <tr>
+                            <th scope="col" class="col increment_id"><?php /* @escapeNotVerified */ echo __('Shipment number') ?></th>
+                            <th scope="col" class="col products-list"><?php /* @escapeNotVerified */ echo __('List of product') ?></th>
+                            <th scope="col" class="col status"><?php /* @escapeNotVerified */ echo __('Subscription/Hanpukai') ?></th>
+                            <th scope="col" class="col total"><?php /* @escapeNotVerified */ echo __('Shipment total') ?></th>
+                            <th scope="col" class="col date"><?php /* @escapeNotVerified */ echo __('Shipment date') ?></th>
+                            <th scope="col" class="col paiddate"><?php /* @escapeNotVerified */ echo __('Delivery date') ?></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        /** @var \Magento\Sales\Model\Order\Shipment $_shipment */
+                        foreach ($_shipments as $_shipment):
+
+                            $deliveryCompleteDate = $_isLegacy? $_shipment->getDeliveryDate() : $_shipment->getDeliveryCompleteDate();
+
+                            ?>
+                            <tr>
+                                <td data-th="<?php echo $block->escapeHtml(__('Shipment number')) ?>" class="col increment_id"><?php /* @escapeNotVerified */ echo $_isLegacy? $_shipment->getShippingNo() : $_shipment->getIncrementId() ?></td>
+                                <td data-th="<?php echo $block->escapeHtml(__('List of product')) ?>" class="col products-list">
+                                    <div class="items-list">
+                                        <?php /* @escapeNotVerified */ echo $_isLegacy? $block->getProductsNameHtmlByShipmentId($_shipment->getProductsSku()) : $_shipment->getProductsName(); ?>
+                                    </div>
+                                </td>
+                                <td data-th="<?php echo $block->escapeHtml(__('Subscription/Hanpukai')) ?>" class="col type"><?php /* @escapeNotVerified */ echo __($_shipment->getRikiType()) ;?></td>
+                                <td data-th="<?php echo $block->escapeHtml(__('Shipment total')) ?>" class="col total"><?php /* @escapeNotVerified */ echo $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($_shipment->getGrandTotal(), true, false) ?></td>
+                                <td data-th="<?php echo $block->escapeHtml(__('Shipment date')) ?>" class="col date"><?php /* @escapeNotVerified */ echo $block->formatDate($_shipment->getCreatedAt(), \IntlDateFormatter::MEDIUM) ?></td>
+                                <td data-th="<?php echo $block->escapeHtml(__('Delivery date')) ?>" class="col date"><?php /* @escapeNotVerified */ echo empty($deliveryCompleteDate)? '' : $block->formatDate($deliveryCompleteDate, \IntlDateFormatter::MEDIUM) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <?php if ($block->getPagerHtml()): ?>
+                    <div class="order-products-toolbar toolbar toolbar-products bottom"><?php echo $block->getPagerHtml(); ?></div>
+                <?php endif ?>
+            <?php else: ?>
+                <div class="message info empty"><span><?php /* @escapeNotVerified */ echo __('You have placed no shipments.'); ?></span></div>
+            <?php endif ?>
+            <div class="actions-toolbar">
+                <div class="secondary">
+                    <a class="back" href="<?php /* @escapeNotVerified */ echo $block->getBackUrl() ?>">
+                        <span><?php echo __('Back To Address Book') ?></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="data item title <?php if($_isLegacy): ?>active<?php endif; ?>"
+             aria-labeledby="tab-label-title"
+             data-role="collapsible" id="tab-label">
+            <a class="data switch"
+               tabindex="-1"
+               data-toggle="switch"
+               href="<?php echo $_isLegacy? 'javascript:void(0);' : $block->escapeUrl($block->getLegacyShipmentUrl()); ?>"
+               id="tab-label--title">
+                <?php  echo __('Before 6/13'); ?>
+            </a>
+        </div>
+    </div>
+</div>

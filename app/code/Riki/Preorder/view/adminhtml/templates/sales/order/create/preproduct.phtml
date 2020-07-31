@@ -1,0 +1,19 @@
+<?php /** @var \Riki\Preorder\Block\Adminhtml\Sales\Order\Create\PreProduct $block  */ ?>
+<script>
+    require([
+        "prototype",
+        "Riki_Preorder/addpreproduct",
+        "Magento_Sales/order/create/form"
+    ], function(){
+        addPreproduct = new AddPreProduct(<?php /* @escapeNotVerified */ echo $block->getJsOrderObject() ?>);
+    });
+</script>
+
+<div class="admin__page-section-title">
+    <span class="title"><?php /* @escapeNotVerified */ echo $block->getHeaderText() ?></span>
+    <?php if($block->getButtonsHtml()): ?>
+        <div class="actions"><?php echo $block->getButtonsHtml() ?></div>
+    <?php endif; ?>
+</div>
+
+<?php echo $block->getChildHtml('', true) ?>

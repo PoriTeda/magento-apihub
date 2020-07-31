@@ -1,0 +1,18 @@
+<?php /* @var $block \Riki\Preorder\Block\Product\View\Preorder\ProductDefault */?>
+
+<?php
+if(!$block->canShowBlock()) {
+    return;
+}
+?>
+<script type="text/javascript">
+    require(['jquery', 'Riki_Preorder/js/product/preorder'], function($) {
+        $widget = $.mage.rikiPreorder({
+            aviabilityElement: $(".stock").first(),
+            addToCartButton: $("#product-addtocart-button span"),
+            preOrderNote: '<?=$block->getPreorderNote();?>',
+            addToCartLabel: '<?=$block->getCartLabel()?>'
+        });
+        $widget.enable();
+    });
+</script>

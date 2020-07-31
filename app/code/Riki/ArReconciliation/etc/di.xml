@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <virtualType name="ImportReconciliationGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\ArReconciliation\Model\ResourceModel\Import\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">ImportReconciliationGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="import_reconciliation_listing_data_source" xsi:type="string">Riki\ArReconciliation\Model\ResourceModel\Import\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Riki\ArReconciliation\Model\ResourceModel\Import\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">riki_payment_ar_list</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\ArReconciliation\Model\ResourceModel\Import</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Riki\ArReconciliation\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+
+    <type name="Riki\ArReconciliation\Logger\LoggerImportCsv">
+        <arguments>
+            <argument name="name" xsi:type="string">ReconciliationLog</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ArReconciliation\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- defined connection to table-->
+    <type name="Riki\ArReconciliation\Model\ResourceModel\Import">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Riki\ArReconciliation\Model\ResourceModel\OrderLog">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Riki\ArReconciliation\Model\ResourceModel\OrderPaymentStatusLog">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Riki\ArReconciliation\Model\ResourceModel\OrderReturnLog">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Riki\ArReconciliation\Model\ResourceModel\ReturnLog">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Riki\ArReconciliation\Model\ResourceModel\ShipmentLog">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\ScalableOms\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="riki_payment_ar_list" xsi:type="string">riki_payment_ar_list</item>
+                <item name="riki_order_collected_log" xsi:type="string">riki_order_collected_log</item>
+                <item name="riki_order_payment_status_log" xsi:type="string">riki_order_payment_status_log</item>
+                <item name="riki_order_refund_log" xsi:type="string">riki_order_refund_log</item>
+                <item name="riki_rma_refund_log" xsi:type="string">riki_rma_refund_log</item>
+                <item name="riki_shipment_log" xsi:type="string">riki_shipment_log</item>
+            </argument>
+        </arguments>
+    </type>
+
+</config>

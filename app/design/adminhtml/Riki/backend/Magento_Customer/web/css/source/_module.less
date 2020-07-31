@@ -1,0 +1,21 @@
+// /**
+//  * Copyright © 2016 Magento. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//    Common
+//--------------------------------------
+
+& when (@media-common = true) {
+    .reset.reset-password {
+        display: none !important;
+    }
+    .admin__data-grid-wrap-static .data-grid tr > td.col-action_date,
+    .admin__data-grid-wrap-static .data-grid tr > td.col-created_datetime {
+        min-width: 135px;
+    }
+    .customer-index-edit input[name='customer[disable_auto_group_change]'] + label {
+        display: none;
+    }
+}

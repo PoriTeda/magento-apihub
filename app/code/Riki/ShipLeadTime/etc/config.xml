@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <shipleadtime>
+            <shipping_buffer_days>
+                <shipping_couriers_common_buffer>3</shipping_couriers_common_buffer>
+            </shipping_buffer_days>
+        </shipleadtime>
+    </default>
+</config>

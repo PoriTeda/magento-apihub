@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Riki_Sales::config_order" title="Riki Order Configuration" sortOrder="80" />
+                        </resource>
+                    </resource>
+                </resource>
+                <resource id="Magento_Sales::sales">
+                    <resource id="Magento_Sales::sales_operation">
+                        <resource id="Magento_Sales::sales_order">
+                            <resource id="Magento_Sales::actions">
+                                <resource id="Magento_Sales::create">
+                                    <resource id="Riki_Sales::create_custom_item_price" title="Custom Item Price" sortOrder="0" />
+                                </resource>
+
+                                <resource id="Riki_Sales::salesOrderGirdOnly" title="Sales View only" sortOrder="0" />
+                                <resource id="Magento_Sales::actions_view">
+                                    <resource id="Riki_Sales::salesViewOrderOnly" title="View only" sortOrder="0" />
+                                </resource>
+
+                                <resource id="Riki_Sales::sales_order_reconciliation" title="GAC can change reconciliation information" />
+
+                                <resource id="Riki_Sales::shipping_reason" title="Shipping Reason">
+                                    <resource id="Riki_Sales::shipping_reason_actions" title="Actions" >
+                                        <resource id="Riki_Sales::shipping_reason_save" title="Save" />
+                                        <resource id="Riki_Sales::shipping_reason_delete" title="Delete" />
+                                    </resource>
+                                </resource>
+                                <resource id="Riki_Sales::shipping_cause" title="Shipping Cause">
+                                    <resource id="Riki_Sales::shipping_cause_actions" title="Actions" >
+                                        <resource id="Riki_Sales::shipping_cause_delete" title="Delete" />
+                                        <resource id="Riki_Sales::shipping_cause_save" title="Save" />
+                                    </resource>
+                                </resource>
+                            </resource>
+
+                            <resource id="Riki_Sales::sales_subscription_order" title="Subscription Orders" sortOrder="50" />
+
+                        </resource>
+
+                        <resource id="Magento_Sales::shipment">
+                            <resource id="Riki_Shipment::shipment_actions" title="Action">
+                                <resource id="Riki_Sales::shipmentOrderGirdOnly" title="Shipment Gird View only" sortOrder="0" />
+                            </resource>
+                        </resource>
+                        <resource id="Magento_Sales::sales_invoice"   title="Invoices">
+                            <resource id="Riki_Sales::invoicePrint" title="Print Invoice" sortOrder="0" />
+                        </resource>
+                        <resource id="Magento_Sales::shipment_view" title="Invoices">
+                             <resource id="Riki_Sales::shipmentViewOrderOnly" title="View only" sortOrder="0" />
+                        </resource>
+
+                    </resource>
+                </resource>
+
+            </resource>
+        </resources>
+    </acl>
+</config>

@@ -1,0 +1,14 @@
+<div class="select-wrapper">
+    <select class="input-new select-box payment-methods-select" name="paymnent_methods_select" data-bind="value: selectedPayment">
+        <option class="no-display"></option>
+        <!-- ko foreach: paymentOptions -->
+        <option data-bind="value: method, text: title"></option>
+        <!-- /ko -->
+    </select>
+</div>
+<div class="items payment-methods">
+    <!-- ko foreach: { data: getRegion('payment-method-items'), as: 'element'}  -->
+        <!-- ko template: element.getTemplate() --><!-- /ko -->
+    <!-- /ko -->
+</div>
+<!-- ko ifnot: getRegion('payment-method-items')().length > 0 --><div class="no-payments-block"><!-- ko i18n: 'No Payment Methods'--><!-- /ko --></div><!-- /ko -->

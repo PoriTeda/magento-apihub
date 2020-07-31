@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!--
+ * Copyright © 2016 Wyomind. All rights reserved.
+ * See LICENSE.txt for license details.
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <advancedinventory>
+            <license> 
+                <extension_label>Advanced Inventory</extension_label>
+                <extension_version>6.1.3</extension_version>
+                <extension_code>ai</extension_code>
+                <get_online_license>1</get_online_license>
+            </license>
+            <settings>
+                <enabled>0</enabled>
+                <multiple_assignation_enabled>1</multiple_assignation_enabled>
+                <autoassign_order>1</autoassign_order>
+                <order_notification>1</order_notification>
+                <order_notification_from_date>2000-01-01</order_notification_from_date>
+                <disallow_assignation_status>canceled,holded,complete,fraud,closed</disallow_assignation_status>
+                <pos_permissions>*</pos_permissions>
+                <auto_update_stock_status>0</auto_update_stock_status>
+                
+            </settings>
+            <system>      
+                <log_enabled>1</log_enabled>
+                <journal_enabled>1</journal_enabled>
+                <journal_lifetime>15</journal_lifetime>
+                <permissions>{}</permissions>
+            </system>
+        </advancedinventory>
+    </default>
+   
+</config>

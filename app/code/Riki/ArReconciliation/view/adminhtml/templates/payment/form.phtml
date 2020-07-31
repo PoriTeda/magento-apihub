@@ -1,0 +1,80 @@
+<div>
+    <div class="admin__control-table-wrapper" id="payment_status_information">
+        <div class="admin__field">
+            <label class="admin__field-label">
+                <?php echo __('Payment Status');?>
+            </label>
+            <div class="admin__field-control">
+                <select class="admin__control-select" name="payment_status">
+                    <?php foreach ( $block->getPaymentStatusOption() as $key => $value ):?>
+                        <option value="<?php echo $key;?>" <?php echo $block->getCurrentOrder()->getPaymentStatus() == $key ? 'selected' : ''; ?>>
+                            <?php echo $value;?>
+                        </option>
+                    <?php endforeach;?>
+                </select>
+            </div>
+        </div>
+        <div class="admin__field">
+            <?php echo $block->getSaveButtonHtml();?>
+        </div>
+    </div>
+
+    <?php if( !empty( $block->getChangeLog() ) ): ?>
+
+        <section class="admin__page-section">
+            <div class="admin__page-section-title">
+                <span class="title"><?php /* @escapeNotVerified */ echo __('History change log') ?></span>
+            </div>
+
+            <div class="admin__control-table-wrapper">
+                <table class="data-table admin__control-table" id="payment_status_log_info">
+                    <thead>
+                    <tr class="headings">
+                        <th class="col-change-by"><?php /* @escapeNotVerified */ echo __('Username') ?></th>
+                        <th class="col-order"><?php /* @escapeNotVerified */ echo __('Order Id') ?></th>
+                        <th class="col-status"><?php /* @escapeNotVerified */ echo __('Payment Status') ?></th>
+                        <th class="col-previous-status"><?php /* @escapeNotVerified */ echo __('Previous Payment Status') ?></th>
+                        <th class="col-date last"><?php /* @escapeNotVerified */ echo __('Change Date') ?></th>
+                        <th class="col-time last"><?php /* @escapeNotVerified */ echo __('Time') ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <?php foreach ( $block->getChangeLog() as $item ):  ?>
+
+                        <tr>
+                            <td class="col-change-by">
+                                <?php echo $item->getData('user_name');?>
+                            </td>
+                            <td class="col-order">
+                                <?php echo $item->getOrderIncrementId();?>
+                            </td>
+                            <td class="col-status">
+                                <?php echo $block->getPaymentStatusValue($item->getPaymentStatus());?>
+                            </td>
+                            <td class="col-previous-status">
+                                <?php echo $block->getPaymentStatusValue($item->getPreviousStatus());?>
+                            </td>
+                            <td class="col-date">
+                                <?php echo $block->getTimeLog($item->getCreated(), 'date');?>
+                            </td>
+                            <td class="col-time">
+                                <?php echo $block->getTimeLog($item->getCreated(), 'time');?>
+                            </td>
+                        </tr>
+
+                    <?php endforeach;?>
+
+                    <tr>
+                        <td colspan="6" style="text-align:center">
+                            <a href="<?php echo $block->getExportUrl();?>"><?php echo __('Export change log');?></a>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    <?php endif;?>
+</div>

@@ -1,0 +1,28 @@
+<?php
+/** @var \Riki\Subscription\Block\Frontend\Profile\Edit $block */
+$isSubscriptionHanpukai = $block->isSubscriptionHanpukai();
+$simulatorOrder = $block->getSimulatorOrderOfProfile($block->getEntity()->getProfileId());
+$addInfoWithAddressAndDL = $block->getListProductByAddressAndByDeliveryType($simulatorOrder);
+$allAddress = $block->getAllAddress();
+?>
+<?php
+echo $this->getLayout()
+    ->createBlock(\Magento\Framework\View\Element\Template::class)
+    ->setData([
+        'area' => 'frontend',
+        'isAllowChangeProduct' => false,
+        'addInfoWithAddressAndDL' => $addInfoWithAddressAndDL,
+        'allAddress' => $allAddress,
+        'isAllowChangeAddress' => false,
+        'isAllowChangeQty' => false,
+        'parentBlock' => $block,
+        'order_simulate' =>$simulatorOrder,
+        'isBtnUpdateAllChangesPressed' => true,
+        'isHanpukaiSubscription' => $isSubscriptionHanpukai,
+        'arrPaymentMethod' => $block->isChangePaymentMethod()
+    ])
+    ->setTemplate("Riki_Subscription::profile/payment/method/confirm-page.phtml")->toHtml();
+?>
+<div id="about-selectable-date" class="no-display">
+    <?php echo $block->getChildHtml('about-selectable-date') ?>
+</div>

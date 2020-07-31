@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+ * Copyright © 2016 Wyomind. All rights reserved.
+ * See LICENSE.txt for license details.
+-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link src="Wyomind_AdvancedInventory::js/sales/index.js"/>
+        <link src="Wyomind_AdvancedInventory::css/sales/index.css"/>
+    </head>
+</page>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_model_service_quote_submit_before">
+        <observer name="riki_stock_point_add_addition_address_to_order" instance="Riki\StockPoint\Observer\AddAdditionalAddressForOrder" />
+        <observer name="riki_stock_point_convert_to_order_free_machine_order" instance="Riki\StockPoint\Observer\ConvertFreeMachineOrderColumnToOrder" />
+    </event>
+    <event name="checkout_submit_before">
+        <observer name="riki_stock_point_create_quote_for_free_machine" instance="Riki\StockPoint\Observer\CreateQuoteForFreeMachine" />
+    </event>
+    <event name="subscription_order_place_after">
+        <observer name="riki_stock_point_create_order_for_free_machine" instance="Riki\StockPoint\Observer\CreateOrderForFreeMachine" />
+    </event>
+    <event name="subscription_profile_create_order_after">
+        <observer name="riki_stock_point_update_discount_rate" instance="Riki\StockPoint\Observer\UpdateProfileDiscountRate" />
+    </event>
+    <event name="riki_catalog_product_bundle_get_selection_fixed_price">
+        <observer name="riki_stock_point_update_bundle_product_discount_rate" instance="Riki\StockPoint\Observer\ApplyStockPointProductBundleDiscount" />
+    </event>
+    <event name="profile_item_load_after">
+        <observer name="riki_stock_point_profile_item_load_after" instance="Riki\StockPoint\Observer\InitProfileItemStockPointData" />
+    </event>
+</config>

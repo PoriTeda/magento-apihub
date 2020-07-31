@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="order_content">
+            <referenceBlock name="data">
+                <block class="Riki\Subscription\Block\Adminhtml\Order\Create\Course" template="order/create/course.phtml" name="course">
+                    <block class="Riki\Subscription\Block\Adminhtml\Order\Create\Course\Grid" name="course.grid"/>
+                </block>
+                <block class="Riki\Subscription\Block\Adminhtml\Order\Create\Machines" template="Riki_Subscription::order/create/machineTypes.phtml" name="machines">
+                    <block class="Riki\Subscription\Block\Adminhtml\Order\Create\Machines\Grid" name="machines_grid"/>
+                </block>
+                <block class="Riki\Subscription\Block\Adminhtml\Order\Create\Product" template="Riki_Subscription::order/create/product_course.phtml" name="product_course">
+                    <block class="Riki\Subscription\Block\Adminhtml\Order\Create\Course\Frequency" name="course_frequency"  template="Riki_Subscription::order/create/frequency.phtml" />
+                    <block class="Riki\Subscription\Block\Adminhtml\Order\Create\Product\Grid" name="product_course.grid" />
+                </block>
+            </referenceBlock>
+        </referenceBlock>
+    </body>
+</page>

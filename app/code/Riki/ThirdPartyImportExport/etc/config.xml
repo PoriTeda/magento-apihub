@@ -1,0 +1,170 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <thirdpartyimportex>
+            <secommon>
+                <shipmentexport_enable>1</shipmentexport_enable>
+            </secommon>
+            <seftp>
+                <shipmentexport_ftp_ip>192.168.0.73</shipmentexport_ftp_ip>
+                <shipmentexport_ftp_port>22</shipmentexport_ftp_port>
+                <shipmentexport_ftp_user>riki</shipmentexport_ftp_user>
+                <shipmentexport_ftp_pass>3poFYTiW</shipmentexport_ftp_pass>
+            </seftp>
+            <thirdpartyimportex_location>
+                <csvexport_order_folder_ftp>Demo/Wellnet</csvexport_order_folder_ftp>
+                <csvexport_order_folder_local>var/order_cvs</csvexport_order_folder_local>
+                <setting_crontab>* 8 * * *</setting_crontab>
+            </thirdpartyimportex_location>
+            <seemail>
+                <shipmentexport_email_alert>shipadmin@riki-test.com</shipmentexport_email_alert>
+                <shipmentexport_email_subject>Riki shipment exporting</shipmentexport_email_subject>
+                <shipmentexport_email_template></shipmentexport_email_template>
+            </seemail>
+        </thirdpartyimportex>
+        <setting_sftp>
+            <setup_ftp>
+                <ftp_id>167.114.65.225</ftp_id>
+                <ftp_port>22</ftp_port>
+                <ftp_user>riki</ftp_user>
+                <ftp_pass>P@ssw0rd123</ftp_pass>
+            </setup_ftp>
+        </setting_sftp>
+        <bistransaction_data_export_setup>
+            <secommon>
+                <di_data_export_enable>0</di_data_export_enable>
+            </secommon>
+            <seftp>
+                <data_ftp_id>192.168.0.73</data_ftp_id>
+                <data_ftp_port>22</data_ftp_port>
+                <data_ftp_user>riki</data_ftp_user>
+                <data_ftp_pass>3poFYTiW</data_ftp_pass>
+            </seftp>
+            <data_location>
+                <csvexport_order_folder_local>var/product_export</csvexport_order_folder_local>
+                <csvexport_order_folder_ftp>
+                    <![CDATA[ ]]>
+                </csvexport_order_folder_ftp>
+            </data_location>
+            <data_cron_shipmentheader>
+                <expression>* * 1 * *</expression>
+            </data_cron_shipmentheader>
+            <data_cron_shipmentdetail>
+                <expression>* * 1 * *</expression>
+            </data_cron_shipmentdetail>
+            <data_cron_orderheader>
+                <expression>* * 1 * *</expression>
+            </data_cron_orderheader>
+            <data_cron_orderdetail>
+                <expression>* * 1 * *</expression>
+            </data_cron_orderdetail>
+            <data_cron_product>
+                <expression>* * 1 * *</expression>
+                <debug_log>0</debug_log>
+            </data_cron_product>
+        </bistransaction_data_export_setup>
+        <order_import>
+            <scheduler>
+                <import>0 0 * * *</import>
+            </scheduler>
+        </order_import>
+        <di_data_export_setup>
+            <data_cron_enquete>
+                <csvexport_order_folder_local>var/export_enquete</csvexport_order_folder_local>
+                <setting_crontab>0 * * * *</setting_crontab>
+                <bi_last_run_to_cron>1970-01-01 00:00:00</bi_last_run_to_cron>
+            </data_cron_enquete>
+            <data_cron_stock>
+                <csvexport_stock_folder_local>var/stock_export</csvexport_stock_folder_local>
+                <csvexport_stock_folder_ftp></csvexport_stock_folder_ftp>
+                <setting_crontab>0 * * * *</setting_crontab>
+                <bi_last_run_to_cron>1970-01-01 00:00:00</bi_last_run_to_cron>
+            </data_cron_stock>
+            <data_cron_order>
+                <version>0</version>
+                <limit>2000</limit>
+                <csvexport_order_last_time_cron_run>1970-01-01 00:00:00</csvexport_order_last_time_cron_run>
+            </data_cron_order>
+            <data_cron_order_promotion>
+                <csvexport_order_last_time_cron_run>2017-03-04 00:00:00</csvexport_order_last_time_cron_run>
+            </data_cron_order_promotion>
+            <data_cron_shipment>
+                <limit>20000</limit>
+                <shipment_last_time_cron_run>1970-01-01 00:00:00</shipment_last_time_cron_run>
+            </data_cron_shipment>
+            <data_cron_reward_point>
+                <folder_local>var/bi_export_points</folder_local>
+                <setting_crontab>0 0 * * *</setting_crontab>
+            </data_cron_reward_point>
+            <data_cron_fair_seasonal_gift>
+                <folder_local>var/bi_fair_seasonal_gift</folder_local>
+                <setting_crontab>0 0 * * *</setting_crontab>
+                <cron_last_time_run>1971-01-01 00:00:00</cron_last_time_run>
+            </data_cron_fair_seasonal_gift>
+            <data_cron_subscription_next_delivery>
+                <setting_crontab>0 0 * * *</setting_crontab>
+                <cron_last_time_run>1971-01-01 00:00:00</cron_last_time_run>
+                <setting_crontab_consumer>*/3 * * * *</setting_crontab_consumer>
+                <setting_crontab_file_exported>*/5 * * * *</setting_crontab_file_exported>
+                <number_consumer_exported_sub_profile>1</number_consumer_exported_sub_profile>
+                <number_consumer_exported_simulate_sub_profile>3</number_consumer_exported_simulate_sub_profile>
+                <number_message_per_consumer>1000</number_message_per_consumer>
+                <folder_local_profile>var/bi_subscription_profile</folder_local_profile>
+                <folder_local_profile_version>var/bi_subscription_profile_version</folder_local_profile_version>
+                <folder_local_order>var/bi_subscription_next_delivery_order</folder_local_order>
+                <folder_local_shipment>var/bi_subscription_next_delivery_shipment</folder_local_shipment>
+            </data_cron_subscription_next_delivery>
+            <data_cron_rma>
+                <folder_local>var/bi_rma</folder_local>
+                <setting_crontab>0 0 * * *</setting_crontab>
+                <cron_last_time_run>1971-01-01 00:00:00</cron_last_time_run>
+            </data_cron_rma>
+            <data_cron_rma_invoice>
+                <folder_local>var/bi_rma_invoice</folder_local>
+                <setting_crontab>0 0 * * *</setting_crontab>
+                <cron_last_time_run>1971-01-01 00:00:00</cron_last_time_run>
+            </data_cron_rma_invoice>
+            <data_cron_invoice_sale_shipment>
+                <folder_local>var/bi_shipment_invoice</folder_local>
+                <setting_crontab>0 0 * * *</setting_crontab>
+                <bi_last_run_to_cron>1971-01-01 00:00:00</bi_last_run_to_cron>
+            </data_cron_invoice_sale_shipment>
+            <data_cron_shosha>
+                <folder_local>var/bi_shosha</folder_local>
+                <setting_crontab>0 0 * * *</setting_crontab>
+                <cron_last_time_run>1971-01-01 00:00:00</cron_last_time_run>
+            </data_cron_shosha>
+            <seemail>
+                <shipmentexport_email_enable>0</shipmentexport_email_enable>
+            </seemail>
+            <profiler>
+                <enable>1</enable>
+            </profiler>
+        </di_data_export_setup>
+        <reconciliation>
+            <data_cron_reconciliation>
+                <setting_crontab_reconciliation>0 0 * * *</setting_crontab_reconciliation>
+            </data_cron_reconciliation>
+        </reconciliation>
+        <amuse_data_export_setup>
+            <secommon>
+                <di_data_export_enable>1</di_data_export_enable>
+            </secommon>
+            <seftp>
+                <data_ftp_id>192.168.0.73</data_ftp_id>
+                <data_ftp_port>22</data_ftp_port>
+                <data_ftp_user>riki</data_ftp_user>
+                <data_ftp_pass>3poFYTiW</data_ftp_pass>
+            </seftp>
+            <product_amuse_export>
+                <folder_ftp>Demo/Wellnet</folder_ftp>
+                <folder_local>var/order_cvs</folder_local>
+                <setting_crontab>* 8 * * *</setting_crontab>
+            </product_amuse_export>
+            <seemail>
+                <shipmentexport_email_alert>shipadmin@riki-test.com</shipmentexport_email_alert>
+                <shipmentexport_email_subject>Riki shipment exporting</shipmentexport_email_subject>
+                <shipmentexport_email_template></shipmentexport_email_template>
+            </seemail>
+        </amuse_data_export_setup>
+    </default>
+</config>

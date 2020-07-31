@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="../../../../../../../dev/tests/acceptance/vendor/magento/magento2-functional-testing-framework/src/Magento/FunctionalTestingFramework/Page/etc/SectionObject.xsd">
+
+    <section name="GoToProductPageSection">
+        <!--Go to Catalog/Products-->
+        <element name="catalog" type="button" selector="#menu-magento-catalog-catalog"/>
+        <element name="product" type="button" selector="//span[contains(text(), 'Products')]"/>
+    </section>
+
+    <section name="AdminCreateSimpleProductSection">
+        <!--Click to create product-->
+        <element name="add" type="button" selector="#add_new_product-button"/>
+        <!--Fill required fields-->
+        <!--<element name="simpleProduct" type="button" selector="//ul/li/span[contains(text(), 'Simple Product')]"/>-->
+        <element name="name" type="input" selector="//input[contains(@name,'name')]"/>
+        <element name="sku" type="input" selector="//input[contains(@name,'sku')]"/>
+        <element name="price" type="input" selector="//input[contains(@name,'price')]"/>
+        <element name="quantity" type="input" selector="//input[contains(@name,'quantity_and_stock_status')]"/>
+        <element name="search" type="button" selector="//*[contains(text(),'Search Engine Optimization')]"/>
+        <element name="urlKey" type="input" selector="//input[contains(@name,'url_key')]"/>
+        <!--Save the product-->
+        <element name="saveButton" type="button" selector="#save-button"/>
+        <!--Make sure the product is created-->
+        <element name="successMessage" type="text" selector=".message-success"/>
+    </section>
+
+    <section name="AdminGiftCardAccountInformationSection">
+        <!--Go to Market/Gift Cart Accounts-->
+        <element name="market" type="button" selector="#menu-magento-backend-marketing"/>
+        <element name="giftCard" type="button" selector="//span[contains(text(), 'Gift Card Accounts')]"/>
+        <!--Click to add Gift Cart Account-->
+        <element name="add" type="button" selector="#add"/>
+        <!--Fill required fields-->
+        <element name="giftCardCode" type="text" selector="div.field-code .control-value"/>
+        <element name="status" type="text" selector="div.field-state_text .control-value"/>
+        <element name="active" type="select" selector="select[name=status]"/>
+        <element name="website" type="select" selector="#_infowebsite_id"/>
+        <element name="balance" type="input" selector="#_infobalance"/>
+        <!--Save created gift cart -->
+        <element name="saveGiftCardAccount" type="button" selector="#save"/>
+        <!--Make sure that the card is created-->
+        <element name="savedGiftCardAccountMessage" type="text" selector="//div[@data-ui-id='messages-message-success' and normalize-space(.)='You saved the gift card account.']"/>
+        <element name="giftCardCodeFilterField" type="text" selector="#giftcardaccountGrid_filter_code"/>
+        <element name="resetFilter" type="button" selector=".action-default.scalable.action-reset.action-tertiary"/>
+        <element name="search" type="button" selector=".admin__filter-actions button[data-action='grid-filter-apply']"/>
+        <element name="row" type="text" selector="//*[@id='giftcardaccountGrid_table']/tbody/tr"/>
+        <element name="delete" type="button" selector="#delete"/>
+        <element name="deletedGiftCardAccountMessage" type="text" selector="//div[@data-ui-id='messages-message-success' and normalize-space(.)='This gift card account has been deleted.']"/>
+
+    </section>
+
+    <section name="GetGiftCardCode">
+        <element name="code" selector="//td[contains(text(), 'Main Website')]/preceding-sibling::*[@data-column='code']" type="text"/>
+    </section>
+
+    <section name="CreateCardPriceRuleSection">
+        <!--Go to Market/Cart Price Rules-->
+        <element name="market" type="button" selector="#menu-magento-backend-marketing"/>
+        <element name="discount" type="button" selector="//span[contains(text(), 'Cart Price Rules')]"/>
+        <!--Click to add Cart Price Rule -->
+        <element name="add" type="button" selector="#add"/>
+        <!--Fill required fields-->
+        <element name="ruleName" type="input" selector="//input[@name='name']"/>
+        <element name="selectWebSite" type="button" selector="//*[contains(text(), 'Main Website')]"/>
+        <element name="customerGroup" type="button" selector="//*[text()='NOT LOGGED IN']"/>
+        <element name="coupon" type="button" selector="//*[@name='coupon_type']"/>
+        <element name="specificCoupon" type="button" selector="//*[text()='Specific Coupon']"/>
+        <element name="code" type="input" selector="//*[@name='coupon_code']"/>
+        <element name="priority" type="input" selector="//*[@name='sort_order']"/>
+        <element name="actions" type="button" selector="//*[text()='Actions']"/>
+        <element name="amount" type="input" selector="//*[@name='discount_amount']"/>
+        <!--Save cart price rule-->
+        <element name="save" type="button" selector="#save"/>
+    </section>
+
+    <section name="ProductCardSection">
+        <!--Add/remove gift cart and cart price codes for the product-->
+        <element name="add" type="button" selector="#product-addtocart-button"/>
+        <element name="message" type="text" selector="//div[@role='alert']/div/div"/>
+        <element name="showCard" type="button" selector=".action.showcart"/>
+        <element name="proceed" type="button" selector="#top-cart-btn-checkout"/>
+        <element name="addCard" type="button" selector="#block-giftcard-heading"/>
+        <element name="enterCode" type="button" selector="#giftcard-code"/>
+        <element name="apply" type="button" selector="//span[text()='Apply']"/>
+        <element name="verificationMsg" type="button" selector="//div[@data-role='checkout-messages']/div/div"/>
+        <element name="remove" type="button" selector="//a[contains(text(), 'Remove')]"/>
+        <element name="addCoupon" type="button" selector="//span[text()='Apply Discount Code']"/>
+        <element name="addCode" type="button" selector="#discount-code"/>
+        <element name="applyDiscount" type="button" selector="//span[text()='Apply Discount']"/>
+        <element name="discountVerificationMsg" type="button" selector="//div[contains(@class, 'discount-code _active')]//div[@data-role='checkout-messages']/div/div"/>
+        <element name="cancel" type="button" selector="//span[text()='Cancel coupon']"/>
+    </section>
+
+    <section name="StorefrontProductPageSection">
+        <!--Add product to cart-->
+        <element name="addToCartBtn" type="button" selector="button.action.tocart.primary"/>
+        <!--Check success message-->
+        <element name="successMsg" type="button" selector="div.message-success"/>
+    </section>
+
+    <!--Fill all required fields in shipping form-->
+    <section name="FillShipmentFormSection">
+        <element name="email" type="input" selector="#customer-email" />
+        <element name="firstname" type="input" selector="//input[@name='firstname']"/>
+        <element name="lastname" type="input" selector="//input[@name='lastname']"/>
+        <element name="street" type="input" selector="//input[contains(@name, 'street')]"/>
+        <element name="city" type="input" selector="//input[@name='city']"/>
+        <element name="postcode" type="input" selector="//input[@name='postcode']"/>
+        <element name="telephone" type="input" selector="//input[@name='telephone']"/>
+        <element name="region" type="button" selector="//*[@name='region_id']"/>
+        <element name="state" type="button" selector="//*[text()='Alabama']"/>
+        <element name="next" type="button" selector="//span[text()='Next']"/>
+    </section>
+
+    <section name="RemoveCardPriceRuleSection">
+        <element name="couponCode" type="button" selector="//td[contains(text(), '{{args}}')]" parameterized="true"/>
+        <element name="delete" type="button" selector="#delete"/>
+        <element name="confirm" type="button" selector=".action-primary.action-accept"/>
+    </section>
+
+    <section name="DeleteProduct">
+        <element name="createdProductID" type="select" selector="//*[@id='container']//*[text()='{{arg1}}']/parent::td/parent::tr//label[contains(@class, 'data-grid-checkbox-cell-inner')]" parameterized="true"/>
+        <element name="actionSelectBox" type="button" selector="//*[@class='admin__data-grid-header-row row row-gutter']//*[text()='Actions']"/>
+        <element name="deleteButton" type="button" selector="//*[@class='admin__data-grid-header-row row row-gutter']//*[text()='Delete']"/>
+        <element name="okButton" type="button" selector=".action-primary.action-accept"/>
+    </section>
+
+
+
+</sections>

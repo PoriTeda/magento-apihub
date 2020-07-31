@@ -1,0 +1,605 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<li id="shipping" class="checkout-shipping-address" data-bind="fadeVisible: visible()">
+    <div id="checkout-step-shipping"
+         class="step-content"
+         data-role="content"
+         data-bind="afterRender: showMessage">
+
+        <!-- ko if: (!quoteIsVirtual) -->
+        <!-- ko foreach: getRegion('customer-email') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <!--/ko-->
+
+        <!-- ko if: typeof addressDdateInfo() != "undefined" -->
+        <!-- ko foreach: addressDdateInfo().addressDdateInfo -->
+        <!-- ko foreach: ddate_info -->
+        <!-- ko foreach: {data: cartItems, as: 'cartItem' } -->
+        <!-- ko if: is_visible_in_cart -->
+        <!-- ko if: !free_item || typeof $parents[1].items_error_messages == 'undefined' || !(cartItem.item_id in $parents[1].items_error_messages) -->
+        <div class="opc-setting-shipping-address parent-item-cart mutiple-shipping" data-bind="attr:{'data-cart-product-id' :cartItem.product_id,'data-cart-item' :cartItem.item_id}">
+            <div class="shipping-container block-select-shipping-mb">
+                <div class="shipping-block-content">
+                    <div class="current-address-name">
+                        <span data-bind="i18n: 'Address'"></span>
+                        <strong>
+                            <span data-bind="text: $parents[1].addressData.lastname"></span> <span data-bind="text: $parents[1].addressData.firstname, afterRender:$parents[2].reindex"></span><span data-bind="i18n: 'Mr'"></span>
+                        </strong>
+                    </div>
+                    <div class="main-actions">
+                        <!-- ko ifnot: free_item -->
+                        <!-- ko if: (!($parents[2].isCISCNCMember() && $parents[1].addressData.riki_type_address != 'shipping')) -->
+                        <button class="action" data-bind="click: function(){$parents[2].editSelectedShippingAddress($parents[1].address_id)}">
+                            <span data-bind="i18n: 'Edit address'"></span>
+                        </button>
+                        <!-- /ko -->
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </div>
+            <div class="shipping-container block-products">
+                <div class="shipping-block-title"><span class="index-data"></span><span data-bind="i18n: '件目のお届け先'"></span></div>
+                <div class="shipping-block-content">
+                    <div class="shipping-block-content_inner">
+                        <div class="shipping-block-title"><span data-bind="i18n: 'Shipping address'"></span></div>
+                        <div class="shipping-block-content">
+                            <div class="current-address-name">
+                                <div class="address-name">
+                                    <div class="info-left">
+                                        <span data-bind="i18n: 'Name'"></span>
+                                    </div>
+                                    <div class="info-right">
+                                        <span data-bind="text: $parents[1].addressData.lastname + ' ' + $parents[1].addressData.firstname + $t('Mr')"></span>
+                                    </div>
+                                </div>
+                                <div class="address-address">
+                                    <div class="info-left">
+                                        <span data-bind="i18n: 'Address'"></span>
+                                    </div>
+                                    <div class="info-right">
+                                        <span data-bind="text: '〒' + $parents[1].addressData.postcode + $parents[1].addressData.region + $parents[1].addressData.street + ($parents[1].addressData.apartment ? $parents[1].addressData.apartment : '') "></span>
+                                    </div>
+                                </div>
+                                <div class="address-telephone">
+                                    <div class="info-left">
+                                        <span data-bind="i18n: 'Phone number'"></span>
+                                    </div>
+                                    <div class="info-right">
+                                        <span data-bind="text: $parents[1].addressData.telephone"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="main-actions">
+                                <!-- ko ifnot: free_item -->
+                                <!-- ko if: (!($parents[2].isCISCNCMember() && $parents[1].addressData.riki_type_address != 'shipping')) -->
+                                <button class="action btn-blue edit-address" data-bind="click: function(){$parents[2].editSelectedShippingAddress($parents[1].address_id)}">
+                                    <span data-bind="i18n: 'Edit address'"></span>
+                                </button>
+                                <!-- /ko -->
+                                <button class="action btn-blue"
+                                        data-bind="click: function(){$parents[2].showSelectShippingAddressPopUp($parents[1].address_id, item_id)}">
+                                    <span data-bind="i18n: 'Change address'"></span>
+                                </button>
+                                <button class="action btn-blue action-show-popup action-select-shipping-item"
+                                        data-bind="click: function(){$parents[2].addNewAddress(item_id)}">
+                                    <span data-bind="i18n: 'Create new address'"></span>
+                                </button>
+                                <!-- /ko -->
+                            </div>
+
+                            <div data-bind="attr: { 'id': 'opc-select-shipping-address-' + $parents[1].address_id + '-item-' + item_id},visible: false">
+                                <div>
+                                    <!-- ko if: $parents[2].addressListRender().length -->
+                                    <h3 class="title" data-bind="i18n: 'Setting the address'"></h3>
+                                    <div>
+                                        <div class="note" data-bind="i18n: 'Easy Gift As addressee information newly registered / changed at the time of ordering by delivery flight is not displayed in the addressee settings, please register as soon as possible.'"></div>
+                                        <label data-bind="i18n: 'The receiver address'"></label>
+                                        <div class="field addresses">
+                                            <div class="control select-wrapper">
+                                                <select name="select-address-from-popup"
+                                                        class="shipping-address-items input-new select-box"
+                                                        data-bind="
+                                                attr: {
+                                                'data-select': 'opc-select-shipping-address-' + $parents[1].address_id + '-item-' + item_id,
+                                                'id': 'select-address-' + $parents[1].address_id + '-item-' + item_id
+                                                }
+                                                ">
+                                                    <!-- ko foreach: $parents[2].addressListRender() -->
+                                                    <option data-bind="
+                                                attr: {
+                                                'value': id,
+                                                'data-form': $parents[3].renderFormData($parent.item_id, id),
+                                                'selected': (id == $parents[2].address_id) ? 'selected' : null
+                                                },
+                                                text: (typeof customer_id == 'undefined') ? custom_attributes.riki_nickname : custom_attributes.riki_nickname.value"></option>
+                                                    <!-- /ko -->
+                                                </select>
+                                            </div>
+                                            <span data-bind="i18n: 'Ship to here'"></span>
+                                        </div>
+                                    </div>
+                                    <!-- /ko -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="delivery_inner">
+                        <div class="ddate-block">
+                            <!-- ko ifnot: free_item -->
+                            <div class="main-actions show-mobile">
+                                <!-- ko ifnot: free_item -->
+                                <button class="action btn-blue"
+                                        data-bind="click: function(){$parents[2].showSelectShippingAddressPopUp($parents[1].address_id, item_id)}">
+                                    <span data-bind="i18n: 'Change address'"></span>
+                                </button>
+                                <button class="action btn-blue action-show-popup action-select-shipping-item"
+                                        data-bind="click: function(){$parents[2].addNewAddress(item_id)}">
+                                    <span data-bind="i18n: 'Create new address'"></span>
+                                </button>
+                                <!-- /ko -->
+                            </div>
+                            <!-- /ko -->
+                            <div class="delivery_inner-info">
+                                <h4 class="delivery__title"><!-- ko i18n: 'Delivery Options' --><!-- /ko --></h4>
+                                <h4 class="delivery__name"><!-- ko i18n: $parent.name --><!-- /ko --></h4>
+                                <!-- ko if: $index() == 0 -->
+                                <!-- ko if: (typeof $parent.pre_order == 'undefined' || !$parent.pre_order) -->
+                                <div class="shipping-block shipping-block-1">
+                                    <!-- ko ifnot: ($parents[2].isSubscription() == null && $parent.only_dm) || $parent.only_dm || $parents[2].allowChooseDeliveryDate() == false -->
+                                    <div class="shipping-label">
+                                        <label><!-- ko i18n: 'Delivery Date'--><!-- /ko --></label>
+                                    </div>
+                                    <div class="shipping-control">
+                                        <div class="delivery-specified-row">
+                                            <div class="calendar-wrapper">
+                                                <input name="delivery_date"
+                                                       class="input-text input-new delivery_date"
+                                                       type="text"
+                                                       readonly="readonly"
+                                                       onfocus="this.blur()"
+                                                       data-bind="
+                                                                    multiDateTimePicker: true,
+                                                                    restrictDateList: $parent.deliverydate,
+                                                                    periodRank: $parent.period,
+                                                                    errors: $parents[1].items_error_messages,
+                                                                    itemIds: $parents[1].cartItemIds,
+                                                                    attr: {
+                                                                        name: 'delivery_date[' + $parents[1].address_id + ']' + '[' +  $parent.code + ']',
+                                                                        'placeholder': $t('Unspecified')
+                                                                    }
+                                                                "/>
+                                            </div>
+                                            <input name="delivery_name" class="input-text" type="hidden" data-bind="value: $parent.name" />
+                                        </div>
+                                    </div>
+                                    <!-- /ko -->
+                                    <!-- ko if: ($parents[2].isSubscription() != null) -->
+                                    <div class="block-next-delivery-date">
+                                        <div class="shipping-label">
+                                            <label><!-- ko i18n: 'Next Delivery Date'--><!-- /ko --></label>
+                                        </div>
+                                        <div class="shipping-control">
+                                            <div class="calendar-wrapper">
+                                                <input name="next_delivery_date"
+                                                       class="input-text input-new delivery_date next_delivery_date"
+                                                       type="text"
+                                                       readonly="readonly"
+                                                       onfocus="this.blur()"
+                                                       data-bind="
+                                                                    enable: $parents[2].isEditNextDDate,
+                                                                    multiDateTimePicker: true,
+                                                                    restrictDateList: $parent.deliverydate,
+                                                                    periodRank: $parent.period,
+                                                                    errors: $parents[1].items_error_messages,
+                                                                    itemIds: $parents[1].cartItemIds,
+                                                                    attr: {
+                                                                        name: 'next_delivery_date[' + $parents[1].address_id + ']' + '[' +  $parent.code + ']',
+                                                                        'placeholder': $t('Unspecified')
+                                                                    }
+                                                               "/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /ko -->
+                                </div>
+                                <!-- /ko -->
+                                <!-- ko if: $parent.timeslot.length && !$parent.only_dm && $parents[2].allowChooseDeliveryDate() != false-->
+                                <div class="shipping-block shipping-block-2">
+                                    <div class="shipping-label">
+                                        <label><!-- ko i18n: 'Delivery Time'--><!-- /ko --></label>
+                                    </div>
+                                    <div class="shipping-control">
+                                        <div class="select-wrapper">
+                                            <select name="delivery_time"
+                                                    class="delivery_time input-new select-box"
+                                                    data-bind="
+                                                                attr: {
+                                                                    title: 'shipping time',
+                                                                    name: 'delivery_time[' + $parents[1].address_id + ']' + '[' +  $parent.code + ']',
+                                                                    id: 'delivery_time-' + $parents[1].address_id + '-' + $parent.code
+                                                                },
+                                                                event: {change: function() {$parents[2].updateDeliveryAndTimeSlot($parents[1].address_id)}}
+                                                            ">
+                                                <!-- ko foreach: { data: $parent.timeslot, as: 'timeslotitem' } -->
+                                                <option data-bind="
+                                                            text: timeslotitem.label,
+                                                            attr: {
+                                                                value: timeslotitem.value,
+                                                            }
+                                                        "></option>
+                                                <!-- /ko -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /ko -->
+                                <!-- /ko -->
+                                <!-- ko ifnot: ($parents[2].isSubscription() == null && $parent.only_dm) || $parent.only_dm || $parents[2].allowChooseDeliveryDate() == false -->
+                                <div class="color-red">
+                                    <p data-bind="i18n: 'Regarding various campaigns of periodic delivery flights, you can not specify the desired delivery date.'"></p>
+                                    <p data-bind="i18n: 'Even if you specify delivery date, it will be invalid. Please note.'"></p>
+                                </div>
+                                <!-- /ko -->
+                            </div>
+
+                            <div class="delivery_inner-item">
+                                <div class="table-child checkout-item-detail">
+                                    <div class="item-label">
+                                        <label><!-- ko i18n: 'Order details'--><!-- /ko --></label>
+                                    </div>
+                                    <div class="item parent-item-cart">
+                                        <div class="item-product-image">
+                                            <span class="product-item-photo">
+                                                <img data-bind="attr: {
+                                                        src: $parents[2].itemImages[cartItem.item_id],
+                                                        alt: name
+                                                    }" class="product-image-photo" />
+                                            </span>
+                                        </div>
+                                        <div class="item-information">
+                                            <div class="col name product-name">
+                                                <div class="product-name">
+                                                    <div class="product-item-name" data-bind="text: name"></div>
+                                                    <div class="notification-qty" data-bind="attr: {class: product_stock_class + ' notification-qty'}"><span data-bind="i18n: 'Stock:'"></span> <span data-bind="text: product_stock_message"></span></div>
+                                                    <!-- ko if: (gift_wrapping != null) && (free_item == false) && $parents[2].getOptionGiftWrapping(gift_wrapping).length -->
+                                                    <div class="control gift-wrapping-select">
+                                                        <div class="label" data-bind="i18n: 'Gift wrapping'"></div>
+                                                        <div>
+                                                            <div class="select-wrapper">
+                                                                <select class="input-new select-box" data-bind="attr: {name: 'gift_wrapping_' + cartItem.item_id}, event: {change: function() {$parents[2].updateGiftWrapping(cartItem.item_id)}}">
+                                                                    <option value="-1" data-bind="i18n: 'None'"></option>
+                                                                    <!-- ko foreach: $parents[2].getOptionGiftWrapping(gift_wrapping) -->
+                                                                    <option data-bind="text: label + ' ' + priceAfterFormat, attr: {value: id, selected: (id == $parent.gw_id)}"></option>
+                                                                    <!-- /ko -->
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="wrapping-services-link"><a target="_blank" data-bind="i18n: 'About wrapping services', attr: {href: window.checkoutConfig.wrappingServicesLink, title: $t('About wrapping services')}"></a></div>
+                                                    </div>
+
+                                                    <input type="hidden" data-bind="value: gw_id" class="data-remove-qty" />
+
+                                                    <!-- /ko -->
+
+                                                    <!-- ko if: free_item && is_riki_machine != 1 && window.checkoutConfig.freegift_message != null -->
+                                                    <div class="free-gift-message">
+                                                        <span data-bind="text: window.checkoutConfig.freegift_message"></span>
+                                                    </div>
+                                                    <!-- /ko -->
+                                                </div>
+                                            </div>
+                                            <div class="information-bottom">
+                                                <div class="price-bottom-infor">
+                                                    <div class="col price">
+                                                        <div>
+                                                            <span class="price-including-tax">
+                                                                <span class="cart-price">
+                                                                    <!-- ko ifnot: free_item -->
+                                                                    <!-- ko if: (cartItem.unit_case == 'CS') -->
+                                                                            <span class="price" data-bind="text: $parents[2].formatPrice(price_incl_tax*cartItem.unit_qty), css: {'special-price' : product_final_price < product_regular_price}"></span>
+                                                                    <!-- /ko -->
+                                                                    <!-- ko if: (cartItem.unit_case != 'CS') -->
+                                                                            <span class="price" data-bind="text: $parents[2].formatPrice(price_incl_tax), css: {'special-price' : product_final_price < product_regular_price}"></span>
+                                                                    <!-- /ko -->
+                                                                    <!-- /ko -->
+                                                                    <!-- ko if: free_item -->
+                                                                    <span class="price" data-bind="text: $parents[2].formatPrice(price_incl_tax)"></span>
+                                                                    <!-- /ko -->
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                        <div>
+                                                            <!-- ko if: tier_price.length && (free_item == false) -->
+                                                            <ul class="prices-tier-cart items">
+                                                                <!-- ko foreach: tier_price -->
+                                                                <li class="item">
+                                                                    <!-- ko if: (cartItem.unit_case == 'CS') -->
+                                                                    <span data-bind="text: $t('%1 case:').replace('%1', Math.ceil(price_qty/cartItem.unit_qty))"></span>
+                                                                    <span data-bind="text: $t('%2 / case').replace('%2', $parents[3].formatPrice(price*cartItem.unit_qty))"></span>
+                                                                    <!-- /ko -->
+                                                                    <!-- ko if: (cartItem.unit_case == 'EA') -->
+                                                                    <span data-bind="text: $t('%1 cases:').replace('%1', parseInt(price_qty))"></span>
+                                                                    <span data-bind="text: $t('%2 / piece').replace('%2', $parents[3].formatPrice(price))"></span>
+                                                                    <!-- /ko -->
+                                                                    <!-- ko if: (cartItem.unit_case == 'N/A') -->
+                                                                    <span data-bind="text: $t('Buy %1 or more:').replace('%1', parseInt(price_qty))"></span>
+                                                                    <span data-bind="text: $t('%2 / piece').replace('%2', $parents[3].formatPrice(price))"></span>
+                                                                    <!-- /ko -->
+                                                                </li>
+                                                                <!-- /ko -->
+                                                            </ul>
+                                                            <!-- /ko -->
+                                                        </div>
+                                                    </div>
+                                                    <div class="title-subtotal" data-bind="text: $t('Subtotal (tax incl)')"></div>
+                                                    <div class="col subtotal" data-bind="attr: {'data-th': $t('Subtotal (tax incl)')}">
+                                                        <span class="price-including-tax">
+                                                            <span class="cart-price">
+                                                                <span class="price" data-bind="text: $parents[2].formatPrice(price_incl_tax*qty)"></span>
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col qty removeQtyFromCartShipping" data-bind="attr: {'data-th': $t('Qty')}">
+                                                    <!-- ko if: (unit_case == 'N/A') -->
+                                                    <div>
+                                                        <div class="select-wrapper">
+                                                            <div class="block_quantity">
+                                                                <div class="quantity buttons_added">
+                                                                    <span class="minus delete" data-bind="click: function() {$parents[2].removeItem(item_id,product_id)}, touchstart:function(){$parents[2].removeItem(item_id,product_id)}, css: { hidden: qty  > 1}">  <span data-bind="i18n: 'Delete'"></span></span>
+                                                                    <span class="minus hidden" data-bind="click: function(){$parents[2].updateItemQty(item_id,$parents[1].address_id,unit_case,unit_qty,-1)}, touchstart:function(){$parents[2].updateItemQty(item_id,$parents[1].address_id,unit_case,unit_qty,-1)}, css: { hidden: qty  == 1}"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                                                    <input type="hidden" step="1" min="0" max="" value="0" title="Qty" class="input-text qty text" size="4" pattern="" inputmode="" data-render="0" data-quantity="99" data-minimum="1" data-bind="attr: {name: 'qty_' + item_id, 'data-product-id': product_id}, value: qty,event: {change: function() {$parents[2].updateItemQty(item_id,$parents[1].address_id,unit_case,unit_qty,0)}}">
+                                                                    <select class="input-text qty text" data-bind="attr: {name: 'qty_' + item_id}, event: {change: function() {$parents[2].updateItemQty(item_id, $parents[1].address_id,unit_case,unit_qty, false)}}">
+                                                                        <!-- ko foreach: ko.utils.range($parents[2].getMinSaleQty(min_sale_qty), $parents[2].getMaxSaleQty(max_sale_qty)) -->
+                                                                        <option data-bind="text: $data, attr: {value: $data, selected: ($data === $parent.qty)}"></option>
+                                                                        <!-- /ko -->
+                                                                    </select>
+                                                                    <span class="plus" data-bind="click: function(){$parents[2].updateItemQty(item_id,$parents[1].address_id,unit_case,unit_qty,1)}, touchstart:function(){$parents[1].updateItemQty(item_id,$parents[1].address_id,unit_case,unit_qty,1)}"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <input type="hidden" data-bind="value: qty" value="" class="data-remove-qty" />
+
+                                                        <div class="unit-label" data-bind="i18n: 'EA'"></div>
+                                                    </div>
+                                                    <!-- /ko -->
+                                                    <!-- ko if: (unit_case == 'EA') -->
+                                                    <div>
+                                                        <!-- ko if: !free_item -->
+                                                        <div class="select-wrapper">
+                                                            <div class="block_quantity">
+                                                                <div class="quantity buttons_added">
+                                                                    <span class="minus delete" data-bind="click: function() {$parents[2].removeItem(item_id,product_id)}, touchstart:function(){$parents[2].removeItem(item_id,product_id)}, css: { hidden: qty  > 1}">  <span data-bind="i18n: 'Delete'"></span></span>
+                                                                    <span class="minus hidden" data-bind="click: function(){$parents[2].updateItemQty(item_id,$parents[1].address_id,unit_case,unit_qty,-1)}, touchstart:function(){$parents[2].updateItemQty(item_id,$parents[1].address_id,unit_case,unit_qty,-1)}, css: { hidden: qty  == 1}"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                                                    <input type="hidden" step="1" min="0" max="" value="0" title="Qty" class="input-text qty text" size="4" pattern="" inputmode="" data-render="0" data-quantity="99" data-minimum="1" data-bind="attr: {name: 'qty_' + item_id, 'data-product-id': product_id}, value: qty,event: {change: function() {$parents[2].updateItemQty(item_id,$parents[1].address_id,unit_case,unit_qty,0)}}">
+                                                                    <select class="input-text qty text" data-bind="attr: {name: 'qty_' + item_id}, event: {change: function() {$parents[2].updateItemQty(item_id, $parents[1].address_id,unit_case,unit_qty, false)}}">
+                                                                        <!-- ko foreach: ko.utils.range($parents[2].getMinSaleQty(min_sale_qty), $parents[2].getMaxSaleQty(max_sale_qty)) -->
+                                                                        <option data-bind="text: $data, attr: {value: $data, selected: ($data === $parent.qty)}"></option>
+                                                                        <!-- /ko -->
+                                                                    </select>
+                                                                    <span class="plus" data-bind="click: function(){$parents[2].updateItemQty(item_id,$parents[1].address_id,unit_case,unit_qty,1)}, touchstart:function(){$parents[1].updateItemQty(item_id,$parents[1].address_id,unit_case,unit_qty,1)}"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <input type="hidden" data-bind="value:qty" class="data-remove-qty" />
+
+                                                        <div class="unit-label hidden" data-bind="i18n: 'Piece'"></div>
+                                                        <!-- /ko -->
+
+                                                        <!-- ko if: free_item -->
+                                                        <!-- ko i18n: 'Qty'--><!-- /ko --> ：<span class="qty" data-bind="text: qty"></span>
+                                                        <div class="unit-label hidden" data-bind="i18n: 'Piece'"></div>
+                                                        <!-- /ko -->
+                                                    </div>
+                                                    <!-- /ko -->
+                                                    <!-- ko if: (unit_case == 'CS') -->
+                                                    <div>
+                                                        <!-- ko if: !free_item -->
+                                                        <div class="select-wrapper">
+                                                            <div class="block_quantity">
+                                                                <div class="quantity buttons_added">
+                                                                    <span class="minus delete" data-bind="click: function() {$parents[2].removeItem(item_id,product_id)}, touchstart:function(){$parents[2].removeItem(item_id,product_id)}, css: { hidden: qty_case  > 1}">  <span data-bind="i18n: 'Delete'"></span></span>
+                                                                    <span class="minus hidden" data-bind="click: function(){$parents[2].updateItemQty(item_id,$parents[1].address_id,unit_case,unit_qty,-1)}, touchstart:function(){$parents[2].updateItemQty(item_id,$parents[1].address_id,unit_case,unit_qty,-1)}, css: { hidden: qty_case  == 1}"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                                                    <input type="hidden" step="1" min="0" max="" value="0" title="Qty" class="input-text qty text" size="4" pattern="" inputmode="" data-render="0" data-quantity="99" data-minimum="1" data-bind="attr: {name: 'qty_case_' + item_id, 'data-product-id': product_id}, value: qty_case,event: {change: function() {$parents[2].updateItemQty(item_id,$parents[1].address_id,unit_case,unit_qty,0)}}">
+                                                                    <select class="input-text qty text" data-bind="attr: {name: 'qty_case_' + item_id}, event: {change: function() {$parents[2].updateItemQty(item_id, $parents[1].address_id,unit_case,unit_qty, false)}}">
+                                                                        <!-- ko foreach: ko.utils.range($parents[2].getMinSaleQty(min_sale_qty), $parents[2].getMaxSaleQty(max_sale_qty)) -->
+                                                                        <option data-bind="text: $data, attr: {value: $data, selected: ($data === $parent.qty_case)}"></option>
+                                                                        <!-- /ko -->
+                                                                    </select>
+                                                                    <span class="plus" data-bind="click: function(){$parents[2].updateItemQty(item_id,$parents[1].address_id,unit_case,unit_qty,1)}, touchstart:function(){$parents[1].updateItemQty(item_id,$parents[1].address_id,unit_case,unit_qty,1)}"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <input type="hidden" data-bind="value: qty_case" class="data-remove-qty" />
+
+                                                        <div class="unit-label" data-bind="i18n: 'Case'"></div>
+                                                        <!-- /ko -->
+
+                                                        <!-- ko if: free_item -->
+                                                        <!-- ko i18n: 'Qty'--><!-- /ko --> ：<span class="qty" data-bind="text: qty_case"></span>
+                                                        <div class="unit-label" data-bind="i18n: 'Case'"></div>
+                                                        <!-- /ko -->
+                                                    </div>
+                                                    <!-- /ko -->
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col tier-price hidden">
+                                            <!-- ko if: tier_price.length && (free_item == false) -->
+                                            <ul class="prices-tier-cart items">
+                                                <!-- ko foreach: tier_price -->
+                                                <li class="item">
+                                                    <!-- ko if: (cartItem.unit_case == 'CS') -->
+                                                    <span data-bind="text: $t('%1 case:').replace('%1', Math.ceil(price_qty/cartItem.unit_qty))"></span>
+                                                    <span data-bind="text: $t('%2 / case').replace('%2', $parents[3].formatPrice(price*cartItem.unit_qty))"></span>
+                                                    <!-- /ko -->
+                                                    <!-- ko if: (cartItem.unit_case == 'EA') -->
+                                                    <span data-bind="text: $t('%1 cases:').replace('%1', parseInt(price_qty))"></span>
+                                                    <span data-bind="text: $t('%2 / piece').replace('%2', $parents[3].formatPrice(price))"></span>
+                                                    <!-- /ko -->
+                                                    <!-- ko if: (cartItem.unit_case == 'N/A') -->
+                                                    <span data-bind="text: $t('Buy %1 or more:').replace('%1', parseInt(price_qty))"></span>
+                                                    <span data-bind="text: $t('%2 / piece').replace('%2', $parents[3].formatPrice(price))"></span>
+                                                    <!-- /ko -->
+                                                </li>
+                                                <!-- /ko -->
+                                            </ul>
+                                            <!-- /ko -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ko if: (typeof $parents[1].items_error_messages != 'undefined' && cartItem.item_id in $parents[1].items_error_messages) -->
+                                <div class="table-child item error-message-block">
+                                    <div class="error-message" data-bind="text: $parents[1].items_error_messages[cartItem.item_id]"></div>
+                                </div>
+                                <!-- /ko -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/ko-->
+        <!--/ko-->
+        <!--/ko-->
+        <!--/ko-->
+        <!--/ko-->
+        <!--/ko-->
+
+        <!-- ko foreach: getRegion('address-list-additional-addresses') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+
+        <!-- Address form pop up -->
+        <div id="opc-new-shipping-address" data-bind="visible: isFormPopUpVisible()">
+            <!-- ko template: 'Riki_Checkout/multiple/shipping-address/form' --><!-- /ko -->
+        </div>
+    </div>
+
+    <!-- ko if: window.checkoutConfig.isSubscriptionCheckout != 0 -->
+    <div class="opc_btn--logout" >
+        <a href="javascript:void(0)" onclick="history.back();">商品ページへ戻って、買い物を続ける＞</a>
+    </div>
+    <!-- /ko -->
+</li>
+
+<!--Shipping method template-->
+<li id="opc-shipping_method"
+    class="checkout-shipping-method"
+    data-bind="blockLoader: isLoading, visible: rates().length > 1"
+    role="presentation">
+    <div class="checkout-shipping-method">
+        <div id="checkout-step-shipping_method"
+             class="step-content"
+             data-role="content"
+             role="tabpanel"
+             aria-hidden="false">
+            <!-- ko if: rates().length  -->
+            <form class="form methods-shipping" id="co-shipping-method-form" data-bind="submit: setShippingInformation" novalidate="novalidate">
+                <div class="opc-shipping_method_sub">
+                    <!-- ko foreach: getRegion('before-shipping-method-form') -->
+                    <!-- ko template: getTemplate() --><!-- /ko -->
+                    <!-- /ko -->
+                    <div id="checkout-shipping-method-load">
+                        <div class="shipping-block">
+                            <div class="shipping-label">
+                                <label><!-- ko i18n: 'Shipping Method'--><!-- /ko --></label>
+                            </div>
+                            <div class="shipping-control">
+                                <table class="table-checkout-shipping-method">
+                                    <tbody>
+
+                                    <!--ko foreach: { data: rates(), as: 'method'}-->
+                                    <tr class="row" data-bind="click: $parent.selectShippingMethod">
+                                        <td class="col col-method">
+                                            <!-- ko ifnot: method.error_message -->
+                                            <!-- ko if: $parent.rates().length == 1 -->
+                                            <input name="shipping_method"
+                                                   class="radio"
+                                                   type="radio"
+                                                   data-bind="attr: {
+                                                    checked: $parent.rates().length == 1,
+                                                    'value' : method.carrier_code + '_' + method.method_code,
+                                                    'id': 's_method_' + method.method_code,
+                                                    'aria-labelledby': 'label_method_' + method.method_code + '_' + method.carrier_code + ' ' + 'label_carrier_' + method.method_code + '_' + method.carrier_code
+                                                 }" />
+                                            <!-- /ko -->
+                                            <!--ko ifnot: ($parent.rates().length == 1)-->
+                                            <input name="shipping_method" type="radio"
+                                                   data-bind="
+                                                value: method.carrier_code + '_' + method.method_code,
+                                                checked: $parent.isSelected,
+                                                attr: {
+                                                    'id': 's_method_' + method.carrier_code + '_' + method.method_code,
+                                                    'aria-labelledby': 'label_method_' + method.method_code + '_' + method.carrier_code + ' ' + 'label_carrier_' + method.method_code + '_' + method.carrier_code
+                                                },
+                                                click: $parent.selectShippingMethod"
+                                                   class="radio"/>
+                                            <!--/ko-->
+                                            <!-- /ko -->
+                                            <label>
+                                                <span data-bind="text: method.method_title, attr: {'id': 'label_method_' + method.method_code + '_' + method.carrier_code}"></span>
+                                                <span data-bind="text: method.carrier_title, attr: {'id': 'label_carrier_' + method.method_code + '_' + method.carrier_code}"></span>
+                                                <!-- ko foreach: $parent.getRegion('price') -->
+                                                <!-- ko template: getTemplate() --><!-- /ko -->
+                                                <!-- /ko -->
+                                            </label>
+                                        </td>
+                                    </tr>
+
+                                    <!-- ko if:  method.error_message -->
+                                    <tr class="row row-error">
+                                        <td class="col col-error">
+                                            <div class="message error">
+                                                <div data-bind="text: method.error_message"></div>
+                                            </div>
+                                            <span class="no-display">
+                                                <input name="shipping_method" type="radio" data-bind="attr: {'value' : method.method_code, 'id': 's_method_' + method.method_code}"/>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <!-- /ko -->
+
+                                    <!-- /ko -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="onepage-checkout-shipping-method-additional-load">
+                        <!-- ko foreach: getRegion('shippingAdditional') -->
+                        <!-- ko template: getTemplate() --><!-- /ko -->
+                        <!-- /ko -->
+                    </div>
+                    <!-- ko if: errorValidationMessage().length > 0 -->
+                    <div class="message notice">
+                        <span><!-- ko text: errorValidationMessage()--><!-- /ko --></span>
+                    </div>
+                    <!-- /ko -->
+                    <span data-bind="i18n: 'Find Address'" class="no-display"></span>
+                    <span data-bind="i18n: 'Please select the answer'" class="no-display"></span>
+                </div>
+                <!--<div class="actions-toolbar" id="shipping-method-buttons-container">-->
+                <!--<div class="primary">-->
+                <!--<button data-role="opc-continue" type="submit" class="button action continue primary">-->
+                <!--<span>&lt;!&ndash; ko i18n: 'Proceed to the payment method'&ndash;&gt;&lt;!&ndash; /ko &ndash;&gt;</span>-->
+                <!--</button>-->
+                <!--</div>-->
+                <!--</div>-->
+            </form>
+            <!-- /ko -->
+            <!-- ko ifnot: rates().length > 0 --><div class="no-quotes-block opc-shipping_method_sub"><!-- ko i18n: 'Sorry, no quotes are available for this order at this time'--><!-- /ko --></div><!-- /ko -->
+        </div>
+    </div>
+</li>
+<button data-bind="visible: false, afterRender: afterRenderAddresses">
+    <span data-bind="i18n: 'Create new address'"></span>
+</button>

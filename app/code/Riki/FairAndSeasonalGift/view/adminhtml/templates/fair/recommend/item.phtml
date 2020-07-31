@@ -1,0 +1,70 @@
+<?php /** @var $block \Riki\FairAndSeasonalGift\Block\Adminhtml\Recommend\Item*/ ?>
+
+<?php
+    $relatedFairProduct = $block->getFairProduct($block->getRelatedFairId());
+    if( !empty( $relatedFairProduct ) ):
+        $fairProduct = $block->getFairProduct($block->getCurrentFair()->getFairId());
+?>
+
+    <section class="admin__page-section">
+        <div class="admin__control-table-wrapper">
+            <table class="data-table admin__control-table">
+                <thead>
+                <tr class="headings">
+                    <th class="col-serial-no"><?php /* @escapeNotVerified */ echo __('Serial No') ?></th>
+                    <th class="col-product-sku"><?php /* @escapeNotVerified */ echo __('Product SKU') ?></th>
+                    <th class="col-product-name"><?php /* @escapeNotVerified */ echo __('Product name') ?></th>
+                    <th class="col-recommended-product last"><?php /* @escapeNotVerified */ echo __('Recommended product') ?></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <?php
+                    foreach ( $relatedFairProduct as $item ):
+                        $product = $block->getProduct($item->getProductId());
+                        if($product):
+                ?>
+
+                        <tr class="recommend-product-item" data-product-id="<?php echo $item->getproductId();?>">
+                            <td class="col-serial-no">
+                                <?php echo $item->getSerialNo();?>
+                            </td>
+                            <td class="col-product-sku">
+                                <?php echo $product->getSku();?>
+                            </td>
+                            <td class="col-product-name">
+                                <?php echo $product->getName();?>
+                            </td>
+                            <td class="col-current-product">
+                                <select class="admin__control-select current_product_choose" name="recommend_product[detail][<?php echo $item->getproductId()?>][productId]">
+                                    <option value="0"><?php echo __("Choose Product");?></option>
+                                    <?php
+                                        if( !empty($fairProduct) ):
+                                            $selectedItem = $block->getSelectedRecommentItem($block->getCurrentFair()->getFairId(), $block->getRelatedFairId(), $item->getProductId());
+                                            foreach ($fairProduct as $fairItem):
+                                                $products = $block->getProduct($fairItem->getProductId());
+                                                if($products):
+                                    ?>
+                                                <option
+                                                    value="<?php echo $products->getId();?>"
+                                                    <?php echo $selectedItem == $products->getId() ? 'selected' : '';?>
+                                                >
+                                                    <?php echo $products->getName();?>
+                                                </option>
+                                    <?php
+                                                endif;
+                                            endforeach;
+                                        endif;
+                                    ?>
+                                </select>
+                            </td>
+                        </tr>
+                <?php
+                        endif;
+                    endforeach;
+                ?>
+                </tbody>
+            </table>
+        </div>
+    </section>
+<?php endif;?>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="checkout.cart.form.before">
+            <container name="subscription.text.on.cart" label="Checkout steps" htmlTag="div" htmlClass="subscription_text_on_cart" before="-">
+                <block class="Riki\SubscriptionCourse\Block\Frontend\CartInfo" name="course.cart.info" before="-" template="Riki_SubscriptionCourse::cartinfo.phtml"/>
+            </container>
+        </referenceBlock>
+    </body>
+</page>

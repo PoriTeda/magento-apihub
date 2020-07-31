@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+
+    <!-- Create Monthly Fee Profile API -->
+    <route url="/V1/monthly-fee-profiles/create" method="POST">
+        <service class="Riki\SubscriptionMachine\Api\MonthlyFeeProfileManagementInterface" method="create"/>
+        <resources>
+            <resource ref="Riki_SubscriptionFrequency::subscription" />
+        </resources>
+    </route>
+
+    <!-- Update Monthly Fee Profile API -->
+    <route url="/V1/monthly-fee-profiles/update" method="POST">
+        <service class="Riki\SubscriptionMachine\Api\MonthlyFeeProfileManagementInterface" method="update"/>
+        <resources>
+            <resource ref="Riki_SubscriptionFrequency::subscription" />
+        </resources>
+    </route>
+
+    <!-- Disengage Monthly Fee Profile API -->
+    <route url="/V1/monthly-fee-profiles/disengage" method="POST">
+        <service class="Riki\SubscriptionMachine\Api\MonthlyFeeProfileManagementInterface" method="disengage"/>
+        <resources>
+            <resource ref="Riki_SubscriptionFrequency::subscription" />
+        </resources>
+    </route>
+
+    <!-- Approve Monthly Fee Profile API -->
+    <route url="/V1/coffee-subscription-orders/:consumerDbId/approve" method="POST">
+        <service class="Riki\SubscriptionMachine\Api\CoffeeSubscriptionOrderManagementInterface" method="approve"/>
+        <resources>
+            <resource ref="Riki_SubscriptionFrequency::subscription" />
+        </resources>
+    </route>
+
+</routes>

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_ImportExport:etc/import.xsd">
+    <entity name="customer_composite" model="Riki\ImportExport\Model\Import\CustomerComposite" />
+    <entity name="customer" model="Riki\ImportExport\Model\Import\Customer" />
+    <entity name="customer_address" model="Riki\ImportExport\Model\Import\Address" />
+</config>

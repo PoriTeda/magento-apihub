@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <subscriptioncourse>
+            <subscription_page_link>
+                <sub_page_select_additional_machine></sub_page_select_additional_machine>
+                <sub_page_select_additional_machine_for_office>https://nestle.jp/amb/park/ndg/</sub_page_select_additional_machine_for_office>
+            </subscription_page_link>
+        </subscriptioncourse>
+    </default>
+</config>

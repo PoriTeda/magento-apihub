@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="riki_inventory_import_stock">
+        <!--cron for import-stock-->
+        <job name="riki_import_stock_1st" instance="Riki\AdvancedInventory\Cron\ImportStock\The1st" method="execute">
+            <config_path>importstock/expression/1st_wh_schedule</config_path>
+        </job>
+        <job name="riki_import_stock_2nd" instance="Riki\AdvancedInventory\Cron\ImportStock\The2nd" method="execute">
+            <config_path>importstock/expression/2nd_wh_schedule</config_path>
+        </job>
+        <job name="riki_import_stock_3rd" instance="Riki\AdvancedInventory\Cron\ImportStock\The3rd" method="execute">
+            <config_path>importstock/expression/3rd_wh_schedule</config_path>
+        </job>
+        <job name="riki_import_stock_4th" instance="Riki\AdvancedInventory\Cron\ImportStock\The4th" method="execute">
+            <config_path>importstock/expression/4th_wh_schedule</config_path>
+        </job>
+        <job name="riki_import_stock_5th" instance="Riki\AdvancedInventory\Cron\ImportStock\The5th" method="execute">
+            <config_path>importstock/expression/5th_wh_schedule</config_path>
+        </job>
+    </group>
+    <group id="default">
+        <job name="riki_advanced-inventory_out-of-stock_generate_order" instance="\Riki\AdvancedInventory\Cron\OutOfStock\OosConsumerTrigger" method="execute">
+            <config_path>advancedinventory_outofstock/generate_order/cron_schedule</config_path>
+        </job>
+    </group>
+    <group id="default">
+        <job name="riki_advanced_inventory_reassignation" instance="Riki\AdvancedInventory\Cron\ReAssignation" method="execute">
+            <config_path>advancedinventory_riki_inventory/reassignation_cron/schedule</config_path>
+        </job>
+    </group>
+</config>

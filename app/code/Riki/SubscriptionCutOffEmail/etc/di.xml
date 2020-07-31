@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Riki\SubscriptionCutOffEmail\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <preference for="Riki\SubscriptionCutOffEmail\Api\EmailCutOffDateRepositoryInterface"
+                type="Riki\SubscriptionCutOffEmail\Model\EmailCutOffDateRepository"/>
+    <preference for="Riki\SubscriptionCutOffEmail\Api\Data\EmailCutOffDateInterface"
+                type="\Riki\SubscriptionCutOffEmail\Model\EmailCutOffDate"/>
+    <!-- log for cron_send_cutoff_email -->
+    <type name="Riki\SubscriptionCutOffEmail\Logger\HandlerSendCutOffEmail">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Riki\SubscriptionCutOffEmail\Logger\SendCutOffEmailLogger">
+        <arguments>
+            <argument name="name" xsi:type="string">SendCutOffEmailLogger</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Riki\SubscriptionCutOffEmail\Logger\HandlerSendCutOffEmail</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- end log for cron_send_cutoff_email -->
+</config>

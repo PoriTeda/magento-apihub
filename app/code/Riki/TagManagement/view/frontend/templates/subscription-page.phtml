@@ -1,0 +1,21 @@
+<?php
+/** @var Magento\Framework\View\Element\Template $this */
+    $subscriptionCode = $this->getRequest()->getParam('id');
+?>
+<?php if ($subscriptionCode): ?>
+    <!-- GA Subscription Page-->
+    <script>
+        dataLayer.push({
+            'event': 'detailView',
+            'ecommerce': {
+                'detail': {
+                    'actionField': { },
+                    'products': [{
+                        "id": "<?php echo $subscriptionCode ?>"
+                    }
+                ]}
+            }
+        });
+    </script>
+    <!-- End GA Subscription Page-->
+<?php endif; ?>

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="core_collection_abstract_load_after">
+        <observer name="update_stock_status_quote_item" instance="Riki\ProductStockStatus\Observer\UpdateProductStockStatus" />
+    </event>
+</config>

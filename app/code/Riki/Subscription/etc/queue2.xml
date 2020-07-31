@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/queue.xsd">
+
+    <publisher name="profileditedorder" connection="amqp" exchange="magento"/>
+    <topic publisher="profileditedorder" name="profile.edited.order"  schema="Riki\Subscription\Api\GenerateOrder\ProfileEmailBuilderInterface" />
+    <bind queue="sender_queue_subscription_profile_edited_order" exchange="magento" topic="profile.edited.order" />
+    <consumer name="editedSubscription" queue="sender_queue_subscription_profile_edited_order" connection="amqp" class="\Riki\Subscription\Model\Profile\WebApi\SendMail" method="execute" max_messages="2" executor="Riki\Subscription\Model\Profile\Order\ConsumerEditedProfile"  />
+
+
+    <publisher name="profilegenerateorder" connection="amqp" exchange="magento"/>
+
+    <topic publisher="profilegenerateorder" name="profile.generate.order"  schema="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface" />
+    <bind queue="sender_queue_subscription_profile_generate_order" exchange="magento" topic="profile.generate.order" />
+    <consumer name="generateOrderSubscription" queue="sender_queue_subscription_profile_generate_order" connection="amqp" class="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" max_messages="2" executor="Riki\Subscription\Model\Profile\Order\Consumer"  />
+
+    <topic publisher="profilegenerateorder" name="a.profile.generate.order"  schema="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface" />
+    <bind queue="a_sender_queue_subscription_profile_generate_order" exchange="magento" topic="a.profile.generate.order" />
+    <consumer name="aGenerateOrderSubscription" queue="a_sender_queue_subscription_profile_generate_order" connection="amqp" class="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" max_messages="2" executor="Riki\Subscription\Model\Profile\Order\Consumer"  />
+
+    <topic publisher="profilegenerateorder" name="b.profile.generate.order"  schema="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface" />
+    <bind queue="b_sender_queue_subscription_profile_generate_order" exchange="magento" topic="b.profile.generate.order" />
+    <consumer name="bGenerateOrderSubscription" queue="b_sender_queue_subscription_profile_generate_order" connection="amqp" class="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" max_messages="2" executor="Riki\Subscription\Model\Profile\Order\Consumer"  />
+
+    <topic publisher="profilegenerateorder" name="c.profile.generate.order"  schema="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface" />
+    <bind queue="c_sender_queue_subscription_profile_generate_order" exchange="magento" topic="c.profile.generate.order" />
+    <consumer name="cGenerateOrderSubscription" queue="c_sender_queue_subscription_profile_generate_order" connection="amqp" class="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" max_messages="2" executor="Riki\Subscription\Model\Profile\Order\Consumer"  />
+
+    <topic publisher="profilegenerateorder" name="d.profile.generate.order"  schema="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface" />
+    <bind queue="d_sender_queue_subscription_profile_generate_order" exchange="magento" topic="d.profile.generate.order" />
+    <consumer name="dGenerateOrderSubscription" queue="d_sender_queue_subscription_profile_generate_order" connection="amqp" class="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" max_messages="2" executor="Riki\Subscription\Model\Profile\Order\Consumer"  />
+
+    <topic publisher="profilegenerateorder" name="e.profile.generate.order"  schema="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface" />
+    <bind queue="e_sender_queue_subscription_profile_generate_order" exchange="magento" topic="e.profile.generate.order" />
+    <consumer name="eGenerateOrderSubscription" queue="e_sender_queue_subscription_profile_generate_order" connection="amqp" class="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" max_messages="2" executor="Riki\Subscription\Model\Profile\Order\Consumer"  />
+
+    <topic publisher="profilegenerateorder" name="f.profile.generate.order"  schema="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface" />
+    <bind queue="f_sender_queue_subscription_profile_generate_order" exchange="magento" topic="f.profile.generate.order" />
+    <consumer name="fGenerateOrderSubscription" queue="f_sender_queue_subscription_profile_generate_order" connection="amqp" class="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" max_messages="2" executor="Riki\Subscription\Model\Profile\Order\Consumer"  />
+
+    <topic publisher="profilegenerateorder" name="g.profile.generate.order"  schema="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface" />
+    <bind queue="g_sender_queue_subscription_profile_generate_order" exchange="magento" topic="g.profile.generate.order" />
+    <consumer name="gGenerateOrderSubscription" queue="g_sender_queue_subscription_profile_generate_order" connection="amqp" class="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" max_messages="2" executor="Riki\Subscription\Model\Profile\Order\Consumer"  />
+
+    <topic publisher="profilegenerateorder" name="h.profile.generate.order"  schema="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface" />
+    <bind queue="h_sender_queue_subscription_profile_generate_order" exchange="magento" topic="h.profile.generate.order" />
+    <consumer name="hGenerateOrderSubscription" queue="h_sender_queue_subscription_profile_generate_order" connection="amqp" class="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" max_messages="2" executor="Riki\Subscription\Model\Profile\Order\Consumer"  />
+
+    <topic publisher="profilegenerateorder" name="i.profile.generate.order"  schema="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface" />
+    <bind queue="i_sender_queue_subscription_profile_generate_order" exchange="magento" topic="i.profile.generate.order" />
+    <consumer name="iGenerateOrderSubscription" queue="i_sender_queue_subscription_profile_generate_order" connection="amqp" class="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" max_messages="2" executor="Riki\Subscription\Model\Profile\Order\Consumer"  />
+
+    <topic publisher="profilegenerateorder" name="j.profile.generate.order"  schema="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface" />
+    <bind queue="j_sender_queue_subscription_profile_generate_order" exchange="magento" topic="j.profile.generate.order" />
+    <consumer name="jGenerateOrderSubscription" queue="j_sender_queue_subscription_profile_generate_order" connection="amqp" class="Riki\Subscription\Model\Profile\Order\Generate" method="createOrderFromQueue" max_messages="2" executor="Riki\Subscription\Model\Profile\Order\Consumer"  />
+
+<!--    <publisher name="profileindexer" connection="amqp" exchange="magento"/>-->
+<!--    <topic publisher="profileindexer" name="profile.indexer"  schema="Riki\Subscription\Api\GenerateOrder\ProfileBuilderInterface" />-->
+<!--    <bind queue="sender_queue_subscription_profile_indexer" exchange="magento" topic="profile.indexer" />-->
+
+<!--    <consumer name="aReindexProfileSubscription" queue="sender_queue_subscription_profile_indexer" connection="amqp" class="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex" method="reindexProfile" executor="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer"  />-->
+<!--    <consumer name="bReindexProfileSubscription" queue="sender_queue_subscription_profile_indexer" connection="amqp" class="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex" method="reindexProfile" executor="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer"  />-->
+<!--    <consumer name="cReindexProfileSubscription" queue="sender_queue_subscription_profile_indexer" connection="amqp" class="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex" method="reindexProfile" executor="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer"  />-->
+<!--    <consumer name="dReindexProfileSubscription" queue="sender_queue_subscription_profile_indexer" connection="amqp" class="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex" method="reindexProfile" executor="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer"  />-->
+<!--    <consumer name="eReindexProfileSubscription" queue="sender_queue_subscription_profile_indexer" connection="amqp" class="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex" method="reindexProfile" executor="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer"  />-->
+<!--    <consumer name="fReindexProfileSubscription" queue="sender_queue_subscription_profile_indexer" connection="amqp" class="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex" method="reindexProfile" executor="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer"  />-->
+<!--    <consumer name="gReindexProfileSubscription" queue="sender_queue_subscription_profile_indexer" connection="amqp" class="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex" method="reindexProfile" executor="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer"  />-->
+<!--    <consumer name="hReindexProfileSubscription" queue="sender_queue_subscription_profile_indexer" connection="amqp" class="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex" method="reindexProfile" executor="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer"  />-->
+<!--    <consumer name="iReindexProfileSubscription" queue="sender_queue_subscription_profile_indexer" connection="amqp" class="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex" method="reindexProfile" executor="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer"  />-->
+<!--    <consumer name="jReindexProfileSubscription" queue="sender_queue_subscription_profile_indexer" connection="amqp" class="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex" method="reindexProfile" executor="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer"  />-->
+</config>

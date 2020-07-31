@@ -1,0 +1,63 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!--@subject {{trans "%store_name : New Return #%increment_id" store_name=$store.getFrontendName() increment_id=$rma.getIncrementId()}} @-->
+<!--@vars {
+"store url=\"customer\/account\/\"":"Customer Account URL",
+"template config_path=\"design\/email\/footer_template\"":"Email Footer Template",
+"template config_path=\"design\/email\/header_template\"":"Email Header Template",
+"var logo_alt":"Email Logo Image Alt",
+"var logo_url":"Email Logo Image URL",
+"var item_collection":"Items Collection",
+"var return_address|raw":"Return Address",
+"var rma.getCreatedAtFormated(1)":"Return Created At (datetime)",
+"var rma.getIncrementId()":"Return Id",
+"layout handle=\"magento_rma_email_rma_items\" collection=$item_collection":"Return Items Collection",
+"var rma.getStatusLabel()":"Return Status",
+"var formattedShippingAddress|raw":"Shipping Address",
+"var store.getFrontendName()":"Store Name",
+"store url=\"\"":"Store URL"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+
+<p class="greeting">{{trans "%name," name=$order.getCustomerName()}}</p>
+<p>
+    {{trans "We received your return request. You will be notified when your request is reviewed."}}
+    {{trans
+        'If you have any questions about your return, please contact us at <a href="mailto:%support_email">%support_email</a>.'
+
+        support_email="$store.getConfig('trans_email/ident_support/email')"
+    |raw}}
+</p>
+
+<h1>
+    {{trans
+        "Your Return #%increment_id - %status_label"
+
+        increment_id=$rma.getIncrementId()
+        status_label="$rma.getStatusLabel()"
+    }}
+</h1>
+<p>{{trans "Placed on %created_at" created_at=$rma.getCreatedAtFormated(1)}}</p>
+
+<table class="order-details" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+        <td class="address-details">
+            <h3>{{trans "Shipping Address"}}</h3>
+            <p>{{var formattedShippingAddress|raw}}</p>
+        </td>
+        <td class="address-details">
+            <h3>{{trans "Return Address"}}</h3>
+            <p>{{var return_address|raw}}</p>
+        </td>
+    </tr>
+</table>
+<br/>
+
+{{layout handle="magento_rma_email_rma_items" collection=$item_collection}}
+
+{{template config_path="design/email/footer_template"}}

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/system.xsd">
+    <system>
+        <section id="cedyna_invoice" translate="label" type="text" sortOrder="800" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Cedyna Invoice</label>
+            <tab>bluecom_cronjob</tab>
+            <!-- resource tag name which we have to defined in the acl.xml -->
+            <resource>Riki_CedynaInvoice::config_settings</resource>
+            <group id="setting" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Common Settings</label>
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable Cedyna Invoice</comment>
+                </field>
+            </group>
+            <group id="import" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Import Settings</label>
+                <field id="enable_logger" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable Logger</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable logger</comment>
+                </field>
+                <field id="remote_path" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Import Path</label>
+                </field>
+                <field id="filename_pattern" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Import file</label>
+                </field>
+                <field id="cron_expression" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

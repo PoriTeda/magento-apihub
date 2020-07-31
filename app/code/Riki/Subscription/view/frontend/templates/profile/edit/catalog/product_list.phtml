@@ -1,0 +1,159 @@
+<?php
+/* @var \Riki\Subscription\Block\Frontend\Profile\Catalog\ProductList $block */
+/* @var \Riki\Subscription\Block\Frontend\Profile\Edit $parentBlock */
+$parentBlock = $block->getParentBlock();
+$arrCourse   = $block->getCurrentProfile()->getCourseData();
+$frequencyUnit = $block->getCurrentProfile()->getData('frequency_unit');
+$frequencyInterval = $block->getCurrentProfile()->getData('frequency_interval');
+$frequencyId = $parentBlock->getFrequencyIdByUnitAndInterval($frequencyUnit,$frequencyInterval);
+$stockHelper = $this->helper(Riki\ProductStockStatus\Helper\StockData::class);
+
+$defaultOptions = 10;
+?>
+
+<div class="add-products-title">
+    ■<?php echo __('The following items can be added to the above address.'); ?>
+</div>
+<fieldset class="fieldset">
+    <?php
+    $productCourse = $parentBlock->getListProductOfCourse();
+    if(!empty($productCourse)):
+        ?>
+        <div class="add-more-prod-at-subscription">
+            <div class="content-wrapper">
+                <div class="head">
+                    <div class="prod-name"><?php echo __('Multi Product name'); ?></div>
+                    <div class="prod-price price"><?php echo __('Product Price'); ?></div>
+                    <div class="prod-qty qty"><?php echo __('Qty'); ?></div>
+                    <div class="prod-unit unit"><?php echo __('Unit'); ?></div>
+                    <div class="prod-action action">&nbsp;</div>
+                </div>
+                <?php foreach ($productCourse as $products) : ?>
+                    <?php foreach ($products as $product) : ?>
+                        <?php
+                        $minimalQty = $parentBlock->getMinimalQty($product);
+                        $maximumQty = $parentBlock->getMaximumQty($product);
+                        $maximumQty = ($maximumQty > 99) ? 99 : $maximumQty;
+                        $unitQty = $parentBlock->getUnitQty($product);
+                        ?>
+                        <div class="tr-product" data-id="<?php echo $product->getId() ?>" data-qty-type = "<?php  echo $unitQty > 1 ? 1 : 0 ?>">
+                            <input type="hidden" name="product_id" value="<?php echo $product->getId() ?>">
+                            <div class="prod-name" data-th="<?php echo __('Product image'); ?>">
+                                <div class="img">
+                                    <?php echo $parentBlock->getImage($product, 'cart_page_product_thumbnail')->toHtml(); ?>
+                                </div>
+                                <div class="name">
+                                    <span><?php echo $product->getName(); ?></span>
+                                    <?php
+                                    $allowStockOrder = $product->getIsSalable() && $product->getData('allow_spot_order');
+                                    if (!$allowStockOrder):
+                                        ?>
+                                        <div class="stock unavailable">
+                                    <span>
+                                        <b><?php /* @escapeNotVerified */ echo __('Out of stock') ?></b>
+                                    </span>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <div data-th="<?php echo __('Price'); ?>" class="prod-price price">
+                                <?php echo $parentBlock->getProductPrice($product); ?>
+                                <!-- <?php /*if($product && !empty($product->getTierPrice())) { */?>
+                                <div class="custom-price">
+                                    <?php /*echo $this->getLayout()->getBlock('product.price.render.default')->render('tier_price', $product,[]); */?>
+                                </div>
+                            --><?php /*} */?>
+                            </div>
+                            <?php if($unitQty <= 1) : ?>
+                            <!--Normal quantity-->
+                            <div data-th="<?php echo __('Qty'); ?>" class="prod-qty qty" data-bind="scope: 'generateOption'">
+                                <div class="select-wrapper">
+                                    <select name="product_main_qty"
+                                            id="<?php echo 'qty_'.$product->getId(); ?>"
+                                            title="Product Qty"
+                                        <?php if (!$allowStockOrder) echo 'disabled'; ?>
+                                            data-validate="{'validate-item-quantity': { 'minAllowed': 1 }}"
+                                            class="input-new select-box product_qty"
+                                            data-render="0" data-quantity="<?php echo $maximumQty*$unitQty ?>"
+                                            data-bind="click:generateOption, touchstart:generateOption"
+                                    >
+                                        <?php //$k = $minimalQty*$unitQty > 1 ? $minimalQty*$unitQty : 1 ?>
+                                        <?php for ($i = 1; $i <= $defaultOptions; $i++) : ?>
+                                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <?php else : ?>
+                            <!-- Unit product is case-->
+                            <div data-th="<?php echo __('Qty'); ?>" class="prod-qty qty">
+                                <div class="select-wrapper" data-bind="scope: 'generateOption'">
+                                    <select name="product_main_qty_case"
+                                            id="<?php echo 'qty_case_'.$product->getId(); ?>"
+                                            title="Product Qty"
+                                        <?php if (!$allowStockOrder) echo 'disabled'; ?>
+                                            data-validate="{'validate-item-quantity': { 'minAllowed': 1 }}"
+                                            productid="<?php echo ((int)$product->getId());?>"
+                                            class="qty_case input-new select-box"
+                                            data-render="0" data-quantity="<?php echo $maximumQty ?>"
+                                            data-bind="click:generateOption, touchstart:generateOption"
+                                    >
+                                        <?php //$k = $minimalQty > 1 ? $minimalQty : 1 ?>
+                                        <?php for ($i = 1; $i <= $defaultOptions; $i++) : ?>
+                                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+                            <input type="hidden" name="unit_qty" id="<?php echo 'unit_qty_'.$product->getId(); ?>" value="<?php echo $parentBlock->getUnitQty($product);?>"/>
+                            <input type="hidden" name="product_main_unit_qty" id="<?php echo 'product_unit_qty_'.$product->getId(); ?>" value="<?php echo $parentBlock->getUnitQty($product);?>"/>
+
+                            <div data-th="<?php echo __('Unit'); ?>" class="prod-unit unit">
+                                <?php $aUnitDisplay = $parentBlock->getUnitDisplay($product);
+                                if(is_array($aUnitDisplay) && count($aUnitDisplay) ){ ?>
+                                    <?php echo __(reset($aUnitDisplay));?>
+                                    <div style="display: none;" class="select-wrapper">
+                                        <select  id="<?php echo 'case_display_'.$product->getId(); ?>" class="unit-case input-new select-box" unitqty="<?php echo $parentBlock->getUnitQty($product);?>"  productid="<?php echo ((int)$product->getId());?>" name="<?php echo 'unit_case' ?>" >
+                                            <?php foreach ($aUnitDisplay as $keyUnit => $unitDisplay){ ?>
+                                                <option value="<?php echo $keyUnit;?>"><?php echo $unitDisplay;?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                <?php }else {?>
+                                    <input type="hidden" id="<?php echo 'case_display_'.$product->getId(); ?>" class="unit-case" unitqty="<?php echo $parentBlock->getUnitQty($product);?>"  productid="<?php echo ((int)$product->getId());?>" name="<?php echo 'unit_case' ?>" value="EA">
+                                    <?php echo __('EA');?>
+                                <?php }?>
+                            </div>
+
+                            <div class="prod-action" data-th="<?php echo __('Action'); ?>">
+                                <?php if ($allowStockOrder): ?>
+                                    <a href="javascript:void(0);" name="add_product" class="add_product">
+                                        <span><?php echo __('To add'); ?></span>
+                                    </a>
+                                <?php  endif; ?>
+                            </div>
+                        </div>
+                    <?php endforeach;?>
+                <?php endforeach;?>
+            </div>
+        </div>
+        <script type="text/x-magento-init">
+            {
+                "*": {
+                    "Magento_Ui/js/core/app": {
+                        "components": {
+                            "generateOption": {
+                                "component": "Riki_Subscription/js/view/generateOption"
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
+    <?php else:  ?>
+        <div>
+            <?php echo __("There are no product belong to this course!")  ?>
+        </div>
+    <?php endif;  ?>
+</fieldset>

@@ -1,0 +1,21 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+?>
+<div class="boxorder">
+    <div>
+        <h1 class="titbrown"><?php echo __('変更完了'); ?></h1>
+
+        <p class="txt green des desktop"><?php echo __('ご利用ありがとうございます。変更を承りました。'); ?></p>
+        <p class="txt green des mobile"><?php echo __('ご利用ありがとうございます。'); ?><br><?php echo __('変更を承りました。'); ?></p>
+    </div>
+</div>
+<script>
+    require([
+        "jquery",
+        "mage/mage"
+    ], function($){
+
+        $($.mage.redirect("<?php /* @escapeNotVerified */ echo $block->getUrl('customer/account/') ?>", "assign", 2000));
+
+    });
+</script>

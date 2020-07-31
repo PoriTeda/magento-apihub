@@ -1,0 +1,53 @@
+<?php
+/** @var \Riki\Subscription\Block\Multiple\Category\View $parentBlock */
+$parentBlock = $block->getParentBlock();
+
+$products = $block->getProducts();
+$categoryName = $block->getCategoryName();
+$categoryId = $block->getCategoryId();
+?>
+
+<div class="multiple-products-block">
+    <h2 id="section-<?php echo $categoryId ?>" class="title"><?php echo $block->escapeHtml($categoryName) ?></h2>
+    <div class="table-container">
+        <table class="table table-multiple-products">
+            <caption role="heading"
+                     class="table-caption"><?php echo __('Multiple Products Items') ?></caption>
+            <thead>
+            <tr>
+                <th class="col image"></th>
+                <th class="col name"><?php echo __('Multi Product name') ?></th>
+                <th class="col price"><?php echo __('Multi Price (tax incl)') ?></th>
+                <th class="col qty"><?php echo __('Qty') ?></th>
+                <th class="col subtotal"><?php echo __('Subtotal (tax incl)') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($products as $product): ?>
+                <tr data-id="<?php echo $product->getId(); ?>" class="row" data-category-id="<?= $categoryId ?>" data-bind="scope: 'multipleCategoryCampaignSelectedProducts'">
+                    <td class="col image">
+                        <?php $block->getChildBlock('view_product_image')->addData(['product' => $product]) ?>
+                        <?php echo $block->getChildHtml('view_product_image', false) ?>
+                    </td>
+                    <td class="col name">
+                        <?php $block->getChildBlock('view_product_name')->addData(['product' => $product, 'category_id' => $categoryId]) ?>
+                        <?php echo $block->getChildHtml('view_product_name', false) ?>
+                    </td>
+                    <td class="col price" data-th="<?php echo __('Price') ?>">
+                        <?php $block->getChildBlock('view_product_price')->addData(['product' => $product]) ?>
+                        <?php echo $block->getChildHtml('view_product_price', false) ?>
+                    </td>
+                    <td class="col qty" data-th="<?php echo __('Qty') ?>">
+                        <?php $block->getChildBlock('view_product_qty')->addData(['product' => $product, 'category_id' => $categoryId]) ?>
+                        <?php echo $block->getChildHtml('view_product_qty', false) ?>
+                    </td>
+                    <td class="col price subtotal"
+                        data-th="<?php echo __('Subtotal (tax incl)') ?>">0円
+                    </td>
+                    <td class="col tier-price"><?php echo $parentBlock->getLayout()->getBlock('product.price.render.default')->render('tier_price', $product, []); ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>

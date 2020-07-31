@@ -1,0 +1,166 @@
+<?php
+/**
+ * @var $block \Magento\Backend\Block\Template
+ * @var $viewModel \Riki\SalesRule\ViewModel\Rule\FormScript
+ */
+
+$viewModel = $block->getViewModel();
+?>
+<script>
+    window.courseFrequencyList = <?= /* @escapeNotVerified */ $viewModel->getCourseFrequencyListJson() ?>;
+</script>
+<script>
+    require([
+        'jquery',
+        'underscore',
+        'uiRegistry',
+        'Magento_Ui/js/lib/view/utils/async',
+        'Riki_Rule/js/validation/rules'
+    ], function ($, _, registry, async) {
+
+        var types = [
+            'sales_rule_form',
+            'salesrulestaging_upcoming_form',
+            'salesrulestaging_update_remove_form',
+            'salesrulestaging_update_form'
+        ];
+
+        var rulesToBit = {
+            'free_gift': 1,
+            'shopping_point': 2,
+            'free_delivery': 4,
+            'action_fix': 8,
+            'action_percent': 16,
+            'rule_is_active': 32,
+            'action_buy_x_get_y': 64,
+            'free_cod_charge': 128,
+            'discount_amount': 256
+        };
+
+        var elements = [
+            'actions.simple_action',
+            'actions.points_delta',
+            'actions.simple_free_shipping',
+            'rule_information.is_active',
+            'actions.free_cod_charge',
+            'actions.discount_amount'
+        ];
+
+        var onElementChanged = function (type) {
+            var bitMask = 0;
+            _.each(rulesToBit, function (value, action) {
+                var isActionValid = false;
+                switch (action) {
+                    case 'free_gift':
+                        if ($('[data-index="simple_action"] select').val().search(/ampromo/) > -1) {
+                            isActionValid = true;
+                        }
+                        break;
+                    case 'shopping_point':
+                        if (parseInt($('[data-index="points_delta"] input').val()) > 0) {
+                            isActionValid = true;
+                        }
+                        break;
+                    case 'free_delivery':
+                        if ($('[data-index="simple_free_shipping"] select').val() > 0 && $('[data-index="simple_action"] select').val().search(/ampromo/) == -1) {
+                            isActionValid = true;
+                        }
+                        break;
+                    case 'action_fix':
+                        if ($('[data-index="simple_action"] select').val().search(/(by|cart)_fixed/) > -1) {
+                            isActionValid = true;
+                        }
+                        break;
+                    case 'action_percent':
+                        if ($('[data-index="simple_action"] select').val().search(/by_percent/) > -1) {
+                            isActionValid = true;
+                        }
+                        break;
+                    case 'rule_is_active':
+                        var isActiveComponent = registry.get(type + '.' + type + '.' + 'rule_information.is_active');
+                        if (typeof isActiveComponent !== 'undefined'  && parseInt(isActiveComponent.value()) == 1) {
+                            isActionValid = true;
+                        }
+                        break;
+                    case 'action_buy_x_get_y':
+                        if ($('[data-index="simple_action"] select').val().search(/buy_x_get_y/) > -1) {
+                            isActionValid = true;
+                        }
+                        break;
+                    case 'free_cod_charge':
+                        if (parseInt($('[data-index="free_cod_charge"] select').val()) == 1) {
+                            isActionValid = true;
+                        }
+                        break;
+                    case 'discount_amount':
+                        if (parseInt($('[data-index="discount_amount"] input').val()) > 0) {
+                            isActionValid = true;
+                        }
+                        break;
+                }
+
+                if (isActionValid) {
+                    bitMask |= value;
+                }
+            });
+
+            updateElementValidation(
+                type + '.' + type + '.' + 'actions.wbs_free_payment_fee',
+                rulesToBit['rule_is_active'] & bitMask
+                && (rulesToBit['free_cod_charge'] & bitMask)
+            );
+
+            updateElementValidation(
+                type + '.' + type + '.' + 'actions.wbs_free_delivery',
+                rulesToBit['rule_is_active'] & bitMask
+                && (rulesToBit['free_delivery'] & bitMask)
+            );
+
+            updateElementValidation(
+                type + '.' + type + '.' + 'actions.wbs_shopping_point',
+                rulesToBit['rule_is_active'] & bitMask
+                && (rulesToBit['shopping_point'] & bitMask)
+            );
+
+            updateElementValidation(
+                type + '.' + type + '.' + 'actions.wbs_promo_item_free_gift',
+                rulesToBit['rule_is_active'] & bitMask
+                && (rulesToBit['free_gift'] & bitMask)
+            );
+        };
+
+        var updateElementValidation = function ($element, $required) {
+            registry.get($element, function (component) {
+                component.setRequired($required);
+            });
+        };
+
+        typesFormUpdate();
+
+        function typesFormUpdate() {
+            types.map(function (type) {
+                formUpdate(type);
+            });
+        }
+
+        async.async({selector: '[data-index="rule_information"]'}, function () {
+            $('[data-index="actions"] .fieldset-wrapper-title').click();
+            types.map(function (type) {
+                formUpdate(type);
+            });
+        });
+
+        function formUpdate(type) {
+            async.async('[data-index="simple_action"] select', type + '.' + type + '.' + 'actions', function () {
+                onElementChanged(type);
+                _.each(elements, function (elementId) {
+                    registry.get(type + '.' + type + '.' + elementId, function (component) {
+                        component.on('update', function () {
+                            onElementChanged(type);
+                        });
+                    });
+                });
+            });
+        }
+    });
+</script>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Validator/etc/validation.xsd">
+    <entity name="rma">
+        <rules>
+            <rule name="warning">
+                <entity_constraints>
+                    <constraint alias="already_validator" class="Riki\Rma\Validator\AlreadyRma" />
+                    <constraint alias="exceed_shipment_fee_validator" class="Riki\Rma\Validator\ExceedShipmentFeeRma" />
+                    <constraint alias="partial_multi_shipment_validator" class="Riki\Rma\Validator\PartialMultiShipmentRma" />
+                    <constraint alias="partial_promotion_validator" class="Riki\Rma\Validator\PartialPromotionRma" />
+                    <constraint alias="replacement_order_validator" class="Riki\Rma\Validator\ReplacementOrderRma" />
+                    <constraint alias="shipment_reject_cod_validator" class="Riki\Rma\Validator\ShipmentRejectCodRma" />
+                </entity_constraints>
+            </rule>
+            <rule name="validate_point_for_approval">
+                <entity_constraints>
+                    <constraint alias="validate_point_for_approval" class="Riki\Rma\Validator\RmaApproval"/>
+                </entity_constraints>
+            </rule>
+            <rule name="validate_return_point_before_save_rma">
+                <entity_constraints>
+                    <constraint alias="before_save_rma_return_point" class="Riki\Rma\Validator\BeforeSaveRmaReturnPoint"/>
+                    <constraint alias="case_item_return" class="Riki\Rma\Validator\CaseItemReturn"/>
+                </entity_constraints>
+            </rule>
+        </rules>
+        <groups>
+            <group name="approval">
+                <uses>
+                    <use rule="warning"/>
+                </uses>
+            </group>
+            <group name="rma_before_approval_validation">
+                <uses>
+                    <use rule="validate_point_for_approval"/>
+                </uses>
+            </group>
+            <group name="rma_before_save_validation">
+                <uses>
+                    <use rule="validate_return_point_before_save_rma"/>
+                </uses>
+            </group>
+        </groups>
+    </entity>
+</validation>

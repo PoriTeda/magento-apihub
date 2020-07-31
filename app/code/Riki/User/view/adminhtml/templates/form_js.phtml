@@ -1,0 +1,48 @@
+<script type="text/javascript">
+    require([
+        'jquery', // jquery Library
+        'jquery/ui', // Jquery UI Library
+        'jquery/validate', // Jquery Validation Library
+        'mage/translate' // Magento text translate (Validation message translte as per language)
+    ], function($){
+        $(document).ready(function () {
+            $('.validate-admin-password').addClass('validate-custom-name').removeClass('validate-admin-password');
+            $('.validate-cpassword').addClass('validate-cpassword-custom').removeClass('validate-cpassword');
+
+        })
+        $.validator.addMethod(
+            'validate-custom-name', function (value) {
+                var pass = $.trim(value);
+                if (pass.length > 1) {
+                    if (!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%#(~)<>*.,;:_\-/+=|'"{}^?&])[A-Za-z\d$@$!%#(~)<>*.,;:_\-/+=|'"{}^?&]{10,16}/.test(value))) {
+                        return false;
+                    }
+                }
+                return true;
+            },
+            $.mage.__('This password is not acceptable'));
+
+        $.validator.addMethod(
+            'validate-cpassword-custom', function (value) {
+                var conf = $('#confirmation').length > 0 ? $('#confirmation') : $($('.validate-cpassword-custom')[0]);
+
+                var passwordElements = $('.validate-custom-name');
+
+                for (var i = 0; i < passwordElements.length; i++) {
+                    var passwordElement = $(passwordElements[i]);
+                    if (passwordElement.closest('form').attr('id') === conf.closest('form').attr('id')) {
+                        pass = passwordElement;
+                    }
+                }
+                if ($('.validate-custom-name').length) {
+                    pass = $($('.validate-custom-name')[0]);
+                    return (pass.val() === conf.val());
+                }
+
+                return true;
+            },
+            $.mage.__('Please make sure your passwords match.'));
+
+    });
+</script>
+

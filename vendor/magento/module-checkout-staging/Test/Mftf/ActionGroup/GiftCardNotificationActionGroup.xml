@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="../../../../../../../dev/tests/acceptance/vendor/magento/magento2-functional-testing-framework/src/Magento/FunctionalTestingFramework/Test/etc/actionGroupSchema.xsd">
+
+    <!--Go To Products page-->
+    <actionGroup name="GoToProductPage">
+        <click selector="{{GoToProductPageSection.catalog}}" stepKey="clickOnCatalog" />
+        <waitForPageLoad stepKey="waitForPage"/>
+        <click selector="{{GoToProductPageSection.product}}" stepKey="clickToSelectProductsItem" />
+        <waitForPageLoad stepKey="waitForPageProducts"/>
+    </actionGroup>
+
+    <!--Create Simple product-->
+    <actionGroup name="AdminCreateSimpleProduct">
+        <click selector="{{AdminCreateSimpleProductSection.add}}" stepKey="clickToAddProduct"/>
+        <waitForPageLoad stepKey="WaitForProductPageIsLoaded"/>
+        <fillField selector="{{AdminCreateSimpleProductSection.name}}" userInput="{{SimpleProduct5.name}}" stepKey="setNameForProduct"/>
+        <fillField selector="{{AdminCreateSimpleProductSection.sku}}" userInput="{{SimpleProduct5.sku}}" stepKey="setSKUForProduct"/>
+        <fillField selector="{{AdminCreateSimpleProductSection.price}}" userInput="{{SimpleProduct5.price}}" stepKey="setPriceForProduct"/>
+        <fillField selector="{{AdminCreateSimpleProductSection.quantity}}" userInput="{{SimpleProduct5.quantity}}"  stepKey="setQuantityForProduct"/>
+        <click selector="{{AdminCreateSimpleProductSection.search}}" stepKey="clickOnSearchEngineOptimization"/>
+        <fillField selector="{{AdminCreateSimpleProductSection.urlKey}}" userInput="{{SimpleProduct5.urlKey}}" stepKey="setSearchUrlForProduct"/>
+        <click selector="{{AdminCreateSimpleProductSection.saveButton}}" stepKey="clickSaveProduct"/>
+        <waitForPageLoad stepKey="WaitForProductSave"/>
+        <see selector="{{AdminCreateSimpleProductSection.successMessage}}" userInput="You saved the product." stepKey="seeSaveConfirmation"/>
+    </actionGroup>
+
+    <!--Create gift cart-->
+    <actionGroup name="AddGiftCardAccountActionGroup">
+        <arguments>
+            <argument name="website" defaultValue="Main Website" type="string"/>
+            <argument name="balanceAmount" defaultValue="10" type="string"/>
+        </arguments>
+        <click selector="{{AdminGiftCardAccountInformationSection.market}}" stepKey="clickOnMarketing"></click>
+        <waitForPageLoad stepKey="waitForPageMarketingIsLoaded"/>
+        <click selector="{{AdminGiftCardAccountInformationSection.giftCard}}" stepKey="clockToSelectGiftCardItem"/>
+        <waitForPageLoad stepKey="waitForPageGiftCardAccountIsLoaded"/>
+        <click selector="{{AdminGiftCardAccountInformationSection.add}}" stepKey="ClickToAddGiftCard"/>
+        <selectOption selector="{{AdminGiftCardAccountInformationSection.website}}" userInput="{{website}}" stepKey="selectMainWebsite"/>
+        <fillField selector="{{AdminGiftCardAccountInformationSection.balance}}" userInput="{{balanceAmount}}" stepKey="addBalance"/>
+        <click selector="{{AdminGiftCardAccountInformationSection.saveGiftCardAccount}}" stepKey="clickSaveGiftCardAccount"/>
+        <waitForElementVisible selector="{{AdminGiftCardAccountInformationSection.savedGiftCardAccountMessage}}" stepKey="savedGiftCardAccount"/>
+    </actionGroup>
+
+    <!--Create Cart Price Rule-->
+    <actionGroup name="CreateCardPriceRule">
+        <click selector="{{CreateCardPriceRuleSection.market}}" stepKey="clickOnMarketing"></click>
+        <waitForPageLoad stepKey="waitForPageMarketingIsLoaded" />
+        <click selector="{{CreateCardPriceRuleSection.discount}}" stepKey="CreateDiscountSection" />
+        <waitForPageLoad stepKey="waitForPageDiscountAccountIsLoaded"/>
+        <click selector="{{CreateCardPriceRuleSection.add}}" stepKey="ClickToAddDiscount"/>
+        <waitForPageLoad stepKey="waitForPageDiscountPageIsLoaded"/>
+        <fillField selector="{{CreateCardPriceRuleSection.ruleName}}" userInput="discount" stepKey="setRuleName"/>
+        <click selector="{{CreateCardPriceRuleSection.selectWebSite}}" stepKey="clickToSelectWebsite"/>
+        <click selector="{{CreateCardPriceRuleSection.customerGroup}}" stepKey="clickToSelectCustomerGroup"/>
+        <click selector="{{CreateCardPriceRuleSection.coupon}}" stepKey="clickToExpandCoupons"/>
+        <click selector="{{CreateCardPriceRuleSection.specificCoupon}}" stepKey="clickToSelectCoupons"/>
+        <fillField selector="{{CreateCardPriceRuleSection.code}}" userInput="{{cardCode.priceCard}}" stepKey="setCode"/>
+        <fillField selector="{{CreateCardPriceRuleSection.priority}}" userInput="0" stepKey="setPriority"/>
+        <click selector="{{CreateCardPriceRuleSection.actions}}" stepKey="clickToExpandActions"/>
+        <fillField selector="{{CreateCardPriceRuleSection.amount}}" userInput="50" stepKey="serAmountForDiscount"/>
+        <click selector="{{CreateCardPriceRuleSection.save}}" stepKey="clickToSaveGiftCard"/>
+    </actionGroup>
+
+    <!--Fill shipment form-->
+    <actionGroup name="ShipmentFormActionGroup">
+        <fillField selector="{{FillShipmentFormSection.email}}" userInput="{{ShippingFormData.email}}" stepKey="setCustomerEmail"/>
+        <fillField selector="{{FillShipmentFormSection.firstname}}" userInput="{{ShippingFormData.fname}}" stepKey="SetCustomerFirstName"/>
+        <fillField selector="{{FillShipmentFormSection.lastname}}" userInput="{{ShippingFormData.lname}}" stepKey="SetCustomerLastName"/>
+        <fillField selector="{{FillShipmentFormSection.street}}" userInput="{{ShippingFormData.street}}" stepKey="SetCustomerStreetAddress"/>
+        <fillField selector="{{FillShipmentFormSection.city}}" userInput="{{ShippingFormData.city}}" stepKey="SetCustomerCity"/>
+        <fillField selector="{{FillShipmentFormSection.postcode}}" userInput="{{ShippingFormData.postcode}}" stepKey="SetCustomerZipCode"/>
+        <fillField selector="{{FillShipmentFormSection.telephone}}" userInput="{{ShippingFormData.telephone}}" stepKey="SetCustomerPhoneNumber"/>
+        <click selector="{{FillShipmentFormSection.region}}" stepKey="clickToSetState"/>
+        <click selector="{{FillShipmentFormSection.state}}" stepKey="clickToChooseState"/>
+        <click selector="{{FillShipmentFormSection.next}}" stepKey="clickToSaveShippingInfo"/>
+        <waitForPageLoad time="5" stepKey="waitForReviewAndPaymentsPageIsLoaded"/>
+        <seeInCurrentUrl url="payment" stepKey="reviewAndPaymentIsShown"/>
+    </actionGroup>
+
+    <!--Add product to cart-->
+    <actionGroup name="AddSimpleProductToCart">
+        <arguments>
+            <argument name="product" defaultValue="product"/>
+        </arguments>
+        <amOnPage url="/{{product.name}}.html" stepKey="navigateProductPage"/>
+        <click selector="{{StorefrontProductPageSection.addToCartBtn}}" stepKey="addToCart"/>
+        <waitForElementVisible selector="{{StorefrontProductPageSection.successMsg}}" time="30" stepKey="waitForProductAdded"/>
+        <see selector="{{StorefrontProductPageSection.successMsg}}" userInput="You added {{product.name}} to your shopping cart." stepKey="seeAddedToCartMessage"/>
+    </actionGroup>
+
+    <actionGroup name="RemoveCardPriceRule">
+        <click selector="{{CreateCardPriceRuleSection.market}}" stepKey="clickOnMarketing"></click>
+        <waitForPageLoad stepKey="waitForPageMarketingIsLoaded"/>
+        <click selector="{{CreateCardPriceRuleSection.discount}}" stepKey="clockToSelectDiscountItem"/>
+        <waitForPageLoad stepKey="waitForPageDiscountIsLoaded"/>
+        <click selector="{{RemoveCardPriceRuleSection.couponCode(cardCode.priceCard)}}" stepKey="clickOnDiscount"/>
+        <waitForPageLoad  stepKey="waitForPageDiscountAccountIsLoaded"/>
+        <click selector="{{RemoveCardPriceRuleSection.delete}}" stepKey="ClickToDeleteDiscount"/>
+        <waitForPageLoad stepKey="waitForDeleteConfirmation"/>
+        <click selector="{{RemoveCardPriceRuleSection.confirm}}" stepKey="clickToConfirm"/>
+    </actionGroup>
+
+    <!--Delete created product-->
+    <actionGroup name="DeleteProduct">
+        <arguments>
+            <argument name="product" defaultValue="SimpleProduct5"/>
+        </arguments>
+        <click selector="{{DeleteProduct.createdProductID(product.name)}}" stepKey="selectCreatedProduct"/>
+        <waitForElementVisible selector="{{DeleteProduct.actionSelectBox}}" stepKey="waitToSelectActionVisible" time="50"/>
+        <waitForPageLoad time="2" stepKey="waitClickToDeleteProductActions"/>
+        <click stepKey="clickToSelectAction1"  selector="{{DeleteProduct.actionSelectBox}}"/>
+        <waitForPageLoad time="2" stepKey="waitClickToDeleteProduct"/>
+        <click selector="{{DeleteProduct.deleteButton}}" stepKey="clickToDeleteProduct"/>
+        <click selector="{{DeleteProduct.okButton}}" stepKey="clickToConfirm"/>
+        <waitForPageLoad time="2" stepKey="waitClickToConfirmButton"/>
+        <see userInput="A total of 1 record(s) have been deleted." stepKey="productDeletedSuccessfully"/>
+    </actionGroup>
+
+    <actionGroup name="DeleteGiftCardAccountActionGroup">
+        <arguments>
+            <argument name="giftCardAccountCode" type="string"/>
+        </arguments>
+        <click selector="{{AdminGiftCardAccountInformationSection.market}}" stepKey="clickOnMarketing"></click>
+        <waitForPageLoad stepKey="waitForPageMarketingIsLoaded"/>
+        <click selector="{{AdminGiftCardAccountInformationSection.giftCard}}" stepKey="clockToSelectGiftCardItem"/>
+        <waitForPageLoad stepKey="waitForPageGiftCardAccountIsLoaded" />
+        <click selector="{{AdminGiftCardAccountInformationSection.resetFilter}}" stepKey="clickResetFilterButton"/>
+        <waitForLoadingMaskToDisappear stepKey="waitForLoadingMaskToDisappearAfterReset"/>
+        <fillField selector="{{AdminGiftCardAccountInformationSection.giftCardCodeFilterField}}" userInput="{{giftCardAccountCode}}" stepKey="clickCodeField"/>
+        <click selector="{{AdminGiftCardAccountInformationSection.search}}" stepKey="clickSearchButton"/>
+        <waitForLoadingMaskToDisappear stepKey="waitForLoadingMaskToDisappearOnSearch"/>
+        <click selector="{{AdminGiftCardAccountInformationSection.row}}" stepKey="clickOnRow"/>
+        <waitForPageLoad stepKey="waitForEditPageLoad"/>
+        <click selector="{{AdminGiftCardAccountInformationSection.delete}}" stepKey="clickDelete"/>
+        <waitForElementVisible selector="{{AdminConfirmationModalSection.ok}}" stepKey="waitForDeleteConfirmationPopup"/>
+        <click selector="{{AdminConfirmationModalSection.ok}}" stepKey="clickDeleteGiftCardAccount"/>
+        <waitForElementVisible selector="{{AdminGiftCardAccountInformationSection.deletedGiftCardAccountMessage}}" stepKey="deletedGiftCardAccount"/>
+    </actionGroup>
+
+</actionGroups>

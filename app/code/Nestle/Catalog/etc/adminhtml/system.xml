@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
+    <system>
+        <section id="loggersetting">
+            <group id="catalog_logger" translate="label" type="text" sortOrder="600" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Catalog</label>
+                <field id="logger_product_gps_price_enable_status" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable logger info when product attribute gps_price and gps_price_ec be set to empty or null or 0</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>File name: var/log/product_gps_price_logger.log</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

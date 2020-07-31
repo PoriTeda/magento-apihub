@@ -1,0 +1,18 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <subscriptioncourse>
+            <cancelsubscription>
+                <cancel_enable>1</cancel_enable>
+                <cancel_template></cancel_template>
+            </cancelsubscription>
+            <subscription_enable_disable>
+                <expression>* * * * *</expression>
+                <enable>1</enable>
+            </subscription_enable_disable>
+            <course_import>
+                <schedule_cronjob>* * * 12 *</schedule_cronjob>
+                <log_active>1</log_active>
+            </course_import>
+        </subscriptioncourse>
+    </default>
+</config>

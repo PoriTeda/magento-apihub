@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_Questionnaire::questionnaire" title="Questionnaire management"
+             module="Riki_Questionnaire" sortOrder="40" parent="Magento_Catalog::inventory"
+             action="questionnaire/questions/index" resource="Riki_Questionnaire::questionnaire"/>
+        <add id="Riki_Questionnaire::answers" title="Answers management"
+             module="Riki_Questionnaire" sortOrder="41" parent="Magento_Catalog::inventory"
+             action="questionnaire/answers/index" resource="Riki_Questionnaire::answers"/>
+        <add id="Riki_Questionnaire::importQuestionaire" title="Import Questionnaire"
+             module="Riki_Questionnaire" sortOrder="41" parent="Magento_Catalog::inventory"
+             action="questionnaire/import/index" resource="Riki_Questionnaire::importQuestionaire"/>
+    </menu>
+</config>

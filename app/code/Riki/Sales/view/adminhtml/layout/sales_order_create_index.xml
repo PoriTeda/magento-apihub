@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <block class="Magento\Framework\View\Element\Text\ListText" name="head.additional" as="head.additional">
+            <block class="Magento\Framework\View\Element\Text" name="security.xfs">
+                <arguments>
+                    <argument name="text" xsi:type="string">
+                        <![CDATA[
+                            <script type="text/javascript">
+                                window.onload = function () {
+                                    var numOfTab = localStorage.getItem('number_create_order_tab');
+
+                                    numOfTab = (numOfTab * 1) + 1;
+
+                                    localStorage.setItem('number_create_order_tab', numOfTab);
+                                }
+
+
+                                window.onbeforeunload = function () {
+                                    var numOfTab = localStorage.getItem('number_create_order_tab');
+
+                                    numOfTab = Math.max((numOfTab * 1) - 1, 0);
+
+                                    localStorage.setItem('number_create_order_tab', numOfTab);
+                                }
+                            </script>
+                        ]]>
+                    </argument>
+                </arguments>
+            </block>
+        </block>
+        <referenceBlock name="content">
+            <block class="Magento\Framework\View\Element\Text" name="validation.script">
+                <arguments>
+                    <argument name="text" xsi:type="string"><![CDATA[
+                        <script>require(['Riki_Sales/order/create/wbs']);</script>
+                    ]]></argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <referenceContainer name="js">
+            <block class="Magento\Framework\View\Element\Text" name="riki_script">
+                <arguments>
+                    <argument name="text" xsi:type="string"><![CDATA[
+                    <script>require(["Riki_Rule/js/validation/rules"]);</script>
+                    ]]></argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="billing_method">
+            <block class="Riki\Sales\Block\Adminhtml\Order\Create\Billing\FreeFlag" template="order/create/billing/free_flag.phtml" name="payment_free_flag" before="-"/>
+        </referenceBlock>
+        <referenceBlock name="shipping_method">
+            <block class="Riki\Sales\Block\Adminhtml\Order\Create\Shipping\FreeFlag" template="order/create/shipping/free_flag.phtml" name="shipping_free_flag" before="-"/>
+        </referenceBlock>
+        <referenceBlock name="data">
+            <block class="Riki\Sales\Block\Adminhtml\Order\Create\AdditionalInfo" template="order/create/additional_info.phtml" name="additional-info"/>
+            <block class="Magento\Sales\Block\Adminhtml\Order\Create\Form\Account" template="Riki_Sales::order/create/form/account.phtml" name="form_account"/>
+            <block class="Riki\Sales\Block\Adminhtml\Order\Create\Delivery" template="order/create/delivery.phtml" name="delivery_info"/>
+            <block class="Riki\Sales\Block\Adminhtml\Order\Create\Questionnaire" template="order/create/questionnaire.phtml" name="questionnaire"/>
+        </referenceBlock>
+        <referenceBlock name="customer.grid.container">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Riki_Sales::order/create/abstract.phtml</argument>
+            </action>
+            <block class="Magento\Framework\View\Element\Template" name="consumer.db.customers" template="Riki_Customer::index/searchconsumerdb.phtml">
+                <uiComponent name="consumerdb_listing"/>
+            </block>
+        </referenceBlock>
+        <referenceBlock name="items_grid">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Magento_Sales::order/create/items/grid.phtml</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

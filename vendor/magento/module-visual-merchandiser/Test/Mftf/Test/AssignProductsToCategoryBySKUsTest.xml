@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AssignProductsToCategoryBySKUsTest">
+        <annotations>
+            <features value="VisualMerchandiser"/>
+            <stories value="[Visual Merchandiser] Assign/Unassign products to/from a category"/>
+            <title value="[Visual Merchandiser] Admin should be able to assign products to category by SKU"/>
+            <description value="[Visual Merchandiser] Admin should be able to mass assign products to category by SKU"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="MC-172"/>
+            <group value="VisualMerchandiser"/>
+        </annotations>
+        <before>
+            <actionGroup ref="LoginAsAdmin" stepKey="login"/>
+            <createData entity="_defaultCategory" stepKey="category"/>
+            <createData entity="ApiSimpleProduct" stepKey="productInCategory">
+                <requiredEntity createDataKey="category"/>
+            </createData>
+            <createData entity="SimpleProduct2" stepKey="productNotInCategory"/>
+        </before>
+        <after>
+            <actionGroup ref="logout" stepKey="logout"/>
+            <deleteData createDataKey="productInCategory" stepKey="deleteProduct1"/>
+            <deleteData createDataKey="productNotInCategory" stepKey="deleteProduct2"/>
+            <deleteData createDataKey="category" stepKey="deleteCategory"/>
+        </after>
+
+        <!-- Go to admin category page -->
+        <actionGroup ref="goToAdminCategoryPageById" stepKey="goToAdminCategoryPage">
+            <argument name="id" value="$$category.id$$"/>
+        </actionGroup>
+        <!-- Go to add products by Sku -->
+        <actionGroup ref="OpenProductsInCategorySection" stepKey="OpenProductsInCategorySection"/>
+        <actionGroup ref="GoToAddProductsBySku" stepKey="GoToAddProductsBySku"/>
+        <!-- Enter product SKUs -->
+        <pressKey selector="{{AdminCategoryAddProductsModalSection.productSkuInput}}" userInput="$$productInCategory.sku$$" stepKey="pressKey1"/>
+        <pressKey selector="{{AdminCategoryAddProductsModalSection.productSkuInput}}" parameterArray="[\Facebook\WebDriver\WebDriverKeys::ENTER]" stepKey="pressKey2"/>
+        <pressKey selector="{{AdminCategoryAddProductsModalSection.productSkuInput}}" userInput="$$productNotInCategory.sku$$" stepKey="pressKey3"/>
+        <pressKey selector="{{AdminCategoryAddProductsModalSection.productSkuInput}}" parameterArray="[\Facebook\WebDriver\WebDriverKeys::ENTER]" stepKey="pressKey4"/>
+        <pressKey selector="{{AdminCategoryAddProductsModalSection.productSkuInput}}" userInput="Invalid Sku" stepKey="pressKey5"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.assign}}" stepKey="clickAssign"/>
+        <!-- Assert messages -->
+        <see userInput="2 SKU(s) processed successfully" selector="{{AdminCategoryAddProductsModalSection.successMessage}}" stepKey="seeSuccess"/>
+        <see userInput="Products with the following SKUs do not exist: Invalid Sku" selector="{{AdminCategoryAddProductsModalSection.errorMessage}}" stepKey="seeError"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.saveClose}}" stepKey="clickSaveClose"/>
+        <!-- See products in category product grid -->
+        <actionGroup ref="SwitchToGridModeProductInCategory" stepKey="switchToGrid"/>
+        <actionGroup ref="SeeProductInProductCategoryGridForCurrentCategory" stepKey="seeProduct1">
+            <argument name="product" value="$$productInCategory$$"/>
+        </actionGroup>
+        <actionGroup ref="SeeProductInProductCategoryGridForCurrentCategory" stepKey="seeProduct2">
+            <argument name="product" value="$$productNotInCategory$$"/>
+        </actionGroup>
+        <!-- Save category and assert success message -->
+        <click selector="{{AdminCategoryMainActionsSection.SaveButton}}" stepKey="saveCategoryWithProducts"/>
+        <seeElement selector="{{AdminCategoryMessagesSection.SuccessMessage}}" stepKey="seeCategorySaveSuccess"/>
+        <!-- Go to storefront category page -->
+        <amOnPage url="{{StorefrontCategoryPage.url($$category.name$$)}}" stepKey="onCategoryPage"/>
+        <waitForPageLoad stepKey="waitForPageLoad"/>
+        <!-- Assert product1 in storefront category page -->
+        <actionGroup ref="StorefrontCheckCategorySimpleProduct" stepKey="StorefrontCheckCategorySimpleProduct1">
+            <argument name="product" value="$$productInCategory$$"/>
+        </actionGroup>
+        <!-- Assert product2 in storefront category page -->
+        <actionGroup ref="StorefrontCheckCategorySimpleProduct" stepKey="StorefrontCheckCategorySimpleProduct2">
+            <argument name="product" value="$$productNotInCategory$$"/>
+        </actionGroup>
+    </test>
+</tests>

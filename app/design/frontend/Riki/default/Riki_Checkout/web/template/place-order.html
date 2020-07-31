@@ -1,0 +1,12 @@
+<div class="opc_order-submit" id="order-confirm-buttons-container">
+    <!-- ko if : checkMultiple() -->
+    <button type="submit" class="action primary checkout btn_place-order" data-bind="click: placeOrderMultipleAfterConfirm, attr : {disabled: !isPlaceOrderActionAllowed()}">
+        <span><!-- ko i18n: '注文確定'--><!-- /ko --></span>
+    </button>
+    <!-- /ko -->
+    <!-- ko if : !checkMultiple() -->
+    <button type="submit" class="action primary checkout btn_place-order" data-bind="click: placeOrderAfterConfirm, attr : {disabled: !isPlaceOrderActionAllowed()}">
+        <span><!-- ko i18n: '注文確定'--><!-- /ko --></span>
+    </button>
+    <!-- /ko -->
+</div>

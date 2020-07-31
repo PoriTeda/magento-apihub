@@ -1,0 +1,49 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Rma\Block\Returns\History */
+?>
+<?php $_returns = $block->getReturns(); ?>
+<?= $block->getChildHtml('info') ?>
+<?php if ($_returns->getSize()): ?>
+    <div class="table-wrapper returns">
+        <table class="data table table-returns" id="my-returns-table">
+            <caption class="table-caption"><?= /* @escapeNotVerified */ __('My Returns') ?></caption>
+            <thead>
+                <tr>
+                    <th scope="col" class="col id"><?= /* @escapeNotVerified */ __('Return #') ?></th>
+                    <th scope="col" class="col date"><?= /* @escapeNotVerified */ __('Date') ?></th>
+                    <th scope="col" class="col shipping"><?= /* @escapeNotVerified */ __('Ship From') ?></th>
+                    <th scope="col" class="col status"><?= /* @escapeNotVerified */ __('Return Status') ?></th>
+                    <th scope="col" class="col actions">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $_odd = ''; ?>
+                <?php foreach ($_returns as $_return): ?>
+                <tr>
+                    <td data-th="<?= $block->escapeHtml(__('Return #')) ?>" class="col id"><?= /* @escapeNotVerified */ $_return->getIncrementId() ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Date')) ?>" class="col date"><?= /* @escapeNotVerified */ $this->helper('Magento\Rma\Helper\Data')->getFormatedDate($_return->getDateRequested()) ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Ship From')) ?>" class="col shipping"><?= $block->escapeHtml($_return->getCustomerName()) ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Return Status')) ?>" class="col status"><?= $block->escapeHtml($_return->getStatusLabel()) ?></td>
+                    <td data-th="<?= $block->escapeHtml(__('Actions')) ?>" class="col actions">
+                        <a href="<?= /* @escapeNotVerified */ $block->getViewUrl($_return) ?>" class="action view"><span><?= /* @escapeNotVerified */ __('View Return') ?></span></a>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php if ($block->getPagerHtml()): ?>
+        <div class="order-products-toolbar toolbar bottom">
+            <?= $block->getPagerHtml() ?>
+        </div>
+    <?php endif ?>
+<?php else: ?>
+    <div class="message info empty"><span><?= /* @escapeNotVerified */ __('You have placed no returns.') ?></span></div>
+<?php endif ?>

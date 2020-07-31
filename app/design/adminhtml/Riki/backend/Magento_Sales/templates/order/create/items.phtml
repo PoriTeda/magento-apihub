@@ -1,0 +1,24 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<?php
+/**
+ * @var \Riki\Preorder\Helper\Admin $helper
+ */
+$helper = $this->helper('Riki\Preorder\Helper\Admin');
+?>
+
+<div class="admin__page-section-title">
+    <strong class="title"><?php /* @escapeNotVerified */ echo $block->getHeaderText() ?></strong>
+    <div class="actions" <?php if(!$helper->allowedDisplayAddProductButton()): ?>style="display: none;"<?php endif; ?>>
+        <?php echo $block->getButtonsHtml() ?>
+    </div>
+</div>
+<?php echo $block->getChildHtml() ?>

@@ -1,0 +1,198 @@
+
+
+"./Block/Adminhtml/Manage/Edit.php",""
+
+"Delete POS / Warehouse","Delete POS / Warehouse"
+"Save and Continue Edit","Save and Continue Edit"
+"Save POS / Warehouse","Save POS / Warehouse"
+
+
+"./Block/Adminhtml/Manage/Edit/Tab/Address.php",""
+
+"Address & Contact","Address & Contact"
+"Address & Hours","Address & Hours"
+"Address line 1","Address line 1"
+"Address line 2","Address line 2"
+"City","City"
+"Country","Country"
+"Description","Description"
+"Email","Email"
+"Hours","Hours"
+"Image","Image"
+"Main phone","Main phone"
+"--Please select a state--","--Please select a state--"
+"Postal code","Postal code"
+"State","State"
+
+
+"./Block/Adminhtml/Manage/Edit/Tab/Customergroups.php",""
+
+"Customer Group","Customer Group"
+"Customer Group Selection","Customer Group Selection"
+"No Customer Group","No Customer Group"
+
+
+"./Block/Adminhtml/Manage/Edit/Tab/Main.php",""
+
+"General Information","General Information"
+"Latitude","Latitude"
+"Longitude","Longitude"
+"Name","Name"
+"Order of display","Order of display"
+"Type of display","Type of display"
+"Warehouse (not visible on the Gmap/checkout)","Warehouse (not visible on the Gmap/checkout)"
+"Point of Sales (visible on the Gmap/checkout)","Point of Sales (visible on the Gmap/checkout)"
+"Find the coordinates with Google Map:","Find the coordinates with Google Map:"
+
+
+"./Block/Adminhtml/Manage/Edit/Tabs.php",""
+
+"Point Of Sale","Point Of Sale"
+
+
+"./Block/Adminhtml/Manage/Edit/Tab/Storeviews.php",""
+
+"No Store View","No Store View"
+"Store View","Store View"
+"Store Views Selection","Store Views Selection"
+
+
+"./Block/Adminhtml/Manage/Grid.php",""
+
+"Action","Action"
+"Are you sure?","Are you sure?"
+"Customer Group selection","Customer Group selection"
+"Delete","Delete"
+"Id","Id"
+"Order","Order"
+"Status","Status"
+"Store","Store"
+"Store view selection","Store view selection"
+"Warehouse (hidden)","Warehouse (hidden)"
+"Point of Sales (visible)","Point of Sale (visible)"
+
+
+"./Block/Adminhtml/Manage.php",""
+
+"Create New Point Of Sale / Warehouse","Create New Point Of Sale / Warehouse"
+"Export a csv File","Export a csv File"
+"Import a csv File","Import a csv File"
+"Import File","Import File"
+"Points Of Sale / Warehouses","Points Of Sale / Warehouses"
+
+
+"./Block/Adminhtml/Manage/Renderer/Action.php",""
+
+"Are you sure you want to delete this pos / warehouse ?","Are you sure you want to delete this pos / warehouse ?"
+"Delete","Delete"
+"Edit","Edit"
+
+
+"./Block/Adminhtml/Manage/Renderer/Customergroup.php",""
+
+"No Customer Group","No Customer Group"
+
+
+"./Block/Adminhtml/Manage/Renderer/Hours.php",""
+
+"Friday","Friday"
+"Monday","Monday"
+"Saturday","Saturday"
+"Sunday","Sunday"
+"Thursday","Thursday"
+"Tuesday","Tuesday"
+"Wednesday","Wednesday"
+
+
+"./Block/Adminhtml/Manage/Renderer/Storeview.php",""
+
+"No Store View","No Store View"
+
+
+"./Block/Pointofsale.php",""
+
+"All countries","All countries"
+"All our store locations","All our store locations"
+"change my location","change my location"
+"Close","Close"
+"Distance calculation failed","Distance calculation failed"
+"Find me","Find me"
+"From","From"
+"Get Directions","Get Directions"
+"No result found.","No result found."
+"No store located","No store located"
+"Print","Print"
+"Searching your location","Searching your location"
+"Select a country","Select a country"
+"Set a new location","Set a new location"
+"show my location","show my location"
+"Show on Google Map","Show on Google Map"
+"The nearest store is","The nearest store is"
+"Unable to find your location","Unable to find your location"
+"You are here","You are here"
+"Your directions","Your directions"
+"Your location","Your location"
+
+
+"./Controller/Adminhtml/Manage/Edit.php",""
+
+"Manage POS / WH","Manage POS / WH"
+"Modify POS / WH :","Modify POS / WH :"
+"New POS /WH","New POS /WH"
+"Point Of Sale","Point Of Sale"
+"This point of sale / Warehouse no longer exists.","This point of sale / Warehouse no longer exists."
+
+
+"./Controller/Adminhtml/Manage/ImportCsv.php",""
+
+"places have been imported.","places have been imported."
+"Wrong file type (","Wrong file type ("
+").<br>Choose a csv file.",").<br>Choose a csv file."
+
+
+"./Controller/Adminhtml/Manage/Index.php",""
+
+"Points Of Sale / Warehouses","Points Of Sale / Warehouses"
+
+
+"./Controller/Adminhtml/Manage/Save.php",""
+
+"The POS has been saved.","The POS has been saved."
+"Unable to save the POS.","Unable to save the POS."
+
+
+"./translate.sh",""
+
+"[^","[^"
+
+
+"./view/adminhtml/templates/importCsv.phtml",""
+
+"Csv File To Import","Csv File To Import"
+
+
+"./view/frontend/templates/pointofsale.phtml",""
+
+"All countries","All countries"
+"All our store locations","All our store locations"
+"Close","Close"
+"Print","Print"
+"Searching your location","Searching your location"
+"Select a country :","Select a country :"
+"Your directions","Your directions"
+
+
+
+"System / Config / Point of Sale",""
+
+"License activation","License activation"
+"Extension version","Extension version"
+"Activation key","Activation key"
+"1- Fill this field with your activation key.","1- Fill this field with your activation key."
+"Remote activation","Remote activation"
+"2- Choose your activation method.\n[yes = automatic activation]\n[no = manual activation]","2- Choose your activation method.<br/>[yes = automatic activation]<br/>[no = manual activation]"
+"Activation code","Activation code"
+"3 - Follow the instructions in the nofication.\nThen fill this field with the license code you get.","3 - Follow the instructions in the nofication.<br>Then fill this field with the license code you get."
+"Settings","Settings"
+"Store description template","Store description template"
+"Html and css code are supported. Available variables : {{code}},{{name}},{{phone}},{{email}},{{address_1}},{{address_2}},{{city}},{{state}},{{country}},{{zipcode}},{{hours}},{{description}},{{image}}","Html and css code are supported. Available variables : {{code}},{{name}},{{phone}},{{email}},{{address_1}},{{address_2}},{{city}},{{state}},{{country}},{{zipcode}},{{hours}},{{description}},{{image}}"

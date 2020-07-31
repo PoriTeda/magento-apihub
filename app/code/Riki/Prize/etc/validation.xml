@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Validator/etc/validation.xsd">
+    <entity name="prize">
+        <rules>
+            <rule name="before_save">
+                <entity_constraints>
+                    <constraint alias="invalid-wbs" class="\Riki\Prize\Validator\Prize\InvalidWbs" />
+                    <constraint alias="invalid-sku" class="\Riki\Prize\Validator\Prize\InvalidSku" />
+                    <constraint alias="invalid-customer" class="\Riki\Prize\Validator\Prize\InvalidCustomer" />
+                    <constraint alias="invalid-prize" class="\Riki\Prize\Validator\Prize\InvalidPrize" />
+                </entity_constraints>
+            </rule>
+        </rules>
+        <groups>
+            <group name="save">
+                <uses>
+                    <use rule="before_save"/>
+                </uses>
+            </group>
+        </groups>
+    </entity>
+</validation>

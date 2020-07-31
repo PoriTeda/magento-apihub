@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/queue.xsd">
+    <publisher name="failure_update" connection="amqp" exchange="magento"/>
+    <topic publisher="failure_update" name="failure.update" schema="Riki\MessageQueue\Api\FailureItemInterface" />
+    <bind queue="failure_update_queue" exchange="magento" topic="failure.update" />
+    <consumer name="failureUpdate" queue="failure_update_queue" connection="amqp" class="Riki\MessageQueue\Model\Consumer\Failure" method="processMessage" executor="Riki\MessageQueue\Model\Consumer" />
+</config>

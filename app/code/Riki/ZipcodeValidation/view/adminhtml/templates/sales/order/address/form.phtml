@@ -1,0 +1,63 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<div class="message message-notice">
+    <div class="message-inner">
+        <div class="message-content"><?php /* @escapeNotVerified */ echo __('Changing address information will not recalculate shipping, tax or other order amount.') ?></div>
+    </div>
+</div>
+
+<fieldset class="fieldset admin__fieldset-wrapper">
+    <legend class="legend admin__legend">
+        <span><?php /* @escapeNotVerified */ echo $block->getHeaderText() ?></span>
+    </legend>
+    <br>
+    <div class="form-inline">
+        <?php echo $block->getForm()->toHtml() ?>
+    </div>
+</fieldset>
+<script type="text/x-magento-init">
+    {
+        "#edit_form": {
+            "validation": {}
+        },
+        "#postcode": {
+            "Riki_ZipcodeValidation/js/zipcode-formatter": {}
+        }
+    }
+</script>
+<script type="text/javascript">
+    require([
+        'jquery',
+        'ajaxzip3',
+        'prototype',
+        'Riki_ZipcodeValidation/js/lib/mage/validation/rules',
+        'Riki_Customer/js/lib/mage/validation/rules'
+    ], function (jQuery, AjaxZip3) {
+        jQuery('input[name="firstname"]').addClass('max_text_length_custom').prop('maxlength', 25);
+        jQuery('input[name="lastname"]').addClass('max_text_length_custom').prop('maxlength', 25);
+        jQuery('input[name="firstnamekana"]').addClass('validate-katakana max_text_length_custom').prop('maxlength', 40);
+        jQuery('input[name="lastnamekana"]').addClass('validate-katakana max_text_length_custom').prop('maxlength', 40);
+        jQuery('input[name="riki_nickname"]').addClass('max_text_length_custom').prop('maxlength', 20);
+        jQuery('input[name="city"]').addClass('max_text_length_custom').prop('maxlength', 30);
+        jQuery('input[name*="street"]').addClass('max_text_length_custom').prop('maxlength', 30);
+        jQuery('input[name="apartment"]').addClass('max_text_length_custom').prop('maxlength', 40);
+        jQuery('input[name="telephone"]').addClass('validate-phone-number');
+        jQuery('input[name="postcode"]')
+            .prop('maxlength', 8)
+            .attr('validate-custom-postal-code', true)
+            .on('keyup', function () {
+                if (jQuery('#postcode').val().replace('-', '').length == 7) {
+                    jQuery('#country_id').val('JP');
+                    $('country_id').changeUpdater();
+                    AjaxZip3.zip2addr('postcode', '', 'region_id', 'city', 'street[]', '', '');
+                }
+            });
+    });
+</script>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
+    <exchange name="magento" type="topic" connection="amqp">
+        <binding id="subscriptionProfileEditedOrder" topic="profile.edited.order" destination="sender_queue_subscription_profile_edited_order" destinationType="queue"/>
+<!--        <binding id="subscriptionProfileGenerateOrder" topic="profile.generate.order" destination="sender_queue_subscription_profile_generate_order" destinationType="queue"/>-->
+
+        <binding id="subscriptionAProfileGenerateOrder" topic="a.profile.generate.order" destination="a_sender_queue_subscription_profile_generate_order" destinationType="queue"/>
+        <binding id="subscriptionBProfileGenerateOrder" topic="b.profile.generate.order" destination="b_sender_queue_subscription_profile_generate_order" destinationType="queue"/>
+        <binding id="subscriptionCProfileGenerateOrder" topic="c.profile.generate.order" destination="c_sender_queue_subscription_profile_generate_order" destinationType="queue"/>
+        <binding id="subscriptionDProfileGenerateOrder" topic="d.profile.generate.order" destination="d_sender_queue_subscription_profile_generate_order" destinationType="queue"/>
+        <binding id="subscriptionEProfileGenerateOrder" topic="e.profile.generate.order" destination="e_sender_queue_subscription_profile_generate_order" destinationType="queue"/>
+        <binding id="subscriptionFProfileGenerateOrder" topic="f.profile.generate.order" destination="f_sender_queue_subscription_profile_generate_order" destinationType="queue"/>
+        <binding id="subscriptionGProfileGenerateOrder" topic="g.profile.generate.order" destination="g_sender_queue_subscription_profile_generate_order" destinationType="queue"/>
+<!--        <binding id="subscriptionHProfileGenerateOrder" topic="h.profile.generate.order" destination="h_sender_queue_subscription_profile_generate_order" destinationType="queue"/>-->
+<!--        <binding id="subscriptionIProfileGenerateOrder" topic="i.profile.generate.order" destination="i_sender_queue_subscription_profile_generate_order" destinationType="queue"/>-->
+<!--        <binding id="subscriptionJProfileGenerateOrder" topic="j.profile.generate.order" destination="j_sender_queue_subscription_profile_generate_order" destinationType="queue"/>-->
+
+<!--        <binding id="subscriptionProfileIndexer" topic="profile.indexer" destination="sender_queue_subscription_profile_indexer" destinationType="queue"/>-->
+    </exchange>
+</config>

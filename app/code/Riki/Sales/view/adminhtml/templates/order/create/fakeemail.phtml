@@ -1,0 +1,6 @@
+<?php $random_email = $block->generateEmail();?>
+<script>
+    require(['prototype'], function(){
+        $('email').value = '<?php echo $random_email;?>';
+    });
+</script>

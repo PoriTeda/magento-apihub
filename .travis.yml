@@ -1,0 +1,87 @@
+dist: trusty
+group: edge
+addons:
+  sonarcloud:
+      organization: "nestle-japan"
+  hosts:
+      - nestle.magento.travis
+language: php
+php:
+  - 7.2
+notifications:
+  slack:
+    rooms:
+      - secure: "XAvIK4W0OktApNfGD9mdNa3HfeoxWJhytmh7teggQbFRckCl/GIFwC4BdL0BjyBIro3lqPMeA3P25Yxx6VyPfdtXueTFsY9Q/kYESBHEIOY1E4wyhmkHRadBtObXX20M0jah8wc1zY9wzwUrFgaqIzb6WTswY1+e3UQdtTgf/ypTB5lND8/m8p7Vw431O6XQwcdh7RPrrgYIn1DP6mMKxeAUClVoqJ7mo2fxrDZ9xcrpdmHT4e1GEvTn1s7mCA3hB4owSnKD4C8TP3xalWgeduSAIO5q31a8JundULfRW4VjTZBhmcm/zBO35oA+06fcf7XEVQ1mpIC3iUrKPMfq4bZVyWOemQXibxkGbKTfiNPi/bEre1gJhqRGkpilUCRnf+uFYtyBM8Tji/ETa+JTKk3oeLgeykMEezg+eH084yRb9Vsdi5edSD3jTcQmsO+z/Kn9AfpobcoC+gJdtRir3fEIIzKUsRvQsDCJLL5y/W/Wwf/nHVe9PLLyku1NcIEXPuYWDGpJCFNkMjEWszlPWn94nskomHIAIYjQT2wkFg6XxJEAZ+zUkOy7Lgbyc3X/cBSIlPJotG8wJuHZmleH3Bq+g7C7wMLUqcvIHQ8nbNnvragODUab77hhStpXEE33hemUtIWxPM8EYcGsI/iitCHQ3U8eq5S8+jyI9w5pBx4="
+    on_success: always # default: always
+    on_failure: always # default: always
+# safelist
+branches:
+  only:
+  - master
+  - pre-production
+  - develop
+git:
+  depth: 5
+env:
+  global:
+    - MAGENTO_HOST_NAME="magento.upgrade"
+    - PATH=$HOME/.local/bin:$PATH
+    - COMPOSER_HOME=~
+    - COMPOSER_MEMORY_LIMIT=-1
+    - YmdHms=$(date +'%Y%m%d%H%M%S')
+cache:
+  apt: true
+  pip: true
+  directories:
+    - $HOME/.composer/cache
+before_install:
+  - chmod +x ./dev/travis/before_install.sh ./dev/travis/phpcs_check.sh ./dev/travis/after_success.sh
+  - ./dev/travis/before_install.sh # copy sample env.php file
+install: # the need to put all command to install because the script never run
+  - phpenv rehash
+  - pip install --user awscli # install aws cli w/o sudo
+  - export PATH=$PATH:$HOME/.local/bin
+  - aws s3 ls # testing connection with S3
+  - aws s3 cp --output "$AWS_OUTPUT" --region "$AWS_REGION" s3://nestle-travis-shared-files-"$ENV"/build-agent.sql.gz ./dev/travis/sample-db/ # downloading sample database
+  - aws s3 cp --output "$AWS_OUTPUT" --region "$AWS_REGION" s3://nestle-travis-shared-files-"$ENV"/env-travis.php ./env-travis.php && mv ./env-travis.php ./app/etc/env.php
+  - aws s3 cp --output "$AWS_OUTPUT" --region "$AWS_REGION" s3://nestle-travis-shared-files-"$ENV"/config-travis.php ./config-travis.php && mv ./config-travis.php ./app/etc/config.php
+stages:
+  - name: test
+    if: type = pull_request
+  - name: deploy
+    if: type = push
+
+jobs:
+  include:
+    - stage: test
+      script:
+        - composer config -g github-oauth.github.com $GH_AUTH_TOKEN
+        - travis_retry composer update --no-interaction --prefer-source
+        - travis_retry composer require overtrue/phplint --dev
+        - travis_retry composer require magento/magento-coding-standard --dev
+        - php ./vendor/bin/phpcs --config-set installed_paths ../../magento/magento-coding-standard/
+        - ./dev/travis/phpcs_check.sh # phpcs and upload report to aws s3
+        - ./vendor/bin/phplint --no-cache app/code/ --exclude=Bluecom/Paygent/ # phplint to check for php syntax 
+        - sonar-scanner -D sonar.pullrequest.branch="$TRAVIS_PULL_REQUEST_BRANCH" -D sonar.pullrequest.key="$TRAVIS_PULL_REQUEST" -D sonar.pullrequest.base="master"; # sonarCloud checking for security
+    - stage: deploy
+      script:
+        - # Installing sample db
+        - echo "Installing Magento" && mysql -uroot -e 'CREATE DATABASE magento2;'
+        - aws s3 cp --output "$AWS_OUTPUT" --region "$AWS_REGION" s3://nestle-travis-shared-files-"$ENV"/n98-magerun2.phar ./n98-magerun2.phar && chmod +x ./n98-magerun2.phar
+        - php -d max_execution_time=0 -d memory_limit=-1 ./n98-magerun2.phar db:import --skip-config --compression="gzip" ./dev/travis/sample-db/build-agent.sql.gz
+        - php ./bin/magento module:disable Magento_PersistentHistory Magento_Version # Disable module
+        - if php -d max_execution_time=0 -d memory_limit=-1 ./bin/magento setup:di:compile | grep "Errors during compilation"; then exit 1; fi ## Trying to compile the coding
+        - php -d max_execution_time=0 -d memory_limit=-1 ./bin/magento setup:static-content:deploy -f en_US ja_JP
+        - ./dev/travis/after_success.sh
+        - rm -rf ./meqp2-key ./n98-magerun2.phar app/etc/env.php ./.travis.yml ./sonar-project.properties ./.php_cs
+        - rm -rf ./.git/ ./dev/ ./phpcs_report/ ./marketplace-eqp ./.scannerwork/
+        - rm -rf ./var/{cache,composer_home,log,page_cache,session,tmp}
+        - rm -rf phpserver/ pub/media/
+        - rm -rf vendor/magento/magento2-base/dev/tests/static/framework/tests/unit/testsuite/Magento/TestFramework/Inspection/_files/words_finder/buffy.zip
+        - rm -rf vendor/magento/magento2-base/dev/tests/static/framework/tests/unit/testsuite/Magento/TestFramework/Inspection/_files/words_finder/interview_with_the_vampire.zip
+        - mv ./var ./var2
+        - cd ../ && mv magento-upgrade "$YmdHms"
+        - tar -zcp "$YmdHms" | aws s3 cp --output "$AWS_OUTPUT" --region "$AWS_REGION" - s3://nestle-awsjp-magento-code-"$ENV"/"$YmdHms".tar.gz
+        - aws s3 cp --output "$AWS_OUTPUT" --region "$AWS_REGION" s3://nestle-awsjp-magento-code-"$ENV"/"$YmdHms".tar.gz - | md5sum
+        - echo "Coding version is $YmdHms"
+        - aws lambda invoke --invocation-type RequestResponse --function-name travisDeploymentHandler --region ap-northeast-1 --log-type Tail --payload file://lambda-parameters outputfile.txt

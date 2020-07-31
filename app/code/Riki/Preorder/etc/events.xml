@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="checkout_submit_all_after">
+        <observer name="Riki_preorder_checkout_submit_all_after" instance="Riki\Preorder\Observer\SubmitAllAfter" />
+    </event>
+    <event name="sales_convert_order_to_quote">
+        <observer name="riki_preorder_to_quote" instance="Riki\Preorder\Observer\ConvertOrderToQuote" />
+    </event>
+</config>

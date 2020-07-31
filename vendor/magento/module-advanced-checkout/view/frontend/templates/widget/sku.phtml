@@ -1,0 +1,118 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Order by SKU widget template
+ *
+ * @var $block \Magento\AdvancedCheckout\Block\Widget\Sku
+ */
+?>
+<div id="<?= /* @escapeNotVerified */  $block->getUniqueId() ?>" class="widget block block-addbysku"
+     data-mage-init='{"itemTable":{"addBlockData":{"widgetId":"<?= /* @escapeNotVerified */  $block->getUniqueId() ?>"}}}'>
+    <?php if (!$block->getIsTitleHidden()): ?>
+        <div class="block-title">
+            <strong role="heading" aria-level="2"><?= /* @escapeNotVerified */ __('Order by SKU') ?></strong>
+        </div>
+    <?php endif ?>
+    <div class="block-content">
+        <form
+            class="form form-addbysku"
+            action="<?= /* @escapeNotVerified */ $block->getFormAction() ?>"
+            method="post"
+            data-mage-init='{"validation":{}}'
+            <?php if ($block->getIsMultipart()): ?> enctype="multipart/form-data"<?php endif; ?>
+        >
+            <div class="box box-items">
+                <fieldset class="fieldset" data-container="items"></fieldset>
+                <div class="actions-toolbar">
+                    <div class="secondary">
+                        <button type="button" title="<?= /* @escapeNotVerified */ __('Add Row') ?>" class="action add" data-role="add">
+                            <span><?= /* @escapeNotVerified */ __('Add Row') ?></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <?php if ($block->getChildHtml()): ?>
+                <div class="box box-upload">
+                    <fieldset class="fieldset">
+                        <?= $block->getChildHtml() ?>
+                    </fieldset>
+                </div>
+            <?php endif; ?>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <button type="submit"
+                            title="<?= /* @escapeNotVerified */ __('Add to Cart') ?>"
+                            class="action tocart primary">
+                        <span><?= /* @escapeNotVerified */ __('Add to Cart') ?></span>
+                    </button>
+                </div>
+            </div>
+            <?php if ($block->getLink()): ?>
+                <?= /* @escapeNotVerified */ $block->getLink() ?>
+            <?php endif; ?>
+        </form>
+        <script data-template="add-block" type="text/x-magento-template">
+            <div class="fields additional deletableItem" data-mage-init='{"deletableItem":{}}'>
+                <div class="field sku required">
+                    <% if (data.rowIndex === 0) { %>
+                    <label for="id-items<%- data.widgetId %><%- data.rowIndex %>sku" class="label">
+                        <span><?= /* @escapeNotVerified */ __('SKU') ?></span>
+                    </label>
+                    <% } %>
+                    <div class="control">
+                        <input type="text"
+                               name="items[<%- data.rowIndex %>][sku]"
+                               id="id-items<%- data.widgetId %><%- data.rowIndex %>sku"
+                               data-id="<%- data.widgetId %><%- data.rowIndex %>sku"
+                               data-sku="true"
+                               aria-required="true"
+                               data-validate='{
+                                    "required-if-all-sku-empty-and-file-not-loaded": {
+                                        specifiedId: "#customer_sku_csv",
+                                        dataSku: "data-sku"
+                                        }
+                               }'/>
+
+                    </div>
+                </div>
+                <div class="field qty required">
+                    <% if (data.rowIndex === 0) { %>
+                    <label for="id-items<%- data.widgetId %><%- data.rowIndex %>qty" class="label">
+                        <span><?= /* @escapeNotVerified */ __('Qty') ?></span>
+                    </label>
+                    <% } %>
+                    <div class="control">
+                        <input type="number"
+                               name="items[<%- data.rowIndex %>][qty]"
+                               id="id-items<%- data.widgetId %><%- data.rowIndex %>qty"
+                               class="qty"
+                               aria-required="true"
+                               data-validate='{
+                                    "required-number-if-specified": "[data-id=<%- data.widgetId %><%- data.rowIndex %>sku]",
+                                    "validate-number": true,
+                                    "validate-greater-than-zero": true,
+                                    "validate-number-range": "0.0001-99999999.9999"
+                                    }'/>
+                    </div>
+                </div>
+                <% if (data.rowIndex > 0) { %>
+                <div class="actions-toolbar">
+                    <div class="secondary">
+                    <button type="button" class="action remove" title="<?= /* @escapeNotVerified */ __('Remove Row') ?>" data-role="delete">
+                        <span><?= /* @escapeNotVerified */ __('Remove Row') ?></span>
+                    </button>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+        </script>
+    </div>
+</div>

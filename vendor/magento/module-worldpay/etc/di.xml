@@ -1,0 +1,192 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Worldpay\Api\GuestPaymentInformationManagementProxyInterface"
+                type="Magento\Worldpay\Model\GuestPaymentInformationManagementProxy" />
+    <type name="Magento\Framework\Url\SecurityInfo">
+        <arguments>
+            <argument name="secureUrlList" xsi:type="array">
+                <item name="worldpay" xsi:type="string">/worldpay/</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Worldpay\Gateway\Request\HtmlRedirect\OrderDataBuilder">
+        <arguments>
+            <argument name="config" xsi:type="object">WorldpayConfig</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Worldpay\Gateway\Command\Form\BuildCommand">
+        <arguments>
+            <argument name="logger" xsi:type="object">WorldpayLogger</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Worldpay\Gateway\Command\ResponseCommand">
+        <arguments>
+            <argument name="commandPool" xsi:type="object">WorldpayCommandPool</argument>
+            <argument name="validator" xsi:type="object">WorldpayValidator</argument>
+            <argument name="logger" xsi:type="object">WorldpayLogger</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="WorldpayFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="string">worldpay</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Transparent\Info</argument>
+            <argument name="infoBlockType" xsi:type="string">Magento\Worldpay\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">WorldpayValueHandlerPool</argument>
+            <argument  name="validatorPool" xsi:type="object">WorldpayValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">WorldpayCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="WorldpayCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="initialize" xsi:type="string">Magento\Worldpay\Gateway\Command\InitializeCommand</item>
+                <item name="accept_command" xsi:type="string">Magento\Worldpay\Gateway\Command\Response\AcceptCommand</item>
+                <item name="cancel_command" xsi:type="string">Magento\Worldpay\Gateway\Command\Response\CancelCommand</item>
+                <item name="capture" xsi:type="string">Magento\Worldpay\Gateway\Command\CaptureCommand</item>
+                <item name="refund" xsi:type="string">WorldpayRefundCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="WorldpayConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="string">worldpay</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="WorldpayDefaultValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">WorldpayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="WorldpayValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">WorldpayDefaultValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="WorldpayCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">WorldpayConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="WorldpayValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">WorldpayCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Worldpay\Controller\HtmlRedirect\Response">
+        <arguments>
+            <argument name="command" xsi:type="object">Magento\Worldpay\Gateway\Command\ResponseCommand</argument>
+        </arguments>
+    </type>
+    <virtualType name="WorldpayValidator" type="Magento\Payment\Gateway\Validator\ValidatorComposite">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="response" xsi:type="string">Magento\Worldpay\Gateway\Validator\ResponseValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Worldpay\Gateway\Validator\ResponseValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">WorldpayConfig</argument>
+        </arguments>
+    </type>
+    <virtualType name="WorldpayLogger" type="Magento\Payment\Model\Method\Logger">
+        <arguments>
+            <argument name="config" xsi:type="object">WorldpayConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Worldpay\Gateway\Command\CaptureCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">Magento\Worldpay\Gateway\Request\RemoteAdmin\CaptureDataBuilder</argument>
+            <argument name="transferFactory" xsi:type="object">Magento\Worldpay\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">WorldpayHttpClient</argument>
+            <argument name="validator" xsi:type="object">Magento\Worldpay\Gateway\Validator\RemoteAdminValidator</argument>
+        </arguments>
+    </type>
+    <virtualType name="WorldpayRefundCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">Magento\Worldpay\Gateway\Request\RemoteAdmin\RefundDataBuilder</argument>
+            <argument name="transferFactory" xsi:type="object">Magento\Worldpay\Gateway\Http\TransferFactory</argument>
+            <argument name="client" xsi:type="object">WorldpayHttpClient</argument>
+            <argument name="validator" xsi:type="object">Magento\Worldpay\Gateway\Validator\RemoteAdminValidator</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Worldpay\Gateway\Request\RemoteAdmin\RefundDataBuilder">
+        <arguments>
+            <argument name="config" xsi:type="object">WorldpayConfig</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Worldpay\Gateway\Request\RemoteAdmin\CaptureDataBuilder">
+        <arguments>
+            <argument name="config" xsi:type="object">WorldpayConfig</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Worldpay\Gateway\Http\TransferFactory">
+        <arguments>
+            <argument name="config" xsi:type="object">WorldpayConfig</argument>
+        </arguments>
+    </type>
+    <virtualType name="WorldpayHttpClient" type="Magento\Payment\Gateway\Http\Client\Zend">
+        <arguments>
+            <argument name="logger" xsi:type="object">WorldpayLogger</argument>
+            <argument name="converter" xsi:type="object">Magento\Worldpay\Gateway\Http\Converter\StringToMap</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Worldpay\Gateway\Command\Response\AcceptCommand">
+        <arguments>
+            <argument name="validator" xsi:type="object">Magento\Worldpay\Gateway\Validator\AcceptValidator</argument>
+            <argument name="handler" xsi:type="object">WorldpayAcceptHandler</argument>
+        </arguments>
+    </type>
+    <virtualType name="WorldpayAcceptHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="avs" xsi:type="string">Magento\Worldpay\Gateway\Response\AvsHandler</item>
+                <item name="cvv" xsi:type="string">Magento\Worldpay\Gateway\Response\CvvHandler</item>
+                <item name="waf" xsi:type="string">Magento\Worldpay\Gateway\Response\PaymentDetailsHandler</item>
+                <item name="details" xsi:type="string">Magento\Worldpay\Gateway\Response\WafMessageHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Worldpay\Gateway\Response\AvsHandler">
+        <arguments>
+            <argument name="config" xsi:type="object">WorldpayConfig</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Worldpay\Gateway\Response\CvvHandler">
+        <arguments>
+            <argument name="config" xsi:type="object">WorldpayConfig</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Worldpay\Block\Info">
+        <arguments>
+            <argument name="config" xsi:type="object">WorldpayConfig</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Config\Model\Config\TypePool">
+        <arguments>
+            <argument name="sensitive" xsi:type="array">
+                <item name="paymwent/worldpay/admin_installation_id" xsi:type="string">1</item>
+                <item name="payment/worldpay/auth_password" xsi:type="string">1</item>
+                <item name="payment/worldpay/installation_id" xsi:type="string">1</item>
+                <item name="payment/worldpay/md5_secret" xsi:type="string">1</item>
+                <item name="payment/worldpay/response_password" xsi:type="string">1</item>
+                <item name="payment/worldpay/signature_fields" xsi:type="string">1</item>
+            </argument>
+            <argument name="environment" xsi:type="array">
+                <item name="payment/worldpay/sandbox_flag" xsi:type="string">1</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

@@ -1,0 +1,50 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @package Amasty_Promo
+ */
+?>
+<div class="ampromo-items-add"><?= $block->getMessage()?></div>
+<script>
+    require([
+        'jquery',
+        'Amasty_Promo/js/popup',
+        'domReady!'
+    ], function ($) {
+        var autoOpen = <?= $block->isOpenAutomatically() ? 'true' : 'false' ?>;
+        var overlay = $('[data-role=ampromo-overlay]');
+
+        overlay.ampromoPopup({
+            autoOpen: autoOpen || window.location.hash == '#choose-gift',
+            slickSettings: {
+                slidesToShow: 3,
+                slidesToScroll: 3,
+                dots: true,
+                infinite: false,
+                respondTo: 'slider',
+                responsive: [
+                    {
+                        breakpoint: 571,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 2
+                        }
+                    },
+                    {
+                        breakpoint: 281,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                ]
+            }
+        });
+
+        $('[data-role=ampromo-popup-show]').click(function (){
+            overlay.ampromoPopup('show');
+            return false;
+        });
+    });
+</script>

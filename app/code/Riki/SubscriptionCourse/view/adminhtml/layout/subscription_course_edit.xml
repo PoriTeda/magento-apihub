@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Magento_Catalog::catalog/category-selector.css"/>
+        <css src="Riki_SubscriptionCourse::css/custom_options.css"/>
+        <link src="Riki_SubscriptionCourse::js/grid.js"/>
+    </head>
+    <update handle="editor"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit" name="subscription_course_edit"/>
+            <block class="Magento\Catalog\Block\Adminhtml\Product\Edit\NewCategory" name="new-category" template="Magento_Catalog::catalog/product/edit/category/new/form.phtml"/>
+            <block class="Magento\Backend\Block\Template" name="subscription_course_edit_tab_disengagement_setting_js" template="Riki_SubscriptionCourse::disengagement_setting.phtml"/>
+        </referenceContainer>
+        <referenceContainer name="left">
+            <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tabs" name="subscription_course_edit_tabs">
+                <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\Main" name="subscription_course_edit_tab_main"/>
+                <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\Meta" name="subscription_course_edit_tab_meta"/>
+                <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\Website" name="subscription_course_edit_tab_website"/>
+                <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\Payment" name="subscription_course_edit_tab_payment"/>
+                <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\Setting" name="subscription_course_edit_tab_setting"/>
+                <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\Membership" name="subscription_course_edit_tab_membership"/>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">main_section</argument>
+                    <argument name="block" xsi:type="string">subscription_course_edit_tab_main</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">meta_section</argument>
+                    <argument name="block" xsi:type="string">subscription_course_edit_tab_meta</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">website_section</argument>
+                    <argument name="block" xsi:type="string">subscription_course_edit_tab_website</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">payment_section</argument>
+                    <argument name="block" xsi:type="string">subscription_course_edit_tab_payment</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">membership_section</argument>
+                    <argument name="block" xsi:type="string">subscription_course_edit_tab_membership</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">setting_section</argument>
+                    <argument name="block" xsi:type="string">subscription_course_edit_tab_setting</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">machine_section</argument>
+                    <argument name="block" xsi:type="array">
+                        <item name="label" xsi:type="string">Machines</item>
+                        <item name="title" xsi:type="string">Machines</item>
+                        <item name="url" xsi:type="helper" helper="Riki\SubscriptionCourse\Helper\Data::getMachineUrl"/>
+                        <item name="class" xsi:type="string">ajax</item>
+                    </argument>
+                </action>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="js">
+            <block class="Magento\Framework\View\Element\Text" name="riki_catalogrule_wbs_rule_validate">
+                <arguments>
+                    <argument name="text" xsi:type="string"><![CDATA[
+                    <script>require(["Riki_SubscriptionCourse/js/validation/rules"]);</script>
+                    ]]></argument>
+                </arguments>
+            </block>
+            <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\Renderer\DelayPayment" template="Riki_SubscriptionCourse::delay_payment.phtml" name="riki_subscription_delay_payment">
+            </block>
+        </referenceContainer>
+    </body>
+</page>

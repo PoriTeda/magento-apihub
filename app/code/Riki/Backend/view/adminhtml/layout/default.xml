@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <block class="Magento\Framework\View\Element\Text\ListText" name="head.additional" as="head.additional">
+            <block class="Magento\Framework\View\Element\Text" name="security.xfs">
+                <arguments>
+                    <argument name="text" xsi:type="string">
+                        <![CDATA[
+                        <style id="antiClickjack">body{display:none !important;}</style>
+
+<script type="text/javascript">
+   if (self === top) {
+       var antiClickjack = document.getElementById("antiClickjack");
+       antiClickjack.parentNode.removeChild(antiClickjack);
+   } else {
+       top.location = self.location;
+   }
+   function $yubin(data){
+        AjaxZip3.callback(data);
+    };
+</script>
+                        ]]>
+                    </argument>
+                </arguments>
+            </block>
+        </block>
+        <referenceContainer name="footer">
+            <block class="Magento\Backend\Block\Template" name="url.onclick.event.confirm" template="Riki_Backend::url_onclick_confirm.phtml" />
+        </referenceContainer>
+    </body>
+</page>

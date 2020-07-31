@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Riki_Subscription::config_subscription" title="Sending mail to Subscribers" sortOrder="85" />
+                        </resource>
+                    </resource>
+                </resource>
+                <resource id="Riki_SubscriptionFrequency::subscription" title="Subscription" sortOrder="45">
+                    <resource id="Riki_SubscriptionCourse::course" title="Subscription course" sortOrder="9">
+<!--                        <resource id="Riki_SubscriptionCourse::new" title="New Subscription course" sortOrder="10" />-->
+                        <resource id="Riki_SubscriptionCourse::save" title="Save Subscription course" sortOrder="20" />
+                        <resource id="Riki_SubscriptionCourse::delete" title="Delete Subscription course" sortOrder="30" />
+                        <resource id="Riki_SubscriptionCourse::import_csv" title="Import Course" sortOrder="40"/>
+                        <resource id="Riki_SubscriptionCourse::run_cron" title="Run Import Cron" sortOrder="50"/>
+                        <resource id="Riki_SubscriptionCourse::export_csv" title="Export CSV" sortOrder="60"/>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

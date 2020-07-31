@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order_grid" resource="sales" comment="Sales Flat Order Grid">
+        <column xsi:type="boolean" name="is_preorder" nullable="false" default="false"/>
+    </table>
+    <table name="sales_order_additional_information" resource="sales" engine="innodb"
+           comment="Sales Order Additional Information">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Order Additional Information Entity Id" />
+        <column xsi:type="int" name="order_id" padding="10" unsigned="true" nullable="false" identity="false"
+                comment="Order Entity Id"/>
+        <column xsi:type="varchar" name="monthly_fee_label" nullable="true" length="255" comment="Monthly Fee Label"/>
+        <index referenceId="SALES_ORDER_ADDITIONAL_INFORMATION_ORDER_ID" indexType="btree">
+            <column name="order_id"/>
+        </index>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id" />
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="SALES_ORDER_ADDITIONAL_INFORMATION_ORDER_ID_SALES_ORDER_ORDER_ID"
+                    table="sales_order_additional_information"
+                    column="order_id" referenceTable="sales_order" referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+    <table name="riki_shipping_cause" resource="default" engine="innodb" comment="Riki Shipping Cause">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" comment="Shipping Cause Id"
+                identity="true"/>
+        <column xsi:type="int" name="is_active" padding="10" unsigned="true" nullable="false" comment="Status"
+                default="1"/>
+        <column xsi:type="varchar" name="description" nullable="false" length="255" comment="Description"/>
+        <column xsi:type="timestamp" name="created_at" comment="Created At" default="CURRENT_TIMESTAMP"
+                on_update="false"/>
+        <column xsi:type="timestamp" name="updated_at" comment="Updated At" default="CURRENT_TIMESTAMP"
+                on_update="true"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+    <table name="riki_shipping_reason" resource="default" engine="innodb" comment="Riki Shipping Reason">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" comment="Shipping Reason Id" identity="true"/>
+        <column xsi:type="int" name="is_active" padding="10" unsigned="true" nullable="false" comment="Status" default="1"/>
+        <column xsi:type="varchar" name="description" nullable="false" length="255" comment="Description"/>
+        <column xsi:type="timestamp" name="created_at" comment="Created At" default="CURRENT_TIMESTAMP" on_update="false"/>
+        <column xsi:type="timestamp" name="updated_at" comment="Updated At" default="CURRENT_TIMESTAMP" on_update="true"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+</schema>

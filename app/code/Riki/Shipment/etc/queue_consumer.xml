@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/consumer.xsd">
+    <consumer name="generateOrderShipments" queue="sender_queue_shipment_creator"
+              handler="Riki\Shipment\Model\Order\ShipmentBuilder\Creator::createShipmentFromQueue"
+              connection="amqp" consumerInstance="Magento\Framework\MessageQueue\Consumer"/>
+</config>

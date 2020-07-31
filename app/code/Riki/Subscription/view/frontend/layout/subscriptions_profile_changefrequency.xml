@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" layout="1column">
+    <head>
+        <script src="Riki_Subscription::js/edit/change_profile_frequency.js"/>
+    </head>
+    <update handle="customer_account"/>
+    <body>
+        <attribute name="class" value="subscriptions-profile-edit"/>
+        <attribute name="class" value="remove-sticky"/>
+        <referenceContainer name="content">
+            <block cacheable="false" class="Riki\Subscription\Block\Frontend\Profile\ChangeFrequency" template="Riki_Subscription::profile/subscription_profile_change_frequency.phtml">
+            </block>
+        </referenceContainer>
+        <referenceContainer name="main.content">
+            <referenceBlock name="page.main.title.sub" remove="true" />
+        </referenceContainer>
+        <move element="page.main.title" destination="columns.top" before="-"/>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument name="title" translate="true" xsi:type="string">Subscription Course Change Frequency</argument>
+            </action>
+        </referenceBlock>
+        <move element="page.messages" destination="columns.top" after="page.main.title"/>
+    </body>
+</page>

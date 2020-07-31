@@ -1,0 +1,7 @@
+# Copyright © Magento, Inc. All rights reserved.
+# See COPYING.txt for license details.
+
+type Customer {
+    reward_update_notification: Int @doc(description: "The number of the email template to use for notifications about reward updates")
+    reward_warning_notification: Int @doc(description: "The number of the email template to use for notifications about rewards points expiring")
+}

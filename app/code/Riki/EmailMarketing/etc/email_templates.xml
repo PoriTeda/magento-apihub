@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="sales_email_order_hanpukai_order_confirmation"
+              label="Notification for Completion of Hanpukai Order Taking (PC)"
+              file=""
+              type="text"
+              module="Riki_EmailMarketing" area="frontend"/>
+
+    <template id="sales_email_order_spot_order_change"
+              label="Spot Order change"
+              file=""
+              type="text"
+              module="Riki_EmailMarketing" area="frontend"/>
+
+    <template id="sales_email_order_subscription_order_change"
+              label="Subscription Order change"
+              file=""
+              type="text"
+              module="Riki_EmailMarketing" area="frontend"/>
+
+    <template id="sales_email_order_template_multicheckout"
+              label="New Order confirmation (Separate Shipment)"
+              file=""
+              type="text"
+              module="Riki_EmailMarketing" area="frontend"/>
+
+    <template id="system_error_cron_error_cron_template"
+              label="Error cron email"
+              file=""
+              type="text"
+              module="Riki_EmailMarketing" area="frontend"/>
+
+    <template id="riki_resend_email_template"
+              label="Resend Email Template "
+              file="resend_failed_email.txt"
+              type="text"
+              module="Riki_EmailMarketing" area="frontend"/>
+</config>

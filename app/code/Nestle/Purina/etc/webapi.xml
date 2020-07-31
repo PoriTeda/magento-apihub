@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <!-- Step 1: create empty cart -->
+    <route url="/V1/vets/carts/" method="POST">
+        <service class="Magento\Quote\Api\CartManagementInterface" method="createEmptyCart"/>
+        <resources>
+            <resource ref="Nestle_Purina::api_execution" />
+        </resources>
+    </route>
+    <!-- Step 2 : Assign customer to cart -->
+    <route url="/V1/vets/cart-to-customer" method="POST">
+        <service class="Riki\MachineApi\Api\ApiCustomerRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Nestle_Purina::api_execution"/>
+        </resources>
+        <data>
+            <parameter name="cartId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
+    <!-- Step 3-0: customer information object -->
+    <route url="/V1/vets/customer-data/" method="POST">
+        <service class="Nestle\Purina\Api\CustomerGetInformationInterface" method="getCustomerInformation"/>
+        <resources>
+            <resource ref="Magento_Customer::manage"/>
+        </resources>
+    </route>
+    <!-- Step 3: customer address object -->
+    <route url="/V1/vets/addresses/" method="POST">
+        <service class="Nestle\Purina\Api\CustomerGetAllAddressInterface" method="getCustomerAllAddress"/>
+        <resources>
+            <resource ref="Magento_Customer::manage"/>
+        </resources>
+    </route>
+    <!-- Step 3-1: customer reward point balance -->
+    <route url="/V1/vets/rewardpoint/" method="POST">
+        <service class="Nestle\Purina\Api\CustomerGetPointInterface" method="getCustomerRewardBalance"/>
+        <resources>
+            <resource ref="Magento_Customer::manage"/>
+        </resources>
+    </route>
+    <!-- Step 4: API to assign product information to cart -->
+    <route url="/V1/vets/carts/items/" method="POST">
+        <service class="Nestle\Purina\Api\ProductInfoInterface" method="getProductInfo"/>
+        <resources>
+            <resource ref="Magento_Cart::manage"/>
+        </resources>
+    </route>
+    <!-- Step 5 : Add shipping and billing address to cart -->
+    <route url="/V1/vets/carts/shipping-information" method="POST">
+        <service class="Nestle\Purina\Api\ShippingInformationManagementInterface" method="applyPointAndSaveAddressInformation"/>
+        <resources>
+            <resource ref="Nestle_Purina::api_execution"/>
+        </resources>
+    </route>
+    <!-- Step 6 : Getting delivery date / item -->
+    <route url="/V1/vets/time-range" method="POST">
+        <service class="Nestle\Purina\Api\DeliveryDateInterface" method="calculateDeliveryDate"/>
+        <resources>
+            <resource ref="Nestle_Purina::api_execution"/>
+        </resources>
+        <data>
+            <parameter name="cartId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
+
+    <!-- Step 6.1 : Customer previous used card -->
+    <route url="/V1/vets/paygent-used-cc" method="POST">
+        <service class="Nestle\Purina\Api\PaygentCardInfoInterface" method="getPaygentUsedCardInfo"/>
+        <resources>
+            <resource ref="Nestle_Purina::api_execution"/>
+        </resources>
+    </route>
+    <!-- Step 7 : place order -->
+    <route url="/V1/vets/carts/order/payment-information" method="POST">
+        <service class="Nestle\Purina\Api\PaymentInformationManagementInterface" method="savePaymentInformationAndPlaceOrderLocal"/>
+        <resources>
+            <resource ref="Nestle_Purina::api_execution"/>
+        </resources>
+        <data>
+            <parameter name="cartId" force="true">%cart_id%</parameter>
+            <parameter name="billingAddress" force="true">%billingAddress%</parameter>
+        </data>
+    </route>
+
+</routes>

@@ -1,0 +1,59 @@
+<!-- ko if: isAvailable() -->
+<div class="payment-method" data-bind="css: {'_active': (getCode() == isChecked()), 'payment-available': isAvailable()}, visible: isAvailable()">
+    <div class="payment-method-title field choice">
+        <input type="radio"
+               name="payment[method]"
+               class="radio"
+               data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
+        <label data-bind="attr: {'for': getCode()}" class="label"><span data-bind="text: getTitle()"></span></label>
+    </div>
+    <div class="payment-method-content">
+        <div class="cvspayment-mess">
+            <div class="cvspayment-mess-left">
+                <div data-bind="i18n: 'We send you a transfer form before shipping out your order. Please pay at convenience store within the period.'"></div>
+                <div data-bind="i18n: 'The transfer form will be delivered after 4 days from order complete.'"></div>
+                <div data-bind="i18n: 'The due date will be 10 days after issuing date.'"></div>
+                <div data-bind="i18n: 'Also, please make sure to finish your payment in 30 days, otherwise your order will be cancelled.'"></div>
+            </div>
+            <div class="cvspayment-mess-right">
+                <img alt="cvs-payment-form" data-bind="attr:{src: window.cvsPaymentImage}" />
+            </div>
+        </div>
+        <div generated="true" class="mage-error note">
+            <!-- ko i18n: 'It is impossible to select the delivery date, when you use CVS payment method. If you want to select "Delivery date", please use Cash on Delivery or Credit Card payment method' --><!-- /ko -->
+        </div>
+        <div data-bind="visible: getPaymentFee(getCode() == isChecked())" class="payment-fee">
+            <!-- ko i18n: 'Surcharge Fee:' --><!-- /ko -->
+            <span data-bind="text: getFixedAmount(getCode())"></span>
+        </div>
+        <div class="payment-method-billing-address">
+            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+
+        <p data-bind="html: getInstructions()"></p>
+
+        <div class="checkout-agreements-block">
+            <!-- ko foreach: $parent.getRegion('before-place-order') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+    </div>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button class="action primary checkout"
+                    type="submit"
+                    data-bind="
+                        click: placeOrder,
+                        attr: {title: $t('Place Order')},
+                        css: {disabled: !isPlaceOrderActionAllowed() || !$parent.isPlaceOrderActionAllowedFromSelectAddress()},
+                        enable: (getCode() == isChecked())
+                        "
+                    disabled>
+                <span data-bind="i18n: 'Ok'"></span>
+            </button>
+        </div>
+    </div>
+</div>
+<!-- /ko -->

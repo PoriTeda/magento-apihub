@@ -1,0 +1,114 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<script id="add-recipient-tmpl" type="text/x-magento-template">
+    <div class="actions-toolbar">
+        <div class="secondary">
+            <button type="button" class="action remove" id="btn-remove<%- data._index_ %>"><span><?= /* @escapeNotVerified */ __('Remove') ?></span></button>
+        </div>
+    </div>
+    <fieldset class="fieldset">
+        <div class="field firstname required">
+            <label for="recipients-name<%- data._index_ %>" class="label"><span><?= /* @escapeNotVerified */ __('First Name') ?></span></label>
+            <div class="control">
+                <input name="recipients[<%- data._index_ %>][name]" type="text" title="<?= /* @escapeNotVerified */ __('Name') ?>" class="input-text" id="recipients-name<%- data._index_ %>" data-validate="{required:true}"/>
+            </div>
+        </div>
+        <div class="field email required">
+            <label for="recipients-email<%- data._index_ %>" class="label"><span><?= /* @escapeNotVerified */ __('Email') ?></span></label>
+            <div class="control">
+                <input name="recipients[<%- data._index_ %>][email]" title="<?= /* @escapeNotVerified */ __('Email') ?>" id="recipients-email<%- data._index_ %>" type="email" class="input-text" data-validate="{required:true, 'validate-email':true}"/>
+            </div>
+        </div>
+    </fieldset>
+</script>
+
+<h2 class="subtitle">
+    <?= /* @escapeNotVerified */ $block->getFormHeader() ?>
+</h2>
+
+<form action="<?= /* @escapeNotVerified */ $block->getSendUrl() ?>" method="post" id="giftregistry-sharing-form" class="form form-giftregistry-share validation" data-hasrequired="<?= /* @escapeNotVerified */ __('* Required Fields') ?>">
+    <fieldset class="fieldset">
+        <?= $block->getBlockHtml('formkey') ?>
+        <legend class="legend"><span><?= /* @escapeNotVerified */ __('Sender') ?></span></legend>
+        <br />
+        <div class="field name required">
+            <label for="sender_name" class="label"><span><?= /* @escapeNotVerified */ __('Name') ?></span></label>
+            <div class="control">
+                <input name="sender_name" value="<?php if ($block->getFormData('sender_name')): ?><?= /* @escapeNotVerified */ $block->getFormData('sender_name') ?><?php else:?><?= /* @escapeNotVerified */ $block->getCustomerName() ?><?php endif;?>" title="<?= /* @escapeNotVerified */ __('Name') ?>" id="sender_name" type="text" class="input-text" data-validate="{required:true}"/>
+            </div>
+        </div>
+        <div class="field message required">
+            <label for="sender_message" class="label"><span><?= /* @escapeNotVerified */ __('Message') ?></span></label>
+            <div class="control">
+                <textarea name="sender_message" class="input-text" id="sender_message" cols="3" rows="3" data-validate="{required:true}"><?= /* @escapeNotVerified */ $block->getFormData('sender_message') ?></textarea>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="fieldset recipients">
+        <legend class="legend"><span><?= /* @escapeNotVerified */ __('Invitee') ?></span></legend>
+        <br />
+        <div id="recipients-options"></div>
+        <?php if ($block->getRecipientsLimit()): ?>
+            <div id="max-recipient-message" style="display: none" class="message notice limit">
+                <span><?= /* @escapeNotVerified */ __('Maximum %1 email addresses.', $block->getRecipientsLimit()) ?></span>
+            </div>
+        <?php endif; ?>
+        <div class="actions-toolbar">
+            <div class="secondary">
+                <?php if ($block->getRecipientsLimit()): ?>
+                    <button type="button" id="add-recipient-button" class="action add">
+                        <span><?= /* @escapeNotVerified */ __('Add Invitee') ?></span>
+                    </button>
+                <?php endif; ?>
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" class="action primary share">
+                <span><?= /* @escapeNotVerified */ __('Share Gift Registry') ?></span>
+            </button>
+        </div>
+        <div class="secondary">
+            <a href="<?= $block->escapeUrl($block->getBackUrl()) ?>" class="action back">
+                <span>
+                    <?= /* @escapeNotVerified */ __('Back') ?>
+                </span>
+            </a>
+        </div>
+    </div>
+</form>
+
+<script type="text/x-magento-init">
+    {
+        "#giftregistry-sharing-form": {
+            "rowBuilder": {
+                "rowTemplate": "#add-recipient-tmpl",
+                "rowContainer": "#recipients-options",
+                "maxRows": "<?= /* @escapeNotVerified */ $block->getRecipientsLimit() ?>",
+                "maxRowsMsg": "#max-recipient-message",
+                "addRowBtn": "#add-recipient-button",
+                "rowParentElem": "<div></div>",
+                "remEventSelector": "button",
+                "btnRemoveSelector": ".action.remove",
+                "additionalRowClass": "additional",
+                "formDataPost": {
+                        <?php if (is_array($block->getFormData('recipients'))): ?>
+                            "formData": <?= /* @escapeNotVerified */ json_encode($block->getFormData('recipients')) ?>,
+                        <?php endif; ?>
+                    "templateFields": ["recipients-name", "recipients-email"]
+                }
+            },
+            "validation": {}
+        }
+    }
+</script>

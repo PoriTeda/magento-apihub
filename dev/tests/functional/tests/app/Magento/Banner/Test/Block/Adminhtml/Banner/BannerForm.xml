@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<tabs>
+    <banner_properties>
+        <class>\Magento\Backend\Test\Block\Widget\Tab</class>
+        <selector>[@data-index='properties'</selector>
+        <strategy>css selector</strategy>
+        <fields>
+            <is_enabled>
+                <input>checkbox</input>
+            </is_enabled>
+            <type>
+                <selector>[data-index='types']</selector>
+                <input>select</input>
+            </type>
+            <use_customer_segment>
+                <selector>[data-index='customer_segment_ids']</selector>
+            </use_customer_segment>
+            <customer_segment>
+                <selector>[name="customer_segment_ids[]"]</selector>
+                <input>multiselect</input>
+            </customer_segment>
+        </fields>
+    </banner_properties>
+    <content>
+        <class>\Magento\Banner\Test\Block\Adminhtml\Banner\Edit\Tab\Content</class>
+        <selector>[@data-index='content']</selector>
+        <strategy>css selector</strategy>
+    </content>
+    <related_promotions>
+        <class>Magento\Banner\Test\Block\Adminhtml\Banner\Edit\Tab\RelatedPromotions</class>
+        <selector>//div[@data-index='promotions']</selector>
+        <strategy>xpath</strategy>
+        <fields>
+            <add_catalog_rule>
+                <selector>//button/span[contains(text(), "Add Catalog Price Rules")]</selector>
+                <strategy>xpath</strategy>
+            </add_catalog_rule>
+            <add_sales_rule>
+                <selector>//button/span[contains(text(), "Add Cart Price Rules")]</selector>
+                <strategy>xpath</strategy>
+            </add_sales_rule>
+        </fields>
+    </related_promotions>
+</tabs>

@@ -1,0 +1,17 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <catalog>
+            <future_price_cron>
+                <cron_config>1 * * * *</cron_config>
+            </future_price_cron>
+            <backorder_expire_cron>
+                <cron_config>* * 1 * *</cron_config>
+            </backorder_expire_cron>
+        </catalog>
+        <wrapping_services_link>
+            <wrapping_services_group>
+                <wrapping_services_input>https://shop.nestle.jp/front/contents/about_wrapping</wrapping_services_input>
+            </wrapping_services_group>
+        </wrapping_services_link>
+    </default>
+</config>

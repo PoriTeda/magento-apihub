@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Riki\Stock\Api\StockRegistryInterface" type="Riki\Stock\Model\StockRegistry" />
+    <preference for="Riki\Stock\Api\Data\StockItemCollectionInterface" type="Riki\Stock\Model\ResourceModel\Stock\Item\Collection" />
+    <preference for="Riki\Stock\Api\Data\StockItemWrapperInterface" type="Riki\Stock\Model\StockItemWrapper" />
+</config>

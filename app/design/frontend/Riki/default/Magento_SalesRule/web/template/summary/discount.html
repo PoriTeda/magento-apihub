@@ -1,0 +1,16 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!-- ko if: isDisplayed() -->
+<tr class="totals discount">
+    <th class="mark" scope="row">
+        <span class="title-discount" data-bind="text: title"></span>
+    </th>
+    <td class="amount">
+        <span class="price" data-bind="text: getValue(), attr: {'data-th': name}"></span>
+    </td>
+</tr>
+<!-- /ko -->

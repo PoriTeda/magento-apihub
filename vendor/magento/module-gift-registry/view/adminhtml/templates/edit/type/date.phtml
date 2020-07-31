@@ -1,0 +1,30 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+
+<script>
+require(['prototype'], function(){
+
+//<![CDATA[
+OptionTemplateDate =
+    '<div class="field field-date">'+
+        '<label class="label" for=""><span><?= /* @escapeNotVerified */ __('Date Format') ?></label>'+
+        '<div class="control"><?= $block->getDateFormatSelectHtml() ?></div>'+
+    '</div>';
+
+selectDateType = {
+    add : function(data) {
+        if (data.date_format) {
+            $A($(data.prefix+'_attribute_'+data.id+'_date_format').options).each(function(option){
+                if (option.value==data.date_format) option.selected = true;
+            });
+        }
+    }
+}
+//]]>
+
+});
+</script>

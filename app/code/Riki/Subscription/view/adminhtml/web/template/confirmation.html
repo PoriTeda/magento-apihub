@@ -1,0 +1,494 @@
+<h2 data-bind="i18n: 'Confirm your change'"></h2>
+
+
+<div class="table">
+
+    <h3 data-bind="i18n: 'Course Name'"></h3>
+    <span class="label" data-bind="text: profile.getCourseName()"></span>
+
+    <h3 data-bind="i18n: 'Frequency'"></h3>
+    <span class="label" data-bind="text:  profile.frequency_interval() + ' ' + profile.frequency_unit()"></span>
+
+    <h3 data-bind="i18n: 'Payment method'"></h3>
+    <span class="label" data-bind="text: getPaymentMethodObj(profile.paymentmethod()).label"></span>
+    <span data-bind="i18n: 'Save selected method as your preferred payment method',visible: profile.paygent_save_prederred"></span>
+
+
+    <div class="fieldset">
+        <div class="table-wrapper">
+            <div class="table table list admin__scope-old">
+                <div class="fieldset-wrapper customer-information">
+                    <h2>
+                        <strong data-bind="i18n: 'Billing address'">
+                        </strong>
+                    </h2>
+                    <table data-bind="if: getHasBillingInformation()" class="admin__table-secondary">
+                        <tbody>
+                        <tr>
+                            <th data-bind="i18n: 'Customer ID:'"></th>
+                            <td data-bind="text: billingAddressData.customerId"></td>
+                        </tr>
+                        <tr>
+                            <th data-bind="i18n: 'Last name (Kanji):'"></th>
+                            <td data-bind="text: billingAddressData.lastname"></td>
+                        </tr>
+                        <tr>
+                            <th data-bind="i18n: 'First name (Kanji):'"></th>
+                            <td data-bind="text: billingAddressData.firstname"></td>
+                        </tr>
+                        <tr>
+                            <th data-bind="i18n: 'Company department name:'"></th>
+                            <td data-bind="text: billingAddressData.ambComDivisionName"></td>
+                        </tr>
+                        <tr>
+                            <th data-bind="i18n: 'Person in charge:'"></th>
+                            <td data-bind="text: billingAddressData.personInCharge"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <address data-bind="if: getHasBillingInformation()">
+                        <table>
+                            <tr>
+                                <td data-bind="i18n: 'Email:'"></td>
+                                <td data-bind="text: billingAddressData.email"></td>
+                            </tr>
+                            <tr>
+                                <td data-bind="i18n: 'Postcode:'"></td>
+                                <td data-bind="text: billingAddressData.postcode"></td>
+                            </tr>
+                            <tr>
+                                <td data-bind="i18n: 'Prefecture:'"></td>
+                                <td data-bind="text: billingAddressData.region"></td>
+                            </tr>
+                            <tr>
+                                <td data-bind="i18n: 'Street Address:'"></td>
+                                <td data-bind="text: billingAddressData.street_full"></td>
+                            </tr>
+                            <tr>
+                                <td data-bind="i18n: 'Telephone:'"></td>
+                                <td data-bind="text: billingAddressData.telephone"></td>
+                            </tr>
+                        </table>
+                    </address>
+                    <p data-bind="if: !getHasBillingInformation()">
+                        <span data-bind="i18n: 'There is no billing address'"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fieldset">
+        <div class="table table list" data-bind="foreach: { data: itemData, as: 'item' }">
+            <!-- Show address + delivery type -->
+            <div class="table block">
+                <h4 data-bind="text: item.info.name + '(' +  item.info.code + ')'"></h4>
+                <div class="left">
+                    <ul>
+                        <li>
+                            <span class="label" data-bind="i18n: 'Current shipping address'"></span>
+                            <span data-bind="text: $parent.getAddressText(item.address_id)"></span>
+                        </li>
+
+                        <li>
+                            <span class="label" data-bind="i18n: 'Delivery Type'"></span>
+                            <span data-bind="text: item.info.code"></span>
+                        </li>
+
+                        <li>
+                            <div class="w50 label" data-bind="i18n: 'Delivery Date'">
+                            </div>
+
+                            <div class="w50">
+                                <div style="position: relative">
+                                    <h3 data-bind="i18n: 'Delivery Date:'"></h3>
+                                    <span data-bind="text: $parent.getNextDeliveryDate(item.info.next_delivery_date)"></span>
+                                    <br/>
+                                    <!-- ko if: !$parent.isStockPointProfile && $parent.isDayOfWeekAndIntervalUnitMonth() -->
+                                    <span class="delivery-message" data-bind="text: $parent.getDeliveryMessage(item.info.code)"></span>
+                                    <!-- /ko -->
+                                    <h3 data-bind="i18n: 'Time Slot:'"></h3>
+                                    <span data-bind="text: $parent.getTimeSlotText(item.info.timeslot_id)"></span>
+                                 </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="right" data-bind="html: item.info.address_html, style: { width:50 + '%' }">
+                </div>
+
+                <!-- Show list product -->
+                <!-- Detail -->
+                <table class="list-product" style="width: 100%;clear: both;">
+                    <thead>
+                    <th class="product-image" data-bind="i18n: 'Product image'"></th>
+                    <th class="product-name" data-bind="i18n: 'Product name'"></th>
+                    <th class="product-sku-code" data-bind="i18n: 'SKU code'"></th>
+                    <th class="price" data-bind="i18n: 'Price'"></th>
+                    <!--<th class="address" data-bind="i18n: 'Address'"></th>-->
+                    <th class="qty" data-bind="i18n: 'Qty'"></th>
+                    <th class="qty" data-bind="i18n: 'Unit'"></th>
+                    <th class="order-status" data-bind="i18n: 'Order status'"></th>
+                    <th class="stock-level" data-bind="i18n: 'Stock level'"></th>
+                    </thead>
+
+                    <tbody data-bind="foreach: { data: item.items, as: 'productcart_item' }">
+                    <!-- ko if: (productcart_item.allow_seasonal_skip == 1) -->
+                    <!-- ko
+                    if: !(
+                     (productcart_item.is_skip() === 1 || productcart_item.is_skip() === true)
+                     && ($parents[1].getStrToTime(productcart_item.skip_from()) <= $parents[1].getStrToTimeOfDeliveryDate(item.info.next_delivery_date))
+                     && ($parents[1].getStrToTime(productcart_item.skip_to()) >= $parents[1].getStrToTimeOfDeliveryDate(item.info.next_delivery_date))
+                     )
+                     -->
+                    <tr class="tr-product" data-id="productcart_item.productcart_data.cart_id">
+                        <td data-bind="attr:{ 'data-th': 'Product Image' }" class="img-thumbnail-wrapper product-image" >
+                            <span>
+                                <img height="150" width="110"
+                                     data-bind="attr:{
+                                     alt: productcart_item.name ,
+                                     src: productcart_item.product_data.thumbnail
+                                     }" class="img-thumbnail" src=""  />
+                            </span>
+                            </td>
+
+                            <td class="product-name cart table-wrapper">
+                                <span data-bind="text: productcart_item.name"></span>
+                                <!-- ko if: productcart_item.gift_object() -->
+                                <h4 data-bind="i18n: 'Gift Option'"></h4>
+                                <div class="gift-options-content">
+                                    <div class="gift-wrapping-preview">
+                                         <span>
+                                             <!-- ko if: productcart_item.gift_object().image != '' && productcart_item.gift_object().image != null -->
+                                             <img  data-bind="attr:{
+                                                   src: MEDIA_URL + 'wrapping/' + productcart_item.gift_object().image,
+                                                   alt: productcart_item.gift_object().gift_name,
+                                                   title: productcart_item.gift_object().gift_name}">
+                                             <!-- /ko -->
+                                             <!-- ko if: productcart_item.gift_object().image == '' || productcart_item.gift_object().image == null -->
+                                                    <span data-bind="css:{ 'no-image': true }"></span>
+                                             <!-- /ko -->
+                                          </span>
+                                    </div>
+                                    <div class="gift-wrapping-title">
+                                         <span data-bind="text: productcart_item.gift_object().gift_name" class="gift-wrapping-name" ></span>
+                                        <span class="regular-price" data-label="Price">
+                                        <span class="price" data-bind="text: $parents[1].getPriceFormatted(productcart_item.gift_object().price_incl_tax)">
+                                        </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-- /ko -->
+
+                            </td>
+
+                            <td class="price" data-bind="attr:{ 'data-th': 'SKU code' }">
+                                <span data-bind="text: productcart_item.product_data.sku"></span>
+                            </td>
+
+                            <td class="price" data-bind="attr:{ 'data-th': 'Price' }">
+                                <span data-bind="text: $parents[1].getPriceFormatted(productcart_item.amount)"></span>
+                            </td>
+
+                            <td class="qty" data-bind="attr:{ 'data-th': 'Qty' }">
+                                <span data-bind="attr:{
+                                    id: 'confirmation-product-cart-qty-' +  productcart_item.item_id
+                                },text: $parents[1].getFinalQty( productcart_item.qty,productcart_item.unit_qty,productcart_item.unit_case) "></span>
+                                <p data-bind="text: productcart_item.product_data.stock_message"></p>
+                            </td>
+
+                            <td data-bind="attr:{ 'data-th': 'Unit'}">
+                                <span data-bind="text: productcart_item.unit_case + '(' + productcart_item.unit_qty + ' ' + $parents[1].translate('EA') + ' ' + ')', visible: productcart_item.unit_case == 'CS'"></span>
+                                <span data-bind="text: productcart_item.unit_case, visible: productcart_item.unit_case == 'EA'"></span>
+                                <span data-bind="i18n: 'EA', visible: productcart_item.unit_case == 'N/A'"></span>
+                            </td>
+                            <td data-bind="attr:{ 'data-th': 'Order status'}">
+                                <span data-bind="text:$parents[1].getOrderStatus(productcart_item.productcart_data.product_id)"></span>
+                            </td>
+                            <td data-bind="attr:{ 'data-th': 'Stock level'}">
+                                <span data-bind="text:$parents[1].getStockLevel(productcart_item.productcart_data.product_id)"></span>
+                            </td>
+                        </tr>
+                        <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: !(productcart_item.allow_seasonal_skip == 1) -->
+                        <tr class="tr-product" data-id="productcart_item.productcart_data.cart_id">
+                        <td data-bind="attr:{ 'data-th': 'Product Image' }" class="img-thumbnail-wrapper product-image" >
+                            <span>
+                                <img height="150" width="110"
+                                     data-bind="attr:{
+                                     alt: productcart_item.name ,
+                                     src: productcart_item.product_data.thumbnail
+                                     }" class="img-thumbnail" src=""  />
+                            </span>
+                        </td>
+
+                        <td class="product-name cart table-wrapper">
+                            <span data-bind="text: productcart_item.name"></span>
+                            <!-- ko if: productcart_item.gift_object() -->
+                            <h4 data-bind="i18n: 'Gift Option'"></h4>
+                            <div class="gift-options-content">
+                                <div class="gift-wrapping-preview">
+                                         <span>
+                                             <!-- ko if: productcart_item.gift_object().image != '' && productcart_item.gift_object().image != null -->
+                                             <img  data-bind="attr:{
+                                                   src: MEDIA_URL + 'wrapping/' + productcart_item.gift_object().image,
+                                                   alt: productcart_item.gift_object().gift_name,
+                                                   title: productcart_item.gift_object().gift_name}">
+                                             <!-- /ko -->
+                                             <!-- ko if: productcart_item.gift_object().image == '' || productcart_item.gift_object().image == null -->
+                                                    <span data-bind="css:{ 'no-image': true }"></span>
+                                             <!-- /ko -->
+                                          </span>
+                                </div>
+                                <div class="gift-wrapping-title">
+                                    <span data-bind="text: productcart_item.gift_object().gift_name" class="gift-wrapping-name" ></span>
+                                        <span class="regular-price" data-label="Price">
+                                        <span class="price" data-bind="text: $parents[1].getPriceFormatted(productcart_item.gift_object().price_incl_tax)">
+                                        </span>
+                                        </span>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+
+<!--                            <div class="stock unavailable" data-bind="visible: productcart_item.product_data.allow_spot_order == '0'">
+                                <span>
+                                    <b data-bind="i18n: 'Out of stock'">123213</b>
+                                </span>
+                            </div>-->
+                        </td>
+                        <td class="product-sku-code" data-bind="attr:{ 'data-th': 'SKU code' }">
+                            <span data-bind="text: productcart_item.product_data.sku"></span>
+                        </td>
+
+
+                        <td class="price" data-bind="attr:{ 'data-th': 'Price' }">
+                            <span data-bind="text: $parents[1].getPriceFormatted(productcart_item.amount)"></span>
+                        </td>
+
+                        <td class="qty" data-bind="attr:{ 'data-th': 'Qty' }">
+                                <span data-bind="attr:{
+                                    id: 'confirmation-product-cart-qty-' +  productcart_item.item_id
+                                },text: $parents[1].getFinalQty( productcart_item.qty,productcart_item.unit_qty,productcart_item.unit_case) "></span>
+                            <p data-bind="text: productcart_item.product_data.stock_message"></p>
+                        </td>
+
+                        <td data-bind="attr:{ 'data-th': 'Unit'},visible: productcart_item.unit_case == 'CS'">
+                            <span data-bind="text: productcart_item.unit_case + '(' + productcart_item.unit_qty + ' ' + $parents[1].translate('EA') + ' ' + ')' "></span>
+                        </td>
+
+                        <td data-bind="attr:{ 'data-th': 'Unit'},visible: productcart_item.unit_case == 'EA'">
+                            <span data-bind="text: productcart_item.unit_case"></span>
+                        </td>
+
+                        <td data-bind="attr:{ 'data-th': 'Unit'},visible: productcart_item.unit_case == 'N/A'">
+                            <span data-bind="i18n: 'EA'"></span>
+                        </td>
+
+                        <td data-bind="attr:{ 'data-th': 'Order status'}">
+                            <span data-bind="text:$parents[1].getOrderStatus(productcart_item.productcart_data.product_id)"></span>
+                        </td>
+
+                        <td data-bind="attr:{ 'data-th': 'Stock level'}">
+                            <span data-bind="text:$parents[1].getStockLevel(productcart_item.productcart_data.product_id)"></span>
+                        </td>
+                    </tr>
+                    <!-- /ko -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="fieldset summary-confirm">
+
+        <div class="left delivery-option">
+            <span data-bind="visible: profile.earn_point_on_order()">
+                <div class="label">
+                <h4 data-bind="i18n: 'Earning Points Settings:'"></h4>
+                    <label>
+                        <span data-bind="i18n: 'Earn points on orders'">
+                        </span>
+                    </label>
+                </div>
+            </span>
+
+            <div class="label">
+                <h4 data-bind="i18n: 'Modification method'"></h4>
+            </div>
+            <div class="field change_profile required left">
+                <ul class="control">
+                    <li class="item" data-bind="visible: profile.profile_type() == 'type_1'">
+                        <span data-bind="i18n: 'Change only this delivery'"></span>
+                    </li>
+                    <li class="item" data-bind="visible: profile.profile_type() == 'type_2'">
+                        <span data-bind="i18n: 'Change for all next deliveries'"></span>
+                    </li>
+                </ul>
+            </div>
+
+            <span data-bind="visible: profile.skip_next_delivery() == '1'">
+                <div class="label">
+                    <h4 data-bind="i18n: 'Skip next delivery'"></h4>
+                </div>
+            </span>
+
+            <div class="order-discounts">
+                <div class="right">
+                    <!-- ko if: window.subscriptionConfig.appliedCoupon.length -->
+                    <div class="admin__field">
+                        <label class="admin__field-label"><span data-bind="i18n: 'Applied coupon code:'"></span></label>
+                        <div class="admin__field-control" id="multi-coupon-list" data-bind="foreach: window.subscriptionConfig.appliedCoupon">
+                            <p class="added-coupon-code">
+                                <span data-bind="text: $data"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <div class="admin__field">
+                        <label class="admin__field-label"><span data-bind="i18n: 'Specified warehouse:'"></span></label>
+                        <div class="admin__field-control">
+                            <p class="warehouse-name">
+                                <span data-bind="text: getProfileWareHouse()"></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field status required right">
+            <div class="label">
+                <h2 data-bind="i18n: 'Subscription profile summary'"></h2>
+            </div>
+            <ul class="control subscription summary">
+
+                <li class="item">
+                    <span data-bind="i18n: 'Total Amount Product'"></span>
+                    <span class="price" data-bind="text: getPriceFormatted(orderData.getSubTotalInclTax())"></span>
+                </li>
+
+                <li class="item" data-bind="visible: (orderData.getDiscount() != 0)">
+                    <span data-bind="i18n: 'Discount'"></span>
+                    <span class="price" data-bind="text: getPriceFormatted(orderData.getDiscount())"></span>
+                </li>
+
+                <li class="item" data-bind="visible: (orderData.gw_amount() > 0)">
+                    <span data-bind="i18n: 'Gift Wrapping Fee'"></span>
+                    <span class="price" data-bind="text: getPriceFormatted(orderData.gw_amount())"></span>
+                </li>
+
+                <li class="item">
+                    <span data-bind="i18n: 'Shipping Fee'"></span>
+                    <span class="price" data-bind="text: getPriceFormatted(orderData.getShippingFeeInclTax())"></span>
+                </li>
+
+                <li class="item">
+                    <span data-bind="i18n: 'Payment Fee'"></span>
+                    <span class="price" data-bind="text: getPriceFormatted(orderData.getPaymentFee())"></span>
+                </li>
+
+                <li class="item">
+                    <span data-bind="i18n: 'Point Used'"></span>
+                    <span class="price" data-bind="text: getPoints(orderData.getUsedPointAmount())"></span>
+                </li>
+
+                <li class="item">
+                    <span data-bind="i18n: 'Total Payment Fee'"></span>
+                    <span class="price" data-bind="text: getPriceFormatted(orderData.getGrandTotal())"></span>
+                </li>
+
+                <li class="item">
+                    <span data-bind="i18n: 'Tentative Point Earned'"></span>
+                    <span class="price" data-bind="text: getPoints(orderData.getBonusPointAmount())"></span>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<div class="actions-toolbar">
+    <div class="primary button">
+        <button data-bind="
+                event:{
+                 click: returnToEditPage
+                }"
+                id="go.back"
+                title="Go Back"
+                value="back"
+                class="action primary save">
+            <span data-bind="i18n: 'Go Back'"></span>
+        </button>
+    </div>
+
+    <div class="primary button">
+        <button data-bind="event:{
+                 click: updateAllChanges
+                }, visible: ((updateAllChangesAction() && !generateNextOrderAction()) || stockPointIsSelected)"
+                id="update-all-changes"
+                title="Confirm"
+                value="confirm"
+                class="action primary save">
+            <span data-bind="i18n: 'Confirm'"></span>
+        </button>
+    </div>
+
+    <div class="primary button">
+        <button data-bind="event:{
+                 click: generateOrderAndUpdateProfile
+                }, visible: (generateNextOrderAction() && !updateAllChangesAction() && profileHasChanged())"
+                id="generate-update"
+                title="Go Back"
+                value="back"
+                class="action primary save">
+            <span data-bind="i18n: 'Update Profile Data & Generate Order'"></span>
+        </button>
+    </div>
+
+    <div class="primary button">
+        <button data-bind="event:{
+                 click: generateOrder
+                }, visible: (generateNextOrderAction() && !updateAllChangesAction() && !profileHasChanged())"
+                id="generate"
+                title="Go Back"
+                value="back"
+                class="action primary save">
+            <span data-bind="i18n: 'Generate Order'"></span>
+        </button>
+    </div>
+
+</div>
+
+
+
+<div style="display: none" id="shopping_point_setting">
+        <div id="point_error_message"></div>
+        <div class="field input">
+            <label class="label" data-bind="i18n: 'Shopping point settings'"></label>
+            <div class="control" style="width:48%;">
+                <select data-bind="
+                 options: userRewardPointSetting,
+                 optionsText: 'label',
+                 optionsValue: 'value',
+                 value: rewardUserSettingValue"
+                        id="reward_user_setting"
+                        data-validate="{'validate-select':true}">
+                </select>
+            </div>
+        </div>
+        <div data-bind="visible: rewardUserSettingValue() == 2" class="field input reward_user_redeem_input">
+            <label class="label" for="reward_user_redeem" data-bind="i18n: 'Shopping point redeem number'">
+            </label>
+            <div class="control" style="width:48%;">
+                <input  data-bind="value: rewardUserRedeem , enable: rewardUserSettingValue() == 2"
+                        maxlength="10"
+                        type="number"
+                        class="input-text validate-number"
+                        id="reward_user_redeem"/>
+            </div>
+        </div>
+</div>
+
+

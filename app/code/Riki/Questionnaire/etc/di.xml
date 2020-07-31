@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+
+    <preference for="Riki\Questionnaire\Api\Data\SubmittedAnswerDataInterface"
+                type="Riki\Questionnaire\Model\SubmittedAnswerData"/>
+    <preference for="Riki\Questionnaire\Api\QuestionnaireAnswerInterface"
+                type="Riki\Questionnaire\Model\QuestionnaireAnswer"/>
+    <preference for="Riki\Questionnaire\Api\Data\AnswerDataInterface"
+                type="Riki\Questionnaire\Model\AnswerData"/>
+    <preference for="Riki\Questionnaire\Api\Data\QuestionDataInterface"
+                type="Riki\Questionnaire\Model\QuestionData"/>
+
+    <virtualType name="questionsGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\Questionnaire\Model\ResourceModel\Questionnaire\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">questionsGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="questionsGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Riki\Questionnaire\Model\ResourceModel\Questionnaire\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">riki_enquete</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\Questionnaire\Model\ResourceModel\Questionnaire</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="questionnaire_questions_listing_data_source" xsi:type="string">Riki\Questionnaire\Model\ResourceModel\Questionnaire\Grid\Collection</item>
+                <item name="questionnaire_answers_listing_data_source" xsi:type="string">Riki\Questionnaire\Model\ResourceModel\Answers\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!--answers config list data-->
+    <type name="Riki\Questionnaire\Model\ResourceModel\Answers\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">riki_enquete_answer</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\Questionnaire\Model\ResourceModel\Answers</argument>
+        </arguments>
+    </type>
+    <!--end answers config list data-->
+    <!-- write log -->
+    <type name="Riki\Questionnaire\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Questionnaire\Logger\LoggerCSV">
+        <arguments>
+            <argument name="name" xsi:type="string">ImportQuestionnaire</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Questionnaire\Logger\HandlerCSV</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\Questionnaire\Logger\LoggerSave">
+        <arguments>
+            <argument name="name" xsi:type="string">SaveQuestionnaire</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Questionnaire\Logger\HandlerSave</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\Questionnaire\Model\ResourceModel\Answers">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Questionnaire\Model\ResourceModel\Choice">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Questionnaire\Model\ResourceModel\Question">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Questionnaire\Model\ResourceModel\Questionnaire">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Questionnaire\Model\ResourceModel\Reply">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\ScalableOms\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="riki_enquete_answer" xsi:type="string">riki_enquete_answer</item>
+                <item name="riki_enquete_question_choice" xsi:type="string">riki_enquete_question_choice</item>
+                <item name="riki_enquete_question" xsi:type="string">riki_enquete_question</item>
+                <item name="riki_enquete" xsi:type="string">riki_enquete</item>
+                <item name="riki_enquete_answer_reply" xsi:type="string">riki_enquete_answer_reply</item>
+            </argument>
+        </arguments>
+    </type>
+
+</config>

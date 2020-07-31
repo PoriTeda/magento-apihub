@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Customer:etc/sections.xsd">
+    <action name="subscription-page/ajax/add">
+        <section name="cart"/>
+    </action>
+    <action name="checkout/*/*">
+        <section name="cart"/>
+    </action>
+    <action name="checkout/cart/add">
+        <section name="cart"/>
+    </action>
+    <action name="subscriptions/multiple_category/confirmpost">
+        <section name="cart"/>
+    </action>
+    <action name="subscriptions/multiple_category/saveselectedproduct">
+        <section name="cart"/>
+    </action>
+    <action name="riki-checkout/sidebar/updateItemQtyCustom">
+        <section name="cart"/>
+    </action>
+    <action name="riki-checkout/sidebar/spotAddItem">
+        <section name="cart"/>
+    </action>
+    <action name="rest/V1/subscription-page/cart/emulate">
+        <section name="cart"/>
+    </action>
+</config>

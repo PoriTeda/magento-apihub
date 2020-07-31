@@ -1,0 +1,10 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <riki_message_queue>
+            <failure_queue>
+                <trigger_consumer_cron_exp>0 2 * * *</trigger_consumer_cron_exp>
+                <max_message_consumer>100</max_message_consumer>
+            </failure_queue>
+        </riki_message_queue>
+    </default>
+</config>

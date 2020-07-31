@@ -1,0 +1,62 @@
+<?php
+/* @var \Riki\Subscription\Block\Multiple\Category\Success $block */
+$totalAmount = $block->getTotalAmountOfAddedProducts();
+$profileId = $block->getProfileId();
+$courseCode = $block->getCourseCode();
+$timestamp = $block->getTimestamp();
+$addedProducts = $block->getAddedProducts();
+?>
+
+<script>
+    var dataLayer = dataLayer || [];
+    dataLayer.push({
+        'event': 'addProductCampaign',
+        'EventCategory': 'Add Product Campaign',
+        'EventAction': 'SPOT',
+        'EventLabel': '<?php echo $totalAmount; ?>',
+        'existingSubscription': '<?php echo $courseCode; ?>',
+        'profileID': '<?php echo $profileId; ?>+<?php echo $timestamp; ?>'
+    });
+
+<?php if(!empty($addedProducts)): ?>
+    <?php foreach ($addedProducts as $product): ?>
+    dataLayer.push({
+        'event': 'addProductCampaign',
+        'EventCategory': 'Add Product Campaign ProductList',
+        'EventAction': '<?= $product['name'] ?>',
+        'EventLabel': '<?= $product['qty'] ?>'
+    });
+    <?php endforeach; ?>
+<?php endif; ?>
+
+    // remove session data product of customer choose
+    sessionStorage.removeItem('selected_products');
+</script>
+
+<div id="add-spot-success-container">
+    <div class="add-spot-success">
+        <p class="add-spot-content">
+            <span class="add-spot-error">
+                <?php /* @escapeNotVerified */ echo __('商品のご注文ありがとうございました。') ?>
+            </span><br/>
+            <span>
+                <strong><?php /* @escapeNotVerified */ echo __('次回の') ?></strong>
+                <?php /* @escapeNotVerified */ echo __('お届けにご注文商品を追加しました。') ?>
+            </span>
+        </p>
+        <p class="add-spot-campaign">
+            <span>
+                <strong><?php /* @escapeNotVerified */ echo __('お届け予定日') ?></strong>
+                <?php /* @escapeNotVerified */ echo __('の') ?><br/>
+                <?php /* @escapeNotVerified */ echo __('確認・変更はこちら') ?>
+            </span>
+        </p>
+        <a href="<?php echo $block->getUrl('customer/account') ?>"
+           type="submit" class="action save primary"
+           title="<?php /* @escapeNotVerified */ echo __('マイページへ') ?>">
+            <span><?php /* @escapeNotVerified */ echo __('マイページへ') ?></span>
+        </a>
+        <img class="cart-ty-page" alt="<?php /* @escapeNotVerified */ echo __('マイページへ') ?>"
+             src='<?php echo $this->getViewFileUrl('Riki_Subscription::images/cart-thank-you-page.png'); ?>' />
+    </div>
+</div>

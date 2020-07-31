@@ -1,0 +1,87 @@
+// /**
+//  * Copyright © 2016 Magento. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//    Common
+//--------------------------------------
+
+& when (@media-common = true) {
+
+    // Prices
+    .price-style-1() {
+        .price {
+            &-tier_price .price-excluding-tax,
+            &-tier_price .price-including-tax {
+                display: inline;
+            }
+        }
+    }
+
+    .price-style-2() {
+        .price {
+            &-including-tax,
+            &-excluding-tax {
+                display: inline !important;
+            }
+            &-including-tax:before {
+                content: " / "
+            }
+            &-including-tax:after {
+                content: "(" attr(data-label) ")";
+            }
+        }
+    }
+
+    .price-style-3() {
+        .price-including-tax,
+        .price-excluding-tax {
+            display: block;
+            line-height: 1;
+            .price {
+                font-weight: @font-weight__bold;
+            }
+            .cart-tax-total {
+                &:extend(.abs-tax-total all);
+                &-expanded {
+                    &:extend(.abs-tax-total-expanded all);
+                }
+            }
+        }
+        .price-including-tax,
+        .price-excluding-tax {
+            &:after {
+                content: ' ' attr(data-label);
+            }
+        }
+        .price-excluding-tax{
+            &:after{
+                display: none !important;
+            }
+        }
+        .weee[data-label] {
+            display: block;
+            .lib-font-size(18);
+        }
+    }
+
+    .price-excluding-tax {
+        display: none !important;
+    }
+    .old-price {
+        display: block;
+        padding-top: 1rem;
+        color: @color_old_price;
+        .price-label {
+            display: none !important;
+        }
+        .price-wrapper {
+            text-decoration: line-through;
+        }
+    }
+
+    .price-style-1();
+    .price-style-3();
+
+}

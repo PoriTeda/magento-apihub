@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="riki_rma">
+        <job name="riki_rma_mass_action" instance="Riki\Rma\Cron\MassAction" method="process">
+            <config_path>rma/mass_action/cron_schedule</config_path>
+        </job>
+    </group>
+</config>

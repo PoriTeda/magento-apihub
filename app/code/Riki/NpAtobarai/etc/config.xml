@@ -1,0 +1,92 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+	<default>
+		<payment>
+			<npatobarai>
+				<active>1</active>
+				<model>Riki\NpAtobarai\Model\Payment\NpAtobarai</model>
+				<title>NpAtobarai</title>
+				<allowspecific>0</allowspecific>
+			</npatobarai>
+		</payment>
+		<npatobarai>
+			<general>
+				<debug>1</debug>
+			</general>
+			<cron_schedule>
+				<dummy_shipment_creator_scheduler>*/10 * * * *</dummy_shipment_creator_scheduler>
+                <validate_np_transactions>*/10 * * * *</validate_np_transactions>
+				<transaction_creator>*/10 * * * *</transaction_creator>
+				<transaction_get_payment_status>*/10 * * * *</transaction_get_payment_status>
+				<transaction_shipped_out_register>*/10 * * * *</transaction_shipped_out_register>
+				<register_transaction_scheduler>*/10 * * * *</register_transaction_scheduler>
+			</cron_schedule>
+			<authorize_failure_email>
+				<enable_send>1</enable_send>
+			</authorize_failure_email>
+		</npatobarai>
+	</default>
+	<default>
+		<carriers>
+			<yamatoaskul>
+				<slip_no_fixed_value>1</slip_no_fixed_value>
+				<slip_no_fixed_status>0</slip_no_fixed_status>
+				<np_carrier_code>59010</np_carrier_code>
+			</yamatoaskul>
+			<yamatoglobal>
+				<slip_no_fixed_value>1</slip_no_fixed_value>
+				<slip_no_fixed_status>0</slip_no_fixed_status>
+				<np_carrier_code>55555</np_carrier_code>
+			</yamatoglobal>
+			<bizex>
+				<slip_no_fixed_value>1</slip_no_fixed_value>
+				<slip_no_fixed_status>0</slip_no_fixed_status>
+				<np_carrier_code>55555</np_carrier_code>
+			</bizex>
+			<kinki>
+				<slip_no_fixed_value>1</slip_no_fixed_value>
+				<slip_no_fixed_status>0</slip_no_fixed_status>
+				<np_carrier_code>55555</np_carrier_code>
+			</kinki>
+			<tokai>
+				<slip_no_fixed_value>1</slip_no_fixed_value>
+				<slip_no_fixed_status>0</slip_no_fixed_status>
+				<np_carrier_code>59041</np_carrier_code>
+			</tokai>
+			<yupack>
+				<slip_no_fixed_value>1</slip_no_fixed_value>
+				<slip_no_fixed_status>0</slip_no_fixed_status>
+				<np_carrier_code>59041</np_carrier_code>
+			</yupack>
+			<anshin>
+				<slip_no_fixed_value>1</slip_no_fixed_value>
+				<slip_no_fixed_status>0</slip_no_fixed_status>
+			</anshin>
+			<ecohai>
+				<slip_no_fixed_value>1</slip_no_fixed_value>
+				<slip_no_fixed_status>0</slip_no_fixed_status>
+				<np_carrier_code>59150</np_carrier_code>
+			</ecohai>
+			<dummy>
+				<slip_no_fixed_value>1</slip_no_fixed_value>
+				<slip_no_fixed_status>0</slip_no_fixed_status>
+				<np_carrier_code>55555</np_carrier_code>
+			</dummy>
+			<dummy2>
+				<slip_no_fixed_value>1</slip_no_fixed_value>
+				<slip_no_fixed_status>0</slip_no_fixed_status>
+				<np_carrier_code>55555</np_carrier_code>
+			</dummy2>
+			<dummy3>
+				<slip_no_fixed_value>1</slip_no_fixed_value>
+				<slip_no_fixed_status>0</slip_no_fixed_status>
+				<np_carrier_code>55555</np_carrier_code>
+			</dummy3>
+			<sagawa>
+				<slip_no_fixed_value>1</slip_no_fixed_value>
+				<slip_no_fixed_status>0</slip_no_fixed_status>
+				<np_carrier_code>50000</np_carrier_code>
+			</sagawa>
+		</carriers>
+	</default>
+</config>

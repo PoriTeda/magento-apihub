@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="customer_form">
+            <block class="Riki\Customer\Block\Adminhtml\Edit\Tab\Enquiry" name="customer_edit_tab_enquiry" template="tab/enquiry.phtml">
+                <arguments>
+                    <argument name="tab_label" xsi:type="string" translate="true">Customer Enquiry</argument>
+                    <argument name="sort_order" xsi:type="number">200</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Riki\Customer\Block\Adminhtml\Edit\Account\ShoshaCustomer" name="customer_edit_account_shoshacustomer" template="edit/shoshacustomer.phtml" />
+            <block class="Magento\Framework\View\Element\Text" name="riki_script">
+                <arguments>
+                    <argument name="text" xsi:type="string"><![CDATA[
+                    <script>require(["Riki_Customer/js/lib/element/validation/rules"]);</script>
+                    ]]></argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

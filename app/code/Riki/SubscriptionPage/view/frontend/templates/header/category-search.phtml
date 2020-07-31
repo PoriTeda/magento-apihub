@@ -1,0 +1,42 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @var $block \Magento\Framework\View\Element\Template
+ */
+
+$listProductCategory = $block->getViewModel()->getListOfProductGroupByCategory();
+$listProducts =  isset($listProductCategory['product']) ? $listProductCategory['product'] : [];
+?>
+
+<div id="navigation-scroll__nav" class="sub-navigation-scroll search_sp"
+     data-bind="scope: 'subscriptionCategorySearch'">
+    <label data-bind="text: currentSectionName"><?php echo __('Search subscription product by category button') ?> </label>
+    <div class="navigation-select">
+        <select data-bind="value: currentSectionValue, event:{ change: navigationScrollToCategory }">
+            <option value=""><?php echo __('Search subscription product by category button') ?></option>
+            <?php foreach ($listProducts as $categoryId => $products): ?>
+                <?php if (empty($products)): continue; endif; ?>
+                <option  class="option-category-sub" value="section-<?php echo $categoryId ?>"><?php echo $block->getViewModel()->getCategoryById($categoryId)->getName() ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+</div>
+
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+           "Magento_Ui/js/core/app": {
+               "components": {
+                    "subscriptionCategorySearch": {
+                        "component": "Riki_SubscriptionPage/js/view/header/category-search"
+                   }
+               }
+            }
+       }
+    }
+</script>

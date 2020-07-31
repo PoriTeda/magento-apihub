@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Directory\Model\Currency">
+        <plugin name="riki-directory-modify-currency-format" type="Riki\Directory\Plugin\ModifyCurrencyFormat" />
+    </type>
+    <type name="Magento\Framework\Locale\Format">
+        <plugin name="riki-directory-modify-price" type="Riki\Directory\Plugin\ModifyPrice" />
+    </type>
+    <type name="Magento\Directory\Model\PriceCurrency">
+        <plugin name="riki-directory-modify-price-currency" type="Riki\Directory\Plugin\ModifyPriceCurrency" />
+    </type>
+    <preference for="Magento\Directory\Model\ResourceModel\Region\Collection" type="Riki\Directory\ResourceModel\Directory\Region\Collection"/>
+</config>

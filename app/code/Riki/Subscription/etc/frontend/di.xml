@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Riki\Subscription\Block\Frontend\Profile\AddSpotProduct">
+        <arguments>
+            <argument name="filterList" xsi:type="object">searchFilterList</argument>
+        </arguments>
+    </type>
+    <type name="Riki\DeliveryType\Controller\Delivery\ShippingAddress">
+        <plugin name="checkoutDeliveryInfo" type="Riki\Subscription\Plugin\DeliveryType\Controller\Delivery\ShippingAddress"/>
+    </type>
+    <type name="Magento\Checkout\Controller\Cart\Index">
+        <plugin name="checkApplicationLimitOnCartPage" type="Riki\Subscription\Plugin\CheckApplicationLimitCart"/>
+    </type>
+    <type name="Riki\Checkout\Controller\Index\Single">
+        <plugin name="checkApplicationLimitOnCheckoutPage" type="Riki\Subscription\Plugin\CheckApplicationLimitCheckout"/>
+    </type>
+    <type name="Magento\Checkout\Model\DefaultConfigProvider">
+        <plugin name="rikiSubscriptionInitSubscriptionData" type="Riki\Subscription\Plugin\Checkout\Model\DefaultConfigProvider\InitSubscriptionData" />
+    </type>
+    <!-- create selected_product section into sections pool -->
+    <type name="Magento\Customer\CustomerData\SectionPoolInterface">
+        <arguments>
+            <argument name="sectionSourceMap" xsi:type="array">
+                <item name="multiple-category-campaign" xsi:type="string">Riki\Subscription\CustomerData\MultipleCategoryCampaign</item>
+                <item name="customer-profiles" xsi:type="string">Riki\Subscription\CustomerData\CustomerProfiles</item>
+                <item name="profiles" xsi:type="string">Riki\Subscription\CustomerData\Profiles</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

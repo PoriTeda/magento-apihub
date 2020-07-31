@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Quote\Model\Quote\Address\CustomAttributeListInterface"
+                type="Magento\CustomerCustomAttributes\Model\Quote\Address\CustomAttributeList" />
+    <preference for="Magento\Customer\Model\Address\CustomAttributeListInterface"
+                type="Magento\CustomerCustomAttributes\Model\Quote\Address\CustomAttributeList" />
+    <type name="Magento\CustomerCustomAttributes\Helper\Data">
+        <arguments>
+            <argument name="customerAddress" xsi:type="object">Magento\CustomerCustomAttributes\Helper\Address\Proxy</argument>
+            <argument name="customerCustomer" xsi:type="object">Magento\CustomerCustomAttributes\Helper\Customer\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Magento\CustomerCustomAttributes\Model\ResourceModel\Sales\Order">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Magento\CustomerCustomAttributes\Model\ResourceModel\Sales\Order\Address">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Address\ToOrderAddress">
+        <plugin name="convertQuoteAddressToOrderAddress" type="Magento\CustomerCustomAttributes\Model\Plugin\ConvertQuoteAddressToOrderAddress"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Address">
+        <plugin name="convertQuoteAddressToCustomerAddress" type="Magento\CustomerCustomAttributes\Model\Plugin\ConvertQuoteAddressToCustomerAddress"/>
+    </type>
+    <virtualType name="QuoteRelationsComposite">
+        <arguments>
+            <argument name="relationProcessors" xsi:type="array">
+                <item name="custom_attribute" xsi:type="object">Magento\CustomerCustomAttributes\Model\Quote\Relation</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Customer\Model\Address">
+        <plugin name="updateDataCustomerAddress" type="Magento\CustomerCustomAttributes\Model\Plugin\AddCustomAttributesToCustomerAddress"/>
+    </type>
+</config>

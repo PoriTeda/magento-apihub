@@ -1,0 +1,63 @@
+<?php /** @var \Riki\Loyalty\Block\Reward $block */?>
+<?php
+    $_pointExpired = $block->getPointExpired();
+    $_descriptionUrl = $block->getSystemConfig('riki_loyalty/about_point_guide_group/about_point_guide_input');
+?>
+<?php echo $block->getChildHtml('setting');?>
+<div class="points-history points info detailed">
+    <div class="points data items">
+        <div class="data item title first" aria-labeledby="tab-label-point-history-title" data-role="collapsible"
+             id="tab-label-point-history">
+            <a class="data switch" tabindex="-1" data-toggle="switch" href="<?php echo $this->getUrl('loyalty/reward');?>"
+               id="tab-label-point-history-title">
+                <?php echo __("Show all point history") ?>
+            </a>
+        </div>
+        <div class="data item title last active" aria-labeledby="tab-label-point-plan-title" data-role="collapsible"
+             id="tab-label-point-plan">
+                <span class="data switch" href="#point-plan" id="tab-label-point-plan-title">
+                    <?php echo __("Revocation plan"); ?>
+                </span>
+        </div>
+
+        <div class="data item content" data-role="content" id="point-plan">
+            <p class="detail">
+                <a href="#" <?php if ($_descriptionUrl) : ?> data-mage-init='{"popupWindow": {"windowURL":"<?php echo $_descriptionUrl;?>","windowName":"trackorder","width":800,"height":600,"left":0,"top":0,"resizable":1,"scrollbars":1}}' <?php endif;?>
+                ><?php echo __("Detail info about points stored") ?>
+                </a>
+            </p>
+            <?php if (is_array($_pointExpired) && sizeof($_pointExpired)): ?>
+                <table class="data table">
+                    <thead>
+                    <tr>
+                        <th class="tleft"><?php echo __("Scheduled expiration month") ?></th>
+                        <th class="tright"><?php echo __("Points") ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($_pointExpired as $item) : ?>
+                        <tr>
+                            <td data-th="<?php echo $block->escapeHtml(__('Scheduled expiration month')) ?>" class="col tleft"><?php echo $item['scheduled_expired_month'];?></td>
+                            <td data-th="<?php echo $block->escapeHtml(__('Points')) ?>" class="col tright">
+                                <?php echo $item['scheduled_expired_point'] ?>
+                            </td>
+                        </tr>
+                    <?php endforeach;?>
+                    </tbody>
+                </table>
+                <?php if ($block->getPagerHtml()): ?>
+                    <div class="order-products-toolbar toolbar bottom"><?php echo $block->getPagerHtml(); ?></div>
+                <?php endif ?>
+            <?php else: ?>
+                <div class="message info empty"><span><?php echo __('You have no rewards in revocation.'); ?></span></div>
+            <?php endif ?>
+        </div>
+    </div>
+</div>
+<div class="actions-toolbar bottom">
+    <div class="secondary">
+        <a class="action back"
+           href="<?php echo $block->escapeUrl($block->getBackUrl()) ?>"><span><?php /* @escapeNotVerified */
+                echo __('Go back') ?></span></a>
+    </div>
+</div>

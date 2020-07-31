@@ -1,0 +1,162 @@
+<?php
+/** @var \Riki\Subscription\Block\Frontend\Profile\Edit\AdditionalCategoriesProducts $block */
+$arrProductGroupByAdditionalCategory = $block->getListOfProductGroupByAdditionalCategory();
+
+$defaultOptions = 10;
+?>
+<?php if(!empty($arrProductGroupByAdditionalCategory)): ?>
+    <div class="note"><?php echo __('Please select the course to add products.') ?></div>
+    <!-- Loop Categories Here -->
+    <?php foreach($arrProductGroupByAdditionalCategory as $categoryId => $categoryData):
+            $category = $categoryData['category'];
+            $products = $categoryData['products'];
+        ?>
+        <div class="subscription-container">
+            <input type="checkbox" class="toggle-checkbox" id="subscription-container-block-<?php echo $categoryId;?>">
+            <div class="category-title">
+                <?php if($categoryId == Riki\SubscriptionPage\Block\SubscriptionView::CATEGORY_ID_FOR_PRODUCT_ADD_FROM_COURSE_TAB){ ?>
+                    <h2><?php echo __('Product Not Allow Category') ?></h2>
+                <?php } else { ?>
+                    <h2><?php echo $block->escapeHtml($category->getName()); ?></h2>
+                <?php } ?>
+                <label for="subscription-container-block-<?php echo $categoryId;?>" class="triangle-toggle"></label>
+            </div>
+            <div class="subscription-content">
+                <table class="subscription-table">
+                    <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th class="col name"><?php echo __('Product name') ?></th>
+                        <th class="col price"><?php echo __('Item price (tax incl)') ?></th>
+                        <th class="col qty" ><?php echo __('Qty') ?></th>
+                        <th class="col price subtotal"><?php echo __('Subtotal (tax incl)') ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Load Product -->
+                    <?php
+                    /** @var \Magento\Catalog\Model\Product $product */
+                    foreach ($products as $product): ?>
+                        <?php
+                        //Product qty information
+                        $minimalQty = $product->getMinSaleQty();
+                        $maximumQty = min(99, $product->getMaxSaleQty());
+                        $aUnitDisplay = $product->getData('unit_qty_type_options');
+                        $unitQty = $product->getUnitQty();
+                        ?>
+                        <tr data-quantity-type="<?php echo $unitQty > 1 ? 1 : 0 ?>"
+                            class="item<?php if($product->getTypeId() == 'configurable'): ?> config<?php endif; ?><?php if($product->getTypeId() == 'configurable' || $product->getTypeId() == 'bundle'): ?> subscription-info-price<?php echo $product->getId() ?><?php endif; ?>">
+                            <td class="col image"><div class="product-item-photo"><?php echo $block->getImage($product, 'cart_page_product_thumbnail')->toHtml(); ?></div></td>
+                            <td class="col name">
+                                <input type="hidden" name="data[product][<?php echo $product->getId() . '_' . $categoryId ?>][product_id]" value="<?php echo $product->getId(); ?>">
+                                <div class="product-item-name">
+                                    <span><?php echo $product->getName(); ?></span>
+                                    <?php if ($stockMessage = $product->getData('stock_status_message')): ?>
+                                    <div class="notification-qty <?php echo $product->getData('stock_status_class');?>"><span><?php echo __('Stock:').' '. $stockMessage;?></span></div>
+                                    <?php endif; ?>
+                                </div>
+                                <?php if($product->getTypeId() == 'bundle'): ?>
+                                    <input type="hidden" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[product_type]' ?>" value="<?php echo $product->getTypeId(); ?>">
+
+                                <?php endif; ?>
+                            </td>
+                            <td class="col price" data-th="<?php echo __('Item price (tax incl)') ?>" data-bind="scope: 'priceBox'">
+                                <div data-bind="html: product_price_<?php echo $product->getId() ?>" id="product_price_<?php echo $product->getId() ?>">
+                                    <?php echo $block->getLayout()->getBlock('product.price.render.default')->render('final_price', $product,[]); ?>
+                                </div>
+                            </td>
+                            <td class="col qty" data-th="<?php echo __('Qty') ?>">
+                                <?php if($unitQty <= 1) : ?>
+                                    <div data-bind="visible: <?php echo 'unit_qty_'.$product->getId().'_'.$categoryId.''; ?>" id="<?php echo 'unit_qty_'.$product->getId().'_'.$categoryId.''; ?>">
+                                        <label class="label no-display" for="<?php echo 'qty_'.$product->getId(); ?>"><?php echo __('Qty') ?></label>
+                                        <div class="control qty select" data-bind="event: {change: refreshPrice}">
+                                            <select <?php if(!$product->getIsSaleable()) echo 'disabled'; ?>
+                                                    id="<?php echo 'qty_'.$product->getId().'_'.$categoryId; ?>"
+                                                    data-bind="event: {click: generateOption},value :<?php echo 'qty_selected_'.$product->getId().'_'.$categoryId.''; ?>"
+                                                    name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[qty]' ?>"
+                                                    data-render="0" data-quantity="<?php echo $maximumQty*$unitQty ?>"
+                                            >
+                                                <option value="0">0</option>
+                                                <?php for($j = 1; $j <= $defaultOptions; $j++): ?>
+                                                    <option value="<?php echo $j ?>"><?php echo $j ?></option>
+                                                <?php endfor; ?>
+                                            </select>
+                                        </div>
+                                        <div class="unit-label"><?php echo __('EA') ?></div>
+                                    </div>
+                                <?php else : ?>
+                                    <div data-bind="visible :<?php echo 'unit_case_'.$product->getId().'_'.$categoryId.''; ?>" id="<?php echo 'unit_case_'.$product->getId().'_'.$categoryId.''; ?>">
+                                        <!-- Unit product is case-->
+                                        <label class="label no-display" for="<?php echo 'qty_case_'.$product->getId(); ?>"><?php echo __('Qty') ?></label>
+                                        <div class="control qty select"  data-bind="event: {change: refreshPrice}">
+                                            <select <?php if(!$product->getIsSaleable()) echo 'disabled'; ?>
+                                                    id="<?php echo ('qty_'.$product->getId().'_'.$categoryId);?>"
+                                                    data-bind="event: {click: generateOption},value :<?php echo 'qty_case_selected_'.$product->getId().'_'.$categoryId.''; ?>"
+                                                    name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[qty_case]' ?>" class="qty_case"
+                                                    data-render="0" data-quantity="<?php echo $maximumQty ?>"
+                                            >
+                                                <option value="0" >0</option>
+                                                <?php //$k = ceil($minimalQty) > 1 ? ceil($minimalQty) : 1 ?>
+                                                <?php for($j = 1; $j <= $defaultOptions; $j++): ?>
+                                                    <option value="<?php echo $j ?>"><?php echo $j ?></option>
+                                                <?php endfor; ?>
+                                            </select>
+                                        </div>
+                                        <?php if(count($aUnitDisplay) ==  1){ ?>
+                                            <div class="unit-label"><?php echo __('CS') ?></div>
+                                        <?php } ?>
+                                    </div>
+                                <?php endif; ?>
+
+                                <input type="hidden" data-bind="value :<?php echo 'unit_qty_value_'.$product->getId().'_'.$categoryId.''; ?>" id="<?php echo 'unit_qty_value_'.$product->getId().'_'.$categoryId; ?>" value="<?php echo $unitQty;?>">
+                                <input type="hidden" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[unit_qty]' ?>" id="<?php echo 'unit_qty_'.$product->getId().'_'.$categoryId; ?>" value="<?php echo $unitQty;?>">
+                                <input type="hidden" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[is_addition]' ?>" id="<?php echo 'is_addition_'.$product->getId().'_'.$categoryId; ?>" value="1">
+
+                                <?php if(is_array($aUnitDisplay) && count($aUnitDisplay) ){ ?>
+                                    <div style="display: none" class="unit-option<?php echo (count($aUnitDisplay) > 1) ? '' : ' no-display' ?>">
+                                        <div class="control qty select" data-bind="event: {change: refreshPieceCase}">
+                                            <select data-bind="value :<?php echo 'case_display_'.$product->getId().'_'.$categoryId.''; ?>" id="<?php echo 'case_display_'.$product->getId().'_'.$categoryId; ?>" class="unit-case" unitqty="<?php echo $unitQty;?>"  productid="<?php echo ((int)$product->getId().'_'.$categoryId);?>" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[case_display]' ?>">
+                                                <?php foreach ($aUnitDisplay as $keyUnit => $unitDisplay){ ?>
+                                                    <option value="<?php echo $keyUnit;?>"><?php echo $unitDisplay;?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                                <?php if(!$product->getIsSaleable()): ?>
+                                    <input type="hidden" name="<?php echo 'data[product]' . '['.((int)$product->getId().'_'.(int)$categoryId).']'.'[qty]' ?>" value="0">
+                                <?php endif; ?>
+                            </td>
+                            <td class="col price subtotal" data-th="<?php echo __('Subtotal (tax incl)') ?>">
+                                <div id="<?php echo 'subtotal_item_'.$product->getId().'_'.$categoryId.''; ?>" data-bind="html :<?php echo 'subtotal_item_'.$product->getId().'_'.$categoryId.''; ?>">
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    <!-- End Loop Product -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <?php endforeach; ?>
+    <!-- End Loop Here -->
+
+    <script type="text/x-magento-init">
+        {
+            "#add-another-course-component": {
+                "Magento_Ui/js/core/app": {
+                   "components": {
+                        "priceBox": {
+                            "component": "Riki_Subscription/js/view/priceBox",
+                            "productIds": "<?php echo implode(',', $block->getProductIds()) ?>",
+                            "productCatIds": "<?php echo implode(',', $block->getProductCategoryIds()) ?>",
+                            "productMainCatIds": "<?php echo implode(',', []) ?>",
+                            "productAdditionCatIds": "<?php echo implode(',', $block->getProductCategoryIds()) ?>",
+                            "isSubscription": <?php /* @escapeNotVerified */ echo 0;?>
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+<?php endif; ?>

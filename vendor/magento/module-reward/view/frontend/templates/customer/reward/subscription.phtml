@@ -1,0 +1,34 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<?php
+/**
+ * @see \Magento\Reward\Block\Customer\Reward\Settings
+ */
+?>
+<form class="form reward-settings" action="<?= /* @escapeNotVerified */ $block->getUrl('reward/customer/saveSettings') ?>" method="post" id="form-validate">
+    <?= $block->getBlockHtml('formkey') ?>
+    <fieldset class="fieldset">
+        <legend class="legend"><span><?= /* @escapeNotVerified */ __('Email Notification Settings') ?></span></legend><br />
+        <div class="field choice">
+            <input type="checkbox" name="subscribe_updates" id="subscribe_updates" value="1" title="<?= /* @escapeNotVerified */ __('Subscribe for Balance Updates') ?>"<?php if ($block->isSubscribedForUpdates()): ?> checked="checked"<?php endif; ?> />
+            <label class="label" for="subscribe_updates"><span><?= /* @escapeNotVerified */ __('Subscribe for Balance Updates') ?></span></label>
+        </div>
+        <div class="field choice">
+            <input type="checkbox" name="subscribe_warnings" id="subscribe_warnings" value="1"<?php if ($block->isSubscribedForWarnings()): ?> checked="checked"<?php endif; ?>/>
+            <label class="label" for="subscribe_warnings"><span><?= /* @escapeNotVerified */ __('Subscribe for Points Expiration Notifications') ?></span></label>
+        </div>
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" class="action save primary" title="<?= /* @escapeNotVerified */ __('Save Subscription Settings') ?>"><span><?= /* @escapeNotVerified */ __('Save Subscription Settings') ?></span></button>
+        </div>
+    </div>
+</form>

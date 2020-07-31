@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @package Amasty_Coupons
+ */
+-->
+<!--
+/**
+ * Copyright © 2015 Amasty. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\SalesRule\Model\Utility">
+        <plugin name="Amasty_Coupons::PluginUtility" type="Amasty\Coupons\Plugin\PluginUtility" />
+    </type>
+
+    <type name="Magento\SalesRule\Observer\SalesOrderAfterPlaceObserver">
+        <plugin name="Amasty_Coupons::PluginObserver" type="Amasty\Coupons\Plugin\PluginObserver" />
+    </type>
+
+    <type name="Magento\Checkout\Controller\Cart\CouponPost">
+        <plugin name="Amasty_Coupons::CouponPost" type="Amasty\Coupons\Plugin\CouponPost" />
+    </type>
+
+    <type name="Magento\Quote\Model\CouponManagement">
+        <plugin name="Amasty_Coupons::CouponManagement" type="Amasty\Coupons\Plugin\CouponManagement" />
+    </type>
+
+    <type name="Magento\SalesRule\Model\ResourceModel\Rule\Collection">
+        <plugin name="Amasty_Coupons::RuleCollection" type="Amasty\Coupons\Plugin\RuleCollection" />
+    </type>
+</config>

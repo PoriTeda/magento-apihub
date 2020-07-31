@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="CreationScheduledUpdateForStagingDashboardTest">
+        <annotations>
+            <features value="Staging"/>
+            <stories value="MAGETWO-68894 - [Magento Cloud] - Staging Dashboard Page Crashing"/>
+            <title value="creating scheduled update for staging dashboard with max year value"/>
+            <description value="creating scheduled update for staging dashboard with max year value"/>
+            <severity value="AVERAGE"/>
+            <testCaseId value="MAGETWO-93965"/>
+            <group value="scheduledUpdate"/>
+        </annotations>
+
+        <!--Login as admin-->
+        <actionGroup ref="LoginAsAdmin" stepKey="LoginAsAdmin"/>
+        <!--<Create Catalog Price Rule-->
+        <actionGroup ref="CreateCatalogPriceRule" stepKey="CreateCatalogPriceRule"/>
+        <!--Update rule from staging dashboard-->
+        <actionGroup ref="ScheduleUpdate" stepKey="ScheduleUpdate"/>
+        <!--Verify update saved-->
+        <see userInput="{{ScheduleData.name}}" stepKey="updateIsPresent"/>
+
+        <after>
+            <!--Remove update-->
+            <actionGroup ref="RemoveRule" stepKey="RemoveRule"/>
+        </after>
+
+    </test>
+</tests>

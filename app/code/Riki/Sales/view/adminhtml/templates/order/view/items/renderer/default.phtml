@@ -1,0 +1,59 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<?php /** @var $block \Magento\Sales\Block\Adminhtml\Order\View\Items\Renderer\DefaultRenderer */ ?>
+<?php $_item = $block->getItem() ?>
+<?php $block->setPriceDataObject($_item) ?>
+
+<?php
+/** @var \Riki\Sales\Helper\Admin $helper */
+$helper = $this->helper('Riki\Sales\Helper\Admin');
+/** @var \Riki\StockPoint\Helper\Data $stockPointHelper */
+$stockPointHelper = $this->helper('Riki\StockPoint\Helper\Data');
+$canEditAddress = $helper->allowToChangeShippingAddressOfOrderItem($_item)
+?>
+
+<tr>
+    <td class="col-product">
+        <?php if ($block->canDisplayContainer()): ?>
+        <div id="<?php echo $block->getHtmlId() ?>">
+            <?php endif; ?>
+            <?php echo $block->getColumnHtml($_item, 'name') ?>
+            <?php if ($block->canDisplayContainer()): ?>
+        </div>
+    <?php endif ?>
+    </td>
+    <td class="col-price-original"><?php /* @escapeNotVerified */ echo $helper->getOriginalIncludeTaxByOrderItem($_item); ?></td>
+    <td class="col-price">
+        <?php echo $helper->getCatalogDiscountAmountByOrderItem($_item); ?>
+    </td>
+    <?php if ($stockPointHelper->isStockPointProfileOrder($_item->getOrder())): ?>
+    <td class="col-price">
+        <?php echo $helper->getFormatPriceStockPointDiscountAmount($_item); ?>
+    </td>
+    <?php endif; ?>
+    <td class="col-ordered-qty"><?php echo $block->getColumnHtml($_item, 'qty') ?></td>
+
+    <td class="col-subtotal">
+        <?php echo $block->getColumnHtml($_item, 'subtotal'); ?>
+    </td>
+    <td class="col-discount"><?php /* @escapeNotVerified */ echo $block->displayPriceAttribute('discount_amount') ?></td>
+    <td class="col-wrapping-fee"><?php /* @escapeNotVerified */ echo $block->displayPriceAttribute('gw_price') ?></td>
+    <td class="col-total">
+        <?php echo $block->getColumnHtml($_item, 'total'); ?>
+    </td>
+    <td class="col-rw-earned <?php if(!$canEditAddress): ?>last<?php endif; ?>"><?php /* @escapeNotVerified */ echo $helper->generateOrderItemEarnedPointHtml($_item); ?></td>
+    <?php if($canEditAddress): ?>
+    <td class="col-address last">
+        <?php echo $helper->getAddressListByOrderItem($_item); ?>
+    </td>
+    <?php endif; ?>
+</tr>
+

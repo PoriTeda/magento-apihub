@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link src="Riki_SubscriptionCourse::js/edit_subscription_course.js"/>
+    </head>
+    <body>
+        <referenceContainer name="left">
+            <referenceBlock name="subscription_course_edit_tabs">
+                <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\Products\HanpukaiSequence" name="subscription_course_edit_tab_products"/>
+                <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\Hanpukai" name="subscription_course_edit_tab_hanpukai"/>
+                <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\DisengagementSetting" name="subscription_course_edit_tab_disengagement_setting"/>
+                <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\SubscriptionRestriction" name="subscription_course_edit_tab_subscription_restriction"/>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">hanpukai_section</argument>
+                    <argument name="block" xsi:type="string">subscription_course_edit_tab_hanpukai</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">product_section</argument>
+                    <argument name="block" xsi:type="array">
+                        <item name="label" xsi:type="string">Products</item>
+                        <item name="title" xsi:type="string">Products</item>
+                        <item name="url" xsi:type="helper" helper="Riki\SubscriptionCourse\Helper\Data::getHanpukaiSequenceProductGridUrl"/>
+                        <item name="class" xsi:type="string">ajax</item>
+                    </argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">disengagement_setting</argument>
+                    <argument name="block" xsi:type="string">subscription_course_edit_tab_disengagement_setting</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">subscription_restriction_section</argument>
+                    <argument name="block" xsi:type="string">subscription_course_edit_tab_subscription_restriction</argument>
+                </action>
+            </referenceBlock>
+        </referenceContainer>
+    </body>
+</page>

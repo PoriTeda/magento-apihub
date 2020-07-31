@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <cvspayment>
+                <active>0</active>
+                <model>Riki\CvsPayment\Model\CvsPayment</model>
+                <order_status>pending_cvs_payment</order_status>
+                <title>Pay at convenient Store</title>
+                <allowspecific>0</allowspecific>
+            </cvspayment>
+        </payment>
+        <cvspayment>
+            <cvspayment>
+                <cancel_days>45</cancel_days>
+                <cancel_cron_setting>00 00 * * *</cancel_cron_setting>
+            </cvspayment>
+            <command_create_cvs_payment_order>
+                <product_sku>dp00000002</product_sku>
+            </command_create_cvs_payment_order>
+        </cvspayment>
+    </default>
+</config>

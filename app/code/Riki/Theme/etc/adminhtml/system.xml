@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="general" translate="label" sortOrder="100">
+            <label>General</label>
+        </tab>
+        <section id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>General</label>
+            <tab>general</tab>
+            <resource>Magento_Config::config_general</resource>
+            <group id="home_link" translate="label" type="text" sortOrder="160" showInDefault="0" showInWebsite="1" showInStore="0">
+                <label>Home Link</label>
+                <field id="link" translate="label" type="text" sortOrder="10" showInDefault="0" showInWebsite="1" showInStore="0">
+                    <label>Link</label>
+                </field>
+            </group>
+
+            <group id="link_to_guid_and_rules" translate="label" type="text" sortOrder="161" showInDefault="0" showInWebsite="1" showInStore="0">
+                <label>Link to Guide and Rules</label>
+                <field id="has_shosha_code" translate="label" type="text" sortOrder="10" showInDefault="0" showInWebsite="1" showInStore="0">
+                    <label>Link for customer has shosha code CEDYNA</label>
+                </field>
+                <field id="default" translate="label" type="text" sortOrder="10" showInDefault="0" showInWebsite="1" showInStore="0">
+                    <label>Link Default</label>
+                </field>
+            </group>
+
+            <group id="link_to_compliance_information" translate="label" type="text" sortOrder="162" showInDefault="0" showInWebsite="1" showInStore="0">
+                <label>Link to compliance information</label>
+                <field id="has_shosha_code" translate="label" type="text" sortOrder="10" showInDefault="0" showInWebsite="1" showInStore="0">
+                    <label>Link for customer has shosha code CEDYNA</label>
+                </field>
+                <field id="default" translate="label" type="text" sortOrder="10" showInDefault="0" showInWebsite="1" showInStore="0">
+                    <label>Link Default</label>
+                </field>
+            </group>
+
+            <group id="link_to_address_note_function" translate="label" type="text" sortOrder="163" showInDefault="0" showInWebsite="1" showInStore="0">
+                <label>Link to Address note function</label>
+                <field id="default" translate="label" type="text" sortOrder="10" showInDefault="0" showInWebsite="1" showInStore="0">
+                    <label>Link Default</label>
+                </field>
+            </group>
+
+            <group id="link_to_faq" translate="label" type="text" sortOrder="164" showInDefault="0" showInWebsite="1" showInStore="0">
+                <label>Link to FAQ</label>
+                <field id="has_shosha_code" translate="label" type="text" sortOrder="10" showInDefault="0" showInWebsite="1" showInStore="0">
+                    <label>Link for customer has shosha code CEDYNA</label>
+                </field>
+                <field id="default" translate="label" type="text" sortOrder="10" showInDefault="0" showInWebsite="1" showInStore="0">
+                    <label>Link Default</label>
+                </field>
+            </group>
+
+            <group id="link_to_inquiry" translate="label" type="text" sortOrder="165" showInDefault="0" showInWebsite="1" showInStore="0">
+                <label>Link to Inquiry</label>
+                <field id="default" translate="label" type="text" sortOrder="10" showInDefault="0" showInWebsite="1" showInStore="0">
+                    <label>Link Default</label>
+                </field>
+            </group>
+
+        </section>
+    </system>
+</config>

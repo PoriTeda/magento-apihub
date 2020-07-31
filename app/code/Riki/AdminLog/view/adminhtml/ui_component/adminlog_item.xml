@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">adminlog_item.adminlog_item_data_source</item>
+            <item name="deps" xsi:type="string">adminlog_item.adminlog_item_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Package Information</item>
+        <item name="layout" xsi:type="array">
+            <item name="type" xsi:type="string">tabs</item>
+        </item>
+        <item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="array">
+                <item name="name" xsi:type="string">back</item>
+                <item name="label" xsi:type="string" translate="true">Back</item>
+                <item name="class" xsi:type="string">back</item>
+                <item name="url" xsi:type="string">*/*/</item>
+            </item>
+        </item>
+    </argument>
+
+    <dataSource name="package_edit_form_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Riki\AdminLog\Model\Log\DataProvider</argument>
+            <argument name="name" xsi:type="string">adminlog_item_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">log_id</argument>
+            <argument name="requestFieldName" xsi:type="string">log_id</argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+
+    <fieldset name="data">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Admin Log Item Information</item>
+            </item>
+        </argument>
+        <field name="ip">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Ip Address</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                </item>
+            </argument>
+        </field>
+        <field name="user">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Username</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                </item>
+            </argument>
+        </field>
+        <field name="status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Riki\AdminLog\Model\Config\Source\StatusOption</item>
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Status</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                </item>
+            </argument>
+        </field>
+        <field name="time">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Time</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                </item>
+            </argument>
+        </field>
+        <field name="error_message">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Reason</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                </item>
+            </argument>
+        </field>
+        <field name="fullaction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Full Action Name</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                </item>
+            </argument>
+        </field>
+
+    </fieldset>
+</form>

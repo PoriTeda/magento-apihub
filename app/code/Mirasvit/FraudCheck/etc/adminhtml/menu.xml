@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Mirasvit_FraudCheck::fraud_check" module="Mirasvit_FraudCheck" resource="Mirasvit_FraudCheck::fraud_check"
+             sortOrder="50" title="Fraud Detection" parent="Magento_Backend::system"/>
+
+        <add id="Mirasvit_FraudCheck::fraud_check_score" title="Fraud Risk Score" module="Mirasvit_FraudCheck"
+             sortOrder="10" action="fraud_check/score/view" resource="Mirasvit_FraudCheck::fraud_check_score"
+             parent="Mirasvit_FraudCheck::fraud_check"/>
+
+        <add id="Mirasvit_FraudCheck::fraud_check_rule" title="Custom Rules" module="Mirasvit_FraudCheck"
+             sortOrder="20" action="fraud_check/rule" resource="Mirasvit_FraudCheck::fraud_check_rule"
+             parent="Mirasvit_FraudCheck::fraud_check"/>
+    </menu>
+</config>

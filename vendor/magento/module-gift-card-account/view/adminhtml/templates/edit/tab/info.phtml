@@ -1,0 +1,31 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+/** @var $block \Magento\GiftCardAccount\Block\Adminhtml\Giftcardaccount\Edit\Tab\Info */
+
+?>
+<div class="entry-edit">
+    <?= $block->getFormHtml() ?>
+</div>
+<?php if (!$block->isSingleStoreMode()): ?>
+<script>
+require(['prototype'], function(){
+    var currencies = <?= /* @noEscape */ $block->getCurrencyJson() ?>;
+
+    var updateCurrency = function()
+    {
+        var val = $('_infowebsite_id').options[$('_infowebsite_id').selectedIndex].value;
+        if (currencies[val]) {
+            $('balance_currency').innerHTML = '<b>[' + currencies[val] + ']</b>';
+        }
+    };
+
+    Event.observe(window, 'load', updateCurrency);
+    Event.observe($('_infowebsite_id'), 'change', updateCurrency);
+});
+</script>
+<?php endif; ?>

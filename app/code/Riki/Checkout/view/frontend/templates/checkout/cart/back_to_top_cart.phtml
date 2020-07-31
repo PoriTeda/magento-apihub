@@ -1,0 +1,12 @@
+<?php
+/** @var Riki\Checkout\Block\Checkout\Cart\BackToTopCart $block */
+?>
+
+<?php if ($block->isLogin() && $block->isSpotOrder()) : ?>
+    <?php $url = $block->getUrlBackToTopCart(); ?>
+    <?php if ($url) : ?>
+    <a tile href="<?php echo $url ?>" class="backtotop">
+        << <?php echo __('Back to TOP page Link'); ?>
+    </a>
+    <?php endif; ?>
+<?php endif; ?>

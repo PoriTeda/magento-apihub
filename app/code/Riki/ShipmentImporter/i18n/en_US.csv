@@ -1,0 +1,6 @@
+"The order %s does not exist","既に入金済です。： %s"
+"Order %s:  is not CVS payment","既に入金済です。： %s"
+"Order has been paid : %s","既に入金済です。： %s"
+"Order has been update failed at line %s","%s行目の取り込みに失敗しました。"
+"Order %s has incorrect status","既に入金済です。： %s"
+"Content of file %s is null","代引き入金実績データの%sファイルが存在しません。"

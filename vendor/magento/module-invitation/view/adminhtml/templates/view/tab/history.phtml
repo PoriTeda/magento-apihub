@@ -1,0 +1,30 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Invitaion view tab status history block template
+ *
+ * @see \Magento\Invitation\Block\Adminhtml\Invitation\View\Tab\History
+ */
+?>
+<div class="fieldset-wrapper invitations-history">
+    <div class="fieldset-wrapper-title">
+        <span class="title"><?= /* @escapeNotVerified */ __('Status History') ?></span>
+    </div>
+    <ul>
+    <?php foreach ($block->getHistoryCollection() as $_history): ?>
+        <li>
+            <strong><?= /* @escapeNotVerified */ $block->formatDate($_history->getInvitationDate(), \IntlDateFormatter::MEDIUM) ?></strong>
+            <?= /* @escapeNotVerified */ $block->formatTime($_history->getInvitationDate(), \IntlDateFormatter::MEDIUM) ?>
+            <strong class="status"><?= /* @escapeNotVerified */ $_history->getStatusText() ?></strong>
+        </li>
+    <?php endforeach; ?>
+    </ul>
+</div>

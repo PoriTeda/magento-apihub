@@ -1,0 +1,42 @@
+// /**
+//  * Copyright © 2016 Magento. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .pages {
+        .lib-pager();
+        display: block;
+        float: left;
+        .action {
+            background-color: transparent;
+            border-radius: 3px;
+            padding: 0 8px;
+            &.previous {
+                margin-right: 8px;
+            }
+            &.next {
+                margin-left: 8px;
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+    .pages {
+        & &-items {
+            display: block;
+            position: relative;
+            white-space: normal;
+            z-index: 1;
+        }
+    }
+}

@@ -1,0 +1,38 @@
+.min_custom_field {
+    width: 100%;
+    display: block;
+}
+.min_custom_field > .admin__field-label {
+    float:left;
+    width:45%
+}
+.min_custom_field > .admin__field-control {
+    float:left;
+    margin-left: 30px;
+    width: 50%;
+}
+.admin__scope-old .fieldset-alt {
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+.admin__scope-old .fieldset-alt > .field.min_custom_field {
+    display: flex;
+    align-items: center;
+    margin: 0 0 18px;
+}
+.admin__scope-old .fieldset-alt .field > .label {
+    display: inline-block;
+    width: 45%;
+    margin: 0;
+    padding-right: 15px;
+}
+.admin__scope-old .fieldset-alt .field > .label span:after {
+    top: auto;
+}
+.admin__scope-old .fieldset-alt .label + .control {
+    width: 45%;
+    display: inline-block;
+}
+.subscription_restriction {
+    margin-bottom: 25px;
+}

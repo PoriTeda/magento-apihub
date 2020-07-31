@@ -1,0 +1,14 @@
+<?php
+/* @var Riki\SubscriptionCourse\Block\Frontend\Checkout\OnepageSuccessSubscription $block */
+$isSubscriptionAndSpecificCourseCode = $block->isSubscriptionAndSpecificCourseCode();
+?>
+
+<div id="order-success-container">
+    <div class="checkout-success">
+        <?php if ($isSubscriptionAndSpecificCourseCode): ?>
+            <?php echo $block->getChildHtml('order_success_subscription') ?>
+        <?php else: ?>
+            <?php echo $block->getChildHtml('ordersuccessimg') ?>
+        <?php endif; ?>
+    </div>
+</div>

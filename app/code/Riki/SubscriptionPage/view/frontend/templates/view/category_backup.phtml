@@ -1,0 +1,197 @@
+<?php
+/** @var \Riki\SubscriptionPage\Block\SubscriptionView $block */
+$arrHanpukaiProductIdAndQty = [];
+if ($block->isHanpukai()) {
+    $arrHanpukaiProductIdAndQty = $block->getHanpukaiProductIdAndQtyPieceCase($block->getHanpukaiType());
+}
+?>
+<div class="subscription-container category-change-mode <?php if (!$isAddition) {
+    echo 'category-container';
+} ?>">
+    <?php if ($isAddition): ?>
+<input type="checkbox" checked class="toggle-checkbox" id="subscription-container-block-<?php echo $categoryId; ?>">
+    <div class="category-title">
+        <?php endif; ?>
+        <div class="<?php echo ($thumbnail) ? 'title-img has-img' : 'title-img' ?>">
+            <h2 id="section-<?php echo $categoryId ?>" class="title">
+                <?php if (!$block->isHanpukai()): ?>
+                    <?php if ($categoryId == Riki\SubscriptionPage\Block\SubscriptionView::CATEGORY_ID_FOR_PRODUCT_ADD_FROM_COURSE_TAB): ?>
+                        <?php echo __('Product Not Allow Category') ?>
+                    <?php else: ?>
+                        <?php echo $categoryName; ?>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <?php echo __('Below is the schedule for the this delivery of 1 course') ?>
+                <?php endif; ?>
+            </h2>
+            <?php if ($thumbnail) : ?>
+                <div class="thumbnail-category">
+                    <img src="<?= $thumbnail ?>" alt="<?php echo $categoryName; ?>">
+                </div>
+            <?php endif; ?>
+        </div>
+        <?php if ($isAddition): ?>
+        <label for="subscription-container-block-<?php echo $categoryId; ?>" class="triangle-toggle"></label>
+    </div>
+<?php endif; ?>
+
+    <div class="subscription-content">
+        <table class="subscription-table">
+            <caption role="heading" aria-level="2"
+                     class="table-caption"><?php echo __('Subscription Items') ?></caption>
+            <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th><?php echo __('Product name') ?></th>
+                <th class="col price <?php echo ($block->isHanpukai()) ? 'no-display' : '' ?>"><?php echo __('Price (tax incl)') ?></th>
+                <th class="col qty <?php echo ($block->isHanpukai()) ? 'small-width' : '' ?>"><?php echo __('Qty') ?></th>
+                <th class="col price subtotal <?php echo ($block->isHanpukai()) ? 'no-display' : '' ?>"><?php echo __('Subtotal (tax incl)') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Load Product -->
+            <?php
+            $countListPro = count($listProduct);
+            for ($i = 0; $i < $countListPro; $i++):
+                $product = $listProduct[$i];
+
+                ?>
+                <tr class="item<?php if ($block->getProductType($product) == 'configurable'): ?> config<?php endif; ?><?php if ($block->getProductType($product) == 'configurable' || $block->getProductType($product) == 'bundle'): ?> subscription-info-price<?php echo $product->getId() ?><?php endif; ?>"
+                    data-category-id="<?php echo $categoryId ?>" data-product-id="<?php echo $product->getId() ?>">
+                    <td class="col image">
+                        <?php echo $block->render('Riki_SubscriptionPage::view/product/image.phtml', ['product' => $product]) ?>
+                        <div class="d-sp"
+                             data-bind="click: function(){openPopup(<?php echo $product->getId() ?>)}, touchstart:function(){openPopup(<?php echo $product->getId() ?>)}">
+                            <a href="#" id="subscription-product-view" class="subscription-product-view"
+                               data-mage-init='<?php echo $block->getProductDetailJsData($product, $categoryId); ?>'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24">
+                                    <path d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </td>
+                    <td class="col name <?php echo ($block->isHanpukai()) ? 'no-set-width' : '' ?>">
+                        <?php echo $block->render('Riki_SubscriptionPage::view/product/name.phtml', [
+                            'product' => $product,
+                            'originProduct' => $listProduct[$i],
+                            'categoryId' => $categoryId
+                        ]) ?>
+                    </td>
+                    <td class="col price <?php echo ($block->isHanpukai()) ? 'no-display' : '' ?>"
+                        data-th="<?php echo __('Price') ?>">
+                        <?php echo $block->render('Riki_SubscriptionPage::view/product/price.phtml', ['product' => $product]) ?>
+                    </td>
+                    <td class="col qty <?php echo ($block->isHanpukai()) ? 'no-set-width' : '' ?>"
+                        data-th="<?php echo __('Qty') ?>">
+                        <?php echo $block->render('Riki_SubscriptionPage::view/product/qty.phtml', [
+                            'product' => $product,
+                            'categoryId' => $categoryId,
+                            'arrHanpukaiProductIdAndQty' => $arrHanpukaiProductIdAndQty,
+                            'isAddition' => $isAddition
+                        ]) ?>
+                    </td>
+                    <td class="col price subtotal <?php echo ($block->isHanpukai()) ? 'no-display' : '' ?>"
+                        data-th="<?php echo __('Subtotal (tax incl)') ?>">
+                        <?php echo $block->render('Riki_SubscriptionPage::view/product/subtotal.phtml', ['product' => $product]) ?>
+                    </td>
+                </tr>
+            <?php endfor; ?>
+            <!-- End Loop Product -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="popup-mpdal">
+    <div class="see-detail-item">
+        <div class="product-item-photo">
+            <img id="popup-mpdal-image" class="product-image-photo" src="http://via.placeholder.com/200x200g"
+                 alt="キットカット ミニ 14枚">
+
+        </div>
+        <div class="product-item-name">
+            <span id="popup-mpdal-name">マギー ヘルシー無添加だしスープ かつおだしとチキン 12袋入り</span>
+            <div class="notification-qty instock-threshold">
+                <span>在庫: ご注文受付中。</span>
+            </div>
+        </div>
+        <div class="product-item-price">
+            <span class="price-wrapper price-including-tax">
+                <span class="popup-mpdal-price" id="popup-mpdal-price">999</span><span> <?= __("円"); ?></span>
+            </span>
+        </div>
+    </div>
+    <div class="see-detail-info">
+        <div class="detail-info-menu"><a class="click-info-menu" href="#">Product Details</a>
+        </div>
+        <div class="detail-info-content">
+            <ul class="info-content-description">
+                <li><span id="popup-mpdal-description">Description explanation</span></li>
+            </ul>
+            <ul class="info-content-list">
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal'
+        ],
+        function (
+            $,
+            modal
+        ) {
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                modalClass: 'see-detail-modal',
+                buttons: [{
+                    text: $.mage.__('Continue'),
+                    class: 'btn_class',
+                    click: function () {
+                        this.closeModal();
+                    }
+                }]
+            };
+
+            modal(options, $('#popup-mpdal'));
+
+
+
+
+            var options2 = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                modalClass: 'machine-detail-modal custom_modal',
+                title: 'Apply for Machine rental',
+                buttons: [{
+                    text: $.mage.__('Continue'),
+                    class: 'btn_class',
+                    click: function () {
+                        this.closeModal();
+                    }
+                }]
+            };
+
+            modal(options2, $('#popup-machine'));
+
+            $("#machine-product-views").on('click', function () {
+                $("#popup-machine").modal("openModal");
+            });
+            $('.btn_machine').click(function (e) {
+                e.preventDefault();
+                $('.machine_content').toggleClass("active");
+            });
+        }
+    );
+</script>
+
+
+

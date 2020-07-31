@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">My Dashboard</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <referenceBlock name="customer_account_dashboard_info" remove="true" />
+            <referenceBlock name="customer_account_dashboard_address" remove="true" />
+            <!--<referenceBlock name="riki.customer.account.quicklink" remove="true" />-->
+            <referenceBlock name="page.main.title" remove="true" />
+            <block class="Riki\Customer\Block\Account\Info" name="customer_account_dashboard" template="account/dashboard/info.phtml" cacheable="false">
+                <block class="Magento\Cms\Block\Block" name="customer_dashboard_seasonalgift">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">mypage_seasonalgift</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Cms\Block\Block" name="customer_dashboard_campaign">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">mypage_campaign</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Cms\Block\Block" name="mypage_topright">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">mypage_topright</argument>
+                    </arguments>
+                </block>
+                <block cacheable="false" class="Riki\Sales\Block\Order\History" name="dash_history" template="Riki_Customer::account/dashboard/history.phtml"/>
+                <block cacheable="false" class="Riki\Loyalty\Block\Reward" name="loyalty_reward_setting_account" template="Riki_Loyalty::account/setting-in-dashboard.phtml">
+                    <block class="Magento\Cms\Block\Block" name="about_coins">
+                        <arguments>
+                            <argument name="block_id" xsi:type="string">about_coins</argument>
+                        </arguments>
+                    </block>
+                </block>
+                <block cacheable="false" class="Magento\Framework\View\Element\Template" name="tentative_point" after="loyalty_reward_setting_account" template="Riki_Customer::account/dashboard/tentative.phtml"/>
+                <block cacheable="false" class="Magento\Framework\View\Element\Template" name="nestle_coin" template="Riki_Customer::account/dashboard/nestle_coint.phtml"/>
+            </block>
+            <block class="Magento\Framework\View\Element\Template" template="Magento_Customer::html/tracking_customer_dashboard.phtml" name="tracking_customer_dashboard"/>
+        </referenceContainer>
+    </body>
+</page>

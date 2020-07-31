@@ -1,0 +1,201 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Riki\ShipmentImporter\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Logger\Logger1501">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment 1501 Logger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\Handler1501</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Logger\Logger1601">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment 1601 Logger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\Handler1601</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Logger\Logger1502">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment 1502 Logger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\Handler1502</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Logger\Logger1602">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment 1602 Logger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\Handler1602</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Logger\Logger1503">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment 1503 Logger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\Handler1503</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Logger\Logger1504">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment 1504 Logger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\Handler1504</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Logger\Logger1505">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment 1505 Logger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\Handler1505</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Logger\Logger1507">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment 1507 Logger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\Handler1507</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger for cod money collection -->
+    <type name="Riki\ShipmentImporter\Logger\CodMoneyCollection\Logger\Logger1504">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment 1504 Logger of TOYO Warehouse</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\CodMoneyCollection\Handler\Handler1504</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Logger\CodMoneyCollection\Logger\Logger1604">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment 1604 Logger of BIZEX Warehouse</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\CodMoneyCollection\Handler\Handler1604</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Logger\CodMoneyCollection\Logger\Logger1704">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment 1704 Logger of HITACH-TS Warehouse</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\CodMoneyCollection\Handler\Handler1704</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Logger\CodMoneyCollection\Logger\Logger1804">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment 1804 Logger of LOGICALPLANT Warehouse</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\CodMoneyCollection\Handler\Handler1804</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Logger\CodMoneyCollection\Logger\Logger1904">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment 1904 Logger of WH5 Warehouse</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\CodMoneyCollection\Handler\Handler1904</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger for cod shipment shipped out -->
+    <type name="Riki\ShipmentImporter\Logger\ShipmentShippedOut\Logger\Logger1501">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment shipped-out 1501 Logger of TOYO Warehouse</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\ShipmentShippedOut\Handler\Handler1501</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Logger\ShipmentShippedOut\Logger\Logger1601">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment shipped-out 1601 Logger of BIZEX Warehouse</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\ShipmentShippedOut\Handler\Handler1601</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Logger\ShipmentShippedOut\Logger\Logger1701">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment shipped-out 1701 Logger of HITACH-TS Warehouse</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\ShipmentShippedOut\Handler\Handler1701</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Logger\ShipmentShippedOut\Logger\Logger1801">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment shipped-out 1801 Logger of LOGICALPLANT Warehouse</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\ShipmentShippedOut\Handler\Handler1801</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Logger\ShipmentShippedOut\Logger\Logger1901">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment shipped-out 1901 of WH5 Warehouse</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\ShipmentShippedOut\Handler\Handler1901</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--logger for delivery complete shipments -->
+    <type name="Riki\ShipmentImporter\Logger\ShipmentComplete\Logger\Logger1502">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment delivery complete Logger of TOYO Warehouse</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\ShipmentComplete\Handler\Handler1502</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Logger\ShipmentComplete\Logger\Logger1602">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment delivery complete Logger of BIZEX Warehouse</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\ShipmentComplete\Handler\Handler1602</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Logger\ShipmentComplete\Logger\Logger1702">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment delivery complete Logger of HITACH-TS Warehouse</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\ShipmentComplete\Handler\Handler1702</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Logger\ShipmentComplete\Logger\Logger1802">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment delivery complete Logger of LOGICALPLANT Warehouse</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\ShipmentComplete\Handler\Handler1802</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Logger\ShipmentComplete\Logger\Logger1902">
+        <arguments>
+            <argument name="name" xsi:type="string">Shipment delivery complete of WH5 Warehouse</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\ShipmentImporter\Logger\ShipmentComplete\Handler\Handler1902</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\ShipmentImporter\Helper\Data">
+        <arguments>
+            <argument name="transactionRepository" xsi:type="object">Riki\NpAtobarai\Api\TransactionRepositoryInterface\Proxy</argument>
+        </arguments>
+    </type>
+</config>

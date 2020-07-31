@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="js">
+            <block class="Magento\Framework\View\Element\Text" name="riki_script">
+                <arguments>
+                    <argument name="text" xsi:type="string"><![CDATA[
+                    <script>require(["Riki_Rule/js/validation/rules"]);</script>
+                    ]]></argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Riki\SerialCode\Block\Adminhtml\SerialCode\Edit" name="serial_code_edit"/>
+        </referenceContainer>
+        <referenceContainer name="left">
+            <block class="Riki\SerialCode\Block\Adminhtml\SerialCode\Edit\Tabs" name="serial_code_edit_tabs">
+                <block class="Riki\SerialCode\Block\Adminhtml\SerialCode\Edit\Tab\Main" name="serial_code_edit_tab_main"/>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">main_section</argument>
+                    <argument name="block" xsi:type="string">serial_code_edit_tab_main</argument>
+                </action>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

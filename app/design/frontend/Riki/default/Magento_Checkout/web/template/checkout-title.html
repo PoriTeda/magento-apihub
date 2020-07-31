@@ -1,0 +1,10 @@
+<div class="page-title-wrapper">
+    <h1 class="page-title"><span data-bind="i18n: 'Order Confirmation'"></span></h1>
+    <div class="step-title" data-role="title">
+        <!-- ko if: !(window.checkoutConfig.isSubscriptionCheckout) -->
+        <div class="checkout-actions">
+            <a class="action btn-blue" data-bind="attr: {href: getUrlCheckout()}"><span data-bind="i18n: getLabelCheckout()"></span></a>
+        </div>
+        <!-- /ko -->
+    </div>
+</div>

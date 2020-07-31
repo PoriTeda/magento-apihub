@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <modal name="advanced_inventory_modal">
+        <htmlContent name="backorder_js" sortOrder="44">
+            <block name="backorder_js" class="Riki\BackOrder\Block\Adminhtml\Product\Edit\Tab\Inventory\BackOrderJs" template="Riki_BackOrder::backorder_js.phtml"/>
+        </htmlContent>
+    </modal>
+</form>

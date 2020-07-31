@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_DeliveryType::managedelitype" title="Manage Delivery Types"
+             module="Riki_DeliveryType" sortOrder="21"
+             parent="Wyomind_PointOfSale::main"
+             action="deliverytype/delitype"
+             resource="Riki_DeliveryType::managedelitype"/>
+    </menu>
+</config>

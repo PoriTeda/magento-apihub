@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <type name="Riki\Fraud\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Fraud\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">fraudLogger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="error" xsi:type="object">Riki\Fraud\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- disabled set up upgrade from ext because ext do not support split db -->
+    <preference for="Mirasvit\FraudCheck\Setup\UpgradeSchema" type="Riki\Fraud\Setup\MirasvitFraudCheckUpgradeSchema"/>
+
+    <!-- disabled ext cron process, current system do not need it -->
+    <preference for="Mirasvit\FraudCheck\Cron\ScoreUpdateCron" type="Riki\Fraud\Cron\ScoreUpdateCron"/>
+
+    <preference for="Mirasvit\FraudCheck\Model\Score" type="Riki\Fraud\Model\Score"/>
+    <preference for="Mirasvit\FraudCheck\Rule\History\Customer" type="Riki\Fraud\Rule\History\Customer" />
+    <preference for="Mirasvit\FraudCheck\Model\Rule\Condition\Customer" type="Riki\Fraud\Model\Rule\Condition\Customer" />
+    <preference for="Mirasvit\FraudCheck\Model\Rule\Condition\Billing" type="Riki\Fraud\Model\Rule\Condition\Billing" />
+
+    <!-- override to add approved button and get rule status for each order by rule -->
+    <preference for="Mirasvit\FraudCheck\Block\Adminhtml\Order\View\Tab" type="Riki\Fraud\Block\Adminhtml\Order\View\Tab" />
+    <!-- override to add new attribute to form -->
+    <preference for="Mirasvit\FraudCheck\Block\Adminhtml\Rule\Edit\Form" type="Riki\Fraud\Block\Adminhtml\Rule\Edit\Form" />
+    <!--Override to add Import buton into Rule list-->
+    <preference for="Mirasvit\FraudCheck\Block\Adminhtml\Rule" type="Riki\Fraud\Block\Adminhtml\Rule" />
+    <!-- override to remove some action from rule grid -->
+    <preference for="Mirasvit\FraudCheck\Block\Adminhtml\Rule\Grid" type="Riki\Fraud\Block\Adminhtml\Rule\Grid" />
+
+    <type name="Mirasvit\FraudCheck\Model\Rule\Condition\AbstractCondition">
+        <plugin name="riki_fraud_around_getvalueparsed" type="Riki\Fraud\Plugin\GetValuedParsed" sortOrder="10" disabled="false"/>
+    </type>
+
+    <!-- limit order status for suspicious case -->
+    <type name="Magento\Sales\Block\Adminhtml\Order\View\History">
+        <plugin name="riki_fraud_after_getStatuses" type="Riki\Fraud\Plugin\GetOrderStatus" sortOrder="10"/>
+    </type>
+
+
+
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <!--additional fields-->
+                <item name="fraud_status" xsi:type="string">sales_order.fraud_status</item>
+                <item name="fraud_score" xsi:type="string">sales_order.fraud_score</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="SuspectedFraudDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\Fraud\Model\ResourceModel\SuspectedFraud\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">SuspectedFraudGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="suspected_fraud_listing_data_source" xsi:type="string">Riki\Fraud\Model\ResourceModel\SuspectedFraud\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Riki\Fraud\Model\ResourceModel\SuspectedFraud\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">riki_suspected_fraud_order</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\Fraud\Model\ResourceModel\SuspectedFraud</argument>
+        </arguments>
+    </type>
+
+    <type name="Riki\Fraud\Model\ResourceModel\SuspectedFraud">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\ScalableOms\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="riki_suspected_fraud_order" xsi:type="string">riki_suspected_fraud_order</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Rma\Model\Rma">
+        <plugin name="riki_fraud_rma_model_rma_cedyna" type="Riki\Fraud\Plugin\Rma\Model\Rma\Cedyna" sortOrder="110" />
+    </type>
+    <type name="Mirasvit\FraudCheck\Model\Context">
+        <plugin name="riki_fraud_model_context_init_order_attributes_value" type="Riki\Fraud\Plugin\Model\Context\InitOrderAttributesValue" sortOrder="100000" />
+    </type>
+</config>

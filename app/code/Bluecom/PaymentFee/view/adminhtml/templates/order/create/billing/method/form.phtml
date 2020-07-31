@@ -1,0 +1,78 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var $block Bluecom\PaymentFee\Block\Adminhtml\Order\Create\Billing\Method\Form */?>
+<?php /** @var $this Bluecom\PaymentFee\Block\Adminhtml\Order\Create\Billing\Method\Form */?>
+
+<?php if ($block->hasMethods()): ?>
+<div id="order-billing_method_form">
+    <dl class="admin__payment-methods">
+    <?php
+        $_methods       = $block->getMethods();
+        $_methodsCount  = count($_methods);
+        $_counter = 0;
+        //Custom code goes here
+        $paymentFeeCode = $block->getKeyCode();
+        $currencySymbol = $block->getCurrencySymbol();
+        $paymentFee = $block->getPaymentFeeCode();
+        $selectedMethod = $block->getSelectedMethodCode();
+
+        $hasSelectedPayment = false;
+        foreach($_methods as $_method){
+            if($selectedMethod == $_method->getCode()){
+                $hasSelectedPayment = true;
+                break;
+            }
+        }
+
+        if(!$hasSelectedPayment){
+            $selectedMethod = $block->getPreferredMethod();
+        }
+
+    ?>
+    <?php foreach ($_methods as $_method): $_code = $_method->getCode(); $_counter++; ?>
+        <dt class="admin__field-option">
+        <?php if ($_methodsCount > 1): ?>
+            <input id="p_method_<?php /* @escapeNotVerified */ echo $_code ?>" value="<?php /* @escapeNotVerified */ echo $_code ?>" type="radio" name="payment[method]"
+                   title="<?php echo $block->escapeHtml($_method->getTitle()) ?>"
+                   onclick="payment.switchMethod('<?php /* @escapeNotVerified */ echo $_code ?>')"
+                   <?php if ($selectedMethod == $_code): ?> checked="checked"<?php endif; ?>
+                   class="admin__control-radio<?php if ($_counter == $_methodsCount) : ?> validate-one-required-by-name<?php endif; ?>"/>
+        <?php else :?>
+            <span class="no-display">
+                <input id="p_method_<?php /* @escapeNotVerified */ echo $_code ?>" value="<?php /* @escapeNotVerified */ echo $_code ?>" type="radio"
+                       name="payment[method]" class="admin__control-radio"
+                       checked="checked"/>
+            </span>
+        <?php endif;?>
+
+            <label class="admin__field-label" for="p_method_<?php /* @escapeNotVerified */ echo $_code ?>">
+                <?php echo $block->escapeHtml($_method->getTitle()) ?>
+                <?php if($_code == 'paygent'):?>
+                    <?php echo __('(Connect IVR)');?>
+                <?php endif;?>
+            </label>
+            <?php if(in_array($_method->getCode(), $paymentFeeCode)) :?>
+                <div class="paymentfee"><?php echo __('Surcharge Fee: ') . $currencySymbol . $paymentFee[$_method->getCode()]?></div>
+            <?php endif;?>
+        </dt>
+        <dd class="admin__payment-method-wapper">
+            <?php /* @escapeNotVerified */ echo $block->getChildHtml('payment.method.' . $_code) ?>
+        </dd>
+    <?php endforeach; ?>
+    </dl>
+</div>
+<script>
+    require(["Magento_Sales/order/create/form"], function(){
+        order.setPaymentMethod('<?php /* @escapeNotVerified */ echo $block->getSelectedMethodCode() ?>')
+    });
+</script>
+<?php else: ?>
+    <div class="admin__message-empty"><?php /* @escapeNotVerified */ echo __('No Payment Methods') ?></div>
+<?php endif; ?>

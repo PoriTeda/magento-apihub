@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../vendor/magento/magento2-functional-testing-framework/src/Magento/FunctionalTestingFramework/Test/etc/testSchema.xsd">
+    <test name="StorefrontGiftCardValidation">
+        <annotations>
+            <features value="GiftCard"/>
+            <stories value="GiftCard"/>
+            <title value="storefront openVirtualGiftCard form validation"/>
+            <description value="Should see validation errors when storefront form is invalid"/>
+            <severity value="AVERAGE"/>
+            <testCaseId value="MAGETWO-89917"/>
+            <group value="GiftCard"/>
+        </annotations>
+
+        <before>
+            <createData entity="OpenVirtualGiftCard" stepKey="openVirtualGiftCard"/>
+        </before>
+
+        <after>
+            <deleteData createDataKey="openVirtualGiftCard" stepKey="deleteGiftCard"/>
+        </after>
+
+        <amOnPage url="$$openVirtualGiftCard.name$$.html" stepKey="gotoGiftCard"/>
+        <waitForPageLoad stepKey="wait1"/>
+
+        <!-- required fields -->
+        <click selector="{{StorefrontProductInfoMainSection.AddToCart}}" stepKey="clickAddToCart1"/>
+        <see selector="{{StorefrontProductInfoMainSection.giftCardAmountInputError}}" userInput="This is a required field." stepKey="seeAmountRequired"/>
+        <see selector="{{StorefrontProductInfoMainSection.giftCardSenderNameError}}" userInput="This is a required field." stepKey="seeSenderNameRequired"/>
+        <see selector="{{StorefrontProductInfoMainSection.giftCardSenderEmailError}}" userInput="This is a required field." stepKey="seeSenderEmailRequired"/>
+        <see selector="{{StorefrontProductInfoMainSection.giftCardRecipientNameError}}" userInput="This is a required field." stepKey="seeRecipientNameRequired"/>
+        <see selector="{{StorefrontProductInfoMainSection.giftCardRecipientEmailError}}" userInput="This is a required field." stepKey="seeRecipientEmailRequired"/>
+        <!-- invalid because of negative amount -->
+        <fillField selector="{{StorefrontProductInfoMainSection.giftCardAmountInput}}" userInput="-1" stepKey="fillAmountNegative"/>
+        <click selector="{{StorefrontProductInfoMainSection.AddToCart}}" stepKey="clickAddToCart2"/>
+        <see selector="{{StorefrontProductInfoMainSection.giftCardAmountInputError}}" userInput="Please enter a value greater than or equal to 1." stepKey="seeAmountNegative"/>
+        <!-- invalid because of exceed max amount -->
+        <fillField selector="{{StorefrontProductInfoMainSection.giftCardAmountInput}}" userInput="1000" stepKey="fillAmountExceedMax"/>
+        <click selector="{{StorefrontProductInfoMainSection.AddToCart}}" stepKey="clickAddToCart3"/>
+        <see selector="{{StorefrontProductInfoMainSection.giftCardAmountInputError}}" userInput="Please enter a value less than or equal to 999." stepKey="seeAmountExceedMax"/>
+        <!-- invalid because of sender email -->
+        <fillField selector="{{StorefrontProductInfoMainSection.giftCardSenderEmail}}" userInput="bogusEmailaol.com" stepKey="fillSenderEmailBad"/>
+        <click selector="{{StorefrontProductInfoMainSection.AddToCart}}" stepKey="clickAddToCart4"/>
+        <see selector="{{StorefrontProductInfoMainSection.giftCardSenderEmailError}}" userInput="Please enter a valid email address (Ex: johndoe@domain.com)." stepKey="seeSenderEmailBad"/>
+        <!-- invalid because of recipient email -->
+        <fillField selector="{{StorefrontProductInfoMainSection.giftCardRecipientEmail}}" userInput="bogusEmailaol.com" stepKey="fillRecipientEmailBad"/>
+        <click selector="{{StorefrontProductInfoMainSection.AddToCart}}" stepKey="clickAddToCart5"/>
+        <see selector="{{StorefrontProductInfoMainSection.giftCardRecipientEmailError}}" userInput="Please enter a valid email address (Ex: johndoe@domain.com)." stepKey="seeRecipientEmailBad"/>
+    </test>
+</tests>

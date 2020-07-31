@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="catalogrule_product" resource="default" comment="CatalogRule Product">
+        <constraint xsi:type="unique" referenceId="UNQ_EAA51B56FF092A0DCB795D1CEF812B7B" disabled="true" />
+    </table>
+    <table name="catalogrule_product_price" resource="default" comment="CatalogRule Product Price">
+        <column xsi:type="int" name="course_id" nullable="true" unsigned="true" comment="Course Id" />
+        <column xsi:type="int" name="frequency_id" nullable="true" unsigned="true" comment="Frequency Id" />
+        <column xsi:type="int" name="rule_id" nullable="true" unsigned="true" comment="Catalogrule Rule Id" />
+        <column xsi:type="decimal" name="base_price" precision="12" scale="4"  nullable="true" unsigned="true" default="0" comment="Base price" />
+        <constraint xsi:type="unique" referenceId="CATRULE_PRD_PRICE_RULE_DATE_WS_ID_CSTR_GROUP_ID_PRD_ID" disabled="true" />
+        <constraint xsi:type="unique" referenceId="CATRULE_PRD_PRICE_RULE_DATE_WS_ID_CSTR_GROUP_ID_PRD_ID_COURSE_FREQ_RULE">
+            <column name="rule_date"/>
+            <column name="website_id"/>
+            <column name="customer_group_id"/>
+            <column name="product_id"/>
+            <column name="course_id"/>
+            <column name="frequency_id"/>
+            <column name="rule_id"/>
+        </constraint>
+    </table>
+    <table name="catalogrule_product_price_replica" resource="default" engine="innodb"
+           comment="CatalogRule Product Price Replica">
+        <column xsi:type="int" name="course_id" nullable="true" unsigned="true" comment="Course Id" />
+        <column xsi:type="int" name="frequency_id" nullable="true" unsigned="true" comment="Frequency Id" />
+        <column xsi:type="int" name="rule_id" nullable="true" unsigned="true" comment="Catalogrule Rule Id" />
+        <column xsi:type="decimal" name="base_price" precision="12" scale="4"  nullable="true" unsigned="true" default="0" comment="Base price" />
+        <constraint xsi:type="unique" referenceId="CATRULE_PRD_PRICE_RULE_DATE_WS_ID_CSTR_GROUP_ID_PRD_ID" disabled="true" />
+        <constraint xsi:type="unique" referenceId="CATRULE_PRD_PRICE_RULE_DATE_WS_ID_CSTR_GROUP_ID_PRD_ID_COURSE_FREQ_RULE">
+            <column name="rule_date"/>
+            <column name="website_id"/>
+            <column name="customer_group_id"/>
+            <column name="product_id"/>
+            <column name="course_id"/>
+            <column name="frequency_id"/>
+            <column name="rule_id"/>
+        </constraint>
+    </table>
+</schema>

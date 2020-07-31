@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <rikipreorder>
+            <functional>
+                <enabled>1</enabled>
+            </functional>
+            <general>
+                <addtocartbuttontext>Pre Order</addtocartbuttontext>
+                <defaultpreordernote>Pre Order</defaultpreordernote>
+                <orderpreorderwarning>Please be aware this is a preorder. The products will be shipped to you once they become available.</orderpreorderwarning>
+            </general>
+            <additional>
+                <discovercompositeoptions>0</discovercompositeoptions>
+                <autoaddwarningtoemail>1</autoaddwarningtoemail>
+            </additional>
+            <integration>
+                <cartbutton><![CDATA[@(<button[^>]*btn-cart.*?<span[^>]*>)[^<>]+(</span>.*?</button>)@s]]></cartbutton>
+                <productlistcartbutton><![CDATA[@<button[^>]*btn-cart[^>]*/product/(\d+).*?</button>@s]]></productlistcartbutton>
+                <cartproductname><![CDATA[@<h2[^>]class="product-name".*?</h2>@s]]></cartproductname>
+            </integration>
+            <cron>
+                <schedule>0 0 * * *</schedule>
+            </cron>
+            <email>
+                <confirmation_template>rikipreorder_email_confirmation_template</confirmation_template>
+                <cancellation_template>rikipreorder_email_cancellation_template</cancellation_template>
+            </email>
+        </rikipreorder>
+    </default>
+</config>

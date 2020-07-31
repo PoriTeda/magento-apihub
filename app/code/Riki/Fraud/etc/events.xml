@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_place_before">
+        <observer name="riki_check_fraud_sales_order_place_before" instance="Riki\Fraud\Observer\FraudOrderPlaceBefore"/>
+    </event>
+    <event name="order_cut_off_date_save_before">
+        <observer name="riki_check_fraud_cut_off_date_after" instance="Riki\Fraud\Observer\FraudCutOffDateAfter"/>
+    </event>
+    <event name="controller_action_predispatch_checkout_cart_index">
+        <observer name="riki_fraud_check_cart_threshold" instance="Riki\Fraud\Observer\CartThreshold"/>
+    </event>
+</config>

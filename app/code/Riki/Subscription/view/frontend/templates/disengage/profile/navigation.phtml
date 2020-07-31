@@ -1,0 +1,18 @@
+<?php
+/**
+ * @var Riki\Subscription\Block\Disengage\Profile\Navigation $block
+ */
+    $activeTabs = $block->getActiveTabs();
+
+?>
+<div class="disengage-header-navigation">
+    <div class="disengage-header-title">
+        <span><?php echo __('Regular flight cancellation form');?></span>
+    </div>
+    <div class="disengage-message"><?php echo __('The cancellation is not complete yet');?></div>
+    <ul class="disengage-navigation-steps">
+        <li class="<?php echo $activeTabs['active_'.$block::NAVIGATION_TAB_LIST];?>"><span><?php echo __('Step 1');?></span></li>
+        <li class="<?php echo $activeTabs['active_'.$block::NAVIGATION_TAB_ATTENTION];?>"><span><?php echo __('Step 2');?></span></li>
+        <li class="<?php echo $activeTabs['active_'.$block::NAVIGATION_TAB_QUESTIONNAIRE];?>"><span><?php echo __('Step 3');?></span></li>
+    </ul>
+</div>

@@ -1,0 +1,22 @@
+<?php
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ */
+?>
+<a href="http://www.np-atobarai.jp/about/" target="_blank">
+    <img src="<?= $block->getViewFileUrl('images/np_atobarai_payment.png') ?>" alt="Np Atobarai Payment">
+</a><br />
+<div>○このお支払方法の詳細</div>
+<div>商品の到着を確認してから、「コンビニ」「郵便局」「銀行」「LINE Pay」で</div>
+<div>後払いできる安心・簡単な決済方法です。請求書は、商品とは別に</div>
+<div>郵送されますので、発行から14日以内にお支払いをお願いします。</div>
+<div>○ご注意</div>
+<div><span>後払い手数料：</span><span style="color: red; font-weight: bold"><?= floatval($block->getData('price')) ?>円</span></div>
+<div>後払いのご注文には、<a href="https://www.netprotections.com/" target="_blank">株式会社ネットプロテクションズ</a>の提供する</div>
+<div>NP後払いサービスが適用され、サービスの範囲内で個人情報を提供し、</div>
+<div>
+    <span>代金債権を譲渡します。</span>
+    <span style="color: red">ご利用限度額は累計残高で55,000円（税込）迄です。</span>
+</div>
+<div>詳細はバナーをクリックしてご確認下さい。</div>
+<div>ご利用者が未成年の場合、法定代理人の利用同意を得てご利用ください。</div>

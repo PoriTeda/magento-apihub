@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/system.xsd">
+    <system>
+        <section id="subscriptioncourse">
+            <group id="subscription_page_link" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Subscription Page Link</label>
+                <field id="sub_page_select_additional_machine" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Select Additional Machine</label>
+                </field>
+                <field id="sub_page_select_additional_machine_for_office" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Select Additional Machine for Office</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

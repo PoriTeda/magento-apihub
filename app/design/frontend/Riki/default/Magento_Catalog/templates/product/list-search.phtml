@@ -1,0 +1,178 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+use Magento\Framework\App\Action\Action;
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @var $block \Magento\Catalog\Block\Product\ListProduct
+ */
+?>
+<?php
+$_productCollection = $block->getLoadedProductCollection();
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+/** @var \Riki\Catalog\Helper\Data $_rikiCatalogHelper */
+$_rikiCatalogHelper = $this->helper('Riki\Catalog\Helper\Data');
+$_giftWrappingAvailable = $this->helper('\Magento\GiftWrapping\Helper\Data')->isGiftWrappingAvailableForItems();
+
+?>
+<?php if (!$_productCollection->count()): ?>
+    <div class="message info empty"><div><?php /* @escapeNotVerified */ echo __('We can\'t find products matching the selection.') ?></div></div>
+<?php else: ?>
+    <?php echo $block->getToolbarHtml() ?>
+    <?php echo $block->getAdditionalHtml() ?>
+    <?php
+    if ($block->getMode() == 'grid') {
+        $viewMode = 'grid';
+        $image = 'category_page_grid';
+        $showDescription = false;
+        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+    } else {
+        $viewMode = 'list';
+        $image = 'category_page_list';
+        $showDescription = true;
+        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
+    }
+    /**
+     * Position for actions regarding image size changing in vde if needed
+     */
+    $pos = $block->getPositioned();
+    ?>
+    <div class="products wrapper <?php /* @escapeNotVerified */ echo $viewMode; ?> products-<?php /* @escapeNotVerified */ echo $viewMode; ?>">
+        <?php $iterator = 1; ?>
+        <ol class="products list items product-items">
+            <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
+            <?php foreach ($_productCollection as $_product): ?>
+                <?php /* @escapeNotVerified */ echo($iterator++ == 1) ? '<li class="item product product-item">' : '</li><li class="item product product-item">' ?>
+                <div class="product-item-info" data-container="product-grid" data-item-id="<?php echo $_product->getSku();?>">
+                    <?php
+                    $isFreeShipping = $_rikiCatalogHelper->getIsFreeShippingByProductId($_product->getId());
+                    $isNoProductType = $_rikiCatalogHelper->isNoProductType($_product);
+                    $deliveryType = $_product->getDeliveryType();
+                    $deliveryTypeText = $_rikiCatalogHelper->getLabelHtmlOfDeliveryType($deliveryType);
+                    $deliveryTypeHtmlClass = $_rikiCatalogHelper->getLabelHtmlClassOfDeliveryType($deliveryType);
+                    $productImage = $block->getImage($_product, $image);
+                    if ($pos != null) {
+                        $position = ' style="left:' . $productImage->getWidth() . 'px;'
+                            . 'top:' . $productImage->getHeight() . 'px;"';
+                    }
+                    ?>
+                    <?php // Product Image ?>
+                    <a layer-item-id="<?php echo $_product->getId();?>" href="<?php /* @escapeNotVerified */ echo $isNoProductType? $_product->getExternalUrl() : $_product->getProductUrl() ?>" class="product photo product-item-photo" tabindex="-1">
+                        <?php echo $productImage->toHtml(); ?>
+                    </a>
+                    <div class="product details product-item-details">
+                        <?php
+                        $_productNameStripped = $block->stripTags($_product->getName(), null, true);
+                        ?>
+                        <strong class="product name product-item-name">
+                            <a class="product-item-link"
+                               layer-item-id="<?php echo $_product->getId();?>"
+                               title = "<?php /* @escapeNotVerified */ echo $_helper->productAttribute($_product, $_product->getName(), 'name'); ?>"
+                               href="<?php /* @escapeNotVerified */ echo $isNoProductType? $_product->getExternalUrl() : $_product->getProductUrl() ?>">
+                                <?php /* @escapeNotVerified */
+                                $productName = $_helper->productAttribute($_product, $_product->getName(), 'name');
+                                echo $_rikiCatalogHelper->truncateHtml($productName, 30, '...');
+                                ?>
+                            </a>
+                        </strong>
+                        <?php if(!$isNoProductType): ?>
+                            <?php /* @escapeNotVerified */ echo $block->getProductPrice($_product) ?>
+                            <div class="product-item-desc-campaign">
+                                <?php /* @escapeNotVerified */
+                                $campDescription = $_helper->productAttribute($_product, $_product->getDescriptionCampaign(), 'description_campaign');
+                                echo $_rikiCatalogHelper->truncateHtml($campDescription, 13, '...');
+                                ?>
+                            </div>
+                            <div class="product-item-desc-short">
+                                <?php /* @escapeNotVerified */
+                                $shortDescription = $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description');
+                                echo $_rikiCatalogHelper->truncateHtml($shortDescription, 62, '...');
+                                ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <div class="bt-link-atc">
+                            <a class="product-item-link"
+                               title = "<?php /* @escapeNotVerified */ echo $_helper->productAttribute($_product, $_product->getName(), 'name'); ?>"
+                               href="<?php /* @escapeNotVerified */ echo $isNoProductType? $_product->getExternalUrl() : $_product->getProductUrl() ?>">
+                                <span><?php /* @escapeNotVerified */ echo __('Proceed to detail screen') ?></span>
+                            </a>
+                        </div>
+
+                        <div class="product-tags">
+                            <?php if($deliveryType && $deliveryTypeText != null && $deliveryTypeHtmlClass!= null): ?>
+                                <div class="product-tag delivery_type <?php echo $deliveryTypeHtmlClass; ?>">
+                                    <span><?php echo $deliveryTypeText; ?></span>
+                                </div>
+                            <?php endif; ?>
+                            <?php if($isFreeShipping): ?>
+                                <div class="product-tag free_shipping"><span><?php echo __('Free Shipping') ?></span></div>
+                            <?php endif; ?>
+                            <?php if($_giftWrappingAvailable && $_rikiCatalogHelper->hasGiftWrapping($_product)): ?>
+                                <?php if($_rikiCatalogHelper->hasFreeGiftWrapping($_product)): ?>
+                                    <div class="product-tag wrapping_available"><span><?php echo __('Wrapping Free') ?></span></div>
+                                <?php else:?>
+                                    <div class="product-tag wrapping_available"><span><?php echo __('Wrapping Available') ?></span></div>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                            <?php if($this->helper('\Riki\Preorder\Helper\Data')->getIsProductPreorder($_product)): ?>
+                            <div class="product-tag reorder"><span><?php echo __('Re order') ?></span></div>
+                            <?php endif; ?>
+                            <?php if($isNoProductType && $_product->getNoProductType()): ?>
+                                <?php if($_product->getNoProductType() == \Riki\Catalog\Model\Config\Source\Product\NoProductType::TYPE_SUBSCRIPTION): ?>
+                                    <div class="product-tag subscription"><span><?php echo __('Sub scription') ?></span></div>
+                                <?php endif; ?>
+                                <?php if($_product->getNoProductType() == \Riki\Catalog\Model\Config\Source\Product\NoProductType::TYPE_HANPUKAI): ?>
+                                    <div class="product-tag hanpukai"><span><?php echo __('Hanpukai') ?></span></div>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        </div>
+
+                        <div class="product-item-desc">
+                            <?php /* @escapeNotVerified */
+                            $description = $_helper->productAttribute($_product, $_product->getDescription(), 'description');
+                            echo $_rikiCatalogHelper->truncateHtml($description, 70, '...');
+                            ?>
+                        </div>
+                    </div>
+                </div>
+                <?php echo($iterator == count($_productCollection)+1) ? '</li>' : '' ?>
+            <?php endforeach; ?>
+        </ol>
+    </div>
+    <?php echo $block->getToolbarHtml() ?>
+    <?php if (!$block->isRedirectToCartEnabled()) : ?>
+        <script type="text/x-magento-init">
+        {
+            "[data-role=tocart-form], .form.map.checkout": {
+                "catalogAddToCart": {}
+            }
+        }
+        </script>
+    <?php endif; ?>
+<?php endif; ?>
+
+<script type="text/javascript">
+    require([
+        'jquery'
+    ], function($) {
+        $(document).ready(function () {
+            var addButton = $('.products.wrapper .action.tocart');
+
+            addButton.on('click', function () {
+                var _this = $(this),
+                    qty = _this.prev('.qty').val();
+                if(isNaN(qty) || qty <= 0)
+                    return false;
+            });
+        });
+    });
+</script>

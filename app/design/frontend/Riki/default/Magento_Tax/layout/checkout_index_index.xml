@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="checkout.root">
+            <arguments>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="components" xsi:type="array">
+                        <item name="checkout" xsi:type="array">
+                            <item name="children" xsi:type="array">
+                                <item name="sidebar" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="summary" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="totals" xsi:type="array">
+                                                    <item name="children" xsi:type="array">
+                                                        <item name="subtotal" xsi:type="array">
+                                                            <item name="sortOrder" xsi:type="string">10</item>
+                                                            <item name="config" xsi:type="array">
+                                                                <item name="title" xsi:type="string" translate="true">Items total (Tax included):</item>
+                                                            </item>
+                                                        </item>
+                                                        <item name="shipping" xsi:type="array">
+                                                            <item name="sortOrder" xsi:type="string">20</item>
+                                                            <item name="config" xsi:type="array">
+                                                                <item name="title" xsi:type="string" translate="true">Shipping cost (Tax included):</item>
+                                                            </item>
+                                                        </item>
+                                                        <item name="fee" xsi:type="array">
+                                                            <item name="sortOrder" xsi:type="string">50</item>
+                                                        </item>
+                                                        <item name="point-used" xsi:type="array">
+                                                            <item name="sortOrder" xsi:type="string">55</item>
+                                                            <item name="component"  xsi:type="string">Riki_Loyalty/js/view/checkout/summary/point-used</item>
+                                                            <item name="config" xsi:type="array">
+                                                                <item name="title" xsi:type="string" translate="true">Point Using</item>
+                                                                <item name="title-point" xsi:type="string" translate="true">Point</item>
+                                                            </item>
+                                                        </item>
+                                                        <item name="tax" xsi:type="array">
+                                                            <item name="config" xsi:type="array">
+                                                                <item name="sortOrder" xsi:type="string">60</item>
+                                                                <item name="title" xsi:type="string" translate="true">Tax:</item>
+                                                            </item>
+                                                        </item>
+                                                        <item name="trial-point" xsi:type="array">
+                                                            <item name="sortOrder" xsi:type="string">95</item>
+                                                            <item name="component" xsi:type="string">Riki_Loyalty/js/view/checkout/summary/point-used</item>
+                                                            <item name="config" xsi:type="array">
+                                                                <item name="template" xsi:type="string">Riki_Loyalty/checkout/summary/trial-point</item>
+                                                                <item name="title" xsi:type="string" translate="true">Shopping Point Trial</item>
+                                                                <item name="title-point" xsi:type="string" translate="true">Point</item>
+                                                            </item>
+                                                        </item>
+                                                        <item name="total-not-apply-point" xsi:type="array">
+                                                            <item name="sortOrder" xsi:type="string">100</item>
+                                                        </item>
+                                                        <item name="grand-total" xsi:type="array">
+                                                            <item name="sortOrder" xsi:type="string">200</item>
+                                                            <item name="config" xsi:type="array">
+                                                                <item name="title" xsi:type="string" translate="true">Amount billed (including tax):</item>
+                                                                <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>

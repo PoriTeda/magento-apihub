@@ -1,0 +1,37 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var $block \Magento\GiftRegistry\Block\Search\Advanced  */ ?>
+
+<?php foreach ($block->getAttributes() as $code => $attribute): ?>
+    <div class="field">
+        <label for="<?= /* @escapeNotVerified */ $block->getFieldIdPrefix() . $code ?>" class="label"><span><?= /* @escapeNotVerified */ $attribute['label'] ?></span></label>
+        <div class="control">
+            <?= /* @escapeNotVerified */ $block->renderField($code) ?>
+        </div>
+    </div>
+<?php endforeach; ?>
+
+<script type="text/x-magento-init">
+    {
+        <?php if ($block->getRegionJsVisible()): ?>
+        "#<?= /* @escapeNotVerified */ $block->getFieldIdPrefix() . $block->getElementCountry() ?>": {
+            "regionUpdater": {
+                "optionalRegionAllowed": <?= /* @escapeNotVerified */ ($block->getConfig('general/region/display_all') ? 'true' : 'false') ?>,
+                "regionListId": "#<?= /* @escapeNotVerified */ $block->getFieldIdPrefix() . $block->getElementRegion() ?>",
+                "regionInputId": "#<?= /* @escapeNotVerified */ $block->getFieldIdPrefix() . $block->getElementRegionText() ?>",
+                "regionJson": <?= /* @escapeNotVerified */ $this->helper('Magento\Directory\Helper\Data')->getRegionJson() ?>,
+                "isRegionRequired": false,
+                "isZipRequired": false,
+                "isCountryRequired": false
+            }
+        }
+        <?php endif; ?>
+    }
+</script>

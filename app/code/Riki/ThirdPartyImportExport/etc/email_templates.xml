@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="csv_order_payment_setup_cvs_order_send_email_email_template" label="ThirdPartyImportExport - Cvs Payment Order" file="cvspayment_order.html" type="text" module="Riki_ThirdPartyImportExport" area="frontend"/>
+    <template id="thirdpartyimportexport_order_import_error_email_template" label="ThirdPartyImportExport - Order Import Error Report" file="order_import_error.html" type="text" module="Riki_ThirdPartyImportExport" area="frontend"/>
+    <template id="shipping_delivery_complete_seemail_shipmentexport_email_template" label="ThirdPartyImportExport - Order Import Error Report" file="shipment_export.html" type="text" module="Riki_ThirdPartyImportExport" area="frontend"/>
+    <template id="di_data_export_setup_seemail_shipmentexport_email_template" label="ThirdPartyImportExport - data export to bi" file="bi_export.html" type="text" module="Riki_ThirdPartyImportExport" area="frontend"/>
+    <template id="reconciliation_seemail_reconciliation_email_template" label="ThirdPartyImportExport - Template Mail Reconciliation " file="reconciliation.html" type="text" module="Riki_ThirdPartyImportExport" area="frontend"/>
+    <template id="amuse_data_export_setup_seemail_export_email_template" label="ThirdPartyImportExport - data export to asume" file="asume_export.html" type="text" module="Riki_ThirdPartyImportExport" area="frontend"/>
+</config>

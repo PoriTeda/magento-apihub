@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <riki_loyalty>
+            <api>
+                <base_url>https://stagingec2.nestle.jp/axis2/services/</base_url>
+                <client_info>XC</client_info>
+                <client_info_domain>g.nestle.jp</client_info_domain>
+            </api>
+            <point>
+                <expiration>730</expiration>
+                <retrypoint>1</retrypoint>
+                <rate>1</rate>
+                <schedule_time>0 0 * * *</schedule_time>
+                <approval_email_template>riki_loyalty_point_approval_email_template</approval_email_template>
+            </point>
+            <serial_code>
+                <template_confirmation>riki_loyalty_serial_code_template_confirmation</template_confirmation>
+            </serial_code>
+            <about_point_guide_group>
+                <about_point_guide_input>https://shop.nestle.jp/front/contents/guide/member/point</about_point_guide_input>
+            </about_point_guide_group>
+        </riki_loyalty>
+    </default>
+</config>

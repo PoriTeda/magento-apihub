@@ -1,0 +1,269 @@
+<?php
+/* @var $stockHelper \Riki\ProductStockStatus\Helper\StockData */
+$stockHelper = $this->helper('Riki\ProductStockStatus\Helper\StockData');
+
+/* @var $checkRequestLineAppHelper \Riki\SubscriptionPage\Helper\CheckRequestLineApp */
+$checkRequestLineAppHelper = $this->helper('Riki\SubscriptionPage\Helper\CheckRequestLineApp');
+
+/** @var \Riki\Catalog\Block\Multiple\View $block */
+$listCategories = $block->getMultipleProduct();
+$categoryDes = $block->getDescription();
+$productIds = [];
+$categoryForActionToolBar = [];
+
+?>
+<div class="multiple-products-main rk_listProduct" data-bind="scope: 'multipleCategoryView'">
+    <?php if (!empty($categoryDes)): ?>
+        <div class="riki-multiple-description note-bg"><?= $categoryDes ?></div>
+    <?php endif; ?>
+
+    <div class="subscription_toolbar multiple_toolbar">
+        <div class="subscription_toolbar-label">
+            <label class="note"><?php echo __('Please choose an item from the following.'); ?></label>
+        </div>
+
+        <div class="subscription_toolbar-view view-mode pull-right">
+            <div class="list-view">
+                <a href="#" class="modes modes-list">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                    </svg>
+                </a>
+                <a href="#" class="modes modes-grid">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                        <path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/>
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+    <form class="rk-product-grid category-change-mode"
+          action="<?php echo $checkRequestLineAppHelper->getLinkFormAction($this->getUrl('catalog/multiple/add')); ?>"
+          id="form-validate" enctype="multipart/form-data" method="post">
+        <input name="form_key" type="hidden" value="<?php echo $block->getAddToCartFormKey(); ?>">
+        <input name="riki_multiple_cat" id="riki_multiple_cat" type="hidden" value="<?php echo $block->getIdCat(); ?>">
+        <input name="riki_multiple_product" id="riki_multiple_product" type="hidden" value="1">
+        <?php if (count($listCategories) > 0) :
+        foreach ($listCategories as $listCategory):
+            // Check setting multiple enable
+        if ($listCategory->getMultipleProducts() != null && $listCategory->getMultipleProducts() == 1):
+            $categoryForActionToolBar[] = $listCategory;
+            $categoryId = $listCategory->getData('entity_id');
+            $products = $block->getCategoryProducts($categoryId);
+            $categoryDes = $block->getViewModel()->filterText($block->getViewModel()->getCategoryById($categoryId)->getDescription());
+            ?>
+            <div class="multiple-products-block m-category-section">
+                <h2 id="section-<?php echo $categoryId ?>"
+                    class="title"><?php echo sprintf(__('%s Selection'), $listCategory->getName()) ?></h2>
+                <?php if ($categoryDes != ''): ?>
+                    <div class="riki-category-description"><?= $categoryDes ?></div>
+                <?php endif; ?>
+                <div class="table-container">
+                    <div class="table table-multiple-products">
+                        <div class="rk_row">
+                            <?php foreach ($products as $product) :
+                                $productIds[] = $product->getId();
+                                $isInStock = $product->getIsSalable();
+                                //stock status
+                                $stockMessageArr = $stockHelper->getStockStatusMessage($product);
+                                if (array_key_exists('class', $stockMessageArr)
+                                    && array_key_exists('message', $stockMessageArr)) {
+                                    $classMessage = $stockMessageArr['class'];
+                                    $textMessage = $stockMessageArr['message'];
+                                } else {
+                                    $classMessage = '';
+                                    $textMessage = '';
+                                }
+
+                                if ($isInStock == false) {
+                                    $textMessage = $stockHelper->getOutStockMessageByProduct($product);
+                                }
+                                ?>
+                                <div class="rk_col">
+                                    <div class="item multiple-category-row-item"
+                                         data-id="<?php echo $product->getId(); ?>"
+                                         data-category-id="<?php echo $categoryId ?>"
+                                         data-product-id="<?php echo $product->getId() ?>">
+                                        <div class="col image"
+                                             data-mage-init='<?php echo $block->getViewModel()->getProductDetailJsData($product, $categoryId, $block->isHanpukai()); ?>'>
+                                            <div class="product-item-photo"
+                                                 data-bind="click: function(){openDetailPopup(<?php echo $product->getId() ?>)}, touchstart:function(){openDetailPopup(<?php echo $product->getId() ?>)}"><?php echo $block->getImage($product, 'cart_page_product_thumbnail')->toHtml(); ?></div>
+                                            <div class="riki_qv"
+                                                 data-bind="click: function(){openDetailPopup(<?php echo $product->getId() ?>)}, touchstart:function(){openDetailPopup(<?php echo $product->getId() ?>)}">
+                                                <a href="#" id="subscription-product-view"
+                                                   class="subscription-product-view">
+                                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                                         xmlns:xlink="http://www.w3.org/1999/xlink" width="16"
+                                                         height="16" viewBox="0 0 16 16">
+                                                        <path fill="#666"
+                                                              d="M15.504 13.616l-3.79-3.223c-0.392-0.353-0.811-0.514-1.149-0.499 0.895-1.048 1.435-2.407 1.435-3.893 0-3.314-2.686-6-6-6s-6 2.686-6 6 2.686 6 6 6c1.486 0 2.845-0.54 3.893-1.435-0.016 0.338 0.146 0.757 0.499 1.149l3.223 3.79c0.552 0.613 1.453 0.665 2.003 0.115s0.498-1.452-0.115-2.003zM6 10c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zM7 3h-2v2h-2v2h2v2h2v-2h2v-2h-2z"></path>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="col name">
+                                            <input type="hidden"
+                                                   name="<?php echo 'data[product]' . '[' . ((int)$product->getId() . '_' . (int)$categoryId) . ']' . '[product_id]' ?>"
+                                                   value="<?php echo $product->getId(); ?>">
+                                            <div class="product-item-name">
+                                        <span class="name">
+                                            <?php echo mb_strimwidth(trim($product->getName()), 0, 70, "..."); ?>
+                                        </span>
+                                                <div class="notification-qty <?php echo $classMessage ?>"><?php echo __('Stock:') ?><?php echo $textMessage ?></div>
+                                            </div>
+                                            <?php if ($block->getProductType($product) == 'configurable'): ?>
+                                                <input type="hidden"
+                                                       name="<?php echo 'data[product]' . '[' . ((int)$product->getId() . '_' . (int)$categoryId) . ']' . '[product_type]' ?>"
+                                                       value="<?php echo $block->getProductType($product); ?>">
+                                                <div class="swatch-opt<?php echo $product->getId() ?>"></div>
+                                                <script type="text/javascript">
+                                                    require(["jquery", "jquery/ui", "Riki_SubscriptionPage/js/SwatchRendererCustom"], function ($) {
+                                                        $('.swatch-opt<?php echo $product->getId() ?>').SwatchRenderer({
+                                                            jsonConfig: <?php /* @escapeNotVerified */ echo $swatchOptions = $block->getJsonConfig($product)->getJsonConfig(); ?>,
+                                                            jsonSwatchConfig: <?php /* @escapeNotVerified */ echo $swatchOptions = $block->getJsonConfig($product)->getJsonSwatchConfig(); ?>,
+                                                            selectorProduct: '.subscription-info-price<?php echo $product->getId() ?>',
+                                                            productId: <?php echo $product->getId() ?>
+                                                        });
+                                                    });
+                                                </script>
+
+                                                <script type="text/javascript">
+                                                    require([
+                                                        'jquery',
+                                                        'Magento_Catalog/js/price-box'
+                                                    ], function ($) {
+                                                        var priceBoxes<?php echo $product->getId() ?> = $('.subscription-info-price<?php echo $product->getId() ?> .price-box');
+                                                        priceBoxes<?php echo $product->getId() ?>.priceBox({'priceConfig': <?php /* @escapeNotVerified */ echo $block->getJsonPriceConfig($product)->getJsonConfig() ?>});
+                                                    });
+                                                </script>
+                                                <?php
+                                                $block->deleteRegister('product');
+                                            endif;
+                                            ?>
+
+                                            <?php if ($block->getProductType($product) == 'bundle'): ?>
+                                                <input type="hidden"
+                                                       name="<?php echo 'data[product]' . '[' . ((int)$product->getId() . '_' . (int)$categoryId) . ']' . '[product_type]' ?>"
+                                                       value="<?php echo $block->getProductType($product); ?>">
+                                                <div class="no-display"><?php echo $block->getLayout()->getBlock('product.info.bundle.options')->setProduct($product)->setCategoryId($categoryId)->toHtml() ?></div>
+                                            <?php endif; ?>
+
+                                        </div>
+                                        <div class="col price" data-th="<?php echo __('Price') ?>">
+                                            <div id="product_price_<?php echo $product->getId() ?>">
+                                                <?php echo $this->getLayout()->getBlock('product.price.render.default')->render('final_price', $product, []); ?>
+                                            </div>
+                                            <div><?php echo $this->getLayout()->getBlock('product.price.render.default')->render('tier_price', $product, []); ?></div>
+                                        </div>
+
+                                        <div class="col qty"
+                                             data-th="<?php echo __('Qty') ?>">
+                                            <?php echo $block->getChildBlock('product.view.qty')
+                                                ->setProduct($product)
+                                                ->setCategoryId($categoryId)
+                                                ->setData("is_spot_order", true)
+                                                ->setIsHanpukai(false)
+                                                ->toHtml(); ?>
+                                        </div>
+
+                                        <div class="col price subtotal hidden"
+                                             data-th="<?php echo __('Subtotal (tax incl)') ?>">0円
+                                        </div>
+                                        <div class="col tier-price hidden"><?php echo $this->getLayout()->getBlock('product.price.render.default')->render('tier_price', $product, []); ?></div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+        <?php endforeach;
+        ?>
+
+            <script type="text/javascript">
+                require([
+                    'jquery',
+                    'mage/mage',
+                    'Magento_Catalog/product/view/validation',
+                    'Magento_Catalog/js/catalog-add-to-cart',
+                    // 'Riki_Catalog/js/multiple-products-calculate-price'
+                ], function ($) {
+                    'use strict';
+                    $('#form-validate').mage('validation', {
+                        radioCheckboxClosest: '.nested',
+                        submitHandler: function (form) {
+                            var widget = $(form).catalogAddToCart({
+                                bindSubmit: false
+                            });
+
+                            widget.catalogAddToCart('submitForm', $(form));
+
+                            return false;
+                        }
+                    });
+
+                });
+            </script>
+            <div class="subscription-block-bottom">
+                <div class="subscription-pageTop" data-bind="click: moveToTop">
+                    <?php echo $this->getLayout()
+                        ->createBlock('Magento\Cms\Block\Block')
+                        ->setBlockId('riki-block-pagetop')
+                        ->toHtml();
+                    ?>
+                </div>
+            </div>
+            <div class="check-offset"></div>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <button data-action-event="Catalog Pages - Floating Buttons"
+                            data-title="<?php echo __('カートに入れる | Put In Cart') ?>" type="submit"
+                            class="tracking_floating_button action submit primary tocart riki-category-multiple-tocart"
+                            title="<?php echo __('Proceed to order process') ?>">
+                        <span><?php echo __('Proceed to order process') ?></span></button>
+                </div>
+                <div class="secondary"></div>
+            </div>
+        <?php else: ?>
+            <?php echo __('No category support for showing multiple products.') ?>
+        <?php endif; ?>
+    </form>
+    <?php echo $block->render('Riki_SubscriptionPage::view/product-detail.phtml', []) ?>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Catalog/js/unsticky-cart": {}
+        }
+    }
+
+
+
+
+</script>
+
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+               "components": {
+                    "multipleCategoryView": {
+                        "component": "Riki_Catalog/js/multiple-category-view"
+                    },
+                   "imageLazyLoad": {
+                       "component": "Riki_Catalog/js/catalog/image-lazy-loading"
+                   }
+               }
+            }
+        }
+    }
+
+
+
+
+</script>

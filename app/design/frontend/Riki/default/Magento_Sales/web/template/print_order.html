@@ -1,0 +1,26 @@
+<div id="dialog-form" title="To print a receipt">
+    <span data-bind="i18n: 'Please select one option below'"></span>
+    <form data-role="print"
+          method="post"
+            id="print-order-form">
+        <fieldset>
+            <div class="name field" data-bind="if: printName[0]">
+                <input type="radio"
+                       name="print-order-name"
+                       class="radio"
+                       value="1"
+                       id="name" checked/>
+                <label for="name" data-bind="text: printName[0]" ></label>
+            </div>
+            <div class="nickname field" data-bind="if: printName[1]">
+                <input type="radio"
+                       name="print-order-name"
+                       class="radio"
+                       value="2"
+                       id="company"/>
+                <label for="company" data-bind="text: printName[1]" ></label>
+            </div>
+        </fieldset>
+    </form>
+</div>
+

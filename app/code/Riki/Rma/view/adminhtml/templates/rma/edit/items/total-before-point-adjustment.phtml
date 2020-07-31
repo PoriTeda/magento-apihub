@@ -1,0 +1,61 @@
+<?php /** @var \Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\TotalBeforePointAdjustment $block */ ?>
+<div class="admin__fieldset-wrapper">
+    <div class="admin__fieldset-wrapper-title">
+        <strong class="title">
+            <span><?php /* @escapeNotVerified */ echo __('Total before point adjustment') ?></span>
+        </strong>
+    </div>
+    <div class="admin__fieldset-wrapper-content">
+        <fieldset class="admin__fieldset">
+            <div class="admin__field" data-bind="scope: 'totalBeforePointAdjustmentGoodsAmountExpr'">
+                <label class="admin__field-label">
+                    <span><?php /* @escapeNotVerified */ echo __('Goods amount (including wrapping fee)') ?></span>
+                </label>
+                <div class="admin__field-label" style="width: auto">
+                    <span data-bind="text: result"></span>
+                </div>
+            </div>
+            <div class="admin__field" data-bind="scope: 'totalBeforePointAdjustmentReturnPointExpr'">
+                <label class="admin__field-label">
+                    <span><?php /* @escapeNotVerified */ echo __('Points to return') ?></span>
+                </label>
+                <div class="admin__field-label" style="width: auto; text-align: left;">
+                    <span data-bind="text: result"></span>
+                    <input type="hidden" class="adjustment-not-negative-value" name="returnable_point_amount" id="returnable_point_amount" data-bind="value: result" />
+                </div>
+            </div>
+            <div class="admin__field" data-bind="scope: 'totalBeforePointAdjustmentTotalExpr'">
+                <label class="admin__field-label">
+                    <span><?php /* @escapeNotVerified */ echo __('Total before point adjustment') ?></span>
+                </label>
+                <div class="admin__field-label" style="width: auto">
+                    <span data-bind="text: result"></span>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "totalBeforePointAdjustmentGoodsAmountExpr": {
+                        "component": "Riki_Rma/js/view/rma/total-before-point-adjustment/goods-amount-expr"
+                    },
+                    "totalBeforePointAdjustmentReturnPointExpr": {
+                        "component": "Riki_Rma/js/view/rma/total-before-point-adjustment/return-point-expr",
+                        "_codShipmentReject": <?php echo $block->isCodAndNpAtobaraiShipmentRejected() ?>,
+                        "_shipmentShoppingPoint": <?php echo $block->getShipmentShoppingPoint() ?>,
+                        "_returnablePointAmount": <?php echo $block->getReturnablePointAmount() ?>,
+                        "_notRetractablePoint": <?php echo $block->getNotRetractablePoint() ?>,
+                        "_isNormalRma": <?php echo ($block->getReturnGoodsType() == $block::NORMAL_RMA ? 1 : 0) ?>
+                    },
+                    "totalBeforePointAdjustmentTotalExpr": {
+                        "component": "Riki_Rma/js/view/rma/total-before-point-adjustment/total-expr"
+                    }
+                }
+            }
+        }
+    }
+</script>

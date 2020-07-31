@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <script src="Riki_Rma::rma.js" />
+        <script src="Riki_Rma::js/rma/edit/scripts.js" />
+    </head>
+    <body>
+        <referenceBlock name="content">
+            <block class="Magento\Framework\View\Element\Text" name="validation.rules" before="-">
+                <arguments>
+                    <argument name="text" xsi:type="string"><![CDATA[
+                        <script>require(['Riki_Rma/js/validation/rules']);</script>
+                    ]]></argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <referenceBlock name="magento_rma_edit_tabs">
+            <block class="Riki\ArReconciliation\Block\Adminhtml\Rma\Edit\Tab" template="Riki_ArReconciliation::return/tab.phtml" name="riki_rma_edit_tab_refund">
+                <block name="riki_rma_edit_refund" class="Riki\ArReconciliation\Block\Adminhtml\Rma\Rma"/>
+            </block>
+            <action method="addTab">
+                <argument name="name" xsi:type="string">collected_section</argument>
+                <argument name="block" xsi:type="string">riki_rma_edit_tab_refund</argument>
+            </action>
+        </referenceBlock>
+        <referenceBlock name="magento_rma_edit_tab_general">
+            <block class="Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\General\OrderTotal" template="Riki_Rma::rma/edit/general/order_total.phtml" name="order_total_information"/>
+            <referenceBlock name="comments_history">
+                <action method="setTemplate">
+                    <argument name="template" xsi:type="string">Riki_Rma::rma/edit/general/history.phtml</argument>
+                </action>
+            </referenceBlock>
+            <referenceBlock name="request_details">
+                <action method="setTemplate">
+                    <argument name="template" xsi:type="string">Riki_Rma::rma/edit/general/details.phtml</argument>
+                </action>
+            </referenceBlock>
+            <referenceBlock name="magento_rma_edit_tab_items">
+                <action method="setTemplate" >
+                    <argument name="template" xsi:type="string">Riki_Rma::rma/edit/items.phtml</argument>
+                </action>
+                <block name="warning" class="Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\Warning" template="rma/edit/items/warning.phtml" before="customer" />
+                <block name="customer" class="Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\Customer" template="rma/edit/items/customer.phtml" before="summary" />
+                <block name="summary" class="Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\Summary" template="rma/edit/items/summary.phtml" before="items_grid" />
+                <block name="shipping_fee" class="Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\ShippingFee" template="rma/edit/items/shipping-fee.phtml" after="items_grid" />
+                <block name="payment_fee" class="Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\PaymentFee" template="rma/edit/items/payment-fee.phtml" after="shipping_fee" />
+                <block name="total_before" class="Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\TotalBeforePointAdjustment" template="rma/edit/items/total-before-point-adjustment.phtml"  after="payment_fee" />
+                <block name="point_cancel" class="Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\PointCancel" template="rma/edit/items/point-cancel.phtml" after="total_before" />
+                <block name="total" class="Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\Total" template="rma/edit/items/total.phtml" after="point_cancel" />
+                <block name="point_return" class="Riki\Rma\Block\Adminhtml\Rma\Edit\Tab\Items\PointReturn" template="rma/edit/items/point-return.phtml" after="total" />
+            </referenceBlock>
+        </referenceBlock>
+    </body>
+</page>

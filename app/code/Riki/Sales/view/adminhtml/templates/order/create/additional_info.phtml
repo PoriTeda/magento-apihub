@@ -1,0 +1,138 @@
+<?php /** @var $block \Riki\Sales\Block\Adminhtml\Order\Create\AdditionalInfo */ ?>
+
+<div class="admin__page-section-title">
+    <strong class="title"><?php echo __('Additional Information') ?></strong>
+</div>
+<fieldset class="admin__fieldset">
+    <div class="admin__field admin__field-option">
+        <input id="allowed_earned_point" value="1"
+               class="admin__control-checkbox"
+               name="order[allowed_earned_point]"
+               type="checkbox"
+               onclick="order.setEarnPoint(this)"
+               <?php if ($block->getEarnPointChecked()) echo 'checked'; ?>
+               title="<?php /* @escapeNotVerified */
+               echo __('Earn Reward Point to customer') ?>"
+               />
+        <label class="admin__field-label" for="allowed_earned_point">
+            <?php /* @escapeNotVerified */
+            echo __('Earn Reward Point to customer') ?></label>
+    </div>
+    <fieldset class="admin__fieldset">
+        <div class="admin__field">
+            <label class="admin__field-label"><?php echo __('NHS introducer'); ?></label>
+            <div class="admin__field-control">
+                <input id="order-nhs_introducer" name="nhs_introducer" value="<?php echo $block->getQuoteData('nhs_introducer') ?>" class="admin__control-text input-text admin__control-text" type="text">
+            </div>
+        </div>
+    </fieldset>
+    <fieldset id="order-channel_choice" class="admin__fieldset order-choose-channel">
+        <div class="admin__field required _required">
+            <label class="admin__field-label"><span><?php echo __('Select a Order channel'); ?></span></label>
+            <div class="admin__field-control">
+                <select id="order-channel-id" name="order[order_channel]" class="admin__control-select required-entry">
+                    <option value=""><?php echo __('Select a channel'); ?></option>
+                    <?php foreach($block->getChannelOptions() as $key    =>  $value): ?>
+                    <option value="<?php echo $key; ?>" <?php if($block->getQuoteData('order_channel') == $key): ?>selected="selected"<?php endif; ?>><?php echo $value; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="admin__fieldset">
+        <div class="admin__field">
+            <label class="admin__field-label"><?php echo __('Campaign Id'); ?></label>
+            <div class="admin__field-control">
+                <input id="order-campaign_id" name="order[campaign_id]" value="<?php echo $block->getQuoteData('campaign_id') ?>" class="admin__control-text input-text admin__control-text validate-alphanum validate-length minimum-length-7 maximum-length-7" type="text">
+            </div>
+        </div>
+    </fieldset>
+    <fieldset id="order-type_choice" class="admin__fieldset order-choose-type">
+        <div class="admin__field _required">
+            <label class="admin__field-label"><span><?php echo __('Select a Order type'); ?></span></label>
+            <div class="admin__field-control">
+                <select id="order-type-id" name="order[charge_type]" onchange="adminOrderType.changeType()" class="admin__control-select required-entry">
+                    <?php foreach($block->getTypeOptions() as $key    =>  $value): ?>
+                        <option value="<?php echo $key; ?>" <?php if($block->getSelectedType() == $key):?> selected="selected" <?php endif; ?>><?php echo $value; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="admin__fieldset" id="order-original-id_choice" <?php if($block->getSelectedType() != \Riki\Sales\Model\Config\Source\OrderType::ORDER_TYPE_REPLACEMENT): ?>style="display: none;" <?php endif; ?>>
+        <div class="admin__field required _required">
+            <label class="admin__field-label"><span><?php echo __('Original Order ID'); ?></span></label>
+            <div class="admin__field-control control">
+                <input id="order-original-id" name="order[original_order_id]" <?php if($block->getSelectedType() != \Riki\Sales\Model\Config\Source\OrderType::ORDER_TYPE_REPLACEMENT): ?> disabled="disabled" <?php endif; ?> value="<?php echo $block->getOriginalOrderId(); ?>" class="admin__control-text input-text admin__control-text required-entry" type="text">
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="admin__fieldset"  id="siebel_enquiry_id_choice"  <?php if($block->getSelectedType() != \Riki\Sales\Model\Config\Source\OrderType::ORDER_TYPE_REPLACEMENT): ?>style="display: none;" <?php endif; ?>>
+        <div class="admin__field required _required">
+            <label class="admin__field-label" ><span><?php echo __('Siebel Enquiry ID'); ?></span></label>
+            <div class="admin__field-control control">
+                <input id="siebel_enquiry_id" name="order[siebel_enquiry_id]" <?php if($block->getSelectedType() != \Riki\Sales\Model\Config\Source\OrderType::ORDER_TYPE_REPLACEMENT): ?> disabled="disabled" <?php endif; ?> value="<?php echo $block->getQuoteData('siebel_enquiry_id'); ?>" class="admin__control-text input-text admin__control-text required-entry" type="text">
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="admin__fieldset"  id="order-reason_choice"  <?php if($block->getSelectedType() != \Riki\Sales\Model\Config\Source\OrderType::ORDER_TYPE_REPLACEMENT): ?>style="display: none;"<?php endif; ?>>
+        <div class="admin__field required _required">
+            <label class="admin__field-label"><span><?php echo __('Select a Reason'); ?></span></label>
+            <div class="admin__field-control">
+                <select id="order-reason" <?php if($block->getSelectedType() != \Riki\Sales\Model\Config\Source\OrderType::ORDER_TYPE_REPLACEMENT): ?> disabled="disabled" <?php endif; ?> name="order[replacement_reason]" class="admin__control-select required-entry">
+                    <option value=""><?php echo __('Select a Reason'); ?></option>
+                    <?php foreach($block->getReplacementOrderReasonOptions() as $key    =>  $value): ?>
+                        <option value="<?php echo $key; ?>" <?php if($block->getQuoteData('') == $key): ?>selected="selected"<?php endif; ?>><?php echo $value; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="admin__fieldset"  id="order-wbs_choice"   <?php if($block->getSelectedType() != \Riki\Sales\Model\Config\Source\OrderType::ORDER_TYPE_FREE_SAMPLE): ?>style="display: none;" <?php endif; ?>>
+        <div class="admin__field field required _required">
+            <label class="label admin__field-label"> <span><?php echo __('WBS'); ?></span></label>
+            <div class="admin__field-control control">
+                <input id="order-wbs" <?php if($block->getSelectedType() != \Riki\Sales\Model\Config\Source\OrderType::ORDER_TYPE_FREE_SAMPLE): ?> disabled="disabled" <?php endif; ?> name="order[free_samples_wbs]" value="<?php echo $block->getQuoteData('free_samples_wbs') ?>" class="admin__control-text input-text admin__control-text required-wbs-code validate-wbs-code" type="text">
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="admin__fieldset"  id="order-free-samples-reason_choice"  <?php if($block->getSelectedType() != \Riki\Sales\Model\Config\Source\OrderType::ORDER_TYPE_FREE_SAMPLE): ?>style="display: none;"<?php endif; ?>>
+        <legend class="required"><?php echo __('Select a Reason'); ?></legend>
+        <div class="admin__field required _required">
+            <div class="admin__field-control">
+                <select id="order-free-sample-reason" <?php if($block->getSelectedType() != \Riki\Sales\Model\Config\Source\OrderType::ORDER_TYPE_FREE_SAMPLE): ?> disabled="disabled" <?php endif; ?> name="order[shipping_reason]" class="admin__control-select required-entry">
+                    <option value=""><?php echo __('Select a Reason'); ?></option>
+                    <?php foreach($block->getFreeSampleOrderReasonOptions() as $key    =>  $value): ?>
+                        <option value="<?php echo $key; ?>"><?php echo $value; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="admin__fieldset"  id="order-free-samples-cause_choice"  <?php if($block->getSelectedType() != \Riki\Sales\Model\Config\Source\OrderType::ORDER_TYPE_FREE_SAMPLE): ?>style="display: none;"<?php endif; ?>>
+        <legend class="required"><?php echo __('Select a details of cause'); ?></legend>
+        <div class="admin__field required _required">
+            <div class="admin__field-control">
+                <select id="order-free-sample-cause" <?php if($block->getSelectedType() != \Riki\Sales\Model\Config\Source\OrderType::ORDER_TYPE_FREE_SAMPLE): ?> disabled="disabled" <?php endif; ?> name="order[shipping_cause]" class="admin__control-select required-entry">
+                    <option value=""><?php echo __('Select a details of cause'); ?></option>
+                    <?php foreach($block->getFreeSampleOrderCauseOptions() as $key    =>  $value): ?>
+                        <option value="<?php echo $key; ?>"><?php echo $value; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+    </fieldset>
+</fieldset>
+
+<script type="text/javascript">
+    require(['Riki_Sales/order/create/type'], function () {
+        var adminOrderType = new AdminOrderType('<?php echo $block->getChangeOrderTypeUrl() ?>' ,'<?php echo __('Please select a valid type') ?>');
+        window.adminOrderType = adminOrderType;
+    });
+</script>

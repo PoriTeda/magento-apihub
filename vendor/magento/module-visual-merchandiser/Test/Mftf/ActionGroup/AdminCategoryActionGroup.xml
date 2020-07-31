@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="OpenProductsInCategorySection">
+        <scrollTo selector="{{AdminCategorySEOSection.SectionHeader}}" stepKey="scrollToSection" />
+        <conditionalClick selector="{{AdminCategoryProductsSection.sectionHeader}}" dependentSelector="{{AdminCategoryProductsSection.matchByRule}}" visible="false" stepKey="openProductsInCategory" />
+        <waitForPageLoad stepKey="waitForPageLoad" time="60"/>
+    </actionGroup>
+
+    <actionGroup name="EnableMatchProductsByRule">
+        <!-- Requires Products in Category section is opened -->
+        <conditionalClick selector="{{AdminCategoryProductsSection.matchByRule}}" dependentSelector="{{AdminCategoryProductsSection.addProducts}}" visible="true" stepKey="matchByRule" />
+        <waitForPageLoad stepKey="waitForPageLoad"/>
+    </actionGroup>
+
+    <actionGroup name="DisableMatchProductsByRule">
+        <!-- Requires Products in Category section is opened -->
+        <conditionalClick selector="{{AdminCategoryProductsSection.matchByRule}}" dependentSelector="{{AdminCategoryProductsSection.addProducts}}" visible="false" stepKey="dontMatchByRule" />
+        <waitForPageLoad stepKey="waitForPageLoad"/>
+    </actionGroup>
+
+    <!-- Go to add products to a category by product SKUs -->
+    <actionGroup name="GoToAddProductsBySku">
+        <click selector="{{AdminCategoryProductsSection.addProducts}}" stepKey="clickAddProductsToCategory"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.addProductBySku}}" stepKey="clickAddBySkuTab"/>
+    </actionGroup>
+
+    <!-- Go to add products to a category by search -->
+    <actionGroup name="GoToAddProductsBySearch">
+        <click selector="{{AdminCategoryProductsSection.addProducts}}" stepKey="clickAddProductsToCategory"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.searchAllProducts}}" stepKey="clickSearchAllProductsTab"/>
+        <conditionalClick selector="{{AdminCategoryAddProductsModalSection.clearAll}}" dependentSelector="{{AdminCategoryAddProductsModalSection.clearAll}}" visible="true" stepKey="clearAllFilters"/>
+        <waitForPageLoad stepKey="wait"/>
+    </actionGroup>
+
+    <!--Actions to add a product to category from category page, using product SKU-->
+    <actionGroup name="AddProductToCategoryBySku">
+        <arguments>
+            <argument name="product"/>
+            <argument name="categoryEntity"/>
+        </arguments>
+
+        <seeInCurrentUrl url="{{AdminCategoryPage.url}}" stepKey="seeOnCategoryPage"/>
+        <click selector="{{AdminCategorySidebarTreeSection.categoryInTree(categoryEntity.name)}}" stepKey="clickCategoryLink"/>
+        <click selector="{{AdminCategoryProductsSection.sectionHeader}}" stepKey="openProductsInCategorySection"/>
+        <click selector="{{AdminCategoryProductsSection.addProducts}}" stepKey="clickAddProductsToCategory"/>
+        <waitForElementVisible selector="{{AdminCategoryAddProductsModalSection.filters}}" stepKey="waitForModalOpen" time="30"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.addProductBySku}}" stepKey="clickAddBySkuTab"/>
+        <fillField selector="{{AdminCategoryAddProductsModalSection.productSkuInput}}" userInput="{{product.sku}}" stepKey="enterSku"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.assign}}" stepKey="assignSku"/>
+        <waitForAjaxLoad stepKey="waitForAjax"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.saveClose}}" stepKey="saveCloseModal"/>
+        <click selector="{{AdminCategoryMainActionsSection.SaveButton}}" stepKey="saveCategoryWithProducts"/>
+        <seeElement selector="{{AdminCategoryMessagesSection.SuccessMessage}}" stepKey="seeCategorySaveSuccess"/>
+    </actionGroup>
+
+    <!--Actions to add products to category using search-->
+    <actionGroup name="AddProductToCategoryBySearch">
+        <arguments>
+            <argument name="product"/>
+            <argument name="categoryEntity"/>
+        </arguments>
+
+        <seeInCurrentUrl url="{{AdminCategoryPage.url}}" stepKey="seeOnCategoryPage"/>
+        <click selector="{{AdminCategorySidebarTreeSection.categoryInTree(categoryEntity.name)}}" stepKey="clickCategoryLink"/>
+        <click selector="{{AdminCategoryProductsSection.sectionHeader}}" stepKey="openProductsInCategorySection"/>
+        <click selector="{{AdminCategoryProductsSection.addProducts}}" stepKey="clickAddProductsToCategory"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.searchAllProducts}}" stepKey="clickSearchProductsTab"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.filters}}" stepKey="openFilters"/>
+        <fillField selector="{{AdminCategoryAddProductsModalSection.nameFilter}}" userInput="{{product.name}}" stepKey="fillNameFilter"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.applyFilters}}" stepKey="applyGridFilter"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.gridActionToggle}}" stepKey="clickToggleActionDropdown"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.gridSelectAll}}" stepKey="clickSelectAll"/>
+        <click selector="{{AdminCategoryAddProductsModalSection.saveClose}}" stepKey="saveCloseModal"/>
+        <click selector="{{AdminCategoryMainActionsSection.SaveButton}}" stepKey="saveCategoryWithProducts"/>
+        <seeElement selector="{{AdminCategoryMessagesSection.SuccessMessage}}" stepKey="seeCategorySaveSuccess"/>
+    </actionGroup>
+
+    <!--Actions to add products to a category using a rule (matching product sku)-->
+    <actionGroup name="AddProductToCategoryByRuleSku">
+        <arguments>
+            <argument name="product"/>
+            <argument name="categoryEntity"/>
+        </arguments>
+
+        <seeInCurrentUrl url="{{AdminCategoryPage.url}}" stepKey="seeOnCategoryPage"/>
+        <click selector="{{AdminCategorySidebarTreeSection.categoryInTree(categoryEntity.name)}}" stepKey="clickCategoryLink"/>
+        <click selector="{{AdminCategoryProductsSection.sectionHeader}}" stepKey="openProductsInCategorySection"/>
+        <click selector="{{AdminCategoryProductsSection.matchByRule}}" stepKey="checkMatchProductByRule"/>
+        <click selector="{{AdminCategoryProductsSection.addCondition}}" stepKey="clickAddCategoryCondition"/>
+        <selectOption selector="{{AdminCategoryProductsSection.conditionAttribute('1')}}" userInput="SKU" stepKey="selectConditionAttributeSku"/>
+        <selectOption selector="{{AdminCategoryProductsSection.conditionOperator('1')}}" userInput="Equal" stepKey="selectConditionOperatorEqual"/>
+        <fillField selector="{{AdminCategoryProductsSection.conditionValue('1')}}" userInput="{{DownloadableProduct.sku}}" stepKey="fillConditionValueSku"/>
+        <click selector="{{AdminCategoryMainActionsSection.SaveButton}}" stepKey="saveCategoryWithProduct"/>
+        <click selector="{{AdminCategoryProductsSection.sectionHeader}}" stepKey="openProductsInCategorySection2"/>
+        <see selector="{{AdminCategoryProductsGridSection.rowProductName('1')}}" userInput="{{DownloadableProduct.name}}" stepKey="seeProductInCategory"/>
+    </actionGroup>
+
+    <actionGroup name="SeeProductInProductCategoryGrid">
+        <arguments>
+            <argument name="product"/>
+            <argument name="categoryEntity"/>
+        </arguments>
+
+        <seeInCurrentUrl url="{{AdminCategoryPage.url}}" stepKey="seeOnCategoryPage"/>
+        <click selector="{{AdminCategorySidebarTreeSection.categoryInTree(categoryEntity.name)}}" stepKey="clickCategoryLink"/>
+        <click selector="{{AdminCategoryProductsSection.sectionHeader}}" stepKey="openProductsInCategorySection"/>
+        <see selector="{{AdminCategoryProductsGridSection.nameColumn}}" userInput="{{product.name}}" stepKey="seeProductNameInGrid"/>
+        <see selector="{{AdminCategoryProductsGridSection.skuColumn}}" userInput="{{product.sku}}" stepKey="seeProductSkuInGrid"/>
+        <see selector="{{AdminCategoryProductsGridSection.priceColumn}}" userInput="{{product.price}}" stepKey="seeProductPriceInGrid"/>
+    </actionGroup>
+
+    <actionGroup name="SeeProductInProductCategoryTileForCurrentCategory">
+        <arguments>
+            <argument name="product"/>
+        </arguments>
+        <see selector="{{AdminCategoryProductsTileSection.productInfo}}" userInput="{{product.name}}" stepKey="seeProductNameInTile"/>
+        <see selector="{{AdminCategoryProductsTileSection.productInfo}}" userInput="{{product.sku}}" stepKey="seeProductSkuInTile"/>
+        <see selector="{{AdminCategoryProductsTileSection.productInfo}}" userInput="{{product.price}}" stepKey="seeProductPriceInTile"/>
+    </actionGroup>
+
+    <actionGroup name="SeeProductInProductCategoryGridForCurrentCategory">
+        <arguments>
+            <argument name="product"/>
+        </arguments>
+        <see selector="{{AdminCategoryProductsGridSection.nameColumn}}" userInput="{{product.name}}" stepKey="seeProductNameInGrid"/>
+        <see selector="{{AdminCategoryProductsGridSection.skuColumn}}" userInput="{{product.sku}}" stepKey="seeProductSkuInGrid"/>
+        <see selector="{{AdminCategoryProductsGridSection.priceColumn}}" userInput="{{product.price}}" stepKey="seeProductPriceInGrid"/>
+    </actionGroup>
+
+    <!-- Add 1st condition -->
+    <actionGroup name="AddFirstConditionForMatchProductByRule">
+        <arguments>
+            <argument name="attribute" type="string"/>
+            <argument name="operator" type="string"/>
+            <argument name="value" type="string"/>
+        </arguments>
+        <scrollTo selector="{{AdminCategoryProductsSection.addCondition}}" stepKey="scrollToArea"/>
+        <click selector="{{AdminCategoryProductsSection.addCondition}}" stepKey="clickAddCondition"/>
+        <selectOption userInput="{{attribute}}" selector="{{AdminCategoryProductsSection.conditionAttribute('1')}}" stepKey="selectAttribute"/>
+        <waitForPageLoad stepKey="wait1"/>
+        <selectOption userInput="{{operator}}" selector="{{AdminCategoryProductsSection.conditionOperator('1')}}" stepKey="selectOperator"/>
+        <waitForPageLoad stepKey="wait2"/>
+        <fillField userInput="{{value}}" selector="{{AdminCategoryProductsSection.conditionValue('1')}}" stepKey="fillValue"/>
+        <waitForPageLoad stepKey="wait3"/>
+    </actionGroup>
+
+    <!-- Add condition in nth row, requires n > 1
+         for n = 1, use AddFirstConditionForMatchProductByRule instead -->
+    <actionGroup name="AddNthConditionForMatchProductByRule">
+        <arguments>
+            <argument name="n" type="string"/>
+            <argument name="logic" type="string" defaultValue="OR"/>
+            <argument name="attribute" type="string"/>
+            <argument name="operator" type="string"/>
+            <argument name="value" type="string"/>
+        </arguments>
+        <executeJS function="return {{n}} - 1;" stepKey="nMinusOne"/>
+        <scrollTo selector="{{AdminCategoryProductsSection.addCondition}}" stepKey="scrollToArea"/>
+        <click selector="{{AdminCategoryProductsSection.addCondition}}" stepKey="clickAddCondition"/>
+        <selectOption userInput="{{logic}}" selector="{{AdminCategoryProductsSection.conditionLogic({$nMinusOne})}}" stepKey="selectLogic"/>
+        <waitForPageLoad stepKey="wait1"/>
+        <selectOption userInput="{{attribute}}" selector="{{AdminCategoryProductsSection.conditionAttribute(n)}}" stepKey="selectAttribute"/>
+        <waitForPageLoad stepKey="wait2"/>
+        <selectOption userInput="{{operator}}" selector="{{AdminCategoryProductsSection.conditionOperator(n)}}" stepKey="selectOperator"/>
+        <waitForPageLoad stepKey="wait3"/>
+        <fillField userInput="{{value}}" selector="{{AdminCategoryProductsSection.conditionValue(n)}}" stepKey="fillValue"/>
+        <waitForPageLoad stepKey="wait4"/>
+    </actionGroup>
+    <actionGroup name="SwitchToGridModeProductInCategory">
+        <conditionalClick selector="{{AdminCategoryProductsSection.gridMode}}" dependentSelector="{{AdminCategoryProductsTileSection.totalCount}}" visible="true" stepKey="switchToGrid"/>
+        <waitForPageLoad stepKey="waitForPageLoad"/>
+    </actionGroup>
+    <actionGroup name="SwitchToTileModeProductInCategory">
+        <conditionalClick selector="{{AdminCategoryProductsSection.tileMode}}" dependentSelector="{{AdminCategoryProductsGridSection.totalCount}}" visible="true" stepKey="switchToTile"/>
+        <waitForPageLoad stepKey="waitForPageLoad"/>
+    </actionGroup>
+    <actionGroup name="SortProductsByCriteriaInCategory">
+        <arguments>
+            <argument name="criteria" type="string"/>
+        </arguments>
+        <selectOption selector="{{AdminCategoryProductsSection.sortOrder}}" userInput="{{criteria}}" stepKey="selectSortOrder"/>
+        <click selector="{{AdminCategoryProductsSection.sort}}" stepKey="clickSort"/>
+    </actionGroup>
+    <!-- Move a product from rowFrom to rowTo by position field in grid mode -->
+    <actionGroup name="MoveProductByPositionFieldGridMode">
+        <arguments>
+            <argument name="rowFrom" type="string"/>
+            <argument name="rowTo" type="string"/>
+        </arguments>
+        <pressKey selector="{{AdminCategoryProductsGridSection.rowPositionInput(rowFrom)}}" parameterArray="[\Facebook\WebDriver\WebDriverKeys::BACKSPACE]" stepKey="delete1"/>
+        <pressKey selector="{{AdminCategoryProductsGridSection.rowPositionInput(rowFrom)}}" parameterArray="[\Facebook\WebDriver\WebDriverKeys::BACKSPACE]" stepKey="delete2"/>
+        <pressKey selector="{{AdminCategoryProductsGridSection.rowPositionInput(rowFrom)}}" parameterArray="[\Facebook\WebDriver\WebDriverKeys::BACKSPACE]" stepKey="delete3"/>
+        <pressKey selector="{{AdminCategoryProductsGridSection.rowPositionInput(rowFrom)}}" parameterArray="[\Facebook\WebDriver\WebDriverKeys::BACKSPACE]" stepKey="delete4"/>
+        <pressKey selector="{{AdminCategoryProductsGridSection.rowPositionInput(rowFrom)}}" parameterArray="[\Facebook\WebDriver\WebDriverKeys::BACKSPACE]" stepKey="delete5"/>
+        <fillField userInput="{{rowTo}}" selector="{{AdminCategoryProductsGridSection.rowPositionInput(rowFrom)}}" stepKey="fill"/>
+        <pressKey selector="{{AdminCategoryProductsGridSection.rowPositionInput(rowFrom)}}" parameterArray="[\Facebook\WebDriver\WebDriverKeys::ENTER]" stepKey="enter"/>
+    </actionGroup>
+    <!-- Move a product from tileFrom to tileTo by position field in tile mode -->
+    <actionGroup name="MoveProductByPositionFieldTileMode">
+        <arguments>
+            <argument name="tileFrom" type="string"/>
+            <argument name="tileTo" type="string"/>
+        </arguments>
+        <pressKey selector="{{AdminCategoryProductsTileSection.nThPositionInput(tileFrom)}}" parameterArray="[\Facebook\WebDriver\WebDriverKeys::BACKSPACE]" stepKey="delete1"/>
+        <pressKey selector="{{AdminCategoryProductsTileSection.nThPositionInput(tileFrom)}}" parameterArray="[\Facebook\WebDriver\WebDriverKeys::BACKSPACE]" stepKey="delete2"/>
+        <pressKey selector="{{AdminCategoryProductsTileSection.nThPositionInput(tileFrom)}}" parameterArray="[\Facebook\WebDriver\WebDriverKeys::BACKSPACE]" stepKey="delete3"/>
+        <pressKey selector="{{AdminCategoryProductsTileSection.nThPositionInput(tileFrom)}}" parameterArray="[\Facebook\WebDriver\WebDriverKeys::BACKSPACE]" stepKey="delete4"/>
+        <pressKey selector="{{AdminCategoryProductsTileSection.nThPositionInput(tileFrom)}}" parameterArray="[\Facebook\WebDriver\WebDriverKeys::BACKSPACE]" stepKey="delete5"/>
+        <fillField userInput="{{tileTo}}" selector="{{AdminCategoryProductsTileSection.nThPositionInput(tileFrom)}}" stepKey="fill"/>
+        <pressKey selector="{{AdminCategoryProductsTileSection.nThPositionInput(tileFrom)}}" parameterArray="[\Facebook\WebDriver\WebDriverKeys::ENTER]" stepKey="enter"/>
+    </actionGroup>
+    <actionGroup name="SearchAProductForCategoryByKeyword">
+        <arguments>
+            <argument name="keyword" type="string"/>
+        </arguments>
+        <fillField selector="{{AdminCategoryAddProductsModalSection.searchKeyword}}" userInput="{{keyword}}" stepKey="fillKeyword"/>
+        <pressKey selector="{{AdminCategoryAddProductsModalSection.searchKeyword}}" parameterArray="[\Facebook\WebDriver\WebDriverKeys::ENTER]" stepKey="search"/>
+        <waitForPageLoad stepKey="wait"/>
+    </actionGroup>
+
+    <actionGroup name="AdminVerifyAddedProductToCategoryWithoutErrorActionGroup" extends="AddProductToCategoryBySku">
+        <waitForPageLoad stepKey="waitForProductAddInGrid" after="saveCloseModal"/>
+        <scrollToTopOfPage stepKey="scrollToTop" after="waitForProductAddInGrid"/>
+        <waitForPageLoad stepKey="waitForTopOfThePage" after="scrollToTop"/>
+        <dontSee stepKey="dontSeeErrorMessage"
+                 userInput="A technical problem with the server created an error. Try again to continue what you were doing. If the problem persists, try again later."
+                 after="waitForTopOfThePage"/>
+    </actionGroup>
+</actionGroups>

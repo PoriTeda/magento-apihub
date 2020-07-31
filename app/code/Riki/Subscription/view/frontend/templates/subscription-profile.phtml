@@ -1,0 +1,272 @@
+<?php
+/**
+ * @var Riki\Subscription\Block\Frontend\Profile\Index $block
+ */
+$_threeDeliveryDate = $block->threeDeliveryDate();
+$warningMessage = $block->getChildHtml('warning_message_for_profile_list');
+$profileInformationTitle = __("Payment method, card information, shipping address, delivery date, delivery product");
+?>
+<?php if ($_threeDeliveryDate && !empty($_threeDeliveryDate)) : ?>
+
+    <div class="fieldset-wrapper customer-subscription-profile">
+
+        <?php if ($warningMessage != ''): ?>
+            <div class="customer-subscription-profile-warning">
+                <?php echo $warningMessage; ?>
+            </div>
+        <?php endif; ?>
+
+        <div class="customer-subscription-profile-info">
+            <?php echo $block->getChildHtml('subscription_list_top_message'); ?>
+        </div>
+        <div class="customer-subscription-profile">
+            <table class="data table-list-sub-profile">
+                <thead>
+                    <tr>
+                        <th class="action-desktop"></th>
+                        <th><?php echo __('Course name') ?><br/><br/><span><?php echo __('Delivery nick name');?></span></th>
+                        <th class="frequency"><?php echo __('Frequency profile') ?></th>
+<!--                        <th>--><?php //echo __('Next delivery amount') ?><!--</th>-->
+                        <th><?php echo __('Next delivery #N date') ?></th>
+                        <th class="action-mobile"></th>
+                        <th><?php echo __('Delivery #N+1 date') ?></th>
+                        <th><?php echo __('Delivery #N+2 date') ?></th>
+                    </tr>
+                </thead>
+                <?php foreach ($_threeDeliveryDate as $profileId => $item) : ?>
+                <tbody>
+                    <tr>
+                        <?php if ($block->isDisengageProfile($profileId)) : ?>
+                            <td class="action-desktop">
+                                <span>（<?php echo $profileInformationTitle; ?>）</span>
+                            </td>
+                        <?php else : ?>
+                        <td class="action-desktop">
+
+                            <a href="<?php echo $block->getBaseUrlSubcriptionProfile($profileId) ?>">
+                                <?php echo __('Edit subscription profile') ?>
+                            </a>
+                            <span>（<?php echo $profileInformationTitle; ?>）</span>
+
+                            <?php
+                            if ($block->isHanpukai($profileId) == false) {
+                                $result = $block->convertDataProfile($profileId, $item);
+                                /**
+                                 * show Url Change Frequency
+                                 */
+                                echo $block->isHiddenChangeDeliveryDate($profileId, $result);
+
+                                /**
+                                  * show Url Skip Next Delivery
+                                  */
+                                echo $block->isHiddenSkipNextDelivery($profileId, $result);
+                            }
+
+                                /**
+                                 * Show url Add items outside the course
+                                 */
+                                if($item['allow_change_product'] == 1) {
+                                    echo $block->getLinkAddItemsOutSideTheCourse($profileId);
+                                }
+                            ?>
+                        </td>
+                        <?php endif;?>
+                        <td data-th="<?php echo __('Course name') ?>">
+                            <span style="margin-bottom: 20px; display: block"><?php echo __($item['course_name']); ?></span>
+                            <strong><?php echo $block->getShippingAddressNickName($profileId); ?></strong>
+                        </td>
+                        <td class="a-right" data-th="<?php echo __('Frequency profile') ?>">
+                            <span><?php echo $item['frequency']; ?></span>
+                        </td>
+<!--                        <td data-th="--><?php //echo __('Next delivery amount') ?><!--">-->
+<!--                            <span>-->
+<!--                                --><?php //echo $block->formatCurrency($item['next_delivery_amount']['total_amount']) ?>
+<!--                            </span>-->
+<!--                        </td>-->
+
+                        <?php if ($item['stock_point_profile_bucket_id'] != null): ?>
+                            <td class="action-mobile">
+                                <a href="<?php echo $block->getBaseUrlSubcriptionProfile($profileId) ?>">
+                                    <span>
+                                        <span>
+                                            <span><?php echo __('Edit subscription profile') ?></span>
+                                            <span class="sub">（<?php echo $profileInformationTitle; ?>）</span>
+                                        </span>
+                                    </span>
+                                </a>
+                                <?php if ($block->isHanpukai($profileId) == false) : ?>
+                                    <a href="<?php echo $block->getUrlSubProfileChangeFrequency($profileId); ?>">
+                                    <span>
+                                        <span><?php echo __('Change Frequency') ?></span>
+                                    </span>
+                                    </a>
+                                    <?php if ($block->checkAllowSkipNextDelivery($profileId)) : ?>
+                                        <a href="<?php echo $block->getUrlSubProfileSkipNextDelivery($profileId); ?>">
+                                    <span>
+                                        <span><?php echo __('Skip Next Delivery'); ?></span>
+                                    </span>
+                                        </a>
+                                    <?php endif; ?>
+                                    <?php if($item['allow_change_product'] == 1) : ?>
+                                    <a href="<?php echo $block->getUrlAddSpotProduct($profileId); ?>">
+                                    <span>
+                                        <span><?php echo __('Add items outside the course') ?></span>
+                                    </span>
+                                    </a>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </td>
+                            <td colspan="3">
+                                <?php $label = $block->getLabel($profileId); ?>
+                                <?php $labelClass = $block->getClass($profileId); ?>
+                                <span class="margin-status">
+                                    <?php echo __($item['stock_point_delivery_information']); ?>
+                                </span>
+                                    <span class="margin-status <?php echo $labelClass; ?>">
+                                    <?php echo __($label); ?>
+                                </span>
+                            </td>
+                        <?php else :?>
+                            <?php $isDisengaged = $block->isDisengageProfile($profileId);?>
+                            <?php if ($isDisengaged) : ?>
+                                <td colspan="3">
+                                    <span class="margin-status">
+                                    <?php echo __('Has been canceled'); ?>
+                                    </span>
+                                </td>
+                            <?php endif;?>
+                            <?php if (!$isDisengaged) :?>
+                            <td data-th="<?php echo __('Next delivery #N date') ?>">
+                                <span>
+                                    <?php echo $block->convertDateToTrueFormat($item['next_delivery_1']['delivery_date']);?>
+                                   (<?php echo __($item['next_delivery_1']['time_slot']) ?>)
+                                </span>
+
+                                <?php if ($block->checkProfileStatusEditTable($item['next_delivery_1']['status'])) { ?>
+                                    <span class="margin-status next-ship">
+                                        <?php echo __($item['next_delivery_1']['status']); ?>
+                                    </span>
+                                <?php } else { ?>
+                                    <?php
+                                        $cssClass = '';
+                                    if ($block->checkProfileStatusPlaned($item['next_delivery_1']['status'])) {
+                                        $cssClass = 'prepare-ship';
+                                    }
+                                    ?>
+                                    <span class="<?php echo $cssClass; ?> margin-status">
+                                        <?php echo __($item['next_delivery_1']['status']); ?>
+                                    </span>
+                                <?php } ?>
+                            </td>
+                            <td class="action-mobile">
+                                <a href="<?php echo $block->getBaseUrlSubcriptionProfile($profileId) ?>">
+                                    <span>
+                                        <span>
+                                            <span><?php echo __('Edit subscription profile') ?></span>
+                                            <span class="sub">（<?php echo $profileInformationTitle; ?>）</span>
+                                        </span>
+                                    </span>
+                                </a>
+                                <?php if ($block->isHanpukai($profileId) == false) : ?>
+                                <a href="<?php echo $block->getUrlSubProfileChangeFrequency($profileId); ?>">
+                                    <span>
+                                        <span><?php echo __('Change Frequency') ?></span>
+                                    </span>
+                                </a>
+                                <?php if ($block->checkAllowSkipNextDelivery($profileId)) : ?>
+                                <a href="<?php echo $block->getUrlSubProfileSkipNextDelivery($profileId); ?>">
+                                    <span>
+                                        <span><?php echo __('Skip Next Delivery'); ?></span>
+                                    </span>
+                                </a>
+                                <?php endif; ?>
+                                <?php if($item['allow_change_product'] == 1) : ?>
+                                <a href="<?php echo $block->getUrlAddSpotProduct($profileId); ?>">
+                                    <span>
+                                        <span><?php echo __('Add items outside the course') ?></span>
+                                    </span>
+                                </a>
+                                <?php endif; ?>
+                                <?php endif; ?>
+                            </td>
+                            <td data-th="<?php echo __('Delivery #N+1 date') ?>">
+                                <span>
+                                    <?php echo $block->convertDateToTrueFormat($item['next_delivery_2']['delivery_date']) ?>
+                                    (<?php echo __($item['next_delivery_2']['time_slot']) ?>)
+                                </span>
+                                <?php if ($block->checkProfileStatusEditTable($item['next_delivery_2']['status'])) { ?>
+                                    <span class="margin-status next-ship">
+                                        <?php echo __($item['next_delivery_2']['status']); ?>
+                                    </span>
+                                <?php } else { ?>
+                                        <?php
+                                        $cssClass2 = '';
+                                        if ($block->checkProfileStatusPlaned($item['next_delivery_2']['status'])) {
+                                            $cssClass2 = 'prepare-ship';
+                                        }
+                                    ?>
+                                    <span class="<?php echo $cssClass2; ?>"></span>
+                                <?php } ?>
+                            </td>
+                            <td data-th="<?php echo __('Delivery #N+2 date') ?>">
+                                <span>
+                                <?php echo $block->convertDateToTrueFormat($item['next_delivery_3']['delivery_date']); ?>
+                                (<?php echo __($item['next_delivery_3']['time_slot']) ?>)
+                                </span>
+
+                                <?php if ($block->checkProfileStatusEditTable($item['next_delivery_3']['status'])) { ?>
+                                    <span class="margin-status next-ship">
+                                        <?php echo __($item['next_delivery_3']['status']); ?>
+                                    </span>
+                                <?php } else { ?>
+                                    <?php
+                                    $cssClass = '';
+                                    if ($block->checkProfileStatusPlaned($item['next_delivery_3']['status'])) {
+                                        $cssClass = 'prepare-ship';
+                                    }
+                                    ?>
+                                    <span class="<?php echo $cssClass; ?> margin-status">
+                                        <?php echo __($item['next_delivery_3']['status']); ?>
+                                    </span>
+                                <?php } ?>
+                            </td>
+                            <?php endif;?>
+                        <?php endif; ?>
+                    </tr>
+                    <?php $showChangePaymentMethodLink = $block ->showChangePaymentMethodLink($profileId); ?>
+                    <?php if ($showChangePaymentMethodLink) : ?>
+                    <tr>
+                        <td colspan="8" class="payment-method-error-container">
+                            <div class="payment-method-error">
+                                <div>
+                                <?php
+                                $url = $block->getUrl('subscriptions/profile/payment_method_edit/id/'.$profileId);
+                                $str1 = '* Because you can not do deal with your credit card used last time, ';
+                                $str2 = "you can not change the order now.<br/>";
+                                $str3 = 'Sorry for your inconvenience but please update your card information from ';
+                                $allStr = $str1.$str2.$str3 .'<a href="%1">here</a>.';
+                                ?>
+                                    <?php echo __($allStr, $url) ?>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endif; ?>
+                </tbody>
+                <?php endforeach; ?>
+            </table>
+
+            <?php if ($block->getPagerHtml()) : ?>
+                <div class="toolbar toolbar-products bottom"><?php echo $block->getPagerHtml(); ?></div>
+            <?php endif ?>
+
+            <a href="#" class="list-sub-profile--button__back" onclick="window.history.go(-1); return false;">
+                <span><?php echo __("Go back") ?></span>
+            </a>
+        </div>
+    </div>
+<?php else : ?>
+    <div class="message info empty">
+        <span><?php /* @escapeNotVerified */ echo __('You have no subscription.'); ?></span>
+    </div>
+<?php endif ?>

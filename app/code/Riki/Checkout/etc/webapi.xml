@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/multicheckout/setShippingAddress/:cartId/:itemAddressInformation" method="GET">
+        <service class="Riki\Checkout\Api\ShippingAddressInterface" method="saveItemAddressInformation"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!-- API group item by address when go to confirm page ( multiple addresses ) -->
+    <route url="/V1/multicheckout/manageCart/:cartId" method="GET">
+        <service class="Riki\Checkout\Api\ManageCartInterface" method="groupItemByAddress"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/multicheckout/setDeliveryMethod/" method="POST">
+        <service class="Riki\Checkout\Api\DeliveryDateMethodInterface" method="saveDeliveryInformation"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+        <data>
+            <parameter name="cartId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
+
+    <!-- My place order with payment information saving -->
+    <route url="/V1/multicheckout/mine/payment-information" method="POST">
+        <service class="Riki\Checkout\Api\PaymentInformationManagementInterface" method="savePaymentInformationAndPlaceOrder"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+        <data>
+            <parameter name="cartId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
+
+    <route url="/V1/rikicarts/mine/payment-information" method="POST">
+        <service class="Riki\Checkout\Api\PaymentInformationManagementInterface" method="saveShippingAndPaymentInformation"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+        <data>
+            <parameter name="cartId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
+
+    <route url="/V1/rikicarts/mine/cart-total-simulation" method="GET">
+        <service class="Riki\Checkout\Api\CartTotalSimulatorInterface" method="simulateSubscriptionCart" />
+        <resources>
+            <resource ref="self" />
+        </resources>
+        <data>
+            <parameter name="cartId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
+</routes>

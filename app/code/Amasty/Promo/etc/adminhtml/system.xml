@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @package Amasty_Promo
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="ampromo" translate="label" type="text" sortOrder="161809" showInDefault="1" showInWebsite="1" showInStore="1">
+            <resource>Amasty_Promo::config_promo</resource>
+            <class>separator-top</class>
+            <label>Free Gift</label>
+            <tab>amasty</tab>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="auto_add" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Add Simple Products Automatically, Without Confirmation</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="messages" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Messages And Notifications Settings</label>
+                <field id="cart_message" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Message For The Free Item In The Cart</label>
+                </field>
+                <field id="prefix" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Prefix For The Free Item Name In The Order</label>
+                </field>
+                <field id="add_message" translate="label comment" type="textarea" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Add Free Gift Message</label>
+                </field>
+                <field id="auto_open_popup" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Open Popup Automatically</label>
+                    <comment>Always open free gift popup on cart page if any free gift is available</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="display_error_messages" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Display Error Messages</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="display_success_messages" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Display Success Messages</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

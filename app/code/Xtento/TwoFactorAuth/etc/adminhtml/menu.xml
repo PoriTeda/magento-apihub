@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Xtento_TwoFactorAuth::configuration" title="Two-Factor Authentication" module="Xtento_TwoFactorAuth" sortOrder="190" parent="Xtento_XtCore::extensions" action="adminhtml/system_config/edit/section/twofactorauth" resource="Xtento_TwoFactorAuth::configuration"/>
+    </menu>
+</config>
+<!--
+/**
+ * Product:       Xtento_TwoFactorAuth (2.1.5)
+ * ID:            %!uniqueid!%
+ * Packaged:      %!packaged!%
+ * Last Modified: 2017-01-25T13:04:24+00:00
+ * File:          etc/adminhtml/menu.xml
+ * Copyright:     Copyright (c) 2017 XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

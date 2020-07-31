@@ -1,0 +1,22 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<address>
+    <!-- ko foreach: {
+        data: getAddressData(),
+        as: 'preview' 
+    } -->
+
+    <!-- ko if: $parent.hasPreview(preview) -->
+    <span data-bind="text: $parent.buildPreview(preview)"></span><br>
+    <!-- /ko -->
+
+    <!-- /ko -->
+
+    <!-- ko if: noPreview -->
+    <span data-bind="text: label"></span><br>
+    <!-- /ko -->
+</address>

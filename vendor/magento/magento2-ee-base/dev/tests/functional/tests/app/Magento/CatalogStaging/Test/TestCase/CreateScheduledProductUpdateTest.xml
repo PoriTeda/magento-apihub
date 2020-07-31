@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../vendor/magento/mtf/etc/variations.xsd">
+    <testCase name="Magento\CatalogStaging\Test\TestCase\CreateScheduledProductUpdateTest" summary="Create scheduled update">
+        <variation name="CreateScheduledProductUpdateTestVariation1" summary="Create permanent product update campaign and verify it in grid" ticketId="MAGETWO-49851">
+            <data name="product/dataset" xsi:type="string">product_with_category</data>
+            <data name="update/dataset" xsi:type="string">permanent_update_campaign</data>
+            <constraint name="Magento\Staging\Test\Constraint\AssertUpdateCampaignsAreVisibleInGrid" />
+        </variation>
+        <variation name="CreateScheduledProductUpdateTestVariation2" summary="Create product update campaign with start date in the past" ticketId="MAGETWO-49851">
+            <data name="product/dataset" xsi:type="string">product_with_category</data>
+            <data name="update/dataset" xsi:type="string">update_with_start_date_in_past</data>
+            <data name="errorMessage" xsi:type="string">error: : The Future Update Start Time is invalid. It can't be earlier than the current time.</data>
+            <constraint name="Magento\Staging\Test\Constraint\AssertUpdateScheduledChangesErrorMessage" />
+        </variation>
+        <variation name="CreateScheduledProductUpdateTestVariation3" summary="Create temporary product update campaign and verify it in grid" ticketId="MAGETWO-49852">
+            <data name="product/dataset" xsi:type="string">product_with_category</data>
+            <data name="update/dataset" xsi:type="string">update_with_date_plus_2_year</data>
+            <constraint name="Magento\Staging\Test\Constraint\AssertUpdateCampaignsAreVisibleInGrid" />
+        </variation>
+        <variation name="CreateScheduledProductUpdateTestVariation4" summary="Create product update campaign with end date before start date" ticketId="MAGETWO-49852">
+            <data name="product/dataset" xsi:type="string">product_with_category</data>
+            <data name="update/dataset" xsi:type="string">update_with_end_date_before_start_date</data>
+            <data name="errorMessage" xsi:type="string">error: : The Future Update End Time is invalid. It can't be the same time or earlier than the current time.</data>
+            <constraint name="Magento\Staging\Test\Constraint\AssertUpdateScheduledChangesErrorMessage" />
+        </variation>
+        <variation name="CreateScheduledProductUpdateTestVariation5" summary="Create permanent product update and verify it in grid after activation" ticketId="MAGETWO-63244">
+            <data name="tag" xsi:type="string">severity:S2</data>
+            <data name="product/dataset" xsi:type="string">product_with_category</data>
+            <data name="update/dataset" xsi:type="string">update_with_date_plus_2_minutes</data>
+            <constraint name="Magento\CatalogStaging\Test\Constraint\AssertUpdateNotVisibleAfterActivation" />
+        </variation>
+        <variation name="CreateScheduledProductUpdateTestVariation6" summary="Create temporary product update and verify it in grid after activation" ticketId="MAGETWO-63244">
+            <data name="tag" xsi:type="string">severity:S2</data>
+            <data name="product/dataset" xsi:type="string">product_with_category</data>
+            <data name="update/dataset" xsi:type="string">temporary_update_with_date_plus_2_minutes</data>
+            <constraint name="Magento\CatalogStaging\Test\Constraint\AssertUpdateVisibleAfterActivation" />
+        </variation>
+        <variation name="CreateScheduledProductUpdateTestVariation7" summary="created scheduled update for product with custom options and verify it is saved successfully" ticketId="MAGETWO-71289">
+            <data name="tag" xsi:type="string">severity:S2</data>
+            <data name="product/dataset" xsi:type="string">with_two_custom_option</data>
+            <data name="update/dataset" xsi:type="string">temporary_update_with_date_plus_2_days</data>
+            <constraint name="Magento\CatalogStaging\Test\Constraint\AssertUpdateSavedForProductWithCustomOptions" />
+        </variation>
+    </testCase>
+</config>

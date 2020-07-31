@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="riki_questionnaire" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Questionnaire</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_Questionnaire::config_questionnaire</resource>
+            <group id="questionnaire" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Questionnaire Configuration</label>
+                <field id="questionnaire_default" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default Questionnaire</label>
+                    <source_model>Riki\Questionnaire\Model\Config\Source\QuestionnaireOption</source_model>
+                    <comment>Input ID questionnaire. A default questionnaire will be defined and shown in the case not product rule is matching</comment>
+                </field>
+                <field id="questionnaire_log" translate="label" type="select" sortOrder="0" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Log Save </label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Allow Save Log</comment>
+                </field>
+                <field id="questionnaire_profile_disengagement" type="multiselect" showInWebsite="1" showInDefault="1" showInStore="1" sortOrder="20" translate="label">
+                    <label>Machine Questionnaire for Profile Disengagement</label>
+                    <source_model>Riki\Questionnaire\Model\Config\Source\DisengagementQuestionnaire</source_model>
+                    <comment>The selected questionnaire will show on disengagement flow via front-end</comment>
+                </field>
+            </group>
+            <group id="questionnaire_old_answer" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Old Answer Manage</label>
+                <field id="questionnaire_old_answer_status" translate="label" type="select" sortOrder="0" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Allow to delete old answers?</comment>
+                </field>
+                <field id="questionnaire_old_answer_cron_schedule" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cron Schedule</label>
+                    <comment>Exp: */5 * * * *</comment>
+                </field>
+                <field id="questionnaire_old_answer_life_time" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Answer life time</label>
+                    <comment>(days)</comment>
+                    <validate>validate-number validate-greater-than-zero</validate>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

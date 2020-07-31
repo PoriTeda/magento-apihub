@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Riki\PointOfSale\Api\PointOfSaleRepositoryInterface" type="Riki\PointOfSale\Model\PointOfSaleRepository" />
+    <preference for="Wyomind\PointOfSale\Controller\Adminhtml\Manage\Save" type="Riki\PointOfSale\Controller\Adminhtml\Manage\Save" />
+    <preference for="Wyomind\PointOfSale\Block\Adminhtml\Manage\Edit\Tab\Main" type="Riki\PointOfSale\Block\Adminhtml\Manage\Edit\Tab\Main" />
+</config>

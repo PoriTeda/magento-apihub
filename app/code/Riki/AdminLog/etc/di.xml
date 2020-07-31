@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="adminlogGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\AdminLog\Model\ResourceModel\Log\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">adminlogGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Riki\AdminLog\Model\ResourceModel\Log\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">riki_admin_log</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\AdminLog\Model\ResourceModel\Log</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="adminlog_listing_data_source" xsi:type="string">Riki\AdminLog\Model\ResourceModel\Log\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Riki\AdminLog\Logger\LogLoginAdminLog">
+        <arguments>
+            <argument name="name" xsi:type="string">/var/log/admin_log_login.log</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\AdminLog\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Logging\Model\Event">
+        <plugin name="riki-adminlog-save-data" type="Riki\AdminLog\Plugin\SaveAdminLog" />
+    </type>
+
+</config>

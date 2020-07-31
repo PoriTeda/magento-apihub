@@ -1,0 +1,38 @@
+<div class="field required subscription-content">
+    <label class="label"><?php echo __('Selection of several intervals'); ?></label>
+    <div class="subscription-content-inner">
+        <div class="total-amount-block">
+            <div class="table table-total-amount">
+                <div class="value total-amount">0円</div>
+            </div>
+        </div>
+        <div class="select-multiple-qty block_quantity">
+            <div class="label hidden"><?php echo __('Qty');?></div>
+            <div class="quantity buttons_added">
+                <span class="minus" data-bind="click: function(){updateQtyHanpukai(massQtySelected,-1)}, touchstart:function(){updateQtyHanpukai(massQtySelected,-1)}, css: { delete: massQtySelected()  == 1}"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                <input type="hidden"  data-bind="value: massQtySelected" name="hanpukai_change_set_qty_current">
+                <select class="input-text qty text" id="hanpukai_change_set_qty"  name="hanpukai_change_set_qty" <?php if ($isHanpukaiOutOfStock){ ?> disabled <?php   } ?>>
+                    <?php for($j=1; $j <= 30; $j++): ?>
+                        <option value="<?php echo $j ?>"><?php echo $j ?></option>
+                    <?php endfor; ?>
+                </select>
+                <span class="plus" data-bind="click: function(){updateQtyHanpukai(massQtySelected,1)}, touchstart:function(){updateQtyHanpukai(massQtySelected,1)}"><i class="fa fa-plus" aria-hidden="true"></i></span>
+            </div>
+            <div class="stock d-pc" >
+                <?php if($isHanpukaiOutOfStock): ?>
+                    <?php echo __('Stock: Sorry, it is currently sold out. Please wait for the next arrival of goods.') ?>
+                <?php else: ?>
+                    <?php echo __('Stock: Your order is being accepted.') ?>
+                <?php endif; ?>
+            </div>
+        </div>
+
+    </div>
+    <div class="stock d-sp" >
+        <?php if($isHanpukaiOutOfStock): ?>
+            <?php echo __('Stock: Sorry, it is currently sold out. Please wait for the next arrival of goods.') ?>
+        <?php else: ?>
+            <?php echo __('Stock: Your order is being accepted.') ?>
+        <?php endif; ?>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="xtento" sortOrder="9999999" translate="label">
+            <label><![CDATA[<img src="//www.xtento.com/media/images/extension_logo.png" alt="XTENTO" height="20" style="vertical-align:top; margin-left:-1px;"/> XTENTO Extensions]]></label>
+        </tab>
+        <section id="xtcore" translate="label" sortOrder="1" showInDefault="1" showInStore="0" showInWebsite="0">
+            <tab>xtento</tab>
+            <label>General Configuration</label>
+            <resource>Xtento_XtCore::configuration</resource>
+            <group id="adminnotification" translate="label" sortOrder="10" showInDefault="1">
+                <label>Extensions and Notifications</label>
+                <attribute type="expanded">1</attribute>
+                <comment>
+                    <![CDATA[
+                <a href="http://www.xtento.com" target="_blank"><img src="//www.xtento.com/media/images/xtento_module.png" style="border:none;"></a>
+
+                <div style="margin-top:0px 4px 8px; color: #666;">Extension and Notification Setup</div>
+                <strong>Copyright © <script>var today=new Date(); document.write(today.getFullYear());</script> <a href="http://www.xtento.com" target="_blank">www.xtento.com</a> / <a href="mailto:info@xtento.com">info@xtento.com</a></strong><br /><br/>
+                Got questions? Feel like you need help? Please check out our <a href="http://support.xtento.com/" target="_blank">support wiki</a> before contacting us.<br/><br/>
+                <hr />
+                ]]>
+                </comment>
+                <field id="enabled" translate="label" type="select" sortOrder="40" showInDefault="1">
+                    <label>Notifications enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="follow" translate="label comment" type="multiselect" sortOrder="50" showInDefault="1">
+                    <label>I'd like to receive updates about</label>
+                    <comment>Hold down the CTRL key to select multiple notifications.</comment>
+                    <source_model>Xtento\XtCore\Model\System\Config\Source\Feed\Updates</source_model>
+                </field>
+            </group>
+            <group id="compatibility_fixes" translate="label comment" sortOrder="20" showInDefault="1">
+                <label>Compatibility Mode &amp; Fixes</label>
+                <comment>
+                    <![CDATA[<strong>Only change the below settings if instructed by a XTENTO representative.</strong> These are fixes/patches that can be enabled, which are required only in SOME Magento environments.]]>
+                </comment>
+            </group>
+            <group id="debug" translate="label" sortOrder="30" showInDefault="1">
+                <label>Debug Information</label>
+                <frontend_model>Xtento\XtCore\Block\System\Config\Form\Xtento\Debug</frontend_model>
+            </group>
+        </section>
+        <section id="xtstore" translate="label" sortOrder="2" showInDefault="1" showInStore="0" showInWebsite="0">
+            <tab>xtento</tab>
+            <label>XTENTO Extension Store</label>
+            <resource>Xtento_XtCore::store</resource>
+            <group id="store" translate="label" sortOrder="100" showInDefault="1">
+                <label>XTENTO Extension Store</label>
+                <frontend_model>Xtento\XtCore\Block\System\Config\Form\Xtento\Store</frontend_model>
+            </group>
+        </section>
+    </system>
+</config>
+<!--
+/**
+ * Product:       Xtento_XtCore (2.1.0)
+ * ID:            %!uniqueid!%
+ * Packaged:      %!packaged!%
+ * Last Modified: 2017-08-16T08:52:13+00:00
+ * File:          app/code/Xtento/XtCore/etc/adminhtml/system.xml
+ * Copyright:     Copyright (c) 2017 XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

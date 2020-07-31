@@ -1,0 +1,33 @@
+{
+    "name": "magento/module-visual-merchandiser",
+    "description": "N/A",
+    "config": {
+        "sort-packages": true
+    },
+    "type": "magento2-module",
+    "license": [
+        "proprietary"
+    ],
+    "require": {
+        "magento/framework": "102.0.*",
+        "magento/magento-composer-installer": "*",
+        "magento/module-backend": "101.0.*",
+        "magento/module-catalog": "103.0.*",
+        "magento/module-catalog-inventory": "100.3.*",
+        "magento/module-config": "101.1.*",
+        "magento/module-customer": "102.0.*",
+        "magento/module-eav": "102.0.*",
+        "magento/module-store": "101.0.*",
+        "magento/module-ui": "101.1.*",
+        "php": "~7.1.3||~7.2.0"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Magento\\VisualMerchandiser\\": ""
+        }
+    },
+    "version": "100.3.0"
+}

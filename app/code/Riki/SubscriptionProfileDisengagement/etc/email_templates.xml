@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="subscriptioncourse_profile_disengagement_email_template" label="Subscription Profile Disengagement Email To Customer" file="subscription_profile_disengagement.html" type="html" module="Riki_SubscriptionProfileDisengagement" area="frontend"/>
+    <template id="subscriptioncourse_profile_disengagement_email_template_to_business" label="Subscription profile disengaged (To business user)" file="subscription_profile_disengagement_to_business_user.html" type="html" module="Riki_SubscriptionProfileDisengagement" area="frontend"/>
+</config>

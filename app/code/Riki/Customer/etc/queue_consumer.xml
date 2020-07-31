@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/consumer.xsd">
+
+    <consumer name="customerGridIndexer" queue="reindex_customer_grid_flat"
+              handler="Riki\Customer\Model\ResourceModel\GridIndexerConsumer::execute"
+              consumerInstance="Magento\Framework\MessageQueue\BatchConsumer" connection="amqp"/>
+
+    <consumer name="startUpdateModelSegment" queue="update_model_segment_after_customer_save" connection="amqp"
+              handler="Riki\Customer\Model\Queue\UpdateSegment::execute"
+              consumerInstance="Magento\Framework\MessageQueue\BatchConsumer"/>
+</config>

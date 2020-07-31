@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link src="Xtento_TwoFactorAuth::js/twofactorauth.js"/>
+    </head>
+    <body>
+        <referenceBlock name="adminhtml.user.edit.tabs">
+            <block class="Xtento\TwoFactorAuth\Block\User\Edit\Tab\TwoFactorAuth" name="adminhtml.user.tab.twofactorauth" ifconfig="twofactorauth/general/enabled"/>
+            <action method="addTabAfter" ifconfig="twofactorauth/general/enabled">
+                <argument name="name" xsi:type="string">twofactorauth</argument>
+                <argument name="block" xsi:type="string">adminhtml.user.tab.twofactorauth</argument>
+                <argument name="after" xsi:type="string">roles_section</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>
+
+<!--
+/**
+ * Product:       Xtento_TwoFactorAuth (2.1.5)
+ * ID:            %!uniqueid!%
+ * Packaged:      %!packaged!%
+ * Last Modified: 2016-01-05T16:05:19+00:00
+ * File:          view/adminhtml/layout/adminhtml_user_edit.xml
+ * Copyright:     Copyright (c) 2017 XTENTO GmbH & Co. KG <info@xtento.com> / All rights reserved.
+ */
+-->

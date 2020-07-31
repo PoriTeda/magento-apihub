@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_SubscriptionProfileDisengagement::reason"
+             title="Profile Disengagement Reason"
+             module="Riki_SubscriptionProfileDisengagement"
+             sortOrder="100"
+             action="spdisengagement/reason"
+             parent="Riki_SubscriptionFrequency::subscription"
+             resource="Riki_SubscriptionProfileDisengagement::reason"/>
+    </menu>
+</config>

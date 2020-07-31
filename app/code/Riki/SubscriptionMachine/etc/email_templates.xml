@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="freemachine_outofstock_email_template_oos" label="Free Machine Stock Unavailability Email" file="free_machine_stock_unavailability.txt" type="text" module="Riki_SubscriptionMachine" area="adminhtml"/>
+    <template id="freemachine_outofstock_email_template_did_not_purchase" label="Free Machine Ambassador didn’t purchase the product email" file="free_machine_did_not_purchase_through_define_subscription.txt" type="text" module="Riki_SubscriptionMachine" area="adminhtml"/>
+    <template id="freemachine_outofstock_email_template_did_not_purchase_sub" label="Free Machine Ambassador didn’t purchase the product through define subscription email" file="free_machine_did_not_purchase.txt" type="text" module="Riki_SubscriptionMachine" area="adminhtml"/>
+    <template id="freemachine_paygent_authorize_fail_email_template" label="Free Machine - Paygent Authorization Fail Email" file="freemachine_paygent_authorize_fail_email_template.html" type="html" module="Riki_SubscriptionMachine" area="frontend"/>
+</config>

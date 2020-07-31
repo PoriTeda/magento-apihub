@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2019 Amasty (https://www.amasty.com)
+ * @package Amasty_Smtp
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="amsmtp" translate="label" type="text" sortOrder="191305" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>SMTP Email Settings</label>
+            <tab>amasty</tab>
+            <resource>Amasty_Smtp::config</resource>
+            <group id="general" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Settings</label>
+                <field id="enable" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_class>amsmtp-enable</frontend_class>
+                    <label>Enable SMTP For E-mail</label>
+                    <comment>When disabled, the extension has no impact on Magento e-mail sending routines.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="log" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Log Outgoing Mail</label>
+                    <comment>Makes it possible to see the list of all e-mails ever sent through Magento, including email contents.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="debug" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Debug Mode</label>
+                    <comment>When enabled, all debug information is logged. Recommended not to use on production sites.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="disable_delivery" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Disable E-mail Delivery</label>
+                    <comment>Set to "Yes" to not actually send e-mails. Useful when logging is enabled, for debug/development purposes.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="smtp" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>SMTP Configuration</label>
+                <field id="provider" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>SMTP Provider</label>
+                    <comment>Pre-defined SMTP providers</comment>
+                    <frontend_model>Amasty\Smtp\Block\Config\Autofill</frontend_model>
+                    <source_model>Amasty\Smtp\Model\Config\Source\Providers</source_model>
+                </field>
+                <field id="server" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Server Address</label>
+                    <comment>Either host name or IP address</comment>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="port" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Port</label>
+                    <comment>Usually is 25, 587 or 465. Please consult with your service provider.</comment>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="auth" translate="label comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Authentication Method</label>
+                    <source_model>Amasty\Smtp\Model\Config\Source\Auth</source_model>
+                </field>
+                <field id="login" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Login</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="auth" negative="0">login</field>
+                    </depends>
+                </field>
+                <field id="passw" translate="label comment" type="obscure" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Password</label>
+                    <validate>required-entry</validate>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <depends>
+                        <field id="auth" negative="0">login</field>
+                    </depends>
+                </field>
+                <field id="sec" translate="label comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Connection Security</label>
+                    <source_model>Amasty\Smtp\Model\Config\Source\Security</source_model>
+                </field>
+                <field id="use_custom_email_sender" translate="label comment" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Use Another Email Sender</label>
+                    <comment>Be careful! Use Sender with the same domain from where you send mail. Otherwise, your mail server can get into the ban because of spam.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="provider">0</field>
+                    </depends>
+                </field>
+                <field id="custom_sender_email" translate="label comment" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sender Email</label>
+                    <validate>required-entry validate-email</validate>
+                    <depends>
+                        <field id="use_custom_email_sender">1</field>
+                        <field id="provider">0</field>
+                    </depends>
+                </field>
+                <field id="custom_sender_name" translate="label comment" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sender Name</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="use_custom_email_sender">1</field>
+                        <field id="provider">0</field>
+                    </depends>
+                </field>
+                <field id="test_email" translate="label comment" type="text" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send Test E-mail To</label>
+                    <validate>validate-email</validate>
+                    <frontend_model>Amasty\Smtp\Block\Config\Check</frontend_model>
+                </field>
+            </group>
+            <group id="clear" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Automatic Log Clearing</label>
+                <field id="email" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Clear Sent Emails Log After</label>
+                    <comment>Automatically remove old log records after specified number of days. If set to 0, will not auto clean.</comment>
+                </field>
+                <field id="schedule_clear_email" translate="label comment" type="text" sortOrder="15" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Schedule Clear Sent Emails Log</label>
+                </field>
+                <field id="debug" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Clear Debug Log After</label>
+                    <comment>Automatically remove old log records after specified number of days. If set to 0, will not auto clean.</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

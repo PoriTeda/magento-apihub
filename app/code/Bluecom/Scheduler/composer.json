@@ -1,0 +1,20 @@
+{
+    "name": "bluecom/scheduler",
+    "description": "Manage all magento cron jobs",
+    "type": "magento2-module",
+    "version": "0.0.4",
+    "license": [
+        "Commercial License - Copyright 2016 - Nestle"
+    ],
+    "require": {
+        "php": "~7.0.0"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Bluecom\\Scheduler\\": ""
+        }
+    }
+}

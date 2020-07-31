@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Riki\SpotOrderApi\Api\CartItemRepositoryInterface" type="Riki\SpotOrderApi\Model\Quote\Item\Repository" />
+    <preference for="Riki\SpotOrderApi\Api\PaymentInformationManagementInterface" type="Riki\SpotOrderApi\Model\PaymentInformationManagement" />
+    <preference for="Riki\SpotOrderApi\Api\ShippingInformationManagementInterface" type="Riki\SpotOrderApi\Model\ShippingInformationManagement" />
+</config>

@@ -1,0 +1,105 @@
+.admin__order-delivery-choose-item {
+  margin-bottom: 50px;
+  border-bottom: dotted 1px #ccc;
+  .lib-clearer();
+  &:last-child {
+    border-bottom: 0;
+  }
+  .admin__order-delivery-choose-left {
+    width: 20%;
+    float: left;
+    padding-right: 20px;
+    .lib-css(box-sizing, border-box, 1);
+  }
+  .admin__order-delivery-choose-right {
+    width: 80%;
+    float: left;
+    .lib-css(box-sizing, border-box, 1);
+    .admin__order-delivery-choose-right-item {
+      margin-bottom: 30px;
+      .lib-clearer();
+      > div {
+        .lib-css(box-sizing, border-box, 1);
+        width: 22%;
+        padding-right: 20px;
+        float: left;
+        &.product-items {
+          width: 34%;
+          padding-right: 0;
+          ul {
+            word-break: break-all;
+          }
+        }
+        &:last-child {
+          padding-right: 0;
+          padding-left: 20px;
+        }
+        &:nth-child(3) {
+          padding-right: 0;
+          padding-left: 20px;
+        }
+        .delivery-message {
+          color: #0084e1;
+          font-weight: bold;
+          margin-bottom: 20px;
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+.admin__order-delivery-info-item {
+  margin-bottom: 50px;
+  border-bottom: dotted 1px #ccc;
+  .lib-clearer();
+  &:last-child {
+    border-bottom: 0;
+  }
+  .admin__order-delivery-info-left {
+    width: 30%;
+    float: left;
+    padding-right: 10px;
+    .lib-css(box-sizing, border-box, 1);
+  }
+  .admin__order-delivery-info-right {
+    width: 70%;
+    float: left;
+    .lib-css(box-sizing, border-box, 1);
+    > .items {
+      .lib-clearer();
+      padding-bottom: 20px;
+      border-bottom: solid 1px #cccccc;
+      & ~ .items {
+        padding-top: 20px;
+      }
+      > .item {
+        width: percentage(1/3);
+        float: left;
+        padding-left: 10px;
+        padding-right: 10px;
+        .lib-css(box-sizing, border-box, 1);
+        &.product-items {
+          ul {
+            word-break: break-all;
+          }
+        }
+        > .admin__field-label {
+          font-size: 1.3rem;
+        }
+      }
+      &.has_preorder > .item {
+        width: 25%;
+      }
+    }
+  }
+  .admin__order-delivery-info-left, .admin__order-delivery-info-right {
+    font-size: 1.3rem;
+    .admin__page-section-item-title {
+      .title {
+        font-size: 1.3rem;
+        font-weight: bold;
+      }
+    }
+  }
+}

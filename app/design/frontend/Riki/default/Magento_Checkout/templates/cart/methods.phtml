@@ -1,0 +1,29 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+?>
+<?php
+/** @var $block \Magento\Checkout\Block\Cart */
+?>
+<?php if (!$block->hasError()): ?>
+<?php if ($block->getItemsSummaryQty()>0):?>
+    <div data-title="<?php echo __('ご注文手続きへ進む | Proceed to Checkout') ?>" class="wrapper-checkout-method tracking_floating_button">
+        <?php $methods = $block->getMethods('methods') ?: $block->getMethods('top_methods') ?>
+        <ul class="checkout methods items checkout-methods-items">
+        <?php foreach ($methods as $method): ?>
+            <?php
+                $methodHtml = $block->getMethodHtml($method);
+                if (strlen(trim($methodHtml))):
+            ?>
+            <li class="item"><?php /* @escapeNotVerified */ echo $methodHtml; ?></li>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
+<?php endif; ?>
+

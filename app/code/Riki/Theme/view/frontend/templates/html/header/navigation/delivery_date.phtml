@@ -1,0 +1,39 @@
+<?php
+$index = $block->getData("index");
+$isAllowChangeNextDelivery = $block->getData("isAllowChangeNextDelivery");
+$arrProductByAddress = $block->getData("arrProduct");
+$nextDeliveryDate = $block->getData('next_delivery_date');
+$profileId = $block->getData('profileId');
+?>
+
+<?php if((int)$index === 0) : ?>
+<input id="<?php echo 'calendar_inputField_' . $profileId ; ?>"
+       class="input-text input-new current-delivery-date delivery-date-<?= $profileId;?> calendar-node-0" type="text" readonly="readonly"
+       value="<?php
+       if ($isAllowChangeNextDelivery) {
+           echo date('Y/m/d', strtotime($arrProductByAddress['delivery_date']['next_delivery_date']));
+       } else {
+           if ($arrProductByAddress['delivery_date']['next_delivery_date'] != null) {
+               echo date('Y/m/d', strtotime($arrProductByAddress['delivery_date']['next_delivery_date']));
+           } else {
+               echo date('Y/m/d', strtotime($nextDeliveryDate));
+           }
+       }
+       ?>"/>
+<?php endif; ?>
+
+<?php if((int)$index === 1) : ?>
+    <input id="<?php echo 'calendar_inputField_' . $profileId ; ?>"
+           class="input-text input-new current-delivery-date delivery-date-<?= $profileId;?> calendar-node-1" type="text" readonly="readonly"
+           value="<?php
+           if ($isAllowChangeNextDelivery) {
+               echo date('Y/m/d', strtotime($arrProductByAddress['delivery_date']['next_delivery_date']));
+           } else {
+               if ($arrProductByAddress['delivery_date']['next_delivery_date'] != null) {
+                   echo date('Y/m/d', strtotime($arrProductByAddress['delivery_date']['next_delivery_date']));
+               } else {
+                   echo date('Y/m/d', strtotime($nextDeliveryDate));
+               }
+           }
+           ?>"/>
+<?php endif; ?>

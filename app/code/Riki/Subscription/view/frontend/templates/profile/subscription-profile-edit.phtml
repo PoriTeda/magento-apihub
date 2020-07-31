@@ -1,0 +1,926 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/* @var \Riki\Subscription\Block\Frontend\Profile\Edit $this */
+/* @var \Riki\Subscription\Block\Frontend\Profile\Edit $block */
+
+// @codingStandardsIgnoreFile
+$isChangePaymentMethod = $block->isChangePaymentMethod();
+$courseSettings = $block->getCourseSetting();
+$status = [
+    1=> 'Active',
+    0=> 'Disengaged'
+];
+
+$isAllowSkipNextDelivery = $courseSettings['is_allow_skip_next_delivery'];
+$isAllowChangePaymentMethod = $courseSettings['is_allow_change_payment_method'];
+$isAllowChangeNextDelivery = $courseSettings['is_allow_change_next_delivery'];
+$isAllowChangeAddress = $courseSettings['is_allow_change_address'];
+$isAllowChangeProduct = $courseSettings['is_allow_change_product'];
+$isAllowChangeQty = $courseSettings['is_allow_change_qty'];
+$hanpukaiDeliveryDateAllowed = $courseSettings['hanpukai_delivery_date_allowed'];
+$hanpukaiDeliveryDateFrom = $courseSettings['hanpukai_delivery_date_from'];
+$hanpukaiDeliveryDateTo = $courseSettings['hanpukai_delivery_date_to'];
+$nextDeliveryDateCalculationOption = $courseSettings['next_delivery_date_calculation_option'];
+$isAdmin = $block->getIsAdmin();
+$currentDay = $block->getCurrentDate();
+$isAllowSpToChangeDl = $block->isAllowStockpointToChangeDl();
+
+$attrDisabledAddress = $isAllowChangeAddress ? '' : 'disabled';
+$attrDisabledQty = $isAllowChangeQty ? '' : 'disabled';
+
+$arrCourse = $block->getEntity()->getCourseData();
+$allAddress = $block->getAllAddress();
+$allAddressForNewDesign = $block->getAllCustomerAddressDataForNewDesign();
+$allAddressDetail = [];
+$allAddressDetailForNewDesign = [];
+$arrPaymentMethod = $block->isChangePaymentMethod();
+$originProfileData = $block->loadOriginData();
+
+foreach ($allAddress as $key => $address) {
+    $allAddressDetail[$key] = str_replace(',','<br>',$address['address']);
+}
+
+foreach ($allAddressForNewDesign as $key => $value) {
+    $allAddressDetailForNewDesign[$key] = $value;
+}
+$profile_id = $block->getEntity()->getProfileId();
+$storeId = $block->getEntity()->getStoreId();
+$customer_id = $block->getEntity()->getCustomerId();
+$lastUsedCC = $block->getCcLastUsedDate($customer_id);
+$frequencyUnit = $block->getEntity()->getData('frequency_unit');
+$frequencyInterval = $block->getEntity()->getData('frequency_interval');
+$frequencyId = $block->getFrequencyIdByUnitAndInterval($frequencyUnit,$frequencyInterval);
+$frequencyGreater2Weeks = (strtotime($frequencyInterval ." ".$frequencyUnit) > strtotime('2 week'))?true:false;
+
+$isBtnUpdateAllChangesPressed = $block->checkBtnUpdateAllChangePressed();
+
+$htmlNewAddress = '<option value="0" class="add-new-address">' . __("New Address") . '</option>';
+
+/**
+ * Hanpukai
+*/
+$isSubscriptionHanpukai = $block->isSubscriptionHanpukai();
+$stockHelper = $this->helper('Riki\ProductStockStatus\Helper\StockData');
+
+/*Simulator order info*/
+$simulatorOrder = $block->getSimulatorOrderOfProfile($profile_id);
+
+$deliveryInformation = $block->getListProductByAddressAndByDeliveryType($simulatorOrder);
+$groupedDeliveryInformation = $block->groupDataByDeliveryType($deliveryInformation);
+
+$nextDeliveryDate = $block->getMinDeliveryDateOfProductCart();
+$objNextDeliveryDate = new \DateTime($nextDeliveryDate);
+$nextOfNextDeliveryDateBottom = $block->getMainDeliveryDateForText();
+$nextOfNextDeliveryDate = strtotime($frequencyInterval." ".$frequencyUnit,strtotime($nextOfNextDeliveryDateBottom));
+$objNextOfNextDeliveryDate = new \DateTime();
+$objNextOfNextDeliveryDate->setTimestamp($nextOfNextDeliveryDate);
+
+/*Compare origin data and session data for next_delivery_date to show profile_type 1*/
+$showProfileType1 =  $block->showProfileType1();
+
+/*profile data*/
+$profileData = $block->getEntity();
+
+/* @var \Riki\StockPoint\Helper\ValidateStockPointProduct $stockPointHelper */
+$stockPointHelper = $this->helper('Riki\StockPoint\Helper\ValidateStockPointProduct');
+$isShowStockPoint = $block->checkShowStockPoint($simulatorOrder, $profileData, $groupedDeliveryInformation);
+$allowStockPointDeliveryTypes = [
+    \Riki\DeliveryType\Model\Delitype::COOL,
+    \Riki\DeliveryType\Model\Delitype::NORMAl,
+    \Riki\DeliveryType\Model\Delitype::DM
+];
+$stockPointExist = false;
+$addressStockPoint = null;
+$disableButtonSP = false;
+$stockPointData   = $this->helper('Riki\Subscription\Helper\StockPoint\Data');
+?>
+<script>
+    var FORM_KEY = FORM_KEY || '<?php /* @escapeNotVerified */ echo $this->getLayout()->createBlock("Magento\Framework\View\Element\FormKey")->getFormKey() ?>';
+</script>
+<script type="text/javascript">
+    require([
+        'mage/url'
+    ], function (url) {
+        'use strict';
+        return url.setBaseUrl('<?php /* @escapeNotVerified */ echo $block->getBaseUrl();?>');
+    });
+</script>
+<?php if($block->showMessageInvalidLeadTime()) : ?>
+    <div class="message error"><?php echo __('The product not available to ship to %1',null); ?></div>
+<?php endif; ?>
+<form action="<?php /* @escapeNotVerified */ echo $block->getUrl('*/*/save'); ?>"
+      method="post"
+      id="form-submit-profile"
+      class="form form-giftregistry-edit validation"
+      data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>"
+      data-mage-init='{"validation":{}}'
+>
+    <?php echo $block->getBlockHtml('formkey')?>
+    <input type="hidden" name="profile_id" id="profile_id" value="<?php /* @escapeNotVerified */ echo $profile_id; ?>" />
+    <input type="hidden" name="save_profile" id="save_profile"/>
+    <input type="hidden"  id="url_profile_current" value="<?php echo $block->getCurrentEditProfileUrl() ?>" />
+    <input name="riki_url_add_product_profile" id="riki_url_add_product_profile" type="hidden" value="<?php echo $block->getUrlAddMultipleProduct(); ?>">
+    <?php if(!$isBtnUpdateAllChangesPressed) { ?>
+
+    <!-- List Payment Method -->
+    <?php echo $this->getChildBlock('profile_payment_method')->toHtml(); ?>
+    <!-- List product by address -->
+    <?php
+
+    if( ! empty($groupedDeliveryInformation)):
+    ?>
+    <fieldset class="fieldset">
+            <div class="table-wrapper">
+                <?php
+                $i = 0;
+                $arrDeliveryType = $block->getArrDeliveryType();
+                foreach($groupedDeliveryInformation as $addressId =>  $arrInfoWithDL):  ?>
+                    <?php $totalDeliveryType = count($arrInfoWithDL) - 1; $countDeliveryType = 0; ?>
+                    <div class="table table list">
+                        <?php
+                         foreach($arrInfoWithDL as $deliveryType => $arrDetailDL):
+                            $addressNameOfDeliveryType = $arrDetailDL['name'];
+                            $deliveryLabel = isset ( $arrDeliveryType[$deliveryType] ) ? $arrDeliveryType[$deliveryType] :  $deliveryType;
+                            $stockPointExist = $stockPointHelper->checkProfileExistStockPoint($profileData);
+                            $disableButtonSP = $stockPointHelper->disableButtonSP($profileData);
+                            $typeShowBlock = $stockPointHelper->getTypeShowBlock();
+
+                            if ($stockPointExist) {
+                                $isAllowChangeAddress = false;
+                                if ($isAllowSpToChangeDl && $isAllowChangeNextDelivery == true) {
+                                    $isAllowChangeNextDelivery = true;
+                                } else {
+                                    $isAllowChangeNextDelivery = false;
+                                }
+                                $addressStockPoint = $stockPointHelper->getAddressStockPoint($profileData);
+                                $canShowStockPointAddress = $stockPointHelper->canShowStockPointAddress($profileData);
+                                if ($addressStockPoint == null && $canShowStockPointAddress ) {
+                                    $addressStockPoint = $stockPointData->getArrDataAddressStockPoint($profile_id);
+                                }
+                            }
+                            ?>
+
+                            <!-- Show address + delivery type -->
+                            <div class="table block">
+                                <?php $arrAddressInfoNewDesign = $block->getAddressDetail($addressId);
+                                      $lastName = $firstName = '';
+                                      if (array_key_exists('riki_lastname', $arrAddressInfoNewDesign)) {
+                                        $lastName = $arrAddressInfoNewDesign['riki_lastname'];
+                                      }
+                                      if (array_key_exists('riki_firstname', $arrAddressInfoNewDesign)) {
+                                          $firstName = $arrAddressInfoNewDesign['riki_firstname'];
+                                      }
+                                ?>
+                                <fieldset class="fieldset panel">
+                                    <div class="label">
+                                        <h4 id="<?php  echo 'address_' .$addressId .'_'. $deliveryType ?>"><?php echo __("Address") ?>：<?php echo $arrAddressInfoNewDesign['riki_nickname']; ?></h4>
+                                    </div>
+                                    <div class="current-shipping-address" data-bind="scope: 'editAddress'">
+                                        <div class="wrapper">
+                                            <table>
+                                                <tr class="header">
+                                                    <td><strong><?php echo __('Name'); ?></strong></td>
+                                                    <td><strong><?php echo __('Address'); ?></strong></td>
+                                                    <td><strong><?php echo __('Phone number'); ?></strong></td>
+                                                </tr>
+                                                <?php if ($stockPointExist && $addressStockPoint !=null): ?>
+                                                    <tr>
+                                                        <td data-th="<?php echo __('Name'); ?>" id="<?php echo 'name_' .$addressId .'_'. $deliveryType ?>">
+                                                            <?php echo $addressStockPoint['lastName'].$addressStockPoint['firstName']; ?>
+                                                        </td>
+                                                        <td data-th="<?php echo __('Address'); ?>" id="<?php echo 'address_'.$addressId.'_'.$deliveryType ?>">
+                                                            <?php echo $addressStockPoint['addressFull']; ?>
+                                                        </td>
+                                                        <td data-th="<?php echo __('Phone number'); ?>" id="<?php echo 'telephone_'.$addressId.'_'.$deliveryType ?>">
+                                                            <?php echo $addressStockPoint['telephone']; ?>
+                                                        </td>
+                                                    </tr>
+                                                <?php else: ?>
+                                                <tr>
+                                                    <td data-th="<?php echo __('Name'); ?>" id="<?php echo 'name_' .$addressId .'_'. $deliveryType ?>">
+                                                        <?php echo $lastName.$firstName; ?>
+                                                    </td>
+                                                    <td data-th="<?php echo __('Address'); ?>" id="<?php echo 'address_'.$addressId.'_'.$deliveryType ?>">
+                                                        <?php echo $block->getCustomerAddressByText($addressId); ?></td>
+                                                    <td data-th="<?php echo __('Phone number'); ?>" id="<?php echo 'telephone_'.$addressId.'_'.$deliveryType ?>">
+                                                        <?php echo $arrAddressInfoNewDesign['telephone']; ?></td>
+                                                </tr>
+                                                <?php endif; ?>
+                                            </table>
+                                        </div>
+
+                                        <?php if ($isAllowChangeAddress){ ?>
+                                                <a href="javascript:void(0)" id="<?php echo 'button_' . $deliveryType ?>" class="flat-button <?php echo $allAddressDetailForNewDesign[$addressId]['able_to_edit']? '' : 'no-display'; ?>"
+                                                    data-bind="click: function(data,event){event.preventDefault();editRegistrationAddress('<?php echo $addressId; ?>', '<?php echo $deliveryType; ?>', '<?php echo $this->getCurrentEditProfileUrl(); ?>', '<?php echo $profile_id; ?>')}">
+                                                    <span><?php echo __('Change of registration information') ?></span>
+                                                </a>
+                                       <script>var arrAddress = <?php echo json_encode($allAddressDetailForNewDesign); ?>;</script>
+                                        <a data-bind="click: function(data,event){event.preventDefault(); changeAddress('<?php echo $addressId; ?>', '<?php echo $deliveryType ?>', arrAddress,'<?php echo $profile_id; ?>')}" href="#" class="flat-button" id="choose-address-<?php echo $addressId . '-' . $deliveryType ?>">
+                                            <span><?php echo __('Choose from the registered destinations') ?></span>
+                                        </a>
+
+                                        <?php } else { ?>
+                                            <?php if (!$stockPointExist):  ?>
+                                            <button class="flat-button" disabled>
+                                                <span><?php echo __('Change of registration information') ?></span>
+                                            </button>
+                                            <button class="flat-button" disabled>
+                                                <span><?php echo __('Choose from the registered destinations') ?></span>
+                                            </button>
+                                             <?php endif; ?>
+
+                                        <?php } ?>
+
+                                        <?php if ($stockPointExist && !$disableButtonSP):  ?>
+                                        <button type="button" class="flat-button btn-remove-stock-point" >
+                                            <span><?php echo __('Remove Stock Point Service') ?></span>
+                                        </button>
+                                        <?php endif; ?>
+
+                                        <?php if ($isShowStockPoint && !$disableButtonSP
+                                            && in_array($deliveryType, $allowStockPointDeliveryTypes)): ?>
+
+                                        <button type="button" class="flat-button btn-stock-point-showmap" >
+                                            <span><?php echo __('StockPoint web service') ?></span>
+                                        </button>
+                                        <?php endif; ?>
+
+                                        <?php switch($typeShowBlock):
+                                            case 1 :?>
+                                            <?php if (!$disableButtonSP): ?>
+                                                <div  class="block-3-show-delivery">
+                                                    <?php echo $block->getChildHtml('stock_point_delivery_explanation'); ?>
+                                                </div>
+                                            <?php endif; ?>
+                                            <?php break;
+                                            case 2: ?>
+                                                <div  class="block-3-show-delivery">
+                                                    <?php echo $block->getChildHtml('stock_point_delivery_explanation_not_allowed'); ?>
+                                                </div>
+                                            <?php break;
+                                            case 3: ?>
+                                                <div  class="block-3-show-delivery">
+                                                    <?php echo $block->getChildHtml('stock_point_delivery_explanation_oos'); ?>
+                                                </div>
+                                        <?php break;
+                                        endswitch; ?>
+
+                                    </div>
+
+                                    <?php
+                                    // Show delivery date
+                                    if ($stockPointExist && !$isAllowSpToChangeDl) {
+                                        echo $block->getChildBlock('delivery-stock-point')
+                                            ->assign(
+                                                'data',[
+                                                    'deliveryType' => $deliveryType,
+                                                    'stockPointDelivery'=>$stockPointHelper->getDataStockPointDeliveryInformation($profileData),
+                                                    'next_delivery_date' => $block->getEntity()->getData('next_delivery_date'),
+                                                    'arrProduct'=>$arrDetailDL,
+                                                    'addressId'=> $addressId,
+                                                    'next_delivery_date' => $block->getEntity()->getData('next_delivery_date'),
+                                                ]
+                                            )->toHtml();
+                                    } else {
+                                        echo $this->getLayout()->createBlock("\Magento\Framework\View\Element\Template")->setData([
+                                            'arrProduct' => $arrDetailDL,
+                                            'addressId' => $addressId,
+                                            'isAllowChangeAddress' => $isAllowChangeAddress,
+                                            'isAllowSpToChangeDl' => $isAllowSpToChangeDl,
+                                            'addressOrder' => $i,
+                                            'parentBlock' => $block,
+                                            'deliveryType' => $deliveryType,
+                                            'isAllowChangeNextDelivery' => $isAllowChangeNextDelivery,
+                                            'isBtnUpdateAllChangesPressed' => $isBtnUpdateAllChangesPressed,
+                                            'hanpukai_delivery_date_allowed' => $hanpukaiDeliveryDateAllowed,
+                                            'isSubscriptionHanpukai' => $isSubscriptionHanpukai,
+                                            'hanpukaiDeliveryDateFrom' => $hanpukaiDeliveryDateFrom,
+                                            'hanpukaiDeliveryDateTo' => $hanpukaiDeliveryDateTo,
+                                            'nextDeliveryDateCalculationOption' => $nextDeliveryDateCalculationOption,
+                                            'isAdmin' => $isAdmin,
+                                            'frequency_unit' => $frequencyUnit,
+                                            'frequency_interval' => $frequencyInterval,
+                                            'next_delivery_date' => $block->getEntity()->getData('next_delivery_date'),
+                                            'profileId' => $profile_id
+                                        ])
+                                            ->setData('area', 'frontend')
+                                            ->setTemplate("Riki_Subscription::profile/edit/_render_delivery_date.phtml")->toHtml();
+                                    }
+                                    ?>
+
+                                    <!-- Show list product -->
+                                    <!-- Detail -->
+                                    <div class="delivery-schedule-items">
+                                        <div class="label no-border">
+                                            <h4 class="label_delivery"><?php echo __('Delivery schedule items') ?></h4>
+                                            <div class="shoping_clear_all" onclick="deleteAllProductCart();"><?php echo __('Products delivered') ?><br><?php echo __('Clear all') ?></div>
+                                        </div>
+                                        <?php
+                                            /** Get product by address and delivery type */
+                                            echo $this->getLayout()->createBlock("\Magento\Framework\View\Element\Template")->setData([
+                                                'arrProduct' => $arrDetailDL['product'],
+                                                'isAllowChangeProduct' => $isAllowChangeProduct,
+                                                'allAddress' => $allAddress,
+                                                'addressId' => $addressId,
+                                                'isAllowChangeAddress' => $isAllowChangeAddress,
+                                                'isAllowChangeQty' => $isAllowChangeQty,
+                                                'addressOrder' => $i,
+                                                'parentBlock' => $block,
+                                                'deliveryType' => $deliveryType,
+                                                'isBtnUpdateAllChangesPressed' => $isBtnUpdateAllChangesPressed,
+                                                'isHanpukaiSubscription' => $isSubscriptionHanpukai,
+                                                'currentDay' => $currentDay,
+                                                'totalDeliveryType' => $totalDeliveryType,
+                                                'countDeliveryType' => $countDeliveryType,
+                                                'htmlListCouponApplied'=>$block->getHtmlListCouponApplied($profile_id),
+                                                'messageValidateCoupon'=>$block->getMessageValidateCoupon(),
+                                            ])
+                                                ->setData('area', 'frontend')
+                                                ->setTemplate("Riki_Subscription::profile/edit/list_product_cart_by_address_by_delivery_type.phtml")->toHtml();
+                                        ?>
+                                    </div>
+
+                                    <input class="stockp-point-shipping-address" type="hidden" name="address[<?php echo $addressId  ?>][<?php echo $deliveryType  ?>]"
+                                        value="<?php echo $addressId; ?>"/>
+                                    <!--Choose address for every deliveryType-->
+                                    <div class="hidden">
+                                        <div class="embed-choose-address" id="embed-choose-address-<?php echo $addressId . '-' . $deliveryType ?>">
+                                            <?php if(!$isBtnUpdateAllChangesPressed){ ?>
+                                                <div class="wrapper">
+                                                    <div class="title"><?php echo __('Select address') ?></div>
+                                                    <div class="select-wrapper">
+                                                        <select name="address[<?php echo $addressId  ?>][<?php echo $deliveryType  ?>]" class="can-create-new-address input-new select-box" data-val="<?php echo $addressId  ?>" id="head_address_<?php echo $addressId .'_' . $deliveryType ?>" <?php echo $attrDisabledAddress  ?> onchange="showAddressDetail(this)">
+                                                            <?php foreach($allAddress as $_addressId =>  $_name):  ?>
+                                                                <option value="<?php echo $_addressId  ?>" <?php echo $_addressId === $addressId ? 'selected' : ''  ?>><?php echo $_name['name']  ?></option>
+                                                            <?php endforeach;
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            <?php } else { ?>
+                                                <div class="wrapper">
+                                                    <?php echo $block->getCustomerAddressByText($addressId); ?>
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        <?php $countDeliveryType++; endforeach;  ?>
+                    </div>
+                    <?php
+                    $i++;
+                endforeach;  ?>
+            </div>
+    </fieldset>
+    <?php endif;  ?>
+    <?php if($isAllowChangeProduct && !$isBtnUpdateAllChangesPressed && !$isSubscriptionHanpukai): ?>
+            <div id="add-products">
+                <?php echo $this->getChildBlock('catalog_product_list')->toHtml(); ?>
+                <?php echo $this->getChildBlock('other_course_component')->toHtml(); ?>
+            </div>
+    <?php endif; ?>
+
+    <?php
+    $isDisableInScope = $isBtnUpdateAllChangesPressed;
+    $profileTypeInSession = $block->getEntity()->getData("profile_type");
+    ?>
+    <fieldset class="fieldset panel change-delivery-option no-display">
+        <div class="delivery-option">
+            <ul class="control">
+                <li class="item">
+                    <input type="radio" name="profile_type" id="change_profile_type_2" value="type_2" class="input-text radio" checked <?php echo $isDisableInScope ? 'disabled' : '' ?> />
+                </li>
+            </ul>
+        </div>
+    </fieldset>
+    <?php } ?>
+
+    <!-- Confirm Page -->
+    <?php if ($isBtnUpdateAllChangesPressed) {
+        echo $this->getLayout()->createBlock("\Magento\Framework\View\Element\Template")
+            ->setData([
+                'area' => 'frontend',
+                'isAllowChangeProduct' => $isAllowChangeProduct,
+                'addInfoWithAddressAndDL' => $groupedDeliveryInformation,
+                'allAddress' => $allAddress,
+                'isAllowChangeAddress' => $isAllowChangeAddress,
+                'isAllowChangeQty' => $isAllowChangeQty,
+                'parentBlock' => $block,
+                'isBtnUpdateAllChangesPressed' => $isBtnUpdateAllChangesPressed,
+                'isHanpukaiSubscription' => $isSubscriptionHanpukai,
+                'arrPaymentMethod' => $arrPaymentMethod,
+                'order_simulate' => $simulatorOrder,
+                'frequency_unit' => $frequencyUnit,
+                'frequency_interval' => $frequencyInterval,
+                'profileId'=>$profile_id
+            ])
+            ->setTemplate("Riki_Subscription::profile/confirm/confirm-page.phtml")->toHtml();
+        ?>
+
+    <?php } ?>
+    <!-- End Confirm Page -->
+
+    <div class="check-offset"></div>
+    <div class="actions-toolbar">
+        <?php if(!$isBtnUpdateAllChangesPressed): ?>
+            <div class="actions-toolbar-floating">
+                <div class="action-left">
+                    <a data-action-event="Edit Subscription Profile Pages - Floating Buttons" data-title="<?php echo __('前に戻る | Go Back to Previous Page') ?>" class="tracking_floating_button" href="<?php echo $block->getBaseUrlSubcriptionProfileList(); ?>"><span><?php echo __('Go back') ?></span></a>
+                </div>
+                <div class="secondary enter-coupon-container">
+                    <a data-action-event="Edit Subscription Profile Pages - Floating Buttons" data-title="<?php echo __('クーポンを利用する | Use Coupon') ?>" href="#" class="tracking_floating_button_coupon enter-coupon" title="<?php echo __("Enter Coupon") ?>">
+                        <span><?php echo __("Enter Coupon") ?></span>
+                    </a>
+                </div>
+                <div class="total-amount-block"></div>
+                <div class="action-right">
+                    <button onclick="submitForm(this , 'form-submit-profile'); return false;" value="update" class="flat-button yellow-subs">
+                        <span><?php echo __('Proceed to the next') ?></span>
+                    </button>
+                </div>
+            </div>
+        <?php endif; ?>
+        <?php if($isBtnUpdateAllChangesPressed): ?>
+            <?php $buttonText = (($block->getEntity()->getData('payment_method') == 'paygent') && $block->getEntity()->getData('is_new_paygent_method')) ? __('Proceed with credit card payment') : __('Confirm Changes') ?>
+            <script type="text/javascript">
+                require(['jquery'], function($) {
+                    $('ul.opc-progress-bar').each(function() {
+                        var _this = $(this);
+                        _this.find('li:eq(0)').addClass('_complete').removeClass('_active');
+                        _this.find('li:eq(0) > span').on('click', function() {
+                            $('button#go-back').trigger('click');
+                            return false;
+                        });
+                        _this.find('li:eq(1)').addClass('_active');
+                    });
+                    <?php if(($block->getEntity()->getData('payment_method') == 'paygent') && $block->getEntity()->getData('is_new_paygent_method')): ?>
+                    $('.purchase-process-bar.has-no-new-paygent').hide();
+                    $('.purchase-process-bar.has-new-paygent').show();
+                    <?php endif; ?>
+                })
+            </script>
+            <div class="message error empty"><div><?php echo __('The spot products (type: コース外) will be delivered only for next delivery.') ?></div></div>
+            <div class="actions-toolbar-floating confirm">
+                <div class="action-left">
+                    <button class="tracking_floating_button" data-action-event="Edit Subscription Profile Pages - Floating Buttons" data-title="<?php echo __('前に戻る | Go Back to Previous Page') ?>" onclick="submitForm(this , 'form-submit-profile'); return false;" value="back" href="javascript:void(0);" id="go-back">
+                        <span><?php echo __('Go back page') ?></span>
+                    </button>
+                </div>
+                <div class="action-right">
+                    <button onclick="submitForm(this , 'form-submit-profile'); return false;"
+                            value="confirm" href="javascript:void(0);" class="flat-button yellow-subs"
+                            id="confirm.change">
+                        <span><?php /* @escapeNotVerified */ echo $buttonText ?></span>
+                    </button>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+
+</form>
+
+<div class="hidden">
+    <script>
+        require(
+            [
+                'jquery',
+                'Magento_Ui/js/modal/modal',
+                'mage/translate'
+            ],
+            function ($, modal, $t) {
+                var embedFormAddress = $('#embed-form-address');
+                var aboutSelectableDate = $('#about-selectable-date');
+                var $body = $('body');
+
+                /** Select choose: Create new address */
+                $body.on("change", ".can-create-new-address", function(evt) {
+                    var $this = $(this);
+                    if($this.val()!=0) {
+                        $this.attr('data-val', $this.val());
+                        return;
+                    }
+                    $this.val($this.attr('data-val'));
+                    var options = {
+                        type: 'popup',
+                        responsive: false,
+                        innerScroll: true,
+                        modalClass: 'small hide-footer',
+                        title: '<?php echo __('Registering address information') ?>'
+                    };
+                    var popup = modal(options, embedFormAddress);
+                    embedFormAddress.modal('openModal');
+                });
+
+                /** Show popup About Selectable Date*/
+                $('a.about-selectable-date').on('click', function (evt) {
+                    evt.preventDefault();
+                    var options = {
+                        type: 'popup',
+                        responsive: false,
+                        innerScroll: false,
+                        clickableOverlay: false,
+                        modalClass: 'small about-selectable-date-popup',
+                        buttons: [{
+                            text: $.mage.__('OK'),
+                            click: function (event) {
+                                this.closeModal(event);
+                            }
+                        }]
+                    };
+                    var popup = modal(options, aboutSelectableDate);
+                    aboutSelectableDate.modal('openModal');
+                });
+
+                window.changeProgressBar = function(payment) {
+                    if(payment == 'new_paygent') {
+                        $('.purchase-process-bar.has-no-new-paygent').hide();
+                        $('.purchase-process-bar.has-new-paygent').show();
+                    }else {
+                        $('.purchase-process-bar.has-no-new-paygent').show();
+                        $('.purchase-process-bar.has-new-paygent').hide();
+                    }
+                };
+                <?php if($block->getEntity()->getData('is_new_paygent_method') == true): ?>
+                changeProgressBar('new_paygent');
+                <?php endif; ?>
+                $('input[name="payment_method"]').on('change', function () {
+                    changeProgressBar($(this).val());
+                })
+            });
+    </script>
+    <div id="embed-form-address">
+        <?php
+            echo $block->getLayout()->createBlock('Riki\Subscription\Block\Frontend\Profile\Address\Edit')
+                ->setTemplate('Riki_ZipcodeValidation::customer/address/edit.phtml')->toHtml();
+        ?>
+    </div>
+    <div id ="embed-form-edit-address">
+        <?php
+            echo $block->getLayout()->createBlock('Riki\Subscription\Block\Frontend\Profile\Address\Change')
+                ->setTemplate('Riki_Subscription::customer/address/edit.phtml')->toHtml();
+        ?>
+    </div>
+</div>
+<?php if($block->isDisableAll()):  ?>
+    <script>
+        require(
+            [
+                'jquery',
+                'underscore'
+            ],
+            function ($, _) {
+                $(function () {
+                    var $formProfile = $("#form-submit-profile");
+                    _.forEach(["input", "select", "button:not(.ui-datepicker-trigger):not(.btn-remove-stock-point):not(.btn-stock-point-showmap)", "a.enter-coupon"], function (selector, index) {
+                        $formProfile.find(selector).attr("disabled", true);
+                    });
+                    $(".delete_btn").addClass("hidden");
+                    $('#generate_order').removeAttr('disabled');
+                    $('.btn-stock-point-showmap').attr('disabled', true);
+                    $('.btn-remove-stock-point').attr('disabled', true);
+                });
+
+            }
+        );
+    </script>
+<?php endif; ?>
+<script>
+    require([
+            'jquery',
+            'mage/storage',
+            'mage/url',
+            "Magento_Ui/js/modal/alert",
+            "Magento_Ui/js/modal/confirm",
+            "Magento_Ui/js/modal/modal",
+            'mage/translate',
+            "jquery/ui",
+            'Riki_Subscription/js/subscription-gift-wrapping'
+        ],
+        function($, storage, urlBuilder, alert ,confirm, modal, $t) {
+            deleteProductCart = function(productCartId)
+            {
+                var self = this;
+                var url = '<?php echo $block->getUrlDeleteProductCart(); ?>';
+                var reloadURL = '<?php echo $block->getUrlEditProfile($profile_id); ?>';
+                var profile_id = '<?php echo $profile_id ?>';
+                confirm({
+                    title: '<?php echo __('Attention')?>',
+                    content: "<?php echo "<h4>".__('Are you sure you want to delete this product?')?>",
+                    actions: {
+                        confirm: function () {
+                            return $.ajax({
+                                url: url,
+                                dataType: 'json',
+                                data: {
+                                    pcart_id: productCartId,
+                                    id: profile_id,
+                                    form_key: FORM_KEY
+                                },
+                                context: self.element,
+                                showLoader : true
+                            }).done($.proxy(function(data) {
+                                if(data.status == true){
+                                    $('body').trigger('processStart');
+                                    var formElement = $('#form-submit-profile');
+                                    setTimeout(function () {
+                                        formElement.submit();
+                                    }, 100);
+                                }
+                                else{
+                                    alert({
+                                        title: '<?php echo __('Attention')?>',
+                                        content: '</br>' + data.message
+                                    })
+                                }
+                            }, this));
+                        },
+                        cancel: function () {
+                            return false;
+                        }
+                    }
+                });
+            };
+            <?php //Delete all product in profile cart ?>
+            deleteAllProductCart = function()
+            {
+                var self = this;
+                var url = '<?php echo $block->getUrlDeleteProductCart(); ?>';
+                var reloadURL = '<?php echo $block->getUrlEditProfile($profile_id); ?>';
+                var profile_id = '<?php echo $profile_id ?>';
+                confirm({
+                    title: '<?php echo __('Attention')?>',
+                    content: "<?php echo "<h4>".__('Are you sure you want to delete all products?')?>",
+                    actions: {
+                        confirm: function () {
+                            return $.ajax({
+                                url: url,
+                                dataType: 'json',
+                                data: {
+                                    id: profile_id,
+                                    all_item_delete: -1,
+                                    form_key: FORM_KEY
+                                },
+                                context: self.element,
+                                showLoader : true
+                            }).done($.proxy(function(data) {
+                                if(data.status == true){
+                                    $('body').trigger('processStart');
+                                    var formElement = $('#form-submit-profile');
+                                    setTimeout(function () {
+                                        formElement.submit();
+                                    }, 100);
+                                }
+                                else{
+                                    alert({
+                                        title: '<?php echo __('Attention')?>',
+                                        content: '</br>' + data.message
+                                    })
+                                }
+                            }, this));
+                        },
+                        cancel: function () {
+                            return false;
+                        }
+                    }
+                });
+            };
+
+            submitForm = function (actionButton , formElement) {
+                submitFormAction(actionButton , formElement);
+            };
+            submitFormAction = function(actionButton , formElement) {
+                $('#add-products input, #add-products select').attr('disabled', 'disabled');
+                var formElement = $('#' + formElement);
+
+                var bCheckIE = false;
+                if(actionButton != null) {
+                    $('#save_profile').val(actionButton.value);
+                    if(($('html').attr('class') != undefined && $('html').attr('class').indexOf('ies') != -1) || /Edge/.test(navigator.userAgent)){
+                        bCheckIE = true;
+                    }
+                }
+                if (!$('input[name="payment_method"]').length) {
+                    if (bCheckIE) {
+                        actionButton.preventDefault();
+                    }
+                    $('body').trigger('processStart');
+                    setTimeout(function () {
+                        formElement.submit();
+                    }, 100);
+                } else {
+                    var check_radio = $('input[name="payment_method"]').is(':checked');
+                    if (check_radio) {
+                        $('.check-error').hide();
+                        $('body').trigger('processStart');
+                        if (bCheckIE) {
+                            actionButton.preventDefault();
+                        }
+                        setTimeout(function () {
+                            formElement.submit();
+                        }, 100);
+                    } else {
+                        $('body').trigger('processStop');
+                        $('.check-error').show();
+                        $('html, body').animate({
+                            scrollTop: $('#form-submit-profile').offset().top + 60
+                        }, 300);
+                        return false;
+                    }
+                }
+            };
+            showAddressDetail = function(address){
+                var addressId =  $(address).val();
+                if(addressId==0){
+                    return false;
+                }
+                var arrAddress = <?php echo json_encode($allAddressDetail); ?>;
+                var selectAddress = '';
+                if(typeof(arrAddress[addressId]) != 'undefined'){
+                    selectAddress = arrAddress[addressId];
+                }
+                $(address).parents('.left').next().html(selectAddress);
+            };
+            window.formatDateJP = function(y, m, d) {
+                return y + '<?php echo __('Year') ?>' + m + '<?php echo __('Month') ?>' + d + '<?php echo __('Day') ?>'
+            };
+            $(document).ready(function() {
+                $('a.add_product').on('click', function() {
+                    var self = $(this);
+                    var formElement = $('#form-submit-profile');
+                    var data = [],
+                    productRow = self.parents('.tr-product');
+                    $.cookieStorage.setConf({path: '/', expires: -1}).set('mage-messages', null);
+                    <?php //[NED-1590] add logic to handle case & quantity so we can remove redundant unnecessary nodes on HTML ?>
+                    var isCase = $(productRow).data('qty-type');
+                    var params = {};
+                    //case
+                    if(isCase == 1){
+                        var caseQty = productRow.find('select[name="product_main_qty_case"]').val();
+                        var unitQty = productRow.find('input[name="unit_qty"]').val();
+                        params = {
+                            'product_id': productRow.find('input[name="product_id"]').val(),
+                            'profile_id': parseInt(formElement.find('#profile_id').val()),
+                            'product_main_qty':  caseQty * unitQty,
+                            'product_main_qty_case':  caseQty,
+                            'unit_case':  productRow.find('select[name="unit_case"]').val(),
+                            'unit_qty':  unitQty
+                        }
+                    }
+                    else{  //single qty
+                        params = {
+                            'product_id': productRow.find('input[name="product_id"]').val(),
+                            'profile_id': parseInt(formElement.find('#profile_id').val()),
+                            'product_main_qty':  productRow.find('select[name="product_main_qty"]').val(),
+                            'product_main_qty_case':  1,
+                            'unit_case':  productRow.find('select[name="unit_case"]').val(),
+                            'unit_qty':  productRow.find('input[name="unit_qty"]').val()
+                        }
+                    }
+
+                    data.push(params);
+                    var payload = JSON.stringify(data);
+                    return $.ajax({
+                        url: '<?php echo $block->getUrlAddProduct(); ?>',
+                        data: payload,
+                        type: 'POST',
+                        dataType: 'json',
+                        context: this,
+                        showLoader : true,
+                        success: function(response) {
+                            if(response.success == true) {
+                                $('<input />').attr({
+                                    type: 'hidden',
+                                    id: 'is_added',
+                                    name: 'is_added',
+                                    value: productRow.find('input[name="product_id"]').val()
+                                }).appendTo($('#form-submit-profile'));
+                                $('#form-submit-profile').append('<input type="hidden" name="not_validate_amount" value="1" />');
+                                submitForm(null, 'form-submit-profile');
+                                setTimeout(function () {
+                                    $('#is_added').remove();
+                                }, 110);
+                            }
+                        }
+                    });
+                })
+            });
+        });
+</script>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "editAddress": {
+                        "component": "Riki_Subscription/js/view/editAddress",
+                        "urlEditHomeNoCompany": "<?php echo $block->escapeQuote($block->getUrlEditHomeNoCompany()) ?>",
+                        "urlEditHomeHaveCompany": "<?php echo $block->escapeQuote($block->getUrlEditHomeHaveCompany()) ?>",
+                        "urlEditCompany": "<?php echo $block->escapeQuote($block->getUrlEditCompany()) ?>"
+                    }
+                }
+            }
+        }
+    }
+</script>
+
+<div id="about-selectable-date" class="no-display">
+    <?php echo $block->getChildHtml('about-selectable-date') ?>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Catalog/js/unsticky-cart": {}
+        }
+    }
+</script>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Riki_Subscription/js/focus-content": {}
+        }
+    }
+</script>
+
+<?php if ($isShowStockPoint && !$isBtnUpdateAllChangesPressed): ?>
+
+<form id="formStockPoint" action="<?php echo $block->getUrlPostShowMap(); ?>" method="post">
+    <input class="reqdata" type="hidden" name="reqdata" value="" />
+    <noscript>
+        <input type="submit" value="continue"/>
+    </noscript>
+</form>
+<script type="text/javascript">
+    require([
+            'jquery',
+            'mage/url'
+        ],
+        function($,urlBuilder) {
+            $(document).on('click', '.btn-stock-point-showmap', function(){
+                $('body').trigger('processStart');
+                var shippingAddress = $('.stockp-point-shipping-address').val();
+
+                $.ajax({
+                    url: urlBuilder.build('subscriptions/profile/stockPointAddressData'),
+                    method: 'POST',
+                    dataType : 'json',
+                    data: {
+                        'profile_id':'<?php echo $profile_id ?>',
+                        'shipping_address_id': shippingAddress
+                    },
+                    async:true,
+                    success:function (data) {
+                        if (data.result) {
+                            $('#formStockPoint .reqdata').val(data.data);
+                            $('#formStockPoint').submit();
+                        } else {
+                            $('body').trigger('processStop');
+                        }
+                    },
+                    error:function () {
+                        $('body').trigger('processStop');
+                    }
+                });
+            });
+        }
+    );
+</script>
+
+<?php endif; ?>
+
+<?php if($stockPointExist): ?>
+<script type="text/javascript">
+    require([
+            'jquery',
+            'mage/url'
+        ],
+        function($,urlBuilder) {
+            $(document).on('click', '.btn-remove-stock-point', function(){
+                $('body').trigger('processStart');
+                $.ajax({
+                    url: urlBuilder.build('subscriptions/profile/removeStockPoint'),
+                    method: 'POST',
+                    dataType : 'json',
+                    data: {
+                        'profile_id':'<?php echo $profile_id ?>'
+                    },
+                    async:true,
+                    success:function (result) {
+                        window.location.href= $('#url_profile_current').val();
+                    },
+                    error:function () {
+                        $('body').trigger('processStop');
+                    }
+                });
+            });
+        }
+    );
+</script>
+
+<?php endif; ?>

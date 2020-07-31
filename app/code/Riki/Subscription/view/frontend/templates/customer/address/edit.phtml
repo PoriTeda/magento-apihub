@@ -1,0 +1,202 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Edit customer address template
+ *
+ * @var $block \Magento\Customer\Block\Address\Edit
+ */
+$rikiAmbassador = 0 ;
+$rikimember = $block->getCustomer()->getCustomAttribute('membership')->getValue();
+if($rikimember){
+    $rikimemberShip = explode(',',$rikimember);
+    if(in_array(3, $rikimemberShip)){
+        $rikiAmbassador = 1 ;
+}
+}
+
+?>
+
+<form class="h-adr form-address-edit" action="<?php /* @escapeNotVerified */ echo $block->getConfirmUrl() ?>" method="post" id="form-validate" enctype="multipart/form-data" data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>">
+
+    <fieldset class="fieldset">
+        <legend class="legend"><span><?php /* @escapeNotVerified */ echo __('Please fill the information.') ?></span></legend><br>
+        <input name="form_key" type="hidden" value="<?php echo $block->showFormKey();?>">
+        <input type="hidden" name="success_url" value="<?php /* @escapeNotVerified */ echo $block->getSuccessUrl() ?>"/>
+        <input type="hidden" name="error_url" value="<?php /* @escapeNotVerified */ echo $block->getErrorUrl() ?>"/>
+
+        <?php echo $block->getNameBlockHtml() ?>
+
+        <?php
+            $nicknameRiki = $block->getAddress()->getCustomAttribute('riki_nickname');
+            if ($nicknameRiki) {
+                $nickname = $nicknameRiki->getValue();
+            }else {
+                $nickname = '';
+            }
+
+            $addressType = $block->getAddress()->getCustomAttribute('riki_type_address');
+            if ($addressType) {
+                $addressTypeName = $addressType->getValue();
+            }else {
+                $addressTypeName = '';
+            }
+
+            $apartment = $block->getAddress()->getCustomAttribute('apartment');
+            if ($apartment) {
+                $apartmentValue = $apartment->getValue();
+            }else {
+                $apartmentValue = '';
+            }
+        ?>
+        <div class="field nickname-address">
+            <label class="label" for="nickname-address" attr-have-to="<?php /* @escapeNotVerified */ echo __('Have to') ?>"><span><?php /* @escapeNotVerified */ echo __('Nickname of this address') ?></span></label>
+            <div class="control">
+                <input type="text" name="riki_nickname" id="nickname-address" title="<?php /* @escapeNotVerified */ echo __('Nickname of this address') ?>" value="<?php echo $block->escapeHtml($nickname) ?>" class="input-text max_text_length" data-validate="{required:true, validate_double_byte_required:true}"  maxlength="20"/>
+                <div class="field-tips"><?php echo __('Example: home') ?> <span class="tips-orange"><?php echo __('※ Please note that the selected items in the delivery setting at the time of your order.') ?></span></div>
+            </div>
+        </div>
+
+        <div class="field zip required">
+            <label class="label" for="zip_edit_registration_address" attr-have-to="<?php /* @escapeNotVerified */ echo __('Have to') ?>"><span><?php /* @escapeNotVerified */ echo __('PostCode') ?></span></label>
+            <div class="control">
+                <input type="text" name="postcode_c" data-validate="{required:true, 'validate-custom-postal-code': true}" value="<?php echo $block->escapeHtml($block->getAddress()->getPostcode()) ?>" title="<?php /* @escapeNotVerified */ echo __('Postcode') ?>" id="zip_edit_registration_address" class="input-text <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('postcode') ?>" maxlength="8" />
+                <button type="button" class="find-postcode_c"><span><?php echo __('Find address') ?></span></button>
+                <div class="field-tips"><?php echo __('Example: 100-0001') ?></div>
+            </div>
+        </div>
+
+        <div class="field region required">
+            <label class="label" for="region_id" attr-have-to="<?php /* @escapeNotVerified */ echo __('Have to') ?>"><span><?php /* @escapeNotVerified */ echo __('Prefecture') ?></span></label>
+            <div class="control">
+                <select id="region_id_edit_registration_address" name="region_id_c" title="<?php /* @escapeNotVerified */ echo __('Prefecture') ?>" class="validate-select" <?php echo(!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>>
+                    <option value=""><?php /* @escapeNotVerified */ echo __('Please select a region, state or province.') ?></option>
+                </select>
+                <input type="text" id="region_edit_registration_address" name="region_c" value="<?php echo $block->escapeHtml($block->getRegion()) ?>" maxlength="4"  title="<?php /* @escapeNotVerified */ echo __('Prefecture') ?>" class="p-region input-text <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('region') ?> max_text_length"<?php echo(!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>/>
+            </div>
+        </div>
+
+        <input type="hidden" name="city_c" value="None" maxlength="30"  id="city"/>
+
+        <?php $_streetValidationClass = $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('street'); ?>
+        <div class="field street required">
+            <label for="street_1" class="label" attr-have-to="<?php /* @escapeNotVerified */ echo __('Have to') ?>"><span><?php /* @escapeNotVerified */ echo __('Town name • address (em)') ?></span></label>
+            <div class="control">
+                <input type="text" name="street_c[]" value="<?php echo $block->escapeHtml($block->getStreetLine(1)) ?>" maxlength="30" title="<?php /* @escapeNotVerified */ echo __('Town name • address (em)') ?>" id="street_1" class="p-street-address input-text <?php /* @escapeNotVerified */ echo $_streetValidationClass ?> validate_double_byte_required max_text_length"/>
+                <div class="field-tips"><?php echo __('Example: Chiyoda') ?></div>
+            </div>
+        </div>
+        
+        <div class="field telephone required">
+            <label class="label" for="telephone" attr-have-to="<?php /* @escapeNotVerified */ echo __('Have to') ?>"><span><?php /* @escapeNotVerified */ echo __('Phone Number') ?></span></label>
+            <div class="control">
+                <input type="text" name="telephone" value="<?php echo $block->escapeHtml($block->getAddress()->getTelephone()) ?>" maxlength="16" title="<?php /* @escapeNotVerified */ echo __('Phone Number') ?>" class="input-text <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('telephone') ?> max_text_length validate-phone-number" id="telephone"/>
+                <div class="field-tips"><?php echo __('Example: 0782307000') ?></div>
+            </div>
+        </div>
+
+        <div class="field country required">
+            <label class="label" for="country"><span><?php /* @escapeNotVerified */ echo __('Country') ?></span></label>
+            <div class="control">
+                <?php echo $block->getCountryHtmlSelect(null, 'country_id_c', 'country_c', 'Country') ?>
+            </div>
+        </div>
+        <?php if($rikiAmbassador == 1) {?>
+        <div class="field riki_type_address no-display">
+            <label class="label" for="riki_type_address"><span><?php /* @escapeNotVerified */ echo __('Address Type') ?></span></label>
+            <div class="control">
+                <select id="order-billing_address_riki_type_address" name="riki_type_address" class=" select admin__control-select" >
+                    <option <?php if($addressTypeName == 'home') echo 'selected'  ?> value="home"><?php /* @escapeNotVerified */ echo __('Home') ?></option>
+                    <option <?php if($addressTypeName == 'company') echo 'selected'  ?>  value="company"><?php /* @escapeNotVerified */ echo __('Company') ?></option>
+                </select>
+            </div>
+        </div>
+        <?php } ?>
+        <?php $userDefinedAttributes = $block->getLayout()->getBlock('customer_form_address_user_attributes'); ?>
+        <?php if ($userDefinedAttributes):?>
+            <?php echo $userDefinedAttributes->setShowContainer(false)->toHtml(); ?>
+        <?php endif;?>
+
+        <div class="address-option">
+        <?php if ($block->isDefaultBilling()): ?>
+            <div class="message info">
+                <span><?php /* @escapeNotVerified */ echo __('Default Billing Address') ?></span>
+            </div>
+        <?php elseif ($block->canSetAsDefaultBilling()): ?>
+            <div class="field choice set billing">
+                <input type="checkbox" id="primary_billing" name="default_billing" value="1" class="checkbox"/>
+                <label class="label" for="primary_billing"><span><?php /* @escapeNotVerified */ echo __('Use as my default billing address') ?></span></label>
+            </div>
+        <?php else: ?>
+            <input type="hidden" name="default_billing" value="1"/>
+        <?php endif; ?>
+        <input type="hidden" name="sub_profile_edit_address" value="1">
+        <?php if ($block->isDefaultShipping()): ?>
+            <div class="message info">
+                <span><?php /* @escapeNotVerified */ echo __('Default Shipping Address') ?></span>
+            </div>
+        <?php elseif ($block->canSetAsDefaultShipping()): ?>
+            <div class="field choice set shipping">
+                <input type="checkbox" id="primary_shipping" name="default_shipping" value="1" class="checkbox"/>
+                <label class="label" for="primary_shipping"><span><?php /* @escapeNotVerified */ echo __('Use as my default shipping address') ?></span></label>
+            </div>
+        <?php else: ?>
+            <input type="hidden" name="default_shipping" value="1"/>
+        <?php endif; ?>
+        </div>
+
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" class="action submit primary" data-action="save-address" title="<?php /* @escapeNotVerified */ echo __('Save') ?>">
+                <span><?php /* @escapeNotVerified */ echo __('Save') ?></span>
+            </button>
+        </div>
+    </div>
+
+</form>
+<script type="text/x-magento-init">
+    {
+        "#form-validate": {
+            "validation": {}
+        },
+        "#zip_edit_registration_address": {
+            "Riki_ZipcodeValidation/js/zipcode-formatter": {}
+        },
+        "#country_c": {
+            "regionUpdater": {
+                "optionalRegionAllowed": <?php /* @escapeNotVerified */ echo($block->getConfig('general/region/display_all') ? 'true' : 'false'); ?>,
+                "regionListId": "#region_id_edit_registration_address",
+                "regionInputId": "#region_edit_registration_address",
+                "postcodeId": "#zip_edit_registration_address",
+                "form": "#form-validate",
+                "regionJson": <?php /* @escapeNotVerified */ echo $this->helper('Magento\Directory\Helper\Data')->getRegionJson() ?>,
+                "defaultRegion": "<?php /* @escapeNotVerified */ echo $block->getRegionId() ?>",
+                "countriesWithOptionalZip": <?php /* @escapeNotVerified */ echo $this->helper('Magento\Directory\Helper\Data')->getCountriesWithOptionalZip(true) ?>
+            }
+        }
+    }
+</script>
+<script type="text/javascript">
+    require([
+        'jquery',
+        'ajaxzip3',
+        'Riki_ZipcodeValidation/js/lib/mage/validation/rules',
+        'Riki_Customer/js/lib/mage/validation/rules',
+        'mage/validation'
+    ], function ($, AjaxZip3) {
+        $('.find-postcode_c').on('click', function () {
+            if ($.validator.validateElement($('#zip_edit_registration_address'))) {
+                $('#country_c').val('JP').trigger('change');
+                AjaxZip3.zip2addr('postcode_c', '', 'region_id_c', 'street_c[]', '', '');
+            }
+        });
+    });
+</script>

@@ -1,0 +1,16 @@
+<!--@subject 確認・承認をお願いします。 @-->
+<!-- Modify content of template according to your requirement-->
+{{template config_path="design/email/header_template"}} <!--header of template-->
+<table>
+    <tr class="email-intro">
+        <td>
+            ショッピングポイントの使用申請がされました。<br/>
+            確認・承認をお願いします。<br/><br/>
+
+            オーダー番号： <a target="_blank" href="{{var detailUrl}}">{{var incrementId}}</a><br/>
+            私用ポイント：{{var pendingPoint}}<br/>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}} <!--footer of template-->

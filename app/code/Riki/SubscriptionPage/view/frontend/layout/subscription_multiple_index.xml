@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Magento_Swatches::css/swatches.css"/>
+        <css src="mage/gallery/gallery.css"/>
+    </head>
+    <body>
+        <block class="Magento\Framework\Pricing\Render" name="product.price.render.default">
+            <arguments>
+                <argument name="price_render_handle" xsi:type="string">catalog_subscription_product_prices</argument>
+                <argument name="use_link_for_as_low_as" xsi:type="boolean">true</argument>
+                <!-- set "override" configuration settings here -->
+            </arguments>
+        </block>
+        <referenceContainer name="page.wrapper">
+            <block class="Riki\SubscriptionPage\Block\Html\Breadcrumbs" name="page.subscription.breadcrumbs" template="html/breadcrumbs.phtml" before="main.content" />
+        </referenceContainer>
+        <referenceContainer name="main.content">
+            <block class="Riki\SubscriptionPage\Block\Html\Title" name="page.main.title" template="html/title.phtml" before="-">
+                <action method="setPageTitle">
+                    <argument translate="true" name="title" xsi:type="string">Product Selection</argument>
+                </action>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <!-- @TODO: this layout used for priceBox API, need to revise the reason why we put it in un-cacheable? -->
+            <block class="Riki\SubscriptionPage\Block\SubscriptionView" name="subscription.view" template="Riki_SubscriptionPage::multiple.phtml" cacheable="false">
+                <!--<block class="Riki\SubscriptionPage\Block\Catalog\Product\View\Type\Bundle" name="product.info.bundle.options" as="type_bundle_options" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/options.phtml">
+                    <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Select" name="product.info.bundle.options.select" as="select" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/select.phtml" />
+                    <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Multi" name="product.info.bundle.options.multi" as="multi" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/multi.phtml"/>
+                    <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Radio" name="product.info.bundle.options.radio" as="radio" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/radio.phtml"/>
+                    <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Checkbox" name="product.info.bundle.options.checkbox" as="checkbox" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/checkbox.phtml"/>
+                </block>
+                <block class="Magento\Cms\Block\Block" name="short_description_hanpukai">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">short_description_hanpukai</argument>
+                    </arguments>
+                </block>-->
+            </block>
+            <block class="Riki\SubscriptionPage\Block\LineAffiliate" name="subscription.view.line-affiliate" template="Riki_SubscriptionPage::line-affiliate.phtml" />
+        </referenceContainer>
+    </body>
+</page>

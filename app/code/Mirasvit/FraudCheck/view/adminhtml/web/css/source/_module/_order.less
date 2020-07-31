@@ -1,0 +1,152 @@
+.fc__order-view-tab {
+    .row-indicator {
+        .lib-clearfix();
+        border-bottom: 1px solid #e3e3e3;
+
+        .col-label, .col-indicators {
+            float: left;
+            box-sizing: border-box;
+            padding: 1rem 0;
+        }
+
+        .col-label {
+            font-weight: 600;
+            width: 20%;
+        }
+
+        .col-indicators {
+            width: 80%;
+            padding-left: 1.5rem;
+            box-sizing: border-box;
+
+            .indicator {
+                margin-bottom: .5rem;
+                font-size: 1.3rem;
+
+                .score {
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    float: left;
+                    margin-right: 1rem;
+                    border-radius: 2px;
+                    font-size: 11px;
+                    color: #fff;
+                    margin-top: 1px;
+                    text-align: center;
+
+                    &.positive {
+                        background: @fc__status-accept;
+
+                        .fa {
+                            &:before {
+                                content: "\f00c";
+                            }
+                        }
+                    }
+
+                    &.neutral {
+                        background: #A9A9A9;
+
+                        .fa {
+                            &:before {
+                                content: "\f10c";
+                            }
+                        }
+                    }
+
+                    &.negative {
+                        background: @fc__status-reject;
+                        .fa {
+                            &:before {
+                                content: "\f00d";
+                            }
+                        }
+                    }
+                }
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+
+            .fc__score-badge {
+                margin-left: 0;
+                >span {
+                    border-left: none;
+                    padding: 0;
+                    margin: 0;
+                    font-size: 1.4rem;
+                }
+            }
+        }
+    }
+}
+
+.fc__score-badge {
+    font-weight: 500;
+    border-radius: 2px;
+    padding: .3rem 1rem;
+    color: #fff;
+    margin-left: 1rem;
+    font-size: 1.4rem;
+    line-height: 1.4rem;
+    white-space: nowrap;
+
+    .fa {
+        display: none;
+    }
+
+    &.status-accept {
+        background: @fc__status-accept;
+        .fa {
+            &:before {
+                content: "\f00c";
+            }
+        }
+    }
+
+    &.status-review {
+        background: @fc__status-review;
+        .fa {
+            &:before {
+                content: "\f06e";
+            }
+        }
+    }
+
+    &.status-reject {
+        background: @fc__status-reject;
+        .fa {
+            &:before {
+                content: "\f00d";
+            }
+        }
+    }
+
+    > span {
+        margin-left: .7rem;
+        padding-left: 0.7rem;
+        border-left: 1px solid rgba(255, 255, 255, 0.2);
+        font-size: 1.2rem;
+        font-weight: 100;
+    }
+}
+
+.data-grid-cell-content {
+    .fc__score-badge {
+        font-size: 1.2rem;
+        line-height: 1.2rem;
+        display: inline-block;
+
+        > span {
+            display: none;
+        }
+
+        .fa {
+            display: inline;
+            margin-left: .7rem;
+            padding-left: 0.7rem;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    }
+}

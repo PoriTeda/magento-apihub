@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Sales\Block\Order\Info" name="magento.rma.info"/>
+        </referenceContainer>
+        <referenceBlock name="sales.order.info.buttons">
+            <block class="Magento\Rma\Block\Order\Button" name="magento.rma.info.button" template="Magento_Rma::order/button.phtml"/>
+        </referenceBlock>
+    </body>
+</page>

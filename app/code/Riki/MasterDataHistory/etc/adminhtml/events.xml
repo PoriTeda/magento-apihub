@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!--Cource -->
+    <event name="subscription_course_save_after">
+        <observer name="history_data_subscription_course" instance="Riki\MasterDataHistory\Observer\Subscription\CourseSaveAfter" />
+    </event>
+    <!--Catalog Rule -->
+    <event name="catalogrule_rule_save_after">
+        <observer name="history_data_catalogrule" instance="Riki\MasterDataHistory\Observer\CatalogRule\CatalogRuleSaveAfter" />
+    </event>
+    <event name="catalogrule_rule_delete_after">
+        <observer name="history_data_catalogrule" instance="Riki\MasterDataHistory\Observer\CatalogRule\CatalogRuleDeleteAfter" />
+    </event>
+    <!--Sales Rule -->
+    <event name="salesrule_rule_save_after">
+        <observer name="history_data_salesrule" instance="Riki\MasterDataHistory\Observer\SalesRule\SalesRuleSaveAfter" />
+    </event>
+    <event name="salesrule_rule_delete_after">
+        <observer name="history_data_catalogrule" instance="Riki\MasterDataHistory\Observer\SalesRule\SalesRuleDeleteAfter" />
+    </event>
+</config>

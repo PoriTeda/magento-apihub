@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="customer_form">
+            <block acl="Magento_Sales::actions_view" class="Riki\ThirdPartyImportExport\Block\Adminhtml\LegacyOrdersTab" name="legacy_orders">
+                <arguments>
+                    <argument name="sort_order" xsi:type="number">45</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+ </page>

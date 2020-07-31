@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="riki_sap_export">
+        <job name="riki_sap_export_shipment" instance="Riki\SapIntegration\Cron\ShipmentV2" method="execute">
+            <config_path>sap_integration_config/export_shipment/schedule_time</config_path>
+        </job>
+        <job name="riki_sap_export_rma" instance="Riki\SapIntegration\Cron\RmaV2" method="execute">
+            <config_path>sap_integration_config/export_rma/schedule_time</config_path>
+        </job>
+    </group>
+</config>

@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Riki\SubscriptionFrequency\Api\Data\FrequencySearchResultsInterface" type="Magento\Framework\Api\SearchResults" />
+    <preference for="Riki\SubscriptionFrequency\Api\Data\FrequencyInterface" type="Riki\SubscriptionFrequency\Model\Frequency" />
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="subs_frequency_listing_data_source" xsi:type="string">Riki\SubscriptionFrequency\Model\ResourceModel\Frequency\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Riki\SubscriptionFrequency\Model\ResourceModel\Frequency\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">subscription_frequency</argument>
+            <argument name="eventPrefix" xsi:type="string">subs_frequency_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">frequency_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\SubscriptionFrequency\Model\ResourceModel\Frequency</argument>
+        </arguments>
+    </type>
+    <virtualType name="FrequencyGirdFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="FrequencyGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\SubscriptionFrequency\Model\ResourceModel\Frequency\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">FrequencyGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Riki\SubscriptionFrequency\Model\ResourceModel\Frequency">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Magento\ScalableOms\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="subscription_frequency" xsi:type="string">subscription_frequency</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

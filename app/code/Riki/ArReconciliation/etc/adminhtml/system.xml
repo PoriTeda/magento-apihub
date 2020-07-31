@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="riki_ar_reconciliation" translate="label" type="text" sortOrder="111" showInDefault="5" showInWebsite="1" showInStore="1">
+            <tab>bluecom_cronjob</tab>
+            <label>Reconciliation Import</label>
+            <resource>Riki_ArReconciliation::import_payment_csv_file</resource>
+            <group id="cron_import_ar_payment_csv" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Cron Setting</label>
+                <field id="setting_crontab" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cron scheduler</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

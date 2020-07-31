@@ -1,0 +1,40 @@
+<?php
+/* @var $block \Riki\Subscription\Block\Adminhtml\Profile\EditSalesCount */
+$profileId = $block->getRegistryData('subscription-profile-id');
+$profileModelData = $block->getProfileData($profileId);
+?>
+<div class="admin__fieldset-wrapper opened">
+    <div class="admin__fieldset-wrapper-title">
+        <strong class="title"><?php echo __('Subscription Course Name') ?> : <?php echo $profileModelData->getData('course_name').
+                ' ('.__($profileModelData->getData("frequency_interval")). __($profileModelData->getData("frequency_unit")).')'; ?></strong>
+    </div>
+    <div class="admin__fieldset-wrapper-content">
+        <form
+            action="<?php /* @escapeNotVerified */ echo $block->getUrl('*/*/saveEditSalesCount'); ?>"
+            method="post"
+            id="form-submit-edit-sales-count"
+            class="form form-sales-count-edit validation"
+            data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>"
+            data-mage-init='{"validation":{}}'>
+            <?php echo $block->getBlockHtml('formkey')?>
+            <fieldset class="admin__fieldset">
+                <input type="hidden" name="profile_id" value="<?php echo $profileId; ?>">
+                <div class="admin__field _required">
+                    <label class="admin__field-label" for="sales_count"><span><?php echo __('Edit Sales Count') ?></span></label>
+                    <div class="admin__field-control">
+                        <input name="sales_count" class="admin__control-text validate-number required-entry" id="sales_count" type="text"
+                               value="<?php echo $profileModelData->getData('sales_count'); ?>" />
+                    </div>
+                </div>
+                <div class="admin__field _required">
+                    <label class="admin__field-label" for="sales_value_amount"><span><?php echo __('Edit Sales Amount') ?></span></label>
+                    <div class="admin__field-control">
+                        <input name="sales_value_count" class="admin__control-text validate-number required-entry" id="sales_value_amount" type="text"
+                               value="<?php echo $profileModelData->getData('sales_value_count'); ?>" />
+                    </div>
+                </div>
+                <button type="submit" onclick="return submitForm(this,'form-submit-edit-sales-count')" value="save" class="action-scalable primary" style="float: right"><?php echo _('Save') ?></button>
+            </fieldset>
+        </form>
+    </div>
+</div>

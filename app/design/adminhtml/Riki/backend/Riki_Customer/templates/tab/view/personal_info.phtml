@@ -1,0 +1,137 @@
+<?php
+/**
+ * @var $block \Riki\Customer\Block\Adminhtml\Edit\Tab\View\PersonalInfo
+ */
+
+$lastLoginDateAdmin = $block->getLastLoginDate();
+$lastLoginDateStore = $block->getStoreLastLoginDate();
+$createDateAdmin = $block->getCreateDate();
+$createDateStore = $block->getStoreCreateDate();
+?>
+
+<div class="fieldset-wrapper customer-information">
+    <div class="fieldset-wrapper-title">
+        <span class="title"><?php /* @escapeNotVerified */ echo __('Personal Information') ?></span>
+    </div>
+    <table class="admin__table-secondary">
+        <tbody>
+        <?php echo $block->getChildHtml(); ?>
+        <tr>
+            <td><?php /* @escapeNotVerified */ echo __('Last Logged In:') ?></td>
+            <td><?php /* @escapeNotVerified */ echo $lastLoginDateAdmin ?> (<?php /* @escapeNotVerified */ echo $block->getCurrentStatus() ?>)</td>
+        </tr>
+        <?php if ($lastLoginDateAdmin != $lastLoginDateStore): ?>
+        <tr>
+            <td><?php /* @escapeNotVerified */ echo __('Last Logged In (%1):', $block->getStoreLastLoginDateTimezone()) ?></td>
+            <td><?php /* @escapeNotVerified */ echo $lastLoginDateStore ?> (<?php /* @escapeNotVerified */ echo $block->getCurrentStatus() ?>)</td>
+        </tr>
+        <?php endif; ?>
+        <tr>
+            <td><?php /* @escapeNotVerified */ echo __('Confirmed email:') ?></td>
+            <td><?php /* @escapeNotVerified */ echo $block->getIsConfirmedStatus() ?></td>
+        </tr>
+        <tr>
+            <td><?php /* @escapeNotVerified */ echo __('Account Created:') ?></td>
+            <td><?php /* @escapeNotVerified */ echo $createDateAdmin ?></td>
+        </tr>
+        <?php if ($createDateAdmin != $createDateStore): ?>
+            <tr>
+                <td><?php /* @escapeNotVerified */ echo __('Account Created on (%1):', $block->getStoreCreateDateTimezone()) ?></td>
+                <td><?php /* @escapeNotVerified */ echo $createDateStore ?></td>
+            </tr>
+        <?php endif; ?>
+        <tr>
+            <td><?php /* @escapeNotVerified */ echo __('Account Created in:') ?></td>
+            <td><?php /* @escapeNotVerified */ echo $block->getCreatedInStore() ?></td>
+        </tr>
+        <tr>
+            <td><?php /* @escapeNotVerified */ echo __('Customer Group:') ?></td>
+            <td><?php /* @escapeNotVerified */ echo $block->getGroupName() ?></td>
+        </tr>
+        </tbody>
+    </table>
+    <address>
+        <strong><?php /* @escapeNotVerified */ echo __('Default Billing Address') ?></strong><br/>
+        <?php echo $block->getBillingAddressHtml() ?>
+    </address>
+</div>
+<?php if ($block->canCedynaInvoice()) :
+    $businessCode = $block->getCustomerBusinessCode();
+    $invoices = $block->getCustomerInvoices();
+?>
+    <div class="fieldset-wrapper customer-invoice">
+        <div class="cedyna-invoice-button">
+            <button id="cedyna-invoice-popup" type="button" class="action- scalable invoice primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                <span><?php echo __('CEDYNA INVOICE BUTTON');?></span>
+            </button>
+        </div>
+    </div>
+    <div id="cedyna-invoice-summary-popup">
+        <div class="cedyna-invoice-summary">
+            <div class="cedyna-invoice-content">
+                <div class="cedyna-invoice-montdly">
+                    <?php echo __('It will be updated on the 3rd of every month');?>
+                </div>
+
+                <div class="cedyna-invoice-total">
+                    <?php echo __('Invoice total : %1 (tax include)', $block->getTotalInvoice($invoices)); ?>
+                </div>
+
+                <div class="cedyna-invoice-list">
+                    <?php if ($invoices) :?>
+                        <table class="data-table" style="width:100%">
+                            <tdead>
+                            <tr>
+                                <td class="invoice-target-montd"></td>
+                                <td class="invoice-total-amount"><?php echo __('CEDYNA INVOICE HEADER TOTAL AMOUNT');?></td>
+                                <td class="invoice-posting-date"><?php echo __('CEDYNA INVOICE HEADER POSTING DATE');?></td>
+                            </tr>
+                            </tdead>
+                            <tbody>
+                            <?php foreach ($invoices as $invoice) : ?>
+                                <tr>
+                                    <td>
+                                        <a href="<?php echo $block->getDetailInvoiceUrl($invoice);?>">
+                                            <?php echo $block->formatInvoiceDate($invoice);?>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <?php echo $block->formatPrice($invoice['total']);?>
+                                        <?php echo __('(Tax included)');?>
+                                    </td>
+                                    <td><?php echo $block->formatCustomDate($invoice['import_date']);?>
+                                    </td>
+                                </tr>
+                            <?php endforeach;?>
+                            </tbody>
+                        </table>
+                    <?php endif;?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        require([
+                'jquery',
+                'Magento_Ui/js/modal/modal',
+                'mage/translate',
+                'mage/backend/validation'
+            ],
+            function($,modal) {
+                $(document).ready(function () {
+                    var url  = '';
+                    var options = {
+                        type: 'popup',
+                        responsive: true,
+                        innerScroll: true,
+                        title: '<?php echo __('CEDYNA INVOICE SUMMARY HEADER TITLE');?>',
+                    };
+                    var popup = modal(options, $('#cedyna-invoice-summary-popup'));
+                    $('#cedyna-invoice-popup').click(function(){
+                        $('#cedyna-invoice-summary-popup').modal('openModal');
+                    })
+                })
+            }
+        );
+    </script>
+<?php endif;?>

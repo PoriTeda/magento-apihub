@@ -1,0 +1,20 @@
+<?php
+/** @var $block \Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\Renderer\DelayPayment */
+?>
+<script type="text/x-magento-init">
+    { "#cou_is_delay_payment":
+        { "Riki_SubscriptionCourse/js/validation/delay-payment":
+            {
+                "delayPaymentElement"   : "#cou_is_delay_payment",
+                "capturedAmountCalculationOptionElement" : "div.field-captured_amount_calculation_option",
+                "shoppingPointDeductionElement" : "div.field-is_shopping_point_deduction",
+                "paymentDelayTimeElement" : "div.field-payment_delay_time",
+                "totalAmountThresholdElement" : "div.field-total_amount_threshold",
+                "paymentIdsElement" : "#cou_payment_ids > option",
+                "frequencySelectElement" : "#cou_frequency_ids > option",
+                "allowedFrequencies"   :  <?= /* @escapeNotVerified */ $block->getAllowedFrequencies() ?>
+            }
+         }
+     }
+</script>
+

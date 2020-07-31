@@ -1,0 +1,95 @@
+<?php
+/** @var \Riki\Subscription\Block\Multiple\Category\View $parentBlock */
+$parentBlock = $block->getParentBlock()->getParentBlock();
+
+$categoryId = $block->getCategoryId();
+$product = $block->getProduct();
+
+$spotOrder = true;
+if ($product->getCustomAttribute('allow_spot_order')
+    && $product->getCustomAttribute('allow_spot_order')->getValue() != '1'
+) {
+    $spotOrder = false;
+}
+$isInStock = $product->getIsSalable();
+$minimalQty = $parentBlock->getMinimalQty($product);
+$maximumQty = $parentBlock->getMaximumQty($product);
+$maximumQty = ($maximumQty > 99) ? 99 : $maximumQty;
+$unitDisplays = $parentBlock->getUnitDisplay($product);
+if (count($unitDisplays) == 1 && (key($unitDisplays) == 'cs')) {
+    $maximumQty = $maximumQty * $product->getUnitQty();
+}
+?>
+<div class="qty-piece">
+    <div class="control qty select">
+        <select <?php if (!$isInStock || !$spotOrder) echo 'disabled'; ?>
+            id="<?php echo 'qty_' . $product->getId() . '_' . $categoryId; ?>"
+            name="<?php echo 'data[product]' . '[' . ((int)$product->getId() . '_' . (int)$categoryId) . ']' . '[qty]' ?>"
+            class="qty"
+            data-category-id="<?= (int)$categoryId ?>"
+            data-product-id="<?= (int)$product->getId() ?>"
+            data-bind="event: {change: changeQty}"
+        >
+            <option value="0">0</option>
+            <?php for ($i = $minimalQty; $i <= $maximumQty; $i++): ?>
+                <option value="<?php echo $i ?>"><?php echo $i ?></option>
+            <?php endfor; ?>
+        </select>
+    </div>
+    <div class="unit-label"><?php echo __('Piece') ?></div>
+</div>
+
+<div class="qty-case" style="display: none;">
+    <?php
+    $piecesPerCase = ($product->getUnitQty() == '' || $product->getUnitQty() == '0') ? '1' : $product->getUnitQty();
+    $minimalQtyForCase = ceil($minimalQty / $piecesPerCase);
+    ?>
+    <div class="control qty select">
+        <select <?php if (!$isInStock || !$spotOrder) echo 'disabled'; ?>
+            id="<?php echo 'qty_case_' . $product->getId() . '_' . $categoryId; ?>"
+            name="<?php echo 'data[product]' . '[' . ((int)$product->getId() . '_' . (int)$categoryId) . ']' . '[qty_case]' ?>"
+            productid="<?php echo((int)$product->getId() . '_' . $categoryId); ?>"
+            class="qty-cases"
+            data-category-id="<?= (int)$categoryId ?>"
+            data-product-id="<?= (int)$product->getId() ?>"
+            data-bind="event: {change: changeQty}"
+        >
+            <option value="0">0</option>
+            <?php for ($i = $minimalQtyForCase; floor($i <= $maximumQty / ($parentBlock->getUnitQty($product))); $i++): ?>
+                <option value="<?php echo $i ?>"><?php echo $i ?></option>
+            <?php endfor; ?>
+        </select>
+    </div>
+    <div class="unit-label"><?php echo __('Case') ?></div>
+</div>
+
+<?php if (is_array($unitDisplays) && count($unitDisplays)): ?>
+    <div class="unit-option no-display">
+        <div class="control qty select">
+            <input type="hidden"
+                   id="<?php echo 'unit_qty_' . $product->getId() . '_' . $categoryId; ?>"
+                   name="<?php echo 'data[product]' . '[' . ((int)$product->getId() . '_' . (int)$categoryId) . ']' . '[unit_qty]' ?>"
+                   value="<?php echo $parentBlock->getUnitQty($product); ?>">
+            <select id="<?php echo 'case_display_' . $product->getId() . '_' . $categoryId; ?>"
+                    class="unit-case"
+                    unitqty="<?php echo $parentBlock->getUnitQty($product); ?>"
+                    productid="<?php echo((int)$product->getId() . '_' . $categoryId); ?>"
+                    unitqty="<?php echo $parentBlock->getUnitQty($product); ?>"
+                    name="<?php echo 'data[product]' . '[' . ((int)$product->getId() . '_' . (int)$categoryId) . ']' . '[case_display]' ?>"/>
+                <?php if (count($unitDisplays) > 1) { ?>
+                    <option value="ea"><?php echo __('Piece') ?></option>
+                <?php } else { ?>
+                    <?php foreach ($unitDisplays as $keyUnit => $unitDisplay) { ?>
+                        <option value="<?php echo $keyUnit; ?>"><?php echo $unitDisplay; ?></option>
+                    <?php } ?>
+                <?php } ?>
+            </select>
+        </div>
+    </div>
+<?php endif; ?>
+
+<?php if (!$isInStock || !$spotOrder): ?>
+    <input type="hidden"
+           name="<?php echo 'data[product]' . '[' . ((int)$product->getId() . '_' . (int)$categoryId) . ']' . '[qty]' ?>"
+           value="0">
+<?php endif; ?>

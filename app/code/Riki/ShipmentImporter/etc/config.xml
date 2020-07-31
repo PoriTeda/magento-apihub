@@ -1,0 +1,95 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <shipmentimporter>
+            <common>
+                <enable>1</enable>
+                <enable_logger>1</enable_logger>
+            </common>
+            <pattern>
+                <pattern1501>XTXR1501</pattern1501>
+                <pattern1601>XBXR1601</pattern1601>
+                <pattern1701>XHXR1701</pattern1701>
+                <pattern1801>LOGICALPLANT_SHIP</pattern1801>
+                <pattern1901>WAREHOUSE5_SHIP</pattern1901>
+
+                <pattern1502>XTXR1502</pattern1502>
+                <pattern1602>XBXR1602</pattern1602>
+                <pattern1702>XHXR1702</pattern1702>
+                <pattern1802>LOGICALPLANT_DELIVERY</pattern1802>
+                <pattern1902>WAREHOUSE5_DELIVERY</pattern1902>
+
+                <pattern1504>XTXR1504</pattern1504>
+                <pattern1604>XBXR1604</pattern1604>
+                <pattern1704>XHXR1704</pattern1704>
+                <pattern1804>LOGICALPLANT_COD</pattern1804>
+                <pattern1904>WAREHOUSE5_COD</pattern1904>
+
+                <pattern1507>XTXR1507</pattern1507>
+            </pattern>
+            <sftp>
+                <host>ftp.bluecomvn.com</host>
+                <port>22</port>
+                <user>riki</user>
+                <pass>Bl0ec0m2016</pass>
+            </sftp>
+            <location>
+                <import1501>/Staging/import/XTXR1501/remote</import1501>
+                <import1601>/Staging/import/XBXR1601/remote</import1601>
+                <import1701>/Staging/import/XHXR1701/remote</import1701>
+                <import1801>/Staging/import/LOGICALPLANT_SHIP/remote</import1801>
+                <import1901>/Staging/import/WAREHOUSE5_SHIP/remote</import1901>
+
+                <import1502>/Staging/import/XTXR1502/remote</import1502>
+                <import1602>/Staging/import/XBXR1602/remote</import1602>
+                <import1702>/Staging/import/XHXR1702/remote</import1702>
+                <import1802>/Staging/import/LOGICALPLANT_DELIVERY/remote</import1802>
+                <import1902>/Staging/import/WAREHOUSE5_DELIVERY/remote</import1902>
+
+                <import1504>/Staging/import/XTXR1504/remote</import1504>
+                <import1604>/Staging/import/XBXR1604/remote</import1604>
+                <import1704>/Staging/import/XHXR1704/remote</import1704>
+                <import1804>/Staging/import/LOGICALPLANT_COD/remote</import1804>
+                <import1904>/Staging/import/WAREHOUSE5_COD/remote</import1904>
+
+                <import1507>/Staging/import/XTXR1507/remote</import1507>
+            </location>
+            <expression>
+                <express1501_01>00 00 * * *</express1501_01>
+                <express1501_02>00 00 * * *</express1501_02>
+                <express1501_03>00 00 * * *</express1501_03>
+                <express1601_01>00 00 * * *</express1601_01>
+                <express1601_02>00 00 * * *</express1601_02>
+                <express1701_01>00 00 * * *</express1701_01>
+                <express1801_01>00 00 * * *</express1801_01>
+                <express1901_01>00 00 * * *</express1901_01>
+
+                <express1502_01>00 00 * * *</express1502_01>
+                <express1602_01>00 00 * * *</express1602_01>
+                <express1602_02>00 00 * * *</express1602_02>
+                <express1702_01>00 00 * * *</express1702_01>
+                <express1802_01>00 00 * * *</express1802_01>
+                <express1902_01>00 00 * * *</express1902_01>
+
+                <express1504_01>00 00 * * *</express1504_01>
+                <express1604_01>00 00 * * *</express1604_01>
+                <express1704_01>00 00 * * *</express1704_01>
+                <express1804_01>00 00 * * *</express1804_01>
+                <express1904_01>00 00 * * *</express1904_01>
+
+                <express1507_01>00 00 * * *</express1507_01>
+                <express1507_02>00 00 * * *</express1507_02>
+            </expression>
+            <email>
+                <enable>0</enable>
+                <shippedout_xday>2</shippedout_xday>
+                <receiver>support.import@example.com</receiver>
+                <subject>Riki - Shipment Importing Notification</subject>
+                <template></template>
+                <template_tracking>shipment_tracking</template_tracking>
+                <template_tracking_spot>shipment_tracking_spot</template_tracking_spot>
+                <template_tracking_hanpukai>shipment_tracking_hanpukai</template_tracking_hanpukai>
+                <template_tracking_subcription>shipment_tracking_subscription</template_tracking_subcription>
+            </email>
+        </shipmentimporter>
+    </default>
+</config>

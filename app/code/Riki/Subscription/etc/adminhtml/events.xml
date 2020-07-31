@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_model_service_quote_submit_success">
+        <observer name="sale_order_add_subscription_profile" instance="\Riki\Subscription\Observer\ProfileObserver"/>
+    </event>
+    <event name="sales_quote_collect_totals_before">
+        <observer name="subscription_save_course_to_quote_collect_totals_before" instance="Riki\Subscription\Observer\AfterQuoteObserver"/>
+        <observer name="magento_customersegment" disabled="true"/>
+        <observer name="riki_subscription_magento_customersegment" instance="Riki\Subscription\Observer\ProcessCustomerSegmentQuoteObserver"/>
+    </event>
+    <event name="sales_quote_save_before">
+        <observer name="SubscriptionCourseLogic" instance="\Riki\Subscription\Observer\QuoteObserver"/>
+    </event>
+    <!--<event name="controller_action_predispatch">
+        <observer name="Subscription::Controller::PreDispatch" instance="\Riki\Subscription\Observer\SubscriptionPreDispatch"/>
+    </event>-->
+    <event name="checkout_submit_all_after">
+        <observer name="after_edit_order_subscription_admin" instance="Riki\Subscription\Observer\EditSubscriptionOrderAfterSubmitAll" />
+    </event>
+    <event name="sales_order_place_after">
+        <observer name="after_edit_order_subscription_admin_place_after" instance="Riki\Subscription\Observer\EditSubscriptionOrderAfterPlace" />
+    </event>
+</config>

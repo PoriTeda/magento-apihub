@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="controller_action_predispatch_multicheckout_index_index">
+        <observer name="credit-card-only-with-multi" instance="Riki\Checkout\Observer\CheckCreditCardOnly"/>
+    </event>
+    <event name="controller_action_predispatch_checkout_index_index">
+        <observer name="combine-cart-items" instance="Riki\Checkout\Observer\CombineCartItems"/>
+    </event>
+    <event name="controller_action_predispatch_checkout_cart_index">
+        <observer name="Riki_Checkout::combineCartItems" instance="Riki\Checkout\Observer\CombineCartItems"/>
+    </event>
+    <event name="checkout_submit_all_after">
+        <observer  name="riki_checkout_checkout_submit_all_after_order_adress" instance="Riki\Checkout\Observer\MultishippingOrderAddress" />
+    </event>
+    <event name="checkout_onepage_controller_success_action">
+        <observer name="clean_ampromo_data" instance="Riki\Checkout\Observer\CleanFreeGiftPromo" />
+    </event>
+</config>

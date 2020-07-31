@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/system.xsd">
+    <system>
+        <tab id="bluecom_cronjob2" translate="label" sortOrder="200">
+            <label>MasterDataHistory</label>
+        </tab>
+        <section id="masterdatahistory" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Config Master Data History</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_MasterDataHistory::config_masterdatahistory</resource>
+            <group id="common" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>General Settings</label>
+                <field id="datahistoryproduct" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local save file csv product</label>
+                </field>
+                <field id="datahistorycategory" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local save file csv category</label>
+                </field>
+                <field id="datahistoryproductcategory" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local save file csv product category</label>
+                </field>
+                <field id="datahistorysubscription" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local save file csv subscription</label>
+                </field>
+                <field id="datahistorycartpricerule" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local save file csv cart price rules</label>
+                </field>
+                <field id="datahistorycatalogpricerules" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local save file csv catalog price rules</label>
+                </field>
+                <field id="datahistoryshosha" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local save file csv shosha customer</label>
+                </field>
+                <field id="datahistorygiftwrapping" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local save file csv gift wrapping</label>
+                </field>
+                <field id="datahistoryrma" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local save file csv rma</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
+

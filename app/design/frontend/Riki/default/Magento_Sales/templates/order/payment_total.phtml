@@ -1,0 +1,76 @@
+<?php
+// @codingStandardsIgnoreFile
+
+/**
+ * @var $block \Magento\Sales\Block\Order\Totals
+ * @see \Magento\Sales\Block\Order\Totals
+ */
+$order = $block->getOrder();
+$isSubscriptionHanpukai = false;
+if (strtolower($order->getData('riki_type')) == \Riki\SubscriptionCourse\Model\Course\Type::TYPE_HANPUKAI) {
+    $isSubscriptionHanpukai = true;
+}
+
+/** @var Riki\Sales\Helper\PointHelper $pointHelper  */
+$pointHelper = $this->helper('Riki\Sales\Helper\PointHelper');
+$hasPointForTrial = $order->getData('point_for_trial');
+?>
+<div class="payment-total">
+    <div class="title">
+        <strong><?php echo __('Payment amount (tax included)');?></strong>
+    </div>
+    <table class="payment-total-table">
+        <thead></thead>
+        <tbody></tbody>
+        <tfoot>
+        <?php
+            $arrTotal = $block->getTotals();
+            if(isset($arrTotal['totals-tax']))  unset($arrTotal['totals-tax']);
+            if(isset($arrTotal['grand_total_before_apply_point']))  unset($arrTotal['grand_total_before_apply_point']);
+            //if have  grand_total_incl and  grand_total. We just show grand_total_incl
+            if(isset($arrTotal['grand_total_incl']) && isset($arrTotal['grand_total']) ){
+                unset($arrTotal['grand_total']);
+            }
+        ?>
+        <?php foreach ($arrTotal as $_code => $_total): ?>
+            <?php if ($_total->getBlockName()): ?>
+                <?php echo $block->getChildHtml($_total->getBlockName(), false); ?>
+            <?php else:?>
+                <tr class="<?php /* @escapeNotVerified */ echo $_code?>">
+                    <td <?php /* @escapeNotVerified */ echo $block->getLabelProperties()?> scope="row">
+                        <?php
+                            $labelText = $block->escapeHtml($_total->getLabel());
+                            if($_code == 'gw_items_incl') {
+                                $labelText = __('Gift Wrapping for Items');
+                            } elseif ($_code == 'paymentfee') {
+                                $labelText = __('Payment fee');
+                            }elseif ($_code == 'point' && $hasPointForTrial) {
+                                $labelText = __('Shopping Point Trial');
+                            }
+                        ?>
+                        <?php if ($_total->getStrong()):?>
+                            <?php echo $labelText;?>
+                        <?php else:?>
+                            <?php echo ($_total->getCode() == 'discount') ? __('Discount') : $labelText ?>
+                        <?php endif?>
+                    </td>
+                    <td <?php /* @escapeNotVerified */ echo $block->getValueProperties()?> data-th="<?php echo $labelText;?>">
+                        <?php if ($_total->getStrong()):?>
+                            <?php /* @escapeNotVerified */ echo $block->formatValue($_total) ?>
+                        <?php else:?>
+                            <?php
+                                if ( $_total->getCode() == 'point' )
+                                {
+                                    /* @escapeNotVerified */ echo $pointHelper->formatUsePoint($_total);
+                                }else {
+                                    /* @escapeNotVerified */ echo $block->formatValue($_total) ;
+                                }
+                            ?>
+                        <?php endif?>
+                    </td>
+                </tr>
+            <?php endif?>
+        <?php endforeach?>
+        </tfoot>
+    </table>
+</div>

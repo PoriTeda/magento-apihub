@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <test name="VerifyCMSPageGetsSavedWithSameURLKeyForMultiStoreTest">
+        <annotations>
+            <features value="Cms"/>
+            <stories value="MAGETWO-67627"/>
+            <group value="Cms"/>
+            <title value="Verify CMS page gets saved with same url key with hierarchy for multi store"/>
+            <description value="Verify CMS page gets saved with same url key with hierarchy for multi store"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="MAGETWO-93013"/>
+        </annotations>
+
+        <before>
+            <actionGroup ref="LoginActionGroup" stepKey="login"/>
+
+            <actionGroup ref="AddNewNodeActionGroup" stepKey="createNode">
+                <argument name="NodeTitle" value="Product News"/>
+                <argument name="NodeUrlKey" value="products"/>
+            </actionGroup>
+
+            <actionGroup ref="AdminCreateWebsiteActionGroup" stepKey="createWebsite">
+                <argument name="newWebsiteName" value="Second"/>
+                <argument name="websiteCode" value="Base2"/>
+            </actionGroup>
+
+            <actionGroup ref="AdminCreateNewStoreGroupActionGroup" stepKey="createNewStore">
+                <argument name="website" value="Second"/>
+                <argument name="storeGroupName" value="NewStore"/>
+                <argument name="storeGroupCode" value="Base12"/>
+            </actionGroup>
+
+            <actionGroup ref="AdminCreateStoreViewActionGroup" stepKey="createCustomStoreView">
+                <argument name="StoreGroup" value="staticStoreGroup"/>
+                <argument name="customStore" value="staticStore"/>
+            </actionGroup>
+
+            <actionGroup ref="CreateNewPageWithAllValues" stepKey="createNewPage">
+                <argument name="PageTitle" value="mdva3974"/>
+                <argument name="ContentHeading" value="123"/>
+                <argument name="URLKey" value="mdva3974"/>
+                <argument name="selectStoreViewOpt" value="Default Store View"/>
+                <argument name="selectHierarchyOpt" value="Website Root"/>
+            </actionGroup>
+
+            <click selector="{{CmsNewPageHierarchySection.selectHierarchy('Product News')}}"
+                   stepKey="clickPageCheckBoxes"/>
+            <click selector="{{CmsNewPagePageActionsSection.saveAndContinueEdit}}" stepKey="clickSavePage"/>
+            <waitForPageLoad stepKey="waitForPagetoSave"/>
+            <see userInput="You saved the page." stepKey="seeSuccessMessage"/>
+        </before>
+
+
+
+        <after>
+            <actionGroup ref="DeletePageByUrlKeyActionGroup" stepKey="deletePage">
+                <argument name="UrlKey" value="mdva3974"/>
+            </actionGroup>
+
+            <actionGroup ref="DeletePageByUrlKeyActionGroup" stepKey="deletePage1">
+                <argument name="UrlKey" value="mdva3974"/>
+            </actionGroup>
+
+            <actionGroup ref="DeleteCurrentHierarchyActionGroup" stepKey="deleteNode">
+            </actionGroup>
+
+            <actionGroup ref="AdminDeleteWebsiteActionGroup" stepKey="deleteWebsite">
+                <argument name="websiteName" value="Second"/>
+            </actionGroup>
+
+            <amOnPage url="admin/admin/auth/logout/" stepKey="amOnLogoutPage"/>
+        </after>
+
+        <actionGroup ref="CreateNewPageWithAllValues" stepKey="createNewPage">
+            <argument name="PageTitle" value="mdva3974"/>
+            <argument name="ContentHeading" value="123"/>
+            <argument name="URLKey" value="mdva3974"/>
+            <argument name="selectStoreViewOpt" value="Second Store View"/>
+            <argument name="selectHierarchyOpt" value="Website Root"/>
+        </actionGroup>
+        <click selector="{{CmsNewPageHierarchySection.selectHierarchy('Product News')}}" stepKey="clickPageCheckBoxes"/>
+        <click selector="{{CmsNewPagePageActionsSection.saveAndContinueEdit}}" stepKey="clickSavePage"/>
+        <waitForPageLoad stepKey="waitForPagetoSave"/>
+        <see userInput="You saved the page." stepKey="seeSuccessMessage"/>
+
+    </test>
+</tests>
+
+

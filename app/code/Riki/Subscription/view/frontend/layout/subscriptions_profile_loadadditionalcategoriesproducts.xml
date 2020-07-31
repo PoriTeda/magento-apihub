@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <container name="root">
+        <block class="Riki\Subscription\Block\Frontend\Profile\Edit\AdditionalCategoriesProducts" name="profile.info.additional_categories_products" as="additional_categories_products" template="Riki_Subscription::profile/edit/additional_categories_products.phtml">
+            <block class="Magento\Framework\Pricing\Render" name="product.price.render.default">
+                <arguments>
+                    <argument name="price_render_handle" xsi:type="string">catalog_subscription_product_prices</argument>
+                    <argument name="use_link_for_as_low_as" xsi:type="boolean">true</argument>
+                    <!-- set "override" configuration settings here -->
+                </arguments>
+            </block>
+        </block>
+    </container>
+</layout>

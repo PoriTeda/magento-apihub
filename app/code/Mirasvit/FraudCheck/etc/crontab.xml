@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+
+    <group id="default">
+        <job name="fraud_check_score_update" instance="Mirasvit\FraudCheck\Cron\ScoreUpdateCron"
+             method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
+    </group>
+</config>

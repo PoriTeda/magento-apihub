@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_TimeSlots::manage_time_slots" title="Manage Time Slots"
+             module="Riki_TimeSlots" sortOrder="60"
+             parent="Wyomind_PointOfSale::main"
+             action="timeslots/index"
+             resource="Riki_TimeSlots::manage_time_slots"/>
+    </menu>
+</config>

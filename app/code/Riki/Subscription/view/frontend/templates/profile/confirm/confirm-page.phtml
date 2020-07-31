@@ -1,0 +1,267 @@
+<?php
+    $addInfoWithAddressAndDL = $block->getData('addInfoWithAddressAndDL');
+    $isAllowChangeProduct = $block->getData('isAllowChangeProduct');
+    $allAddress = $block->getData('allAddress');
+    $isAllowChangeAddress = $block->getData('isAllowChangeAddress');
+    $isAllowChangeQty = $block->getData('isAllowChangeQty');
+    $isBtnUpdateAllChangesPressed = $block->getData('isBtnUpdateAllChangesPressed');
+    $isSubscriptionHanpukai = $block->getData('isSubscriptionHanpukai');
+    $frequencyUnit = $block->getData('frequency_unit');
+    $frequencyInterval = $block->getData('frequency_interval');
+    /* @var $parentBlock \Riki\Subscription\Block\Frontend\Profile\Edit */
+    $parentBlock = $block->getData('parentBlock');
+    $dataFromSession = $parentBlock->getProfileCache();
+    /* @var $orderSimulator \Magento\Sales\Model\Order */
+    if(!is_null($block->getData('order_simulate'))) {
+        $orderSimulator = $block->getData('order_simulate');
+    }else{
+        $dataFromSession = $parentBlock->getProfileCache();
+        $orderSimulator = $parentBlock->simulatorOrderWithData($dataFromSession);
+    }
+    $tentativePoints = 0;
+    $totalAmount = 0;
+    $shippingFee = 0;
+    $wrappingFee = 0;
+    $paymentFee = 0;
+    $discountAmount = 0;
+    if ($orderSimulator !== null && $orderSimulator !== false) {
+        $tentativePoints = $orderSimulator->getData('bonus_point_amount');
+        $totalAmount = $orderSimulator->getGrandTotal();
+        $wrappingFee =$orderSimulator->getData('gw_items_base_price_incl_tax');
+        $shippingFee = $parentBlock->getShippingFeeIncludeTax($orderSimulator->getShippingInclTax());
+        $paymentFee = $orderSimulator->getFee();
+        $discountAmount = $orderSimulator->getData('discount_amount');
+    }
+    $arrPaymentMethod = $block->getData('arrPaymentMethod');
+
+/** @var \Riki\Subscription\Helper\Profile\DeliveryDateGenerateHelper $deliveryDateGenerateHelper */
+$deliveryDateGenerateHelper =  $this->helper('\Riki\Subscription\Helper\Profile\DeliveryDateGenerateHelper');
+$stockPointDeliveryInfo = $block->getData('stock_point_delivery_information');
+
+/* @var \Riki\StockPoint\Helper\ValidateStockPointProduct $stockPointHelper */
+$stockPointHelper = $this->helper('Riki\StockPoint\Helper\ValidateStockPointProduct');
+$stockPointData   = $this->helper('Riki\Subscription\Helper\StockPoint\Data');
+$frequencyHelper   = $this->helper(\Riki\SubscriptionFrequency\Helper\Data::class);
+$isShowStockPoint = false;
+$profileId = $block->getData('profileId');
+/*profile data*/
+$profileData = $parentBlock->getEntity();
+if ($stockPointHelper->checkProfileExistStockPoint($profileData) && $profileId) {
+    $isShowStockPoint = true;
+    $addressStockPoint = $stockPointHelper->getAddressStockPoint($profileData);
+    $canShowStockPointAddress = $stockPointHelper->canShowStockPointAddress($profileData);
+    if ($addressStockPoint == null && $canShowStockPointAddress) {
+        $addressStockPoint = $stockPointData->getArrDataAddressStockPoint($profileId);
+    }
+}
+?>
+
+<fieldset class="fieldset panel" xmlns="http://www.w3.org/1999/html">
+    <div class="label">
+        <h4><?php echo __("Payment method")  ?></h4>
+    </div>
+    <div class="payment-method-block-text">
+        <?php foreach ($arrPaymentMethod as $arrInfo) {
+            if ($arrInfo['value'] == $dataFromSession->getData('payment_method')) {
+                ?>
+                <?php if ($dataFromSession->getData('payment_method') == 'paygent'
+                    && $dataFromSession->getData('is_new_paygent_method') == false
+                ) { ?>
+                    <span><?php echo __("Credit card(used before)"); ?></span>
+                <?php } else { ?>
+                    <span><?php echo __($arrInfo['label']); ?></span>
+                <?php }
+                break;
+            }
+        } ?>
+    </div>
+</fieldset>
+<fieldset class="fieldset panel">
+    <div class="label">
+        <h4><?php echo __("お届け間隔")  ?></h4>
+    </div>
+    <div class="payment-method-block-text">
+        <span><?php echo $frequencyHelper->formatFrequency($frequencyInterval, $frequencyUnit) ?></span>
+    </div>
+</fieldset>
+
+<fieldset class="fieldset panel table">
+    <div class="table-wrapper">
+        <?php
+        $i = 0;
+
+        $arrDeliveryType = $block->getArrDeliveryType();
+        foreach($addInfoWithAddressAndDL as $addressId =>  $arrInfoWithDL):  ?>
+            <?php $arrAddressInfoNewDesign = $parentBlock->getAddressDetail($addressId) ?>
+            <?php $totalDeliveryType = count($arrInfoWithDL) - 1; $countDeliveryType = 0; ?>
+            <?php
+            $lastName = $firstName = '';
+            if (array_key_exists('riki_lastname', $arrAddressInfoNewDesign)) {
+                $lastName = $arrAddressInfoNewDesign['riki_lastname'];
+            }
+
+            if (array_key_exists('riki_firstname', $arrAddressInfoNewDesign)) {
+                $firstName = $arrAddressInfoNewDesign['riki_firstname'];
+            }
+            ?>
+            <div class="table table list">
+                <?php
+                foreach($arrInfoWithDL as $deliveryType => $arrDetailDL):
+                    $addressNameOfDeliveryType = $arrDetailDL['name'];
+                    $deliveryLabel = isset ( $arrDeliveryType[$deliveryType] ) ?
+                        $arrDeliveryType[$deliveryType] :  $deliveryType;
+                    $deliveryDate = $arrDetailDL['delivery_date']['next_delivery_date'];
+                    if ($dataFromSession->getData('profile_type') == 'type_1') {
+                        $deliveryDate = $parentBlock->getMainDeliveryDateForText();
+                    }
+
+                    $nextOfNextDeliveryDate  = strtotime($frequencyInterval." ".$frequencyUnit,strtotime($deliveryDate));
+                    $nextOfNextDeliveryDate = date('Y-m-d', $nextOfNextDeliveryDate);
+
+                    /*calculate again $nextOfNextDeliveryDate*/
+                    if ($parentBlock->isShowDeliveryMessage()
+                    ) {
+                        $nextOfNextDeliveryDate = $deliveryDateGenerateHelper->getLastDateOfMonth(
+                            $nextOfNextDeliveryDate,
+                            $deliveryDate
+                        );
+
+                        if ($deliveryDate == $profileData->getData('next_delivery_date')
+                            && $profileData->getData('day_of_week') != null
+                            && $profileData->getData('nth_weekday_of_month') != null
+                        ) {
+                            $dayOfWeek = $profileData->getData('day_of_week');
+                            $nthWeekdayOfMonth = $profileData->getData('nth_weekday_of_month');
+                            $nextOfNextDeliveryDate = $deliveryDateGenerateHelper->getDeliveryDateForSpecialCase($nextOfNextDeliveryDate, $dayOfWeek, $nthWeekdayOfMonth);
+                        } else {
+                            $dayOfWeek = date('l', strtotime($deliveryDate));
+                            $nthWeekdayOfMonth = $deliveryDateGenerateHelper->calculateNthWeekdayOfMonth($deliveryDate);
+                            $nextOfNextDeliveryDate = $deliveryDateGenerateHelper->getDeliveryDateForSpecialCase($nextOfNextDeliveryDate, $dayOfWeek, $nthWeekdayOfMonth);
+                        }
+                        $nextOfNextDeliveryDateObject = $deliveryDateGenerateHelper->convertDateStringToDateObject($nextOfNextDeliveryDate);
+                    } else {
+                        $nextOfNextDeliveryDateObject  = $deliveryDateGenerateHelper->getDeliveryDateWithFrequencyUnitMonth($frequencyUnit, $nextOfNextDeliveryDate, $deliveryDate);
+                    }
+                    ?>
+
+                    <!-- Header Info -->
+                    <div class="label">
+                        <h4><?php echo __("Address") ?>：<?php echo isset($arrAddressInfoNewDesign['riki_nickname'])?$arrAddressInfoNewDesign['riki_nickname']:''; ?></h4>
+                    </div>
+                    <div class="current-shipping-address">
+                        <div class="wrapper">
+                            <table>
+                                <tr class="header">
+                                    <td><strong><?php echo __('Name'); ?></strong></td>
+                                    <td><strong><?php echo __('Address'); ?></strong></td>
+                                    <td><strong><?php echo __('Phone number'); ?></strong></td>
+                                </tr>
+                                <tr>
+                                    <?php if ($isShowStockPoint && $addressStockPoint !=null): ?>
+                                        <td data-th="<?php echo __('Name'); ?>">
+                                            <?php echo $addressStockPoint['lastName'].$addressStockPoint['firstName'];  ?>
+                                        </td>
+                                        <td data-th="<?php echo __('Address'); ?>">
+                                            <?php echo $addressStockPoint['addressFull']; ?>
+                                        </td>
+                                        <td data-th="<?php echo __('Phone number'); ?>">
+                                            <?php echo $addressStockPoint['telephone']; ?>
+                                        </td>
+                                    <?php else: ?>
+                                        <td data-th="<?php echo __('Name'); ?>">
+                                            <?php echo $lastName.$firstName;  ?>
+                                        </td>
+                                        <td data-th="<?php echo __('Address'); ?>">
+                                            <?php echo $parentBlock->getCustomerAddressByText($addressId); ?>
+                                        </td>
+                                        <td data-th="<?php echo __('Phone number'); ?>">
+                                            <?php echo $arrAddressInfoNewDesign['telephone']; ?>
+                                        </td>
+                                    <?php endif; ?>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="label no-border">
+                        <h4><?php echo __("Delivery schedule date and time") ?></h4>
+                    </div>
+                    <div class="current-shipping-address">
+                        <?php if ($isShowStockPoint !=null): ?>
+                            <div class="wrapper stock-point-delivery-info">
+                                <?php echo $stockPointHelper->getDataStockPointDeliveryInformation($profileData);?>
+                            </div>
+                        <?php else: ?>
+                            <div class="wrapper">
+                                <span><?php echo $arrDetailDL['delivery_date']['next_delivery_date']; ?></span>
+                                <?php $slotId = $arrDetailDL['delivery_date']['time_slot'];
+                                if ($parentBlock->getSlotObject($slotId) !== null) {
+                                    echo "<span>";
+                                    echo $parentBlock->getSlotObject($slotId)->getData('slot_name');
+                                    echo "</span>";
+                                }
+                                ?>
+                                <?php if ($parentBlock->isShowDeliveryMessage()): ?>
+                                    <span class="delivery-message">
+                                <?php if ($parentBlock->getLocaleCode() == 'ja_JP'): ?>
+                                    <?php echo __($parentBlock->getValueOfNthWeekdayOfMonth($nthWeekdayOfMonth)) . __($dayOfWeek) . __('every'); ?>
+                                <?php else: ?>
+                                    <?php echo __('every') . ' ' . __($parentBlock->getValueOfNthWeekdayOfMonth($nthWeekdayOfMonth)) . ' ' . __($dayOfWeek); ?>
+                                <?php endif; ?>
+                            </span>
+                                <?php endif; ?>
+                                <span class="next-delivery-date">
+                                <span><?php echo __('Delivery schedule day after next:') ?>&nbsp;</span>
+                                <span class="next-delivery-date-val"><?php echo __("%1-%2-%3",$nextOfNextDeliveryDateObject->format('Y'),$nextOfNextDeliveryDateObject->format('m'),$nextOfNextDeliveryDateObject->format('d')) ?></span>&nbsp;<span class="next-timeslot-val"><?php echo ($parentBlock->getSlotObject($slotId) != null)?$parentBlock->getSlotObject($slotId)->getData('slot_name'):null; ?>
+                                </span>
+                            </span>
+                            </div>
+                        <?php endif; ?>
+
+
+                    </div>
+                    <!-- End Header Info -->
+                    <div class="label">
+                        <h4><?php echo __("お届け予定商品") ?></h4>
+                    </div>
+                    <!-- Show address + delivery type -->
+                    <div class="table block">
+
+                        <!-- Show list product -->
+                        <!-- Detail -->
+                        <?php
+                        /** Get product by address and delivery type */
+
+                        echo $this->getLayout()->createBlock("\Magento\Framework\View\Element\Template")->setData([
+                            'arrProduct' => $arrDetailDL['product'],
+                            'isAllowChangeProduct' => $isAllowChangeProduct,
+                            'allAddress' => $allAddress,
+                            'addressId' => $addressId,
+                            'isAllowChangeAddress' => $isAllowChangeAddress,
+                            'isAllowChangeQty' => $isAllowChangeQty,
+                            'addressOrder' => $i,
+                            'parentBlock' => $parentBlock,
+                            'deliveryType' => $deliveryType,
+                            'isBtnUpdateAllChangesPressed' => $isBtnUpdateAllChangesPressed,
+                            'isHanpukaiSubscription' => $isSubscriptionHanpukai,
+                            'dataFromSession' => $dataFromSession,
+                            'tentativePoints' => $tentativePoints,
+                            'totalAmount' => $totalAmount,
+                            'wrappingFee' => $wrappingFee,
+                            'shippingFee' => $shippingFee,
+                            'paymentFee' => $paymentFee,
+                            'discountAmount' => $discountAmount,
+                            'totalDeliveryType' => $totalDeliveryType,
+                            'countDeliveryType' => $countDeliveryType,
+                            'listRuleApplied' => $parentBlock->getListRulIdsApplied($orderSimulator,$dataFromSession),
+                            'simulatorOrder'  => $orderSimulator
+                        ])
+                            ->setData('area', 'frontend')
+                            ->setTemplate("Riki_Subscription::profile/edit/list_product_cart_by_address_by_delivery_type_total_amount.phtml")->toHtml(); ?>
+                    </div>
+                    <?php $countDeliveryType++; endforeach;  ?>
+            </div>
+            <?php
+            $i++;
+        endforeach;  ?>
+    </div>
+</fieldset>

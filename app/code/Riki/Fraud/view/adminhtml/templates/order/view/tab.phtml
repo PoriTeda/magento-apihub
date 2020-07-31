@@ -1,0 +1,38 @@
+<?php
+//@codingStandardsIgnoreFile
+/** @var $block \Riki\Fraud\Block\Adminhtml\Order\View\Tab */
+
+$facebook = $block->getFacebookUrl();
+$twitter = $block->getTwitterUrl();
+$linkedIn = $block->getLinkedInUrl();
+?>
+
+<table class="admin__table-secondary" style="width: 50%">
+    <tbody>
+    <tr>
+        <th>Facebook</th>
+        <td><a href="<?= $facebook ?>" target="_blank"><?= $facebook ?></a></td>
+    </tr>
+    <tr>
+        <th>Twitter</th>
+        <td><a href="<?= $twitter ?>" target="_blank"><?= $twitter ?></a></td>
+    </tr>
+    <tr>
+        <th>LinkedIn</th>
+        <td><a href="<?= $linkedIn ?>" target="_blank"><?= $linkedIn ?></a></td>
+    </tr>
+    </tbody>
+</table>
+
+<?php if( !$block->isApprove() ):?>
+
+<div class="admin__page-section-title" id="approve_button_container">
+    <span class="title"><?php echo __('Accept this order:') ?></span>
+    <?php echo $block->approveButton();?>
+</div>
+
+<?php endif;?>
+
+<div class="admin__page-section-title">
+    <span class="title"><?= __('Fraud Checklist') ?></span>
+</div>

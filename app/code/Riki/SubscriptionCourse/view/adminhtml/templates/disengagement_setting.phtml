@@ -1,0 +1,24 @@
+<script>
+    require(["jquery"], function ($) {
+        $(document).ready(function () {
+            disableRequireMinimumOrderTimes();
+        });
+    });
+
+    function disableRequireMinimumOrderTimes() {
+
+        var minimumOrderTimesField = jQuery(".field-minimum_order_times");
+        var minimumOrderTimesInput = jQuery("#disengagement_settingminimum_order_times");
+
+        if (jQuery('[name="is_allow_cancel_from_frontend').val() == 0) {
+            minimumOrderTimesField.removeClass('required _required');
+            minimumOrderTimesInput.val('').removeClass('required-entry _required validate-greater-than-zero');
+        } else {
+            if (minimumOrderTimesInput.val() === '' ){
+                minimumOrderTimesInput.val(1);
+            }
+            minimumOrderTimesField.addClass('required _required');
+            minimumOrderTimesInput.addClass('required-entry _required validate-greater-than-zero');
+        }
+    }
+</script>

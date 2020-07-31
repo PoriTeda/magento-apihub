@@ -1,0 +1,9 @@
+<div class="messages">
+    <?php foreach ($block->getMessages() as $message): ?>
+        <div class="message message-warning warning">
+            <div data-ui-id="messages-message-warning">
+                <?php /* @escapeNotVerified */ echo $block->escapeHtml($message) ?>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>

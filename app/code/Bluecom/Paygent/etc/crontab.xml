@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="paygent">
+        <job name="bluecom_cancelorder" instance="Bluecom\Paygent\Cron\CancelOrders" method="execute">
+            <config_path>paygent_config/generalconfig/cancellation_exp</config_path>
+        </job>
+        <job name="paygent_authorisation" instance="Bluecom\Paygent\Cron\Authorisation" method="execute">
+            <config_path>paygent_config/authorisation/cron_exp</config_path>
+        </job>
+        <job name="delete_authorisation" instance="Bluecom\Paygent\Cron\CancelOrderAuthorizeFail" method="execute">
+            <config_path>paygent_config/delete_fail/cron_exp</config_path>
+        </job>
+        <job name="ivr_getupdate" instance="Bluecom\Paygent\Cron\GetUpdate" method="execute">
+            <config_path>paygent_config/ivr/cron_exp</config_path>
+        </job>
+    </group>
+</config>

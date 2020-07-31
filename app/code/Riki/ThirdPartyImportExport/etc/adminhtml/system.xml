@@ -1,0 +1,809 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="thirdpartyimportex" translate="label" sortOrder="200">
+            <label>Thirdpartyimportex</label>
+        </tab>
+        <section id="setting_sftp" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>sFTP Settings</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_ThirdPartyImportExport::config_ThirdPartyImportExport</resource>
+            <group id="setup_ftp" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Configuration sFTP</label>
+                <field id="ftp_id" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP IP</label>
+                    <comment>IP address of sFTP server (Example: 192.168.10.90)</comment>
+                </field>
+                <field id="ftp_port" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP port</label>
+                    <comment>sFTP port number (Example: 22)</comment>
+                </field>
+                <field id="ftp_user" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP User</label>
+                </field>
+                <field id="ftp_pass" translate="label" type="obscure" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Password</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+            </group>
+        </section>
+        <section id="csv_order_payment_setup" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Export CVS order payment</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_ThirdPartyImportExport::config_ThirdPartyImportExport</resource>
+            <group id="se_common" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>General Settings</label>
+                <field id="is_enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable CVS Order Payment Export</comment>
+                </field>
+            </group>
+            <group id="cvs_order_cron_location" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Location Export File Csv Method</label>
+                <field id="folder_local" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="folder_ftp" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                </field>
+                <field id="folder_ftp_report" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Report</label>
+                    <comment>ftp folder for report file</comment>
+                </field>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="last_time_run_to_cron" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Lastime to run cron job</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+            <group id="cvs_order_send_email" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Email Settings</label>
+                <field id="email_enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable sent mail report</comment>
+                </field>
+                <field id="email_alert" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Alert</label>
+                    <comment>Email address which will receive the email updates. Each Email separated by a semicolon ";"</comment>
+                </field>
+                <field id="email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+        </section>
+        <section id="order_import" translate="label" type="text" sortOrder="110" showInWebsite="1" showInStore="1" showInDefault="1">
+            <label>Order Import</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_ThirdPartyImportEx::config_ThirdPartyImportExport</resource>
+            <group id="common" translate="label" type="text" sortOrder="0" showInWebsite="1" showInStore="1" showInDefault="1">
+                <label>Common Settings</label>
+                <field id="anchor_date" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Anchor Date for Listing Customer Orders</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\DatePicker</frontend_model>
+                </field>
+                <field id="x_year" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>X Year (X use in Formula: ORDER_DATE> system_date-X year )</label>
+                    <validate>validate-number validate-greater-than-zero validate-digits</validate>
+                </field>
+            </group>
+            <group id="sftp" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>sFTP Settings</label>
+                <field id="host" translate="label comment" type="text" sortOrder="1" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>sFTP Host</label>
+                    <comment>Domain name/ Ip address of sFTP server. Example: 192.168.10.90</comment>
+                </field>
+                <field id="port" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>sFTP Port</label>
+                    <comment>sFTP port number. Example: 22</comment>
+                    <validate>number validate-zero-or-greater</validate>
+                </field>
+                <field id="username" translate="label" type="text" sortOrder="3" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>sFTP Username</label>
+                </field>
+                <field id="password" translate="label" type="obscure" sortOrder="4" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>sFTP Password</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+            </group>
+            <group id="import" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Import Settings</label>
+                <field id="path" translate="label comment" type="text" sortOrder="1" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Path</label>
+                    <comment>Path in SFTP that EC will read the CSV files</comment>
+                </field>
+                <field id="cvs_riki_order" translate="label comment" type="text" sortOrder="2" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Cvs file name for Order table</label>
+                    <comment>Pattern/name of file will be get to import data</comment>
+                </field>
+                <field id="cvs_riki_order_detail" translate="label comment" type="text" sortOrder="3" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Cvs file name for Order Detail table</label>
+                    <comment>Pattern/name of file will be get to import data</comment>
+                </field>
+                <field id="cvs_riki_shipping" translate="label comment" type="text" sortOrder="4" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Cvs file name for Shipping table</label>
+                    <comment>Pattern/name of file will be get to import data</comment>
+                </field>
+                <field id="cvs_riki_shipping_detail" translate="label comment" type="text" sortOrder="5" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Cvs file name for Shipping Detail table</label>
+                    <comment>Pattern/name of file will be get to import data</comment>
+                </field>
+            </group>
+            <group id="scheduler" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Scheduler Settings</label>
+                <field id="import" translate="label" type="text" sortOrder="1" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Importing</label>
+                </field>
+            </group>
+            <group id="email" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Email Settings</label>
+                <field id="error" translate="label comment" type="text" sortOrder="1" showInStore="0" showInDefault="1" showInWebsite="1">
+                    <label>Error Reporting</label>
+                    <comment>Email address which will receive the error report and separated by a comma ","</comment>
+                </field>
+            </group>
+        </section>
+        <section id="shipping_delivery_complete" translate="label" type="text" sortOrder="110" showInWebsite="1" showInStore="1" showInDefault="1">
+            <label>Shipping Export Delivery complete</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_ThirdPartyImportEx::config_ThirdPartyImportExport</resource>
+            <group id="secommon" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Common Settings</label>
+                <field id="shipmentexport_enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable CVS Export</comment>
+                </field>
+            </group>
+            <group id="thirdpartyimportex_location" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Location Export File Csv Method</label>
+                <field id="shippment_export_folder_local" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export shipping Folder </label>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="shipment_export_folder_ftp" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export shipping Folder</label>
+                </field>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+            </group>
+            <group id="seemail" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Email Settings</label>
+                <field id="shipmentexport_email_alert" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Alert</label>
+                    <comment>Email address which will receive the email updates. Each Email separated by a semicolon ";"</comment>
+                </field>
+                <field id="shipmentexport_email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+        </section>
+        <section id="di_data_export_setup" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>BI Data Export</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_ThirdPartyImportExport::config_ThirdPartyImportExport</resource>
+            <group id="secommon" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Common Settings</label>
+                <field id="di_data_export_enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable CVS Export</comment>
+                </field>
+            </group>
+            <group id="data_cron_product" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Setting config cron product</label>
+
+                <field id="csvexport_order_folder_local" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="csvexport_order_folder_ftp" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="csvexport_order_folder_report_ftp" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Report</label>
+                </field>
+                <field id="setting_crontab_product" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="bi_last_run_to_cron" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Lastime to run cron job</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+                <field id="debug_log" translate="label" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Debug Log</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="data_cron_order" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Setting config cron order</label>
+                <field id="csvexport_order_folder_local" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="csvexport_order_folder_ftp" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="csvexport_order_folder_report_ftp" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Report</label>
+                </field>
+                <field id="version" translate="label" type="hidden" sortOrder="4" showInDefault="0" showInWebsite="0" showInStore="0">
+                </field>
+                <field id="limit" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Limit</label>
+                    <comment>The total records will be exported on each cron run</comment>
+                </field>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="csvexport_order_last_time_cron_run" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Last Time Cron export Order Run</label>
+                    <comment>Last time cron export order run (default: 1970-01-01)</comment>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+            <group id="data_cron_order_promotion" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Setting config cron export order promotion</label>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="csvexport_order_folder_local" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="csvexport_order_folder_ftp" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="csvexport_order_folder_report_ftp" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Report</label>
+                </field>
+                <field id="csvexport_order_last_time_cron_run" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Last Time Cron export Order Run</label>
+                    <comment>Last time cron export order run (default: 1970-01-01)</comment>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+            <group id="data_cron_shipment" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Setting config cron shipment</label>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="csvexport_order_folder_local" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="csvexport_order_folder_ftp" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="csvexport_order_folder_report_ftp" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Report</label>
+                </field>
+                <field id="limit" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Limit</label>
+                    <comment>The total records will be exported per header file</comment>
+                </field>
+                <field id="shipment_last_time_cron_run" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Last Time Cron export Order Run</label>
+                    <comment>Last time cron export shipment run (default: 1970-01-01)</comment>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+            <group id="data_cron_gift_wrapping" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Setting config cron Gift Wrapping</label>
+
+                <field id="csvexport_order_folder_local" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="csvexport_order_folder_ftp" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="csvexport_giftwrapping_folder_ftp_report" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Report</label>
+                    <comment>ftp folder for report file</comment>
+                </field>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="bi_last_run_to_cron" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Lastime to run cron job</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+            <group id="data_cron_enquiry" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Setting config cron Enquiry</label>
+                <field id="csvexport_order_folder_local" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="csvexport_order_folder_ftp" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="csvexport_order_folder_report_ftp" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Report</label>
+                </field>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="bi_last_run_to_cron" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Lastime to run cron job</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+            <group id="data_cron_enquete" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Setting config cron Enquete</label>
+                <field id="csvexport_order_folder_local" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="csvexport_order_folder_ftp" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="csvexport_enquete_folder_report_ftp" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Report</label>
+                </field>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="bi_last_run_to_cron" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Lastime to run cron job</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+            <group id="data_cron_promotion" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Setting config cron Promotion</label>
+                <field id="csvexport_order_folder_local" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="csvexport_order_folder_ftp" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="csvexport_promotion_folder_ftp_report" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Report</label>
+                    <comment>ftp folder save report file</comment>
+                </field>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="bi_last_run_to_cron" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Lastime to run cron job</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+            <group id="data_cron_stock" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Setting config cron Stock</label>
+                <field id="csvexport_stock_folder_local" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="csvexport_stock_folder_ftp" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="csvexport_stock_folder_ftp_report" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Report</label>
+                    <comment>ftp folder save report file</comment>
+                </field>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="bi_last_run_to_cron" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Lastime to run cron job</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+            <group id="data_cron_reward_point" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Setting config cron Export Reward Point</label>
+                <field id="folder_local" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <validate>required-entry</validate>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="folder_ftp" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="folder_ftp_report" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Report</label>
+                    <comment>ftp folder save report file</comment>
+                </field>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="cron_last_time_run" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Lastime to run cron job</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+            <group id="data_cron_fair_seasonal_gift" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Setting config cron Export Fair And Seasonal Gift</label>
+                <field id="folder_local" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <validate>required-entry</validate>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="folder_ftp" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="folder_ftp_report" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Report</label>
+                    <comment>ftp folder for report file</comment>
+                </field>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="cron_last_time_run" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Lastime to run cron job</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+            <group id="data_cron_rma" type="text" sortOrder="91" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Setting config cron Export Sales Returns</label>
+                <field id="folder_local" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <validate>required-entry</validate>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="folder_ftp" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="folder_ftp_report" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Report</label>
+                    <comment>ftp folder save report file</comment>
+                </field>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="cron_last_time_run" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Lastime to run cron job</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+            <group id="data_cron_rma_invoice" type="text" sortOrder="91" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Setting config cron Export Invoice Sales Returns</label>
+                <field id="folder_local" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <validate>required-entry</validate>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="folder_ftp" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="folder_ftp_report" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Report</label>
+                    <comment>ftp folder save report file</comment>
+                </field>
+                <field id="one_time_per_month" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Only run one time per month</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Run one time or multiple time per month</comment>
+                </field>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="cron_last_time_run" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Lastime to run cron job</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+            <group id="data_cron_shosha" type="text" sortOrder="92" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Setting config cron Export Shosha Customers</label>
+                <field id="folder_local" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <validate>required-entry</validate>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="folder_ftp" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="folder_ftp_report" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Report</label>
+                    <comment>ftp folder save report file</comment>
+                </field>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="cron_last_time_run" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Lastime to run cron job</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+            <group id="data_cron_invoice_sale_shipment" translate="label" type="text" sortOrder="95" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Setting config cron Export Invoice Sales Shipment</label>
+                <field id="folder_local" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="folder_ftp" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="folder_ftp_report" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Report</label>
+                    <comment>ftp folder save report file</comment>
+                </field>
+                <field id="one_time_per_month" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Only run one time per month</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Run one time or multiple time per month</comment>
+                </field>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="bi_last_run_to_cron" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Lastime to run cron job</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+            <group id="data_cron_subscription_next_delivery" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Setting config cron Export Subscription Next Delivery</label>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="cron_last_time_run" translate="label" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Lastime to run cron job</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+                <field id="setting_crontab_consumer" translate="label" type="text" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule run Consumer</label>
+                    <comment>This cron for trigger running consumer</comment>
+                </field>
+                <field id="setting_crontab_file_exported" translate="label" type="text" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule export to SFTP</label>
+                    <comment>This cron for trigger pushing file to SFTP</comment>
+                </field>
+                <field id="number_consumer_exported_sub_profile" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Number Consumer for exporting subscription profile</label>
+                    <comment>Number of process for exporting file</comment>
+                </field>
+                <field id="number_consumer_exported_simulate_sub_profile" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Number Consumer for exporting simulate subscription profile</label>
+                    <comment>Number of process for exporting file</comment>
+                </field>
+                <field id="number_message_per_consumer" translate="label" type="text" sortOrder="16" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Number message handled by Consumer</label>
+                </field>
+                <field id="folder_local_profile" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder Profile</label>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="folder_ftp_profile" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Profile</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="folder_ftp_profile_report" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Profile Report</label>
+                </field>
+
+                <field id="folder_local_profile_version" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder Profile Version</label>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="folder_ftp_profile_version" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Profile Version</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="folder_ftp_profile_version_report" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Profile Version Report</label>
+                </field>
+
+                <field id="folder_local_order" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder Next Delivery Order</label>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="folder_ftp_order" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Next Delivery Order</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="folder_ftp_order_report" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Next Delivery Order Report</label>
+                </field>
+
+                <field id="folder_local_shipment" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder Next Delivery Shipment</label>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="folder_ftp_shipment" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Next Delivery Shipment</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="folder_ftp_report_shipment" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder  Next Delivery Shipment Report</label>
+                </field>
+            </group>
+            <group id="data_cron_sales_report" type="text" sortOrder="94" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Setting config cron Export mm report sales</label>
+                <field id="setting_crontab1" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time 1st cron schedule</label>
+                </field>
+                <field id="setting_crontab2" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time 2nd cron schedule</label>
+                </field>
+                <field id="setting_crontab3" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time 3rd cron schedule</label>
+                </field>
+                <field id="folder_local" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <validate>required-entry</validate>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="folder_ftp" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="folder_ftp_report" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Report</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="time_crontab" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+            <group id="seemail" translate="label" type="text" sortOrder="99" showInDefault="10" showInWebsite="1" showInStore="0">
+                <label>Email Settings</label>
+                <field id="shipmentexport_email_enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable sent mail report</comment>
+                </field>
+                <field id="shipmentexport_email_alert" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Alert</label>
+                    <comment>Email address which will receive the email updates. Each Email separated by a semicolon ";"</comment>
+                </field>
+                <field id="shipmentexport_email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+            <group id="profiler" translate="label" type="text" sortOrder="100" showInDefault="10" showInWebsite="1" showInStore="0">
+                <label>Profiler Settings</label>
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable profiler</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable tracking run time for export process</comment>
+                </field>
+            </group>
+        </section>
+        <section id="reconciliation" translate="label" type="text" sortOrder="110" showInWebsite="1" showInStore="1" showInDefault="1">
+            <label>Reconciliation Export</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_ThirdPartyImportEx::config_ThirdPartyImportExport</resource>
+            <group id="common" translate="label" type="text" sortOrder="0" showInWebsite="1" showInStore="1" showInDefault="1">
+                <label>Common Settings</label>
+                <field id="reconciliation_export_enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable CVS Export</comment>
+                </field>
+            </group>
+            <group id="data_cron_reconciliation" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Setting config cron reconciliation</label>
+                <field id="csvexport_folder_local" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Csv Folder </label>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="csvexport_folder_ftp" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="csvexport_folder_ftp_report" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export Csv Folder Report</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+                <field id="setting_crontab_reconciliation" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="reconciliation_last_run_to_cron" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Lastime to run cron job</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+            <group id="seemail" translate="label" type="text" sortOrder="99" showInDefault="10" showInWebsite="1" showInStore="0">
+                <label>Email Settings</label>
+                <field id="reconciliation_email_enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable sent mail report</comment>
+                </field>
+                <field id="reconciliation_email_alert" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Alert</label>
+                    <comment>Email address which will receive the email updates. Each Email separated by a semicolon ";"</comment>
+                </field>
+                <field id="reconciliation_email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+        </section>
+        <!-- amuse -->
+        <section id="amuse_data_export_setup" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Amuse Setting</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_ThirdPartyImportExport::config_ThirdPartyImportExport</resource>
+            <group id="secommon" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Common Settings</label>
+                <field id="asume_data_export_enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable XML Export</comment>
+                </field>
+            </group>
+            <group id="seftp" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>sFTP Settings</label>
+                <field id="data_ftp_id" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP IP</label>
+                    <comment>IP address of sFTP server (Example : 192.168.10.90)</comment>
+                </field>
+                <field id="data_ftp_port" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP port</label>
+                    <comment>sFTP port number (Example : 22)</comment>
+                </field>
+                <field id="data_ftp_user" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP User</label>
+                </field>
+                <field id="data_ftp_pass" translate="label" type="obscure" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Password</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+            </group>
+            <group id="product_amuse_export" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Setting Export XML Product Amuse</label>
+                <field id="setting_crontab" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>The time cron schedule</label>
+                </field>
+                <field id="folder_local" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Local Export Xml Folder </label>
+                    <comment>Magento local folder when file is export to</comment>
+                </field>
+                <field id="folder_ftp" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>sFTP Export XMl Folder</label>
+                    <comment>ftp folder save when file is export to</comment>
+                </field>
+            </group>
+
+            <group id="seemail" translate="label" type="text" sortOrder="99" showInDefault="10" showInWebsite="1" showInStore="0">
+                <label>Email Settings</label>
+                <field id="asume_data_mail_enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable sent mail report</comment>
+                </field>
+                <field id="export_email_alert" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Alert</label>
+                    <comment>Email address which will receive the email updates. Each Email separated by a semicolon ";"</comment>
+                </field>
+                <field id="export_email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
+

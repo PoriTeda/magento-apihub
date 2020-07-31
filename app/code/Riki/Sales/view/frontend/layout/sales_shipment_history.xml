@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Riki\Sales\Block\Shipment\History" name="sales.shipment.history" template="Riki_Sales::shipment/history.phtml" cacheable="false" />
+        </referenceContainer>
+        <referenceContainer name="main.content">
+            <referenceBlock name="page.main.title" remove="true" />
+        </referenceContainer>
+    </body>
+</page>

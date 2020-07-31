@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="cedyna_invoice">
+        <job name="cedyna_invoice_import_data" instance="Riki\CedynaInvoice\Cron\ImportData" method="execute">
+            <config_path>cedyna_invoice/import/cron_expression</config_path>
+        </job>
+    </group>
+</config>

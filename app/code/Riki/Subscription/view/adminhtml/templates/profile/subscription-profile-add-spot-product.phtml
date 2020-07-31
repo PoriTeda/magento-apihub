@@ -1,0 +1,92 @@
+<?php
+$products = $block->getAllSpotProduct();
+
+?>
+<div class="search-condition-block">
+    <div class="item search-field">
+        <div class="title">&nbsp;</div>
+        <div class="content">
+            <input type="text" value="" placeholder="<?php echo __('What are you looking for? (Product name, model number)') ?>" name="" />
+            <button type="submit"><?php echo __('Search') ?></button>
+        </div>
+    </div>
+    <div class="item branch">
+        <div class="title"><?php echo __('Branch') ?></div>
+        <div class="content">
+            <div class="select-wrapper">
+                <select title="" name="" id="" class="input-new select-box">
+                    <option value="1">何をお探しですか</option>
+                    <option value="2">何をお探しですか</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="item price">
+        <div class="title"><?php echo __('Price') ?></div>
+        <div class="content">
+            <div class="select-wrapper">
+                <select title="" name="" id="" class="input-new select-box">
+                    <option value="1">何をお探しですか</option>
+                    <option value="2">何をお探しですか</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="search-result">
+    <div class="product-display">
+        <div class="number-product">100何を15何を何を</div>
+        <div class="select-wrapper">
+            <select title="" name="" id="" class="input-new select-box">
+                <option value="1">15何</option>
+                <option value="2">20何</option>
+            </select>
+        </div>
+        <div class="per-page">何を何を何を</div>
+    </div>
+    <div class="product-pagination">
+        <a href="#">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">4</a>
+        <a href="#">5</a>
+        <span>...</span>
+        <a href="#">7</a>
+    </div>
+</div>
+
+<div class="search-items-result">
+    <ul>
+        <?php foreach($products->getItems() as $product) : ?>
+        <li>
+            <form action="<?php echo $block->getUrlConfirm(); ?>">
+                <img src="<?php echo $block->getViewFileUrl('Magento_Catalog/images/product/placeholder/image.jpg') ?>" alt="">
+                <div class="product-name">
+                    <?php echo $product->getName(); ?>
+                </div>
+                <div class="price-box">
+                    <span class="price-container price-final_price">
+                        <span data-label="（税込）" class="price-wrapper price-including-tax">
+                            <span class="price"><?php echo $block->formatCurrency($product->getPrice()); ?></span>
+                        </span>
+                    </span>
+                </div>
+                <div class="message">
+                    何をお探しですか何をお探しですか何をお探しですか何をお探しですか何をお探しですか何をお探しですか
+                </div>
+                <div class="action">
+                    <div class="select-wrapper">
+                        <select title="" name="" id="" class="input-new select-box">
+                            <?php for($i = 1;$i<=20;$i++) : ?>
+                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                    <button type="submit"><?php echo __('Add product to subscription confirmation') ?></button>
+                </div>
+            </form>
+        </li>
+        <?php endforeach;?>
+    </ul>
+</div>

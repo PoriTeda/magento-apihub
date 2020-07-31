@@ -1,0 +1,525 @@
+<li id="item-detail" role="presentation" data-bind="attr: {class: deliveryTypes().length > 1 ? 'checkout-item-detail multiple-delivery-type' : 'checkout-item-detail checkout-item-detail-hanpukai'}">
+    <!-- ko ifnot: deliveryTypes().length > 1 -->
+    <div class="opc-single-sub">
+        <div class="opc-sub-title" data-bind="i18n: 'Order details'" data-role="title"></div>
+        <!-- ko if:window.checkoutConfig.isSubHanpukai-->
+        <div class="select-wrapper select-wrapper-hanpukai">
+            <div class="hanpukai-course-name" data-bind="text: window.checkoutConfig.courseName"></div>
+            <div class="hanpukai-course-right">
+                <div class="hanpukai-grand-total" data-bind="text: (parseInt(window.checkoutConfig.totalsData.subtotal_incl_tax) + parseInt(window.checkoutConfig.totalsData.discount_amount)) + '円'"></div>
+                <div class="block_quantity">
+                    <div class="quantity buttons_added">
+                        <span class="minus delete" data-bind="click: function(){updateHanpukaiQty(-1)}, touchstart: function(){updateHanpukaiQty(-1)}, css: { hidden: window.checkoutConfig.hanpukaiFactor  > 1}">  <span data-bind="i18n: 'Delete'"></span></span>
+                        <span class="minus not-delete hidden" data-bind="click: function(){updateHanpukaiQty(-1)}, touchstart: function(){updateHanpukaiQty(-1)}, css: { hidden: window.checkoutConfig.hanpukaiFactor == 1}"> <i class="fa fa-minus" aria-hidden="true"></i></span>
+                        <select class="select-box input-new"
+                                data-bind="attr: {name: 'hanpukai_change_all_qty'}, event: {change: updateHanpukaiQty}">
+                            <!-- ko foreach: { data: window.checkoutConfig.hanpukaiChangeQtySelect, as: 'hanpukaiChangeSelectItem' } -->
+                            <option data-bind="
+                                            text: hanpukaiChangeSelectItem,
+                                            attr: {
+                                                value: hanpukaiChangeSelectItem,
+                                                selected: (hanpukaiChangeSelectItem === window.checkoutConfig.hanpukaiFactor),
+                                            }">
+                            </option>
+                            <!-- /ko -->
+                        </select>
+                        <span class="plus" data-bind="click: function(){updateHanpukaiQty(1)}, touchstart: function(){updateHanpukaiQty(1)}"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" data-bind="value:window.checkoutConfig.hanpukaiFactor" value="" class="data-remove-qty">
+        <!-- /ko -->
+        <div data-bind="foreach: getDeliveryTypes()">
+            <!-- ko if: cartItems.length-->
+            <div class="ddate-block" data-bind="css: {'subscription-checkout': window.checkoutConfig.isSubscriptionCheckout}">
+                <div class="table-child">
+                    <!-- ko foreach: cartItems -->
+                    <!-- ko if: (visibleInCart == 1) -->
+                    <div class="item parent-item-cart" data-bind="css: {'has-error': error_message != null, 'odd': $index() % 2 == 0}, attr: {'data-cart-product-id': product_id}">
+
+                        <div class="item-product-image">
+                            <span class="product-item-photo">
+                                <img data-bind="attr: {
+                                        src: thumbnail,
+                                        alt: name
+                                    }" class="product-image-photo" />
+                            </span>
+                        </div>
+
+                        <div class="item-information">
+                            <div class="product-name">
+                                <div class="product-item-name" data-bind="text: name"></div>
+                                <!-- ko if: (gift_wrapping_list != '' && !free_product) -->
+                                <div class="control gift-wrapping-select">
+                                    <div class="label" data-bind="i18n: 'Gift wrapping'"></div>
+                                    <div>
+                                        <div class="select-wrapper">
+                                            <select class="input-new select-box" data-bind="attr: {name: 'gift_wrapping_' + item_id}, event: {change: function() {$parents[1].updateGiftWrapping(item_id)}}">
+                                                <option value="-1" data-bind="i18n: 'None'"></option>
+                                                <!-- ko foreach: gift_wrapping_list -->
+                                                <option data-bind="text: label + ' ' + priceAfterFormat, attr: {value: id, selected: (id == $parent.gw_id)}"></option>
+                                                <!-- /ko -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="wrapping-services-link"><a target="_blank" data-bind="i18n: 'About wrapping services', attr: {href: window.checkoutConfig.wrappingServicesLink, title: $t('About wrapping services')}"></a></div>
+                                </div>
+                                <!-- /ko -->
+
+                                <!-- ko if: free_product && is_riki_machine != 1 && window.checkoutConfig.freegift_message != null -->
+                                <div class="free-gift-message">
+                                    <span data-bind="text: window.checkoutConfig.freegift_message"></span>
+                                </div>
+                                <!-- /ko -->
+                            </div>
+                            <div class="information-bottom">
+
+                                <div class="price-bottom-infor">
+                                    <!-- ko if: window.checkoutConfig.isSubHanpukai -->
+                                    <div><span data-bind="i18n:'Qty'"></span></div>
+                                    <!-- /ko -->
+                                    <!-- ko if: !window.checkoutConfig.isSubHanpukai -->
+                                    <div class="col price">
+                                        <div>
+                                            <span class="cart-price" data-bind="html: price_html"></span>
+                                        </div>
+                                        <!-- ko if: tier_price.length && (free_product == false) -->
+                                        <div data-bind="html: tier_price"></div>
+                                            <!-- /ko -->
+                                    </div>
+
+                                    <div class="price-information">
+                                        <div class="title-subtotal" data-bind="text: $t('Subtotal (tax incl)')"></div>
+                                        <!-- ko if: !window.checkoutConfig.isSubHanpukai -->
+                                        <div class="subtotal">
+
+                                            <span class="price-including-tax">
+                                                <span class="cart-price">
+                                                    <span class="price" data-bind="text: subtotal"></span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <!-- /ko -->
+                                    </div>
+                                    <!-- /ko -->
+                                </div>
+
+                                <div class="qty removeQtyFromCartShipping"
+                                     data-bind="css: {'hanpukai-new-checkout': window.checkoutConfig.isSubHanpukai}">
+                                    <!-- ko if: (!free_product && is_riki_machine != '1') -->
+                                    <!-- ko if: (unit_case == 'N/A') -->
+                                    <div>
+                                        <!-- ko if: !window.checkoutConfig.isSubHanpukai -->
+                                        <div class="select-wrapper">
+
+                                            <div class="block_quantity">
+                                                <div class="quantity buttons_added">
+                                                    <span class="minus delete" data-bind="click: function() {$parents[1].removeItem(item_id,product_id)}, touchstart:function(){$parents[1].removeItem(item_id,product_id)}, css: { hidden: qty  > 1}">  <span data-bind="i18n: 'Delete'"></span></span>
+                                                    <span class="minus hidden" data-bind="click: function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,-1)}, touchstart:function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,-1)}, css: { hidden: qty  == 1}"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                                    <input type="hidden" step="1" min="0" max="" value="0" title="Qty" class="input-text qty text" size="4" pattern="" inputmode="" data-render="0" data-quantity="99" data-minimum="1" data-bind="attr: {name: 'qty_' + item_id, 'data-product-id': product_id}, value: qty,event: {change: function() {$parents[1].updateItemQty(item_id,unit_case,unit_qty,0)}}">
+                                                    <select class="input-text qty text" data-bind="attr: {name: 'qty_' + item_id}, event: {change: function() {$parents[1].updateItemQty(item_id,unit_case,unit_qty, false)}}">
+                                                        <!-- ko foreach: ko.utils.range($parents[1].getMinSaleQty(min_sale_qty), $parents[1].getMaxSaleQty(max_sale_qty)) -->
+                                                        <option data-bind="text: $data, attr: {value: $data, selected: ($data === $parent.qty)}"></option>
+                                                        <!-- /ko -->
+                                                    </select>
+                                                    <span class="plus" data-bind="click: function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,1)}, touchstart:function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,1)}"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" data-bind="value: qty" value="" class="data-remove-qty" />
+                                        <!-- /ko -->
+
+                                        <!-- ko if: window.checkoutConfig.isSubHanpukai -->
+                                        <span class="qty" data-bind="text: qty"></span>
+                                        <span class="unit-label" data-bind="i18n: unit_case"></span>
+                                        <!-- /ko -->
+                                    </div>
+                                    <!-- /ko -->
+                                    <!-- ko if: (unit_case == 'EA') -->
+                                    <div>
+                                        <!-- ko if: !window.checkoutConfig.isSubHanpukai -->
+                                        <div class="select-wrapper">
+                                            <div class="block_quantity">
+                                                <div class="quantity buttons_added">
+                                                    <span class="minus delete" data-bind="click: function() {$parents[1].removeItem(item_id,product_id)}, touchstart:function(){$parents[1].removeItem(item_id,product_id)}, css: { hidden: qty  > 1}">  <span data-bind="i18n: 'Delete'"></span></span>
+                                                    <span class="minus hidden" data-bind="click: function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,-1)}, touchstart:function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,-1)}, css: { hidden: qty  == 1}"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                                    <input type="hidden" step="1" min="0" max="" value="0" title="Qty" class="input-text qty text" size="4" pattern="" inputmode="" data-render="0" data-quantity="99" data-minimum="1" data-bind="attr: {name: 'qty_' + item_id, 'data-product-id': product_id}, value: qty,event: {change: function() {$parents[1].updateItemQty(item_id,unit_case,unit_qty,0)}}">
+                                                    <select class="input-text qty text" data-bind="attr: {name: 'qty_' + item_id}, event: {change: function() {$parents[1].updateItemQty(item_id,unit_case,unit_qty,false)}}">
+                                                        <!-- ko foreach: ko.utils.range($parents[1].getMinSaleQty(min_sale_qty), $parents[1].getMaxSaleQty(max_sale_qty)) -->
+                                                        <option data-bind="text: $data, attr: {value: $data, selected: ($data === $parent.qty)}"></option>
+                                                        <!-- /ko -->
+                                                    </select>
+                                                    <span class="plus" data-bind="click: function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,1)}, touchstart:function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,1)}"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" data-bind="value: qty" value="" class="data-remove-qty" />
+                                        <!-- /ko -->
+
+                                        <!-- ko if: window.checkoutConfig.isSubHanpukai -->
+                                        <span class="qty" data-bind="text: qty"></span>
+                                        <span class="unit-label" data-bind="i18n: unit_case"></span>
+                                        <!-- /ko -->
+                                    </div>
+                                    <!-- /ko -->
+                                    <!-- ko if: (unit_case == 'CS') -->
+                                    <div>
+                                        <!-- ko if: !window.checkoutConfig.isSubHanpukai -->
+                                        <div class="select-wrapper" >
+
+                                            <div class="block_quantity">
+                                                <div class="quantity buttons_added">
+                                                    <span class="minus delete" data-bind="click: function() {$parents[1].removeItem(item_id,product_id)}, touchstart:function(){$parents[1].removeItem(item_id,product_id)}, css: { hidden: qty_case  > 1}">  <span data-bind="i18n: 'Delete'"></span></span>
+                                                    <span class="minus hidden" data-bind="click: function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,-1)}, touchstart:function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,-1)}, css: { hidden: qty_case  == 1}"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                                    <input type="hidden" step="1" min="0" max="" value="0" title="Qty" class="input-text qty text" size="4" pattern="" inputmode="" data-render="0" data-quantity="99" data-minimum="1" data-bind="attr: {name: 'qty_case_' + item_id, 'data-product-id': product_id}, value: qty_case,event: {change: function() {$parents[1].updateItemQty(item_id,unit_case,unit_qty,0)}}">
+                                                    <select class="input-text qty text" data-bind="attr: {name: 'qty_case_' + item_id}, event: {change: function() {$parents[1].updateItemQty(item_id,unit_case,unit_qty, false)}}">
+                                                        <!-- ko foreach: ko.utils.range($parents[1].getMinSaleQty(min_sale_qty), $parents[1].getMaxSaleQty(max_sale_qty)) -->
+                                                        <option data-bind="text: $data, attr: {value: $data, selected: ($data === $parent.qty_case)}"></option>
+                                                        <!-- /ko -->
+                                                    </select>
+                                                    <span class="plus" data-bind="click: function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,1)}, touchstart:function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,1)}"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" data-bind="value: qty_case" value="" class="data-remove-qty" />
+                                        <!-- /ko -->
+
+                                        <!-- ko if: window.checkoutConfig.isSubHanpukai -->
+                                        <span class="qty" data-bind="text: qty_case"></span>
+                                        <span class="unit-label" data-bind="i18n: unit_case"></span>
+                                        <!-- /ko -->
+                                    </div>
+                                    <!-- /ko -->
+                                    <!-- /ko -->
+
+                                    <!-- ko if: (free_product || is_riki_machine == '1') -->
+                                    <div>
+                                        <!-- ko if: (unit_case == 'CS') -->
+                                        <!-- ko i18n: 'Qty'--><!-- /ko -->：<span class="qty" data-bind="text: qty_case"></span>
+                                        <!-- /ko -->
+                                        <!-- ko if: (unit_case != 'CS') -->
+                                        <!-- ko i18n: 'Qty'--><!-- /ko -->：<span class="qty" data-bind="text: qty"></span>
+                                        <!-- /ko -->
+                                        <!-- ko if: window.checkoutConfig.isSubHanpukai -->
+                                        <span class="unit-label" data-bind="i18n: unit_case"></span>
+                                        <!-- /ko -->
+                                    </div>
+                                    <!-- /ko -->
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!-- ko if: error_message != null || machine_oos_messages != null -->
+                    <div class="item error-message-block">
+                        <div class="error-message">
+                            <span data-bind="html: error_message"></span>
+                            <span data-bind="text: machine_oos_messages"></span>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- /ko -->
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+    <!-- /ko -->
+
+
+
+    <!-- ko if: deliveryTypes().length > 1 -->
+    <!-- ko foreach: deliveryTypes() -->
+    <div class="opc-single-sub delivery_inner">
+        <div class="opc-sub-title" data-bind="i18n: 'Delivery Options'" data-role="title"></div>
+        <div class="ddate-block" data-bind="css: {'subscription-checkout': window.checkoutConfig.isSubscriptionCheckout}">
+            <div class="ddate delivery_inner-info">
+                <h4 class="shipping-block__title"><!-- ko i18n: name --><!-- /ko --></h4>
+                <!-- ko if: allowChooseDeliveryDate && !preOrder -->
+                <div class="shipping-block shipping-block-2">
+                    <!-- ko ifnot: onlyDm -->
+                    <div class="shipping-label">
+                        <label data-bind="visible: !onlyDm"><!-- ko i18n: 'Delivery Date'--><!-- /ko --></label>
+                    </div>
+                    <!-- /ko -->
+                    <div class="shipping-control">
+                        <div class="delivery-specified-row" data-bind="visible: !onlyDm">
+                            <div class="calendar-wrapper">
+                                <input name="delivery_date"
+                                       class="input-text delivery_date input-text input-new"
+                                       type="text"
+                                       onfocus="this.blur()"
+                                       data-bind="
+                                               datetimepicker: true,
+                                               restrictDateList: restrictDate,
+                                               periodRank: period,
+                                               errors: items_error_messages,
+                                               dataBound: dataBound,
+                                               attr: {'placeholder': $t('Unspecified')}
+                                               css: {notOnlyDm: onlyDm}"
+                                       readonly="readonly" />
+                            </div>
+                            <input name="delivery_name" class="input-text" type="hidden" data-bind="value: name" />
+                        </div>
+                    </div>
+                    <!-- ko if: (isSubscription && !onlyDm) -->
+                    <div class="block-next-delivery-date no-display">
+                        <div class="shipping-label">
+                            <label><!-- ko i18n: 'Next Delivery Date'--><!-- /ko --></label>
+                        </div>
+                        <div class="shipping-control">
+                            <div class="calendar-wrapper">
+                                <input name="next_delivery_date"
+                                       class="input-text input-new delivery_date"
+                                       type="text"
+                                       onfocus="this.blur()"
+                                       data-bind="
+                                               disable: !isSubscription || isAllowChangeNextDD == 0,
+                                               datetimepicker: true,
+                                               restrictDateList: restrictDate,
+                                               periodRank: period,
+                                               errors: items_error_messages,
+                                               attr: {'placeholder': $t('Unspecified')}"
+                                       readonly="readonly" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                </div>
+                <!-- /ko -->
+                <div class="shipping-block shipping-block-1" data-bind="visible: timeSlot.getLength() > 0  && allowChooseDeliveryDate">
+                    <div class="shipping-label">
+                        <label><!-- ko i18n: 'Delivery Time'--><!-- /ko --></label>
+                    </div>
+                    <div class="shipping-control">
+                        <div class="select-wrapper">
+                            <select name="delivery_time"
+                                    class="delivery_time input-new select-box"
+                                    data-bind="
+                                        visible: timeSlot.getLength() > 0,
+                                        value: timeSlotValue">
+                                <!-- ko foreach: { data: timeSlot, as: 'timeslotitem' } -->
+                                <option data-bind="
+                                                text: timeslotitem.label,
+                                                attr: {
+                                                    value: timeslotitem.value,
+                                                }
+                                            ">
+                                </option>
+                                <!-- /ko -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="color-red" data-bind="visible: !onlyDm && allowChooseDeliveryDate">
+                    <p data-bind="i18n: 'Regarding various campaigns of periodic delivery flights, you can not specify the desired delivery date.'"></p>
+                    <p data-bind="i18n: 'Even if you specify delivery date, it will be invalid. Please note.'"></p>
+                </div>
+            </div>
+            <div class="table-child delivery_inner-item">
+                <!-- ko foreach: cartItems -->
+                <!-- ko if: (visibleInCart == 1) -->
+                <div class="item parent-item-cart" data-bind="css: {'has-error': error_message != null, 'odd': $index() % 2 == 0}, attr: {'data-cart-product-id': product_id}">
+
+                    <div class="item-product-image">
+                            <span class="product-item-photo">
+                                <img data-bind="attr: {
+                                        src: thumbnail,
+                                        alt: name
+                                    }" class="product-image-photo" />
+                            </span>
+                    </div>
+
+                    <div class="item-information">
+                        <div class="product-name">
+                            <div class="product-item-name" data-bind="text: name"></div>
+                            <!-- ko if: (gift_wrapping_list != '' && !free_product) -->
+                            <div class="control gift-wrapping-select">
+                                <div class="label" data-bind="i18n: 'Gift wrapping'"></div>
+                                <div>
+                                    <div class="select-wrapper">
+                                        <select class="input-new select-box" data-bind="attr: {name: 'gift_wrapping_' + item_id}, event: {change: function() {$parents[1].updateGiftWrapping(item_id)}}">
+                                            <option value="-1" data-bind="i18n: 'None'"></option>
+                                            <!-- ko foreach: gift_wrapping_list -->
+                                            <option data-bind="text: label + ' ' + priceAfterFormat, attr: {value: id, selected: (id == $parent.gw_id)}"></option>
+                                            <!-- /ko -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="wrapping-services-link"><a target="_blank" data-bind="i18n: 'About wrapping services', attr: {href: window.checkoutConfig.wrappingServicesLink, title: $t('About wrapping services')}"></a></div>
+                            </div>
+                            <!-- /ko -->
+
+                            <!-- ko if: free_product && is_riki_machine != 1 && window.checkoutConfig.freegift_message != null -->
+                            <div class="free-gift-message">
+                                <span data-bind="text: window.checkoutConfig.freegift_message"></span>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                        <div class="information-bottom">
+
+                            <div class="price-bottom-infor">
+                                <!-- ko if: window.checkoutConfig.isSubHanpukai -->
+                                <div><span data-bind="i18n:'Qty'"></span></div>
+                                <!-- /ko -->
+                                <!-- ko if: !window.checkoutConfig.isSubHanpukai -->
+
+                                <div class="col price">
+                                    <div>
+                                        <span class="cart-price" data-bind="html: price_html"></span>
+                                    </div>
+                                    <!-- ko if: tier_price.length && (free_product == false) -->
+                                    <div data-bind="html: tier_price"></div>
+                                        <!-- /ko -->
+                                </div>
+
+                                <div class="price-information">
+                                    <div class="title-subtotal" data-bind="text: $t('Subtotal (tax incl)')"></div>
+                                    <!-- ko if: !window.checkoutConfig.isSubHanpukai -->
+                                    <div class="subtotal">
+
+                                            <span class="price-including-tax">
+                                                <span class="cart-price">
+                                                    <span class="price" data-bind="text: subtotal"></span>
+                                                </span>
+                                            </span>
+                                    </div>
+                                    <!-- /ko -->
+                                </div>
+                                <!-- /ko -->
+                            </div>
+
+                            <div class="qty removeQtyFromCartShipping"
+                                 data-bind="css: {'hanpukai-new-checkout': window.checkoutConfig.isSubHanpukai}">
+                                <!-- ko if: (!free_product && is_riki_machine != '1') -->
+                                <!-- ko if: (unit_case == 'N/A') -->
+                                <div>
+                                    <!-- ko if: !window.checkoutConfig.isSubHanpukai -->
+                                    <div class="select-wrapper">
+
+                                        <div class="block_quantity">
+                                            <div class="quantity buttons_added">
+                                                <span class="minus delete" data-bind="click: function() {$parents[1].removeItem(item_id,product_id)}, touchstart:function(){$parents[1].removeItem(item_id,product_id)}, css: { hidden: qty  > 1}">  <span data-bind="i18n: 'Delete'"></span></span>
+                                                <span class="minus hidden" data-bind="click: function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,-1)}, touchstart:function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,-1)}, css: { hidden: qty  == 1}"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                                <input type="hidden" step="1" min="0" max="" value="0" title="Qty" class="input-text qty text" size="4" pattern="" inputmode="" data-render="0" data-quantity="99" data-minimum="1" data-bind="attr: {name: 'qty_' + item_id, 'data-product-id': product_id}, value: qty,event: {change: function() {$parents[1].updateItemQty(item_id,unit_case,unit_qty,0)}}">
+                                                <select class="input-text qty text" data-bind="attr: {name: 'qty_' + item_id}, event: {change: function() {$parents[1].updateItemQty(item_id,unit_case,unit_qty, false)}}">
+                                                    <!-- ko foreach: ko.utils.range($parents[1].getMinSaleQty(min_sale_qty), $parents[1].getMaxSaleQty(max_sale_qty)) -->
+                                                    <option data-bind="text: $data, attr: {value: $data, selected: ($data === $parent.qty)}"></option>
+                                                    <!-- /ko -->
+                                                </select>
+                                                <span class="plus" data-bind="click: function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,1)}, touchstart:function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,1)}"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" data-bind="value: qty" value="" class="data-remove-qty" />
+                                    <!-- /ko -->
+
+                                    <!-- ko if: window.checkoutConfig.isSubHanpukai -->
+                                    <span class="qty" data-bind="text: qty"></span>
+                                    <span class="unit-label" data-bind="i18n: unit_case"></span>
+                                    <!-- /ko -->
+                                </div>
+                                <!-- /ko -->
+                                <!-- ko if: (unit_case == 'EA') -->
+                                <div>
+                                    <!-- ko if: !window.checkoutConfig.isSubHanpukai -->
+                                    <div class="select-wrapper">
+                                        <div class="block_quantity">
+                                            <div class="quantity buttons_added">
+                                                <span class="minus delete" data-bind="click: function() {$parents[1].removeItem(item_id,product_id)}, touchstart:function(){$parents[1].removeItem(item_id,product_id)}, css: { hidden: qty  > 1}">  <span data-bind="i18n: 'Delete'"></span></span>
+                                                <span class="minus hidden" data-bind="click: function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,-1)}, touchstart:function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,-1)}, css: { hidden: qty  == 1}"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                                <input type="hidden" step="1" min="0" max="" value="0" title="Qty" class="input-text qty text" size="4" pattern="" inputmode="" data-render="0" data-quantity="99" data-minimum="1" data-bind="attr: {name: 'qty_' + item_id, 'data-product-id': product_id}, value: qty,event: {change: function() {$parents[1].updateItemQty(item_id,unit_case,unit_qty,0)}}">
+                                                <select class="input-text qty text" data-bind="attr: {name: 'qty_' + item_id}, event: {change: function() {$parents[1].updateItemQty(item_id,unit_case,unit_qty,false)}}">
+                                                    <!-- ko foreach: ko.utils.range($parents[1].getMinSaleQty(min_sale_qty), $parents[1].getMaxSaleQty(max_sale_qty)) -->
+                                                    <option data-bind="text: $data, attr: {value: $data, selected: ($data === $parent.qty)}"></option>
+                                                    <!-- /ko -->
+                                                </select>
+                                                <span class="plus" data-bind="click: function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,1)}, touchstart:function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,1)}"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" data-bind="value: qty" value="" class="data-remove-qty" />
+                                    <!-- /ko -->
+
+                                    <!-- ko if: window.checkoutConfig.isSubHanpukai -->
+                                    <span class="qty" data-bind="text: qty"></span>
+                                    <span class="unit-label" data-bind="i18n: unit_case"></span>
+                                    <!-- /ko -->
+                                </div>
+                                <!-- /ko -->
+                                <!-- ko if: (unit_case == 'CS') -->
+                                <div>
+                                    <!-- ko if: !window.checkoutConfig.isSubHanpukai -->
+                                    <div class="select-wrapper" >
+
+                                        <div class="block_quantity">
+                                            <div class="quantity buttons_added">
+                                                <span class="minus delete" data-bind="click: function() {$parents[1].removeItem(item_id,product_id)}, touchstart:function(){$parents[1].removeItem(item_id,product_id)}, css: { hidden: qty_case  > 1}">  <span data-bind="i18n: 'Delete'"></span></span>
+                                                <span class="minus hidden" data-bind="click: function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,-1)}, touchstart:function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,-1)}, css: { hidden: qty_case  == 1}"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                                <input type="hidden" step="1" min="0" max="" value="0" title="Qty" class="input-text qty text" size="4" pattern="" inputmode="" data-render="0" data-quantity="99" data-minimum="1" data-bind="attr: {name: 'qty_case_' + item_id, 'data-product-id': product_id}, value: qty_case,event: {change: function() {$parents[1].updateItemQty(item_id,unit_case,unit_qty,0)}}">
+                                                <select class="input-text qty text" data-bind="attr: {name: 'qty_case_' + item_id}, event: {change: function() {$parents[1].updateItemQty(item_id,unit_case,unit_qty, false)}}">
+                                                    <!-- ko foreach: ko.utils.range($parents[1].getMinSaleQty(min_sale_qty), $parents[1].getMaxSaleQty(max_sale_qty)) -->
+                                                    <option data-bind="text: $data, attr: {value: $data, selected: ($data === $parent.qty_case)}"></option>
+                                                    <!-- /ko -->
+                                                </select>
+                                                <span class="plus" data-bind="click: function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,1)}, touchstart:function(){$parents[1].updateItemQty(item_id,unit_case,unit_qty,1)}"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" data-bind="value: qty_case" value="" class="data-remove-qty" />
+                                    <!-- /ko -->
+
+                                    <!-- ko if: window.checkoutConfig.isSubHanpukai -->
+                                    <span class="qty" data-bind="text: qty_case"></span>
+                                    <span class="unit-label" data-bind="i18n: unit_case"></span>
+                                    <!-- /ko -->
+                                </div>
+                                <!-- /ko -->
+                                <!-- /ko -->
+
+                                <!-- ko if: (free_product || is_riki_machine == '1') -->
+                                <div>
+                                    <!-- ko if: (unit_case == 'CS') -->
+                                    <!-- ko i18n: 'Qty'--><!-- /ko -->：<span class="qty" data-bind="text: qty_case"></span>
+                                    <!-- /ko -->
+                                    <!-- ko if: (unit_case != 'CS') -->
+                                    <!-- ko i18n: 'Qty'--><!-- /ko --> ：<span class="qty" data-bind="text: qty"></span>
+                                    <!-- /ko -->
+                                    <!-- ko if: window.checkoutConfig.isSubHanpukai -->
+                                    <span class="unit-label" data-bind="i18n: unit_case"></span>
+                                    <!-- /ko -->
+                                </div>
+                                <!-- /ko -->
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <!-- ko if: error_message != null || machine_oos_messages != null -->
+                <div class="item error-message-block">
+                    <div class="error-message">
+                        <span data-bind="html: error_message"></span>
+                        <span data-bind="text: machine_oos_messages"></span>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- /ko -->
+                <!-- /ko -->
+            </div>
+
+        </div>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: window.checkoutConfig.isSubscriptionCheckout != 0 -->
+    <div class="opc_btn--logout" >
+        <a href="javascript:void(0)" onclick="history.back();">商品ページへ戻って、買い物を続ける＞</a>
+    </div>
+    <!-- /ko -->
+</li>

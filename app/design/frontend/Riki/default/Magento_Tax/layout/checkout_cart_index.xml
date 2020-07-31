@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="checkout.cart.totals">
+            <arguments>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="components" xsi:type="array">
+                        <item name="block-totals" xsi:type="array">
+                            <item name="children" xsi:type="array">
+                                <item name="subtotal" xsi:type="array">
+                                    <item name="config" xsi:type="array">
+                                        <item name="title" xsi:type="string" translate="true">Subtotal (Tax included):</item>
+                                    </item>
+                                </item>
+                                <item name="shipping" xsi:type="array">
+                                    <item name="sortOrder" xsi:type="string">20</item>
+                                    <item name="config" xsi:type="array">
+                                        <item name="title" xsi:type="string" translate="true">Shipping cost (Tax included):</item>
+                                    </item>
+                                </item>
+                                <item name="point-used" xsi:type="array">
+                                    <item name="sortOrder" xsi:type="string">32</item>
+                                    <item name="config" xsi:type="array">
+                                        <item name="title" xsi:type="string" translate="true">Point used:</item>
+                                        <item name="title-point" xsi:type="string" translate="true">Point</item>
+                                    </item>
+                                </item>
+                                <item name="fee" xsi:type="array">
+                                    <item name="sortOrder" xsi:type="string">34</item>
+                                </item>
+                                <item name="tax" xsi:type="array">
+                                    <item name="sortOrder" xsi:type="string">38</item>
+                                    <item name="config" xsi:type="array">
+                                        <item name="title" xsi:type="string" translate="true">Tax:</item>
+                                    </item>
+                                </item>
+                                <item name="before_grandtotal" xsi:type="array">
+                                    <item name="sortOrder" xsi:type="string">40</item>
+                                    <item name="children" xsi:type="array">
+                                        <item name="discount" xsi:type="array">
+                                            <item name="config" xsi:type="array">
+                                                <item name="title" xsi:type="string" translate="true">Discount (Tax included):</item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                                <item name="total-not-apply-point" xsi:type="array">
+                                    <item name="sortOrder" xsi:type="string">42</item>
+                                </item>
+                                <item name="grand-total" xsi:type="array">
+                                    <item name="sortOrder" xsi:type="string">100</item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>

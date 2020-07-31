@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="backend_block_widget_grid_prepare_grid_before">
+        <observer name="riki_advancedinventory_admin_grid_prepare" instance="Riki\AdvancedInventory\Observer\AdminGridPrepareBefore" />
+    </event>
+</config>

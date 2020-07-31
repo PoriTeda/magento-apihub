@@ -1,0 +1,21 @@
+<?php
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+$_product = $block->getProduct()
+?>
+<?php
+if ($_additional = $block->getAdditionalData()): ?>
+        <?php
+        foreach ($_additional as $_data):
+                if ($_data['code']=='desc_explanation'){
+                        $desc_explanation = $_helper->productAttribute($_product, $_data['value'], $_data['code']);
+                }
+        endforeach; ?>
+        <?php
+        $html = (!empty($desc_explanation))?"$desc_explanation":"";
+        ?>
+        <?php if (!empty($html)): ?>
+                <div class="attributes-explanation">
+                        <?php echo $html ?>
+                </div>
+        <?php endif; ?>
+<?php endif; ?>

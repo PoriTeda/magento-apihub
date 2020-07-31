@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+ * Copyright © 2016 Wyomind. All rights reserved.
+ * See LICENSE.txt for license details.
+-->
+<!-- Layout of the list of all google shopping data feeds -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link src="Wyomind_AdvancedInventory::js/permissions/index.js"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Wyomind\AdvancedInventory\Block\Adminhtml\Permissions" name="advancedinventory_permissions"/>
+        </referenceContainer>
+    </body>
+</page>

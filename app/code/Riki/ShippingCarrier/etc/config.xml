@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+	<default>
+        <carriers>
+            <yamatoaskul>
+                <active>1</active>
+                <sallowspecific>0</sallowspecific>
+				<model>Riki\ShippingCarrier\Model\Carrier\YamatoAskul</model>
+                <company_code>Yamato</company_code>
+                <inquiry_name>Yamato</inquiry_name>
+                <name>Yamato</name>
+                <production_webservices_url>https://xmlpi-ea.dhl.com/XMLShippingServlet</production_webservices_url>
+                <price>0.00</price>
+                <title>Yamato</title>
+            </yamatoaskul>
+
+            <yamatoglobal>
+                <active>0</active>
+                <sallowspecific>0</sallowspecific>
+                <model>Riki\ShippingCarrier\Model\Carrier\YamatoGlobal</model>
+                <company_code>YamatoGlobal</company_code>
+                <inquiry_name>Yamato Global</inquiry_name>
+                <name>Yamato Global</name>
+                <production_webservices_url>https://xmlpi-ea.dhl.com/XMLShippingServlet</production_webservices_url>
+                <price>0.00</price>
+                <title>Yamato Global</title>
+            </yamatoglobal>
+
+            <bizex>
+                <active>1</active>
+                <sallowspecific>0</sallowspecific>
+                <model>Riki\ShippingCarrier\Model\Carrier\Bizex</model>
+                <company_code>bizex</company_code>
+                <inquiry_name>bizex</inquiry_name>
+                <name>Bizex</name>
+                <production_webservices_url>https://xmlpi-ea.dhl.com/XMLShippingServlet</production_webservices_url>
+                <price>0.00</price>
+                <title>Bizex</title>
+            </bizex>
+
+            <kinki>
+                <active>0</active>
+                <sallowspecific>0</sallowspecific>
+                <model>Riki\ShippingCarrier\Model\Carrier\Kinki</model>
+                <company_code>kinki</company_code>
+                <inquiry_name>Jp Kinki</inquiry_name>
+                <!--<name>Okayamaken Kamotsu</name>-->
+                <name>JP KinKi</name>
+                <production_webservices_url>https://xmlpi-ea.dhl.com/XMLShippingServlet</production_webservices_url>
+                <price>0.00</price>
+                <!--<title>Okayamaken Kamotsu</title>-->
+                <title>JP KinKi</title>
+            </kinki>
+
+            <tokai>
+                <active>0</active>
+                <sallowspecific>0</sallowspecific>
+                <model>Riki\ShippingCarrier\Model\Carrier\Tokai</model>
+                <company_code>tokai</company_code>
+                <inquiry_name>JP Tokai</inquiry_name>
+                <!--<name>Tomani Unsou</name>-->
+                <name>JP Tokai</name>
+                <production_webservices_url>https://xmlpi-ea.dhl.com/XMLShippingServlet</production_webservices_url>
+                <price>0.00</price>
+                <!--<title>Tomani Unsou</title>-->
+                <title>JP Tokai</title>
+            </tokai>
+
+            <yupack>
+                <active>1</active>
+                <sallowspecific>0</sallowspecific>
+                <model>Riki\ShippingCarrier\Model\Carrier\Yupack</model>
+                <company_code>Yapack</company_code>
+                <inquiry_name>Yapack</inquiry_name>
+                <name>Yu-Pack</name>
+                <production_webservices_url>https://xmlpi-ea.dhl.com/XMLShippingServlet</production_webservices_url>
+                <price>0.00</price>
+                <title>Yu-Pack</title>
+            </yupack>
+
+            <anshin>
+                <active>1</active>
+                <sallowspecific>0</sallowspecific>
+                <model>Riki\ShippingCarrier\Model\Carrier\Anshin</model>
+                <company_code>Anshin</company_code>
+                <inquiry_name>Anshin</inquiry_name>
+                <name>Anshin</name>
+                <production_webservices_url>https://xmlpi-ea.dhl.com/XMLShippingServlet</production_webservices_url>
+                <price>0.00</price>
+                <title>Anshin</title>
+            </anshin>
+
+            <ecohai>
+                <active>0</active>
+                <sallowspecific>0</sallowspecific>
+                <model>Riki\ShippingCarrier\Model\Carrier\Ecohai</model>
+                <company_code>011</company_code>
+                <inquiry_name>配送状況はこちらの「エコ配の荷物お問い合わせシステム」にお問い合わせ伝票番号を入力することでご確認いただけます。</inquiry_name>
+                <name>Ecohai</name>
+                <production_webservices_url>https://www.ecohai.co.jp/cargo_tracking</production_webservices_url>
+                <price>0.00</price>
+                <title>Ecohai</title>
+            </ecohai>
+
+            <dummy>
+                <active>0</active>
+                <sallowspecific>0</sallowspecific>
+                <model>Riki\ShippingCarrier\Model\Carrier\Dummy</model>
+                <company_code>012</company_code>
+                <inquiry_name></inquiry_name>
+                <name>Dummy</name>
+                <production_webservices_url></production_webservices_url>
+                <price></price>
+                <title>Dummy</title>
+            </dummy>
+
+            <dummy2>
+                <active>0</active>
+                <sallowspecific>0</sallowspecific>
+                <model>Riki\ShippingCarrier\Model\Carrier\DummySecond</model>
+                <company_code>013</company_code>
+                <inquiry_name></inquiry_name>
+                <name>Dummy2</name>
+                <production_webservices_url></production_webservices_url>
+                <price></price>
+                <title>Dummy2</title>
+            </dummy2>
+
+            <dummy3>
+                <active>0</active>
+                <sallowspecific>0</sallowspecific>
+                <model>Riki\ShippingCarrier\Model\Carrier\DummyThird</model>
+                <company_code>014</company_code>
+                <inquiry_name></inquiry_name>
+                <name>Dummy3</name>
+                <production_webservices_url></production_webservices_url>
+                <price></price>
+                <title>Dummy3</title>
+            </dummy3>
+
+            <sagawa>
+                <active>0</active>
+                <sallowspecific>0</sallowspecific>
+                <model>Riki\ShippingCarrier\Model\Carrier\Sagawa</model>
+                <company_code>002</company_code>
+                <inquiry_name>配送状況はこちらの「佐川急便のお荷物問い合わせサービス」に
+                    お問い合わせ伝票番号を入力することでご確認いただけます。</inquiry_name>
+                <name>Sagawa</name>
+                <production_webservices_url>http://k2k.sagawa-exp.co.jp/p/sagawa/web/okurijoinput.jsp</production_webservices_url>
+                <price></price>
+                <title>Sagawa</title>
+            </sagawa>
+        </carriers>
+    </default>
+</config>

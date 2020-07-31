@@ -1,0 +1,87 @@
+<div id="popup-mpdal">
+    <div class="see-detail-item">
+        <div class="product popup-media">
+            <div class="gallery-placeholder">
+                <div class="product-item-photo" id="detail-gallery">
+                    <!--            <img id="popup-mpdal-image" class="product-image-photo"-->
+                    <!--                 data-bind="attr: { src: productDetailData.url, title: productDetailData.name }">-->
+                </div>
+            </div>
+        </div>
+        <div class="product-item-name">
+            <span id="popup-mpdal-name" data-bind="text: productDetailData.name"></span>
+            <div class="notification-qty instock-threshold">
+                <span data-bind="html: productDetailData.saleAbleText"></span>
+            </div>
+        </div>
+        <div class="product-item-price <?php echo ($block->isHanpukai()) ? 'hidden' : '' ?>">
+            <span class="price-wrapper price-including-tax">
+                <span class="popup-mpdal-price" id="popup-mpdal-price"
+                              data-bind="html: productDetailData.price"></span>
+            </span>
+            <!-- ko if: productDetailData.tierPrice -->
+            <ul class="price-wrapper price-including-tax product-detail-tierPrice">
+                <span class="popup-mpdal-tierprice-wrapper" id="popup-mpdal-tierprice"
+                      data-bind="html: productDetailData.tierPrice"></span>
+            </ul>
+            <!-- /ko -->
+        </div>
+
+    </div>
+    <div class="see-detail-info">
+        <div class="detail-info-content">
+
+            <ul class="info-content-list">
+                <!-- ko if: productDetailData.descriptions.desc_explanation -->
+                <li class="info-content-list_title"><span class="description-name"><?php echo __('Product Description: Explanation') ?>: </span> <br><span data-bind="html: productDetailData.descriptions.desc_explanation"></span></li>
+                <!-- /ko -->
+                <!-- ko if: productDetailData.descriptions.desc_ingredient -->
+                <li>
+                    <span><?php echo __('Product Description: Ingrediencts') ?>: </span>
+                    <span data-bind="html: productDetailData.descriptions.desc_ingredient"></span>
+                </li>
+                <!-- /ko -->
+                <!-- ko if: productDetailData.descriptions.desc_allergen_mandatory -->
+                <li>
+                    <span><?php echo __('Product Description: Allergen(Mandatory)') ?>: </span>
+                    <span data-bind="html: productDetailData.descriptions.desc_allergen_mandatory"></span>
+                </li>
+                <!-- /ko -->
+                <!-- ko if: productDetailData.descriptions.desc_explanation_recom -->
+                <li>
+                    <span><?php echo __('Product Description: Allergen(Recommendation)') ?>: </span>
+                    <span data-bind="html: productDetailData.descriptions.desc_explanation_recom"></span>
+                </li>
+                <!-- /ko -->
+                <!-- ko if: productDetailData.descriptions.desc_content -->
+                <li>
+                    <span><?php echo __('Product Description: Content') ?>: </span>
+                    <span data-bind="html: productDetailData.descriptions.desc_content"></span>
+                </li>
+                <!-- /ko -->
+                <!-- ko if: productDetailData.descriptions.desc_nutrition -->
+                <li>
+                    <span><?php echo __('Product Description: Nutrition Compass') ?>: </span>
+                    <span data-bind="html: productDetailData.descriptions.desc_nutrition"></span>
+                </li>
+                <!-- /ko -->
+                <!-- ko if: productDetailData.descriptions.desc_supplemental_info -->
+                <li>
+                    <span><?php echo __('Product Description: EC supplemental info') ?>: </span>
+                    <span data-bind="html: productDetailData.descriptions.desc_supplemental_info"></span>
+                </li>
+                <!-- /ko -->
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="machine_content-checkout <?php echo ($block->isHanpukai()) ? 'hidden' : '' ?>">
+        <button class="btn_popup_add_to_cart" type="button" title="btn_popup_add_to_cart"
+                data-bind="click: function(){popupAddToCart()}, touchstart:function(){popupAddToCart()}">
+            <span><?php echo __('Add to Cart') ?></span>
+        </button>
+    </div>
+</div>
+
+

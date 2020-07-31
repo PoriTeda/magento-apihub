@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
+    <exchange name="magento" type="topic" connection="amqp">
+        <binding id="customerReindexGrid" topic="customer.reindex.grid" destination="reindex_customer_grid_flat"
+                 destinationType="queue"/>
+        <binding id="customerUpdateSegment" topic="customer.update.segment"
+                 destination="update_model_segment_after_customer_save" destinationType="queue"/>
+    </exchange>
+</config>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="jquery/fileUploader/css/jquery.fileupload-ui.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Riki\CsvOrderMultiple\Block\Adminhtml\Import\Edit\Before" template="Riki_CsvOrderMultiple::import/form/before.phtml" name="import.form.before" as="form_before"/>
+            <block class="Riki\CsvOrderMultiple\Block\Adminhtml\Import\Edit" name="csv_order_multiple_import_form"/>
+            <block class="Riki\CsvOrderMultiple\Block\Adminhtml\Import\Edit\After" template="Riki_CsvOrderMultiple::import/form/after.phtml" name="import.form.after" as="form_after"/>
+        </referenceContainer>
+    </body>
+</page>

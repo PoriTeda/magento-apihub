@@ -1,0 +1,39 @@
+<?php
+    $_helper = $this->helper('Magento\Catalog\Helper\Output');
+    $_product = $block->getProduct();
+?>
+<?php if ($_data = $block->getAdditionalData()): ?>
+    <?php
+        $_dimension = $block->getProductDimension($_data);
+        $_desRecom = $block->getDesRecom($_data);
+        $_desManda = $block->getDesMandatory($_data);
+        $_desNutri = $block->getDesNutrition($_data);
+        $_desIngre = $block->getDescIngredient($_data);
+        $_desContent = $block->getDescontent($_data);
+    ?>
+    <div class="attribute_details">
+        <ul>
+            <?php if($_desIngre!='') : ?>
+                <li><?php echo __('Ingredients');?>:<?php echo $_desIngre?></li>
+            <?php endif;?>
+
+            <?php if($_desNutri!='') : ?>
+                <li><?php echo __('Nutrition Compass');?>:<?php echo $_desNutri?></li>
+            <?php endif;?>
+
+            <?php if($_desManda!='') : ?>
+                <li><?php echo __('Allergen(Mandatory)');?>:<?php echo $_desManda?></li>
+            <?php endif;?>
+
+            <?php if($_desRecom!='') : ?>
+                <li><?php echo __('Allergen(Recommendation)');?> <?php echo $_desRecom?></li>
+            <?php endif;?>
+            <?php if ($_dimension !='') :?>
+                <li><?php echo __('Size');?>:<?php echo $_dimension?></li>
+            <?php endif;?>
+            <?php if ($_desContent !='') :?>
+                <li><?php echo __('Content');?>:<?php echo $_desContent?></li>
+            <?php endif;?>
+        </ul>
+    </div>
+<?php endif;?>

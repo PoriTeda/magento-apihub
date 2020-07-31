@@ -1,0 +1,4 @@
+-- Core overriding
+- vendor/magento/module-sales-archive/etc/db_schema.xml
+- vendor/magento/module-catalog/Model/Product/Attribute/Backend/TierPrice/AbstractHandler.php
+- vendor/magento/module-catalog/Model/Product/Attribute/Backend/TierPrice/UpdateHandler.php

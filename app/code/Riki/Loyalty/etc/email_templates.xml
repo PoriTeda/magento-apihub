@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="riki_loyalty_point_approval_email_template" label="Notify shopping point approval needed" file="approval_point.html" type="html" module="Riki_Loyalty" area="frontend"/>
+    <template id="riki_loyalty_serial_code_template_confirmation" label="Confirmation e-mail after apply serial code" file="serial_code_confirmation.html" type="html" module="Riki_Loyalty" area="frontend"/>
+</config>

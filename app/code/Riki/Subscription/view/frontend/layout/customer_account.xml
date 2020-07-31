@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>定期便のお届け内容確認・変更</title>
+    </head>
+    <body>
+        <referenceBlock name="customer_account_navigation">
+            <block before="customer-account-navigation-address-link" class="Magento\Framework\View\Element\Html\Link\Current" name="customer-account-subscription-profile-link">
+                <arguments>
+                    <argument name="path" xsi:type="string">subscriptions/profile</argument>
+                    <argument name="label" xsi:type="string" translate="true">
+                        定期便のお届け内容確認・変更
+                    </argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

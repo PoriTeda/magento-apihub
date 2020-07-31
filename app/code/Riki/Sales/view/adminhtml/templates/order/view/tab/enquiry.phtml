@@ -1,0 +1,203 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<section class="edit-order-enquiry">
+    <div class="edit-order-comments-block-title">
+        <?php echo __('Enquiry for this order');?>
+    </div>
+    <div>
+        <button type="button " class="scalable add btnAddNewEnquiry">
+            <span><?php echo __('Add New Enquiry');?></span>
+        </button>
+    </div>
+    <div style="border: 1px solid #e3e3e3;margin: 10px 0px;padding: 5px;display: none;" id="FormAddNewEnquiry" class="admin__scope-old">
+        <?php
+        $dataAddNew['return_back_link'] =$block->getUrl('sales/order/view',['order_id'=>$block->getOrder()->getId()]);
+        $dataAddNew['order_id']     = $block->getOrder()->getIncrementId();
+        $dataAddNew['customer_id']  = $block->getOrder()->getCustomerId();
+        $dataAddNew['hidden_button'] = 'search_order';
+        $dataAddNew['current_order_id'] = $block->getOrder()->getIncrementId();
+
+
+        echo $block->getLayout()
+            ->createBlock('\Riki\Customer\Block\Adminhtml\EnquiryHeader\Edit')
+            ->setData('enquiryDetail',$dataAddNew)
+            ->toHtml();
+        ?>
+    </div>
+
+    <ul class="enquiry-list">
+        <?php
+            $itemsEnquiry = $block->getFullEnquiry();
+            $firstItem    = (isset($itemsEnquiry[0])) ? $itemsEnquiry[0] : null;
+        ?>
+
+        <?php foreach ($itemsEnquiry as $_item): ?>
+            <li style="border: 1px solid #e3e3e3;margin: 10px 0px;padding: 5px;" class="enquiry-list-item">
+                <span class="enquiry-list-date"><?php /* @escapeNotVerified */ echo $block->getItemUpdated($_item, 'date')?></span> |
+                <span class="enquiry-list-category"><?php /* @escapeNotVerified */ echo $block->getItemCategory($_item);?></span>
+
+                <div class="enquiry-block-item">
+                    <div class="enquiry-block-item-title">
+                        <?php /* @escapeNotVerified */ echo $block->getItemTitle($_item); ?>
+                    </div>
+                    <div class="enquiry-block-item-text">
+                        <?php /* @escapeNotVerified */ echo $block->getItemText($_item); ?>
+                    </div>
+                </div>
+                <p class="dataEnquiry">
+                    <input type="hidden" value='<?php echo $block->convertDataToJson($_item); ?>' >
+                    <a  href="javascript:;" data-link="<?php echo $block->getUrl('customer/enquiryheader/save/',['order_id'=>$block->getOrder()->getId(),'view_order_id'=>$block->getOrder()->getId(),'id'=>$_item['id']]); ?>" class="editEnquiry">
+                        <?php echo __('Edit') ?>
+                    </a> |
+                    <a class="deleteEnquiry" href="#" data-url="<?php echo $block->getUrl('customer/enquiryheader/delete/',['view_order_id'=>$block->getOrder()->getId(),'id'=>$_item['id'] ]); ?>" class="editEnquiry"><?php echo __('Delete') ?></a>
+
+                </p>
+            </li>
+
+        <?php endforeach; ?>
+    </ul>
+</section>
+
+
+
+<div id="popup-reason-cancel-in-grid">
+    <form id="frm-reason-cancel-in-grid" action="" method="GET">
+          <?php echo __('Do you want to delete selected row record?'); ?>
+    </form>
+</div>
+
+<?php if($firstItem !=null): ?>
+    <div id="editFormEnquiryPopup" style="display:none;">
+        <?php
+        $firstItem['return_back_link'] =$block->getUrl('sales/order/view',['order_id'=>$block->getOrder()->getId()]);
+        $firstItem['hidden_button'] = 'search_order';
+        echo $block->getLayout()
+            ->createBlock('\Riki\Customer\Block\Adminhtml\EnquiryHeader\Edit')
+            ->setData('enquiryDetail',$firstItem)
+            ->toHtml();
+        ?>
+    </div>
+<?php endif; ?>
+
+
+<script type="text/javascript">
+    require([
+            'jquery',
+            'Magento_Ui/js/modal/modal',
+            'mage/translate',
+            'mage/backend/validation'
+        ],
+        function($,modal) {
+            $(document).ready(function () {
+
+                var url  = '';
+                var options = {
+                    type: 'popup',
+                    responsive: true,
+                    innerScroll: true,
+                    title: $.mage.__('Delete'),
+                    buttons: [{
+                        text: $.mage.__('Ok'),
+                        class: 'confirm-reason-cancel',
+                        click: function () {
+                            window.location.href = $('#frm-reason-cancel-in-grid').attr('action');
+                        }
+                    }]
+                };
+                var popup = modal(options, $('#popup-reason-cancel-in-grid'));
+                $('.deleteEnquiry').click(function(){
+                    $('#frm-reason-cancel-in-grid').attr('action',$(this).attr('data-url'));
+                    $('#popup-reason-cancel-in-grid').modal('openModal');
+                })
+
+                //event when click button search order number on form order,customer
+                $('.btnSearchOrderId').click(function(){
+                     var parentForm = $(this).closest('form');
+                     var visibleSearchOrder  = parentForm.find('.searchorderNumer').is(':visible');
+                     parentForm.find('.searchorderNumer').toggle();
+                    if(visibleSearchOrder){
+                        $(this).text( '<?php echo __('Search Order Number') ?>' );
+                    }else{
+                        $(this).text( '<?php echo __('Hide Search Order Number') ?>' );
+                    }
+                })
+
+                //event when click button search customer id on form order,customer
+                $('.btnSearchCustomerId').click(function(){
+                    var parentForm = $(this).closest('form');
+                    var visibleSearchOrder  = parentForm.find('.searchCustomerId').is(':visible');
+                    parentForm.find('.searchCustomerId').toggle();
+                    if(visibleSearchOrder){
+                        $(this).text( '<?php echo __('Search Customer ID') ?>' );
+                    }else{
+                        $(this).text( '<?php echo __('Hide Search Customer ID') ?>' );
+                    }
+                })
+
+                //event show/hidden form enquiry
+                $('.editEnquiry').click(function(){
+                    var dataEdit = $(this).closest('.dataEnquiry').find('input').val();
+                    if (dataEdit !=null) {
+                        var options= {
+                            type: 'slide',
+                            responsive: true,
+                            innerScroll: true,
+                            title: "<?php echo __('Enquiry for this order');?>",
+                            buttons: [{
+                                text: $.mage.__('Save data'),
+                                click: function () {
+                                    $('#editFormEnquiryPopup button[type="submit"]').trigger('click');
+                                }
+                            }]
+                        };
+                        var dataEnquiry =  JSON.parse(dataEdit) ;
+                        for(key in dataEnquiry ) {
+                            $('#editFormEnquiryPopup [name="'+key+'"]').val(dataEnquiry[key]);
+                        }
+
+                        $('#editFormEnquiryPopup form').attr('action',$(this).attr('data-link'));
+                        $('#editFormEnquiryPopup legend,#editFormEnquiryPopup button[type="submit"]').hide();
+                        $('#editFormEnquiryPopup').modal(options).modal('openModal');
+                    }
+                })
+
+                //evenet when click customer
+                $('.searchorderNumer table tbody tr').click(function(){
+                    var parentForm  = $(this).closest('form');
+                    var incrementId =  $(this).find('.col-increment_id').text();
+                    parentForm.find('input[name=order_id]').val(incrementId.trim());
+                })
+
+                $('.searchCustomerId table tbody tr').click(function(){
+                    var parentForm   = $(this).closest('form');
+                    var customerId   = $(this).find('.col-entity_id').text();
+                    var consumerName = $(this).find('.col-firstname').text().trim() + ' ' + $(this).find('.col-lastname').text().trim();
+                    parentForm.find('input[name=customer_id]').val(customerId.trim());
+                    parentForm.find('input[name=consumer_name]').val(consumerName.trim());
+                })
+
+                $('.btnAddNewEnquiry').click(function(){
+                    var parentForm = $('#FormAddNewEnquiry');
+                    var visibleSearchOrder  = parentForm.is(':visible');
+                    parentForm.toggle();
+                    $('.editFormEnquiry').hide();
+                    if(visibleSearchOrder){
+                        $(this).text( '<?php echo __('Add New Enquiry');?>' );
+                    }else{
+                        $(this).text( '<?php echo __('Hide Add New Enquiry') ?>' );
+                    }
+                })
+
+            })
+
+        }
+    );
+</script>
+

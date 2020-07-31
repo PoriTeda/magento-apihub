@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Indexer/etc/indexer.xsd">
+    <indexer id="customer_grid_shosha" view_id="shosha" class="Riki\Customer\Model\Indexer\Mview\Shosha">
+        <title translate="true">Customer Grid Shosha Information</title>
+        <description translate="true">Rebuild customer grid from shosha information</description>
+    </indexer>
+
+    <indexer id="customer_grid" view_id="customer_dummy" class="Magento\Framework\Indexer\Action\Entity" primary="customer">
+        <fieldset name="customer" source="Magento\Customer\Model\Indexer\Source" provider="Magento\Customer\Model\Indexer\AttributeProvider">
+            <field name="consumer_db_id" xsi:type="searchable" dataType="text"/>
+            <field name="shosha_cmp" xsi:type="filterable" dataType="varchar" handler="Riki\Customer\Model\Indexer\Handler\ShoshaAttribute"/>
+            <field name="shosha_cmp_kana" xsi:type="filterable" dataType="varchar" handler="Riki\Customer\Model\Indexer\Handler\ShoshaAttributeNoJoin"/>
+            <field name="shosha_code" xsi:type="filterable" dataType="varchar" handler="Riki\Customer\Model\Indexer\Handler\ShoshaAttributeNoJoin"/>
+            <field name="shosha_dept" xsi:type="filterable" dataType="varchar" handler="Riki\Customer\Model\Indexer\Handler\ShoshaAttributeNoJoin"/>
+            <field name="shosha_dept_kana" xsi:type="filterable" dataType="varchar" handler="Riki\Customer\Model\Indexer\Handler\ShoshaAttributeNoJoin"/>
+            <field name="shosha_first_code" xsi:type="filterable" dataType="varchar" handler="Riki\Customer\Model\Indexer\Handler\ShoshaAttributeNoJoin"/>
+            <field name="shosha_in_charge" xsi:type="filterable" dataType="varchar" handler="Riki\Customer\Model\Indexer\Handler\ShoshaAttributeNoJoin"/>
+            <field name="shosha_in_charge_kana" xsi:type="filterable" dataType="varchar" handler="Riki\Customer\Model\Indexer\Handler\ShoshaAttributeNoJoin"/>
+        </fieldset>
+    </indexer>
+</config>

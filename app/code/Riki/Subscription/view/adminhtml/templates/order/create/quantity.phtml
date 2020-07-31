@@ -1,0 +1,13 @@
+<?php
+/** @var \Riki\Subscription\Block\Adminhtml\Order\Create\Course\Quantity $block */
+if ($block->isHanpukai()):
+    ?>
+    <div class="admin__field admin__field-option">
+        <label class=""><?php echo __('Quantity') ?>:  </label>
+        <select name="hanpukai_quantity" id="hanpukai_quantity" class="required-entry admin__control-select">
+            <?php for($i=1; $i <= 30; $i++): ?>
+                <option value="<?php echo $i ?>"><?php echo $i ?></option>
+            <?php endfor; ?>
+        </select>
+    </div>
+<?php endif; ?>

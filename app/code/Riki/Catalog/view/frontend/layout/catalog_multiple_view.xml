@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Magento_Swatches::css/swatches.css"/>
+        <css src="mage/gallery/gallery.css"/>
+    </head>
+    <body>
+        <referenceBlock name="riki.search" remove="true"/>
+        <referenceBlock name="minicart-merge-quote" remove="true"/>
+        <referenceContainer name="header-wrapper">
+            <block class="Magento\Framework\View\Element\Template" name="page.subscription.category.search"
+                   before="riki.minicart" template="Riki_SubscriptionPage::header/category-search.phtml">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">
+                        Riki\SubscriptionPage\Block\ViewModel\ProductCategory
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <block class="Magento\Framework\Pricing\Render" name="product.price.render.default">
+            <arguments>
+                <argument name="price_render_handle" xsi:type="string">catalog_multiple_product_prices</argument>
+                <argument name="use_link_for_as_low_as" xsi:type="boolean">true</argument>
+                <!-- set "override" configuration settings here -->
+            </arguments>
+        </block>
+
+        <referenceBlock name="breadcrumbs" remove="true"/>
+
+        <referenceContainer name="content">
+            <block cacheable="false" class="Riki\Catalog\Block\Multiple\View" template="Riki_Catalog::multiple/catalog-multiple-view.phtml" name="catalog.multiple.view" >
+                <arguments>
+                    <argument name="view_model" xsi:type="object">
+                        Riki\SubscriptionPage\Block\ViewModel\ProductCategory
+                    </argument>
+                </arguments>
+                <block class="Riki\SubscriptionPage\Block\Catalog\Product\View\Type\Bundle" name="product.info.bundle.options" as="type_bundle_options" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/options.phtml">
+                    <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Select" name="product.info.bundle.options.select" as="select" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/select.phtml" />
+                    <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Multi" name="product.info.bundle.options.multi" as="multi" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/multi.phtml"/>
+                    <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Radio" name="product.info.bundle.options.radio" as="radio" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/radio.phtml"/>
+                    <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Checkbox" name="product.info.bundle.options.checkbox" as="checkbox" template="Riki_SubscriptionPage::catalog/product/view/type/bundle/option/checkbox.phtml"/>
+                </block>
+                <block class="Riki\SubscriptionPage\Block\Catalog\Product\View\Qty" name="subscription_multiple_category_view_product_qty" as="product.view.qty"
+                       template="Riki_SubscriptionPage::view/product/qty.phtml">
+                    <arguments>
+                        <argument name="view_model" xsi:type="object">
+                            Riki\SubscriptionPage\Block\ViewModel\ProductCategory
+                        </argument>
+                    </arguments>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

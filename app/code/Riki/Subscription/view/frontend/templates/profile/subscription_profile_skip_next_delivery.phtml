@@ -1,0 +1,57 @@
+<?php
+    /* @var $block \Riki\Subscription\Block\Frontend\Profile\SkipNextDelivery */
+
+    /* @var $profileModelObj \Riki\Subscription\Model\Profile\Profile */
+    $profileModelObj = $block->getProfileModelObj();
+    $nextDeliveryDate = $profileModelObj->getData('next_delivery_date');
+    $frequencyUnit = $profileModelObj->getFrequencyUnit();
+    $frequencyInterval = $profileModelObj->getFrequencyInterval();
+    $nextDeliveryDateAfterSkip =  $block->getNextDeliveryDateAfterSkip($nextDeliveryDate,$frequencyUnit,$frequencyInterval);
+
+    if ($block->isDayOfWeekAndUnitMonthAndNotStockPoint()) {
+        /** @var \Riki\Subscription\Helper\Profile\DeliveryDateGenerateHelper $deliveryDateGenerateHelper */
+        $deliveryDateGenerateHelper =  $this->helper('\Riki\Subscription\Helper\Profile\DeliveryDateGenerateHelper');
+
+        if ($profileModelObj->getData('day_of_week') != null
+            && $profileModelObj->getData('nth_weekday_of_month') != null
+        ) {
+            $dayOfWeek = $profileModelObj->getData('day_of_week');
+            $nthWeekdayOfMonth = $profileModelObj->getData('nth_weekday_of_month');
+        } else {
+            $dayOfWeek = date('l', strtotime($nextDeliveryDate));
+            $nthWeekdayOfMonth = $deliveryDateGenerateHelper->calculateNthWeekdayOfMonth($nextDeliveryDate);
+        }
+        $nextDeliveryDateAfterSkip = $deliveryDateGenerateHelper->getDeliveryDateForSpecialCase($nextDeliveryDateAfterSkip, $dayOfWeek, $nthWeekdayOfMonth);
+    }
+?>
+<fieldset class="fieldset panel">
+    <div class="label"></div>
+    <p class="message">「<?php echo $profileModelObj->getData('course_name'); ?>」の次回のお届けをお休みしますか？<br/>
+    お休み後のお届けは「<?php echo $nextDeliveryDateAfterSkip; ?><?php echo ' '.$block->getSlotName(); ?>」となります。</p>
+    <p class="no-display">このお届け回にコース外の商品を追加していた場合は、その商品のみキャンセルとなります。ご了承ください。</p>
+
+
+
+    <form action="<?php /* @escapeNotVerified */ echo $block->getUrl('*/*/SaveSkipNextDelivery'); ?>"
+          method="post"
+          id="form-submit-profile"
+          class="form form-giftregistry-edit validation"
+          data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>"
+          data-mage-init='{"validation":{}}'
+    >
+        <?php echo $block->getBlockHtml('formkey')?>
+        <input name="profile_id" type="hidden" value="<?php echo $block->getProfileId(); ?>">
+        <input name="skip_next_delivery" type="hidden" value="1">
+
+        <div class="actions-toolbar">
+            <div class="action-right">
+                <?php if($block->checkAllowSkipNextDelivery($profileModelObj->getProfileId())) : ?>
+                <input class="flat-button yellow-subs" onclick="return submitForm(this,'form-submit-profile')" name="save_skip_next_delivery" type="submit" value="<?php echo __('Save Changes'); ?>">
+                <?php endif; ?>
+            </div>
+            <div class="action-left">
+                <a href="<?php echo $block->getUrl('subscriptions/profile/index') ?>"><span><?php echo __('Go back') ?></span></a>
+            </div>
+        </div>
+    </form>
+</fieldset>

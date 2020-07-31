@@ -1,0 +1,140 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Temlate for \Magento\Customer\Block\Address\Book block
+ * @var \Riki\Customer\Block\Address\Book $block
+ */
+?>
+
+<div class="block block-addresses-list">
+    <div class="block-title"><strong><?php /* @escapeNotVerified */
+            echo __('Additional Address Entries') ?></strong></div>
+    <div class="block-content">
+        <?php if ($_pAddsses = $block->getAddresses()): ?>
+            <?php if ($block->getPagerHtml()): ?>
+                <div class="order-products-toolbar toolbar toolbar-products top"><?php echo $block->getPagerHtml(); ?></div>
+            <?php endif ?>
+            <ol class="items addresses">
+                <?php foreach ($_pAddsses as $_address): ?>
+                    <li class="item">
+                        <?php
+                        $riki_type_address = '';
+                        $rikiNickName = __('Shipping Address Type');
+                        if($_address->getCustomAttribute('riki_nickname') != null){
+                            $rikiNickName =  $_address->getCustomAttribute('riki_nickname')->getValue();
+                        }
+                       if($_address->getCustomAttribute('riki_type_address') != NULL){
+                           $riki_type_address = $_address->getCustomAttribute('riki_type_address')->getValue();
+                           if($riki_type_address == 'company') {
+                               $nickName = __('Company Address');
+                           }else if($riki_type_address == 'home') {
+                               $nickName = __('Home Address');
+                           }else {
+                               $nickName = $rikiNickName;
+                           }
+                       }
+                       else {
+                           $nickName = $rikiNickName;
+                       }
+
+                        if($_address->getCustomAttribute('apartment') != NULL){
+                            $apartment=  $_address->getCustomAttribute('apartment')->getValue();
+                        } else {
+                            $apartment = '';
+                        }
+                        if($_address->getStreet()){
+                            $street = implode(' ',$_address->getStreet() );
+                        }else{
+                            $street = '';
+                        }
+                        ?>
+                        <span class="title">
+                              <?php echo __("Address name:");?> <?php echo "<strong>".$block->escapeHtml($nickName)."</strong>";?>
+                        </span>
+
+                        <div class="item actions">
+                            <a class="action delivery history" href="<?php /* @escapeNotVerified */
+                            echo $block->getUrl('sales/shipment/history', ['id' => $_address->getId()]) ?>"><span><?php /* @escapeNotVerified */
+                                    echo __('Delivery history') ?></span></a>
+
+                            <?php if($riki_type_address == 'shipping'): ?>
+                            <a class="action edit" href="<?php /* @escapeNotVerified */
+                            echo $block->getUrl('customer/address/edit', ['id' => $_address->getId()]) ?>"><span><?php /* @escapeNotVerified */
+                                    echo __('Edit info') ?></span></a>
+                            <a class="action delete" href="#" role="delete-address"
+                               data-address="<?php /* @escapeNotVerified */
+                               echo $_address->getId() ?>" data-name="<?php echo $block->escapeHtml($_address->getLastname())?>  <?php echo $block->escapeHtml($_address->getFirstname());?> 様 (<?php echo $block->escapeHtml($nickName) ?>)"><span><?php /* @escapeNotVerified */
+                                    echo __('Delete Address') ?></span></a>
+                            <?php endif; ?>
+                        </div>
+                        <table>
+                            <colgroup>
+                                <col width="25%">
+                                <col width="75%">
+                            </colgroup>
+                            <thead></thead>
+                            <tbody>
+                            <tr>
+                                <td class="label"><?php echo __("Address name"); ?></td>
+                                <td><?php echo $block->escapeHtml($_address->getLastname() . $_address->getFirstname()); ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label"><?php echo __("Street address"); ?></td>
+                                <td><?php echo '〒 ' . $block->escapeHtml($_address->getPostcode()) . ' ' . $block->escapeHtml($_address->getRegion()) . ' ' . $block->escapeHtml($street) . ' ' . $block->escapeHtml($apartment); ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label"><?php echo __("Phone number"); ?></td>
+                                <td><?php echo $block->escapeHtml($_address->getTelephone());?></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+                    </li>
+                <?php endforeach; ?>
+            </ol>
+            <?php if ($block->getPagerHtml()): ?>
+                <div class="order-products-toolbar toolbar toolbar-products bottom"><?php echo $block->getPagerHtml(); ?></div>
+            <?php endif ?>
+        <?php else: ?>
+            <p class="empty"><?php /* @escapeNotVerified */
+                echo __('You have no other address entries in your address book.') ?></p>
+        <?php endif ?>
+    </div>
+</div>
+
+<div class="actions-toolbar top">
+    <div class="primary">
+        <button type="button" role="add-address" title="<?php /* @escapeNotVerified */
+        echo __('Add New Address') ?>" class="action primary add"><span><?php /* @escapeNotVerified */
+                echo __('Add New Address') ?></span></button>
+    </div>
+</div>
+<div class="actions-toolbar bottom">
+    <div class="secondary">
+        <a class="action back"
+           href="<?php echo $block->escapeUrl($block->getBackUrl()) ?>"><span><?php /* @escapeNotVerified */
+                echo __('Go back') ?></span></a>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        ".page-main": {
+            "address": {
+                "deleteAddress": "li.item a[role='delete-address']",
+                "deleteUrlPrefix": "<?php /* @escapeNotVerified */
+    echo $block->getDeleteUrl() ?>id/",
+                "addAddress": "button[role='add-address']",
+                "addAddressLocation": "<?php /* @escapeNotVerified */
+    echo $block->getAddAddressUrl() ?>"
+            }
+        }
+    }
+
+</script>

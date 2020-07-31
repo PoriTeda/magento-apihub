@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+
+    <route url="/V1/riki-loyalty/:cartId/remove-point" method="POST">
+        <service class="Riki\Loyalty\Api\CheckoutRewardPointInterface" method="removeRewardPoint"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+        <data>
+            <parameter name="cartId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
+
+    <route url="/V1/riki-loyalty/:cartId/use-all-point" method="POST">
+        <service class="Riki\Loyalty\Api\CheckoutRewardPointInterface" method="useAllPoint"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+        <data>
+            <parameter name="cartId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
+
+    <route url="/V1/riki-loyalty/:cartId/apply-reward-point" method="POST">
+        <service class="Riki\Loyalty\Api\CheckoutRewardPointInterface" method="saveShippingInformationAndApplyRewardPoint"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+        <data>
+            <parameter name="cartId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
+
+    <!-- My place order with payment information saving -->
+    <route url="/V1/riki-loyalty/:cartId/use-point" method="POST">
+        <service class="Riki\Loyalty\Api\CheckoutRewardPointInterface" method="usePoint"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+        <data>
+            <parameter name="cartId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
+
+</routes>

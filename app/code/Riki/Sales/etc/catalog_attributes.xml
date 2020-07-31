@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Catalog:etc/catalog_attributes.xsd">
+    <group name="quote_item">
+        <attribute name="booking_item_wbs"/>
+        <attribute name="booking_free_wbs"/>
+        <attribute name="booking_machine_mt_account"/>
+        <attribute name="booking_machine_mt_center"/>
+        <attribute name="sales_organization"/>
+        <attribute name="allow_spot_order"/>
+        <attribute name="stock_display_type"/>
+        <attribute name="booking_item_account"/>
+        <attribute name="booking_profit_center"/>
+        <attribute name="allow_stock_point"/>
+    </group>
+</config>

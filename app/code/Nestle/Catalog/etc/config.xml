@@ -1,0 +1,9 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <loggersetting>
+            <catalog_logger>
+                <logger_product_gps_price_enable_status>1</logger_product_gps_price_enable_status>
+            </catalog_logger>
+        </loggersetting>
+    </default>
+</config>

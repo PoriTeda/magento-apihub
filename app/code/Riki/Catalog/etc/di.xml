@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Riki\Catalog\Api\Data\SapProductInterface" type="Riki\Catalog\Model\SapProduct" />
+    <preference for="Riki\Catalog\Api\SapProductRepositoryInterface" type="Riki\Catalog\Model\SapProductRepository" />
+    <preference for="Magento\Catalog\Model\Product\Attribute\DefaultAttributes" type="Riki\Catalog\Model\Product\Attribute\DefaultAttributes" />
+    <preference for="\Magento\Ui\Controller\Adminhtml\Export\GridToCsv" type="Riki\Catalog\Controller\Adminhtml\Export\GridToCsv" />
+    <preference for="Magento\Ui\Model\Export\ConvertToCsv" type="Riki\Catalog\Model\Export\ConvertToCsv" />
+    <preference for="Magento\CatalogImportExport\Model\Export\Product" type="Riki\Catalog\Model\Export\Product" />
+    <preference for="Magento\BundleImportExport\Model\Export\RowCustomizer" type="Riki\Catalog\Model\Export\RowCustomizer" />
+    <preference for="Magento\Catalog\Model\Product\Link" type="Riki\Catalog\Model\Product\Link" />
+    <preference for="Magento\Bundle\Model\Product\Type" type="Riki\Catalog\Model\Product\Bundle\Type" />
+    <preference for="Riki\Catalog\Api\CategoryLinkManagementInterface" type="Riki\Catalog\Model\CategoryLinkManagement" />
+    <preference for="Magento\Catalog\Block\Product\View\Attributes" type="Riki\Catalog\Block\Product\View\Attributes" />
+    <preference for="Magento\Catalog\Controller\Adminhtml\Category\Delete" type="Riki\Catalog\Controller\Adminhtml\Category\Delete" />
+    <preference for="Riki\Catalog\Api\Data\PriceBoxInterface" type="Riki\Catalog\Model\Data\PriceBox" />
+    <preference for="Riki\Catalog\Api\PriceBoxRepositoryInterface" type="Riki\Catalog\Model\Repository\PriceBoxRepository" />
+    <preference for="Magento\Catalog\Block\Product\ProductList\Upsell" type="Riki\Catalog\Block\Product\ProductList\Upsell" />
+    <preference for="Magento\Catalog\Block\Product\ListProduct" type="Riki\Catalog\Block\Product\ListProduct" />
+    <preference for="Magento\Catalog\Model\ResourceModel\Product\Attribute\Backend\Tierprice" type="Riki\Catalog\Model\ResourceModel\Product\Attribute\Backend\Tierprice" />
+
+    <preference for="Magento\Bundle\Pricing\Adjustment\BundleCalculatorInterface" type="Riki\Catalog\Bundle\Pricing\Adjustment\Calculator" />
+    <preference for="Magento\Catalog\Model\ResourceModel\Product" type="Riki\Catalog\Model\ResourceModel\Product" />
+
+    <type name="Magento\Catalog\Helper\Data">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Catalog\Model\ResourceModel\ProductStatus">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">default</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="catalogRelatedProductMigrate" xsi:type="object">Riki\Catalog\Console\Command\RelatedProductMigrateCommand</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Model\Layer\FilterList">
+        <plugin name="riki_catalogModelLayerFilterList" type="Riki\Catalog\Plugin\Model\Layer\FilterList" />
+    </type>
+
+    <virtualType name="Riki\Catalog\Block\Search\Navigation\Search" type="Riki\Catalog\Block\Search\Navigation">
+        <arguments>
+            <argument name="filterList" xsi:type="object">RikiCatalogFilterList</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="RikiCatalogFilterList" type="Riki\Catalog\Model\Layer\FilterList">
+        <arguments>
+            <argument name="filterableAttributes" xsi:type="object">Magento\Catalog\Model\Layer\Search\FilterableAttributeList</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Bundle\Model\Product\Type">
+        <plugin name="riki-check-bundle-selection-ids" type="Riki\Catalog\Plugin\Model\Bundle\Product\CheckBundleSelection" />
+    </type>
+    <!--<type name="Magento\Catalog\Model\ResourceModel\Product\Attribute\Backend\Media">-->
+        <!--<plugin name="after_load_product_gallery_by_attribute_id" type="Riki\Catalog\Plugin\Model\ExternalVideoResourceBackend" />-->
+    <!--</type>-->
+
+    <preference for="Riki\Catalog\Api\CategoryManagementInterface" type="Riki\Catalog\Model\CategoryManagement" />
+    <preference for="Magento\Quote\Model\Quote" type="Riki\Catalog\Model\Quote" />
+
+    <type name="Magento\Catalog\Model\Product">
+        <plugin name="exclude_swatch_attribute" type="Riki\Catalog\Plugin\Model\Product" />
+    </type>
+
+
+    <type name="Riki\Catalog\Stock\Pool">
+        <arguments>
+            <argument name="stocks" xsi:type="array">
+                <item name="simple" xsi:type="object">Riki\Catalog\Stock\SimpleProductStock</item>
+                <item name="bundle" xsi:type="object">Riki\Catalog\Stock\BundleProductStock</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <preference for="Magento\Bundle\Pricing\Price\BundleSelectionPrice" type="Riki\Catalog\Bundle\Pricing\Price\BundleSelectionPrice" />
+
+</config>

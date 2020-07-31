@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 MagePal. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="head.additional">
+            <block class="Riki\TagManagement\Block\CartIndex" name="shipping_address_index_page" template="shipping_address.phtml" after="riki_tag_manager_data_layer"/>
+        </referenceBlock>
+    </body>
+</page>

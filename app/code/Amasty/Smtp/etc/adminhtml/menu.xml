@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2019 Amasty (https://www.amasty.com)
+ * @package Amasty_Smtp
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Amasty_Smtp::reports" title="SMTP Email Settings" module="Amasty_Smtp" sortOrder="100" parent="Magento_Reports::report" resource="Amasty_Smtp::reports"/>
+        <add id="Amasty_Smtp::reports_sent" title="Sent Emails Log" module="Amasty_Smtp" sortOrder="10" parent="Amasty_Smtp::reports" action="amasty_smtp/log" resource="Amasty_Smtp::reports_sent"/>
+        <add id="Amasty_Smtp::reports_debug" title="Debug Log" module="Amasty_Smtp" sortOrder="20" parent="Amasty_Smtp::reports" action="amasty_smtp/debug" resource="Amasty_Smtp::reports_debug"/>
+    </menu>
+</config>

@@ -1,0 +1,8 @@
+The result of shipment exporting run at:
+
+{{config path="web/unsecure/base_url"}}
+
+
+{{var logContent}}
+
+

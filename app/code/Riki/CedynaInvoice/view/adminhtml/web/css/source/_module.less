@@ -1,0 +1,144 @@
+
+  .cedyna-invoice-summary {
+    border: 1px solid #cccccc;
+  }
+  .cedyna-invoice-footer {
+    margin: 20px 0;
+    padding-left: 10px;
+  }
+  .invoice-target-month {
+    width: 40%;
+  }
+  .invoice-total-amount,
+  .invoice-posting-date {
+    width: 30%;
+  }
+  .cedyna-invoice-header {
+    background-color: #394d99;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 10px;
+    overflow: hidden;
+
+    .cedyna-invoice-header-left {
+      float: left;
+    }
+
+    .cedyna-invoice-header-right {
+      float: right;
+    }
+  }
+  .red-dot {
+    color: #ff0000;
+  }
+  .cedyna-invoice-content {
+    padding: 10px;
+
+    .cedyna-invoice-total {
+      font-weight: bold;
+      padding-bottom: 5px;
+      padding-top: 10px;
+      border-bottom: 1px solid #cccccc;
+    }
+
+    .cedyna-invoice-list {
+      a {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .general-invoice {
+    overflow: hidden;
+
+    table {
+      width: 100%;
+
+      tr {
+        th {
+          text-align: left;
+        }
+
+        td {
+          padding: 5px;
+        }
+      }
+    }
+
+    .general-invoice-left {
+      float: left;
+      width: 74%;
+      box-sizing: border-box;
+    }
+
+    .general-invoice-right {
+      float: right;
+      width: 24%;
+      box-sizing: border-box;
+
+      table {
+        td {
+          &:last-child {
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+
+  .cedyna-invoice-detail {
+    border: 1px solid #cccccc;
+
+    .cedyna-invoice-detail-header {
+      background-color: #394d99;
+      color: #ffffff;
+      font-weight: bold;
+      padding: 10px;
+    }
+    .cedyna-invoice-list {
+      padding: 10px;
+
+      .general-invoice-left {
+        border: 1px solid #cccccc;
+        padding: 10px;
+      }
+
+      .btn-green {
+        padding: 2px 30px;
+        background-color: #0084e1;
+        color: #ffffff;
+        display: inline-block;
+        text-decoration: none;
+        margin-bottom: 10px;
+      }
+
+      .invoice-total {
+        font-weight: bold;
+        padding: 5px 10px;
+      }
+    }
+
+    .grid-csv-download,
+    .group-csv-download {
+      text-align: right;
+    }
+
+    .group-csv-download {
+      margin-top: 10px;
+
+      strong {
+        margin: 10px 0;
+        display: block;
+        text-align: left;
+      }
+    }
+
+    table {
+      &.more-detail {
+
+        td {
+          border: 1px solid #000000;
+        }
+      }
+    }
+  }

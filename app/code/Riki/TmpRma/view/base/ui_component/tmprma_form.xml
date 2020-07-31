@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">tmprma_form.tmprma_form_data_source</item>
+            <item name="deps" xsi:type="string">tmprma_form.tmprma_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Return Information</item>
+        <item name="layout" xsi:type="array">
+            <item name="type" xsi:type="string">riki_tmprma_tabs</item>
+            <item name="navContainerName" xsi:type="string">left</item>
+        </item>
+        <item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="string">Riki\TmpRma\Block\Adminhtml\Rma\Edit\BackButton</item>
+            <item name="delete" xsi:type="string">Riki\TmpRma\Block\Adminhtml\Rma\Edit\DeleteButton</item>
+            <item name="reset" xsi:type="string">Riki\TmpRma\Block\Adminhtml\Rma\Edit\ResetButton</item>
+            <item name="save" xsi:type="string">Riki\TmpRma\Block\Adminhtml\Rma\Edit\SaveButton</item>
+            <item name="save_and_continue" xsi:type="string">Riki\TmpRma\Block\Adminhtml\Rma\Edit\SaveAndContinueButton</item>
+        </item>
+    </argument>
+    <dataSource name="tmprma_form_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Riki\TmpRma\Model\Rma\DataProvider</argument>
+            <argument name="name" xsi:type="string">tmprma_form_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="submit_url" xsi:type="url" path="tmprma/rma/save"/>
+                    <item name="validate_url" xsi:type="url" path="tmprma/rma/validate"/>
+                </item>
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+    <fieldset name="rma">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">General Information</item>
+            </item>
+        </argument>
+        <field name="id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">rma</item>
+                </item>
+            </argument>
+        </field>
+        <field name="customer_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Customer Name</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">rma</item>
+                </item>
+            </argument>
+        </field>
+        <field name="customer_address">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Customer Address</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">rma</item>
+                </item>
+            </argument>
+        </field>
+        <field name="phone_number">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Home Phone</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">rma</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-phone-number" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="returned_date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Returned Date</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="formElement" xsi:type="string">date</item>
+                    <item name="source" xsi:type="string">rma</item>
+                </item>
+            </argument>
+        </field>
+        <field name="reason_id">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Riki\TmpRma\Model\Config\Source\Reason</item>
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Reason</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="returned_warehouse">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Warehouse</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+                <item name="options" xsi:type="object">Riki\TmpRma\Model\Config\Source\Rma\ReturnedWarehouse</item>
+            </argument>
+        </field>
+        <field name="status">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Status</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+                <item name="options" xsi:type="object">Riki\TmpRma\Model\Config\Source\Rma\Status</item>
+            </argument>
+        </field>
+        <field name="comment">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Comment</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">textarea</item>
+                    <item name="component" xsi:type="string">Riki_TmpRma/js/form/element/comment</item>
+                    <item name="elementTmpl" xsi:type="string">Riki_TmpRma/form/element/comment</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+    <fieldset name="items">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="is_collection" xsi:type="boolean">true</item>
+                <item name="label" xsi:type="string" translate="true">Return Item</item>
+                <item name="removeMessage" xsi:type="string" translate="true">Are you sure you want to delete this item?</item>
+            </item>
+        </argument>
+        <field name="parent_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">items</item>
+                </item>
+            </argument>
+        </field>
+        <field name="sku">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">SKU</item>
+                    <item name="source" xsi:type="string">items</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="qty">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Qty</item>
+                    <item name="source" xsi:type="string">items</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="integer" xsi:type="boolean">true</item>
+                        <item name="validate-zero-or-greater" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="unit">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Riki\TmpRma\Model\Config\Source\Rma\Unit</item>
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Unit</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+</form>

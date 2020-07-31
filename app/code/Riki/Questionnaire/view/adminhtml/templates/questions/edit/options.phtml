@@ -1,0 +1,20 @@
+<?php /** @var $block \Riki\Questionnaire\Block\Adminhtml\Questions\Edit\Tab\Question */ ?>
+
+<div class="fieldset-wrapper" id="questionnaire-questions-options-wrapper" data-block="questionaire-question-options">
+    <div class="fieldset-wrapper-title">
+        <strong class="title">
+            <span><?php /* @escapeNotVerified */ echo __('Questions Options') ?></span>
+        </strong>
+    </div>
+    <div class="fieldset-wrapper-content" id="questionaire-question-options-content" data-role="questionaire-question-options-content">
+        <fieldset class="fieldset">
+            <div id="question_options_container" class="sortable-wrapper">
+                <div id="question_options_container_top"></div>
+                <?php echo $block->getOptionsBoxHtml() ?>
+            </div>
+            <div class="actions">
+                <?php echo $block->getAddButtonHtml() ?>
+            </div>
+        </fieldset>
+    </div>
+</div>

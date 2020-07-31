@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="riki_wamb_set_ambassador" instance="Riki\Wamb\Cron\UpdateCustomerNormalToAmbassador" method="execute">
+            <config_path>consumer_db_api_url/customer_wamb_setting/WAMB_cron_setting</config_path>
+        </job>
+    </group>
+</config>

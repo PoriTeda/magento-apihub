@@ -1,0 +1,62 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <importstock>
+            <common>
+                <enable>1</enable>
+                <enable_bizex>1</enable_bizex>
+            </common>
+            <pattern>
+                <pattern_inv1>INV1</pattern_inv1>
+                <pattern_inv2>INV2</pattern_inv2>
+            </pattern>
+            <sftp>
+                <host>ftp.bluecomvn.com</host>
+                <port>22</port>
+                <user>riki</user>
+                <pass>Bl0ec0m2016</pass>
+            </sftp>
+            <location>
+                <import_inv1>/Demo/Riki/Stock/Import/INV1/remote</import_inv1>
+                <import_inv2>/Demo/Riki/Stock/Import/INV2/remote</import_inv2>
+            </location>
+            <expression>
+                <express_inv11>20 9 * * *</express_inv11>
+                <express_inv12>20 9 * * *</express_inv12>
+            </expression>
+            <email>
+                <receiver>managestock@nestle.co.jp</receiver>
+            </email>
+        </importstock>
+        <advancedinventory_outofstock>
+            <generate_order>
+                <cron_schedule>*/15 * * * *</cron_schedule>
+                <trigger_consumer_cron_expression>0,10,20,30,40,50 0,1,2,3,4,5,6 * * *</trigger_consumer_cron_expression>
+                <max_message_queue>10000</max_message_queue>
+                <max_authorize_times>3</max_authorize_times>
+            </generate_order>
+            <authorize_failure_email>
+                <template>advancedinventory_outofstock_authorize_failure_email_template</template>
+            </authorize_failure_email>
+        </advancedinventory_outofstock>
+        <advancedinventory_riki_inventory>
+            <order_stock>
+                <maximum_cart_stock>99</maximum_cart_stock>
+            </order_stock>
+            <stock_fo>
+                <default_fo_pos>2</default_fo_pos>
+                <default_stock_point_pos>3</default_stock_point_pos>
+            </stock_fo>
+            <reassignation_cron>
+                <schedule>*/10 * * * *</schedule>
+            </reassignation_cron>
+        </advancedinventory_riki_inventory>
+        <loggersetting>
+            <advancedinventorylogger>
+                <logger_re_assign_active>1</logger_re_assign_active>
+            </advancedinventorylogger>
+            <importproductsapapilogger>
+                <logger_import_product_sap_api_active>1</logger_import_product_sap_api_active>
+            </importproductsapapilogger>
+        </loggersetting>
+    </default>
+</config>

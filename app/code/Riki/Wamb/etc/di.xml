@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<preference for="Riki\Wamb\Api\RuleRepositoryInterface" type="Riki\Wamb\Model\RuleRepository"/>
+	<preference for="Riki\Wamb\Api\Data\RuleInterface" type="Riki\Wamb\Model\Rule"/>
+	<preference for="Riki\Wamb\Api\Data\RuleSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+		<arguments>
+			<argument name="collections" xsi:type="array">
+				<item name="riki_wamb_rule_grid_data_source" xsi:type="string">Riki\Wamb\Model\ResourceModel\Rule\Grid\Collection</item>
+				<item name="riki_wamb_rulecategory_grid_data_source" xsi:type="string">Riki\Wamb\Model\ResourceModel\RuleCategory\Grid\Collection</item>
+				<item name="riki_wamb_rulecourse_grid_data_source" xsi:type="string">Riki\Wamb\Model\ResourceModel\RuleCourse\Grid\Collection</item>
+			</argument>
+		</arguments>
+	</type>
+	<preference for="Riki\Wamb\Api\RegisterRepositoryInterface" type="Riki\Wamb\Model\RegisterRepository"/>
+	<preference for="Riki\Wamb\Api\Data\RegisterInterface" type="Riki\Wamb\Model\Register"/>
+	<preference for="Riki\Wamb\Api\Data\RegisterSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<preference for="Riki\Wamb\Api\HistoryRepositoryInterface" type="Riki\Wamb\Model\HistoryRepository"/>
+	<preference for="Riki\Wamb\Api\Data\HistoryInterface" type="Riki\Wamb\Model\History"/>
+</config>

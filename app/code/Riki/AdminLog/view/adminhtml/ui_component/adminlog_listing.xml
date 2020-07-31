@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Ui/etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">adminlog_listing.adminlog_listing_data_source</item>
+            <item name="deps" xsi:type="string">adminlog_listing.adminlog_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">adminlog_columns</item>
+    </argument>
+    <dataSource name="adminlog_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">adminlogGridDataProvider</argument>
+            <argument name="name" xsi:type="string">adminlog_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">log_id</argument>
+            <argument name="requestFieldName" xsi:type="string">log_id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="indexField" xsi:type="string">log_id</item>
+                    </item>
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                </item>
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+  <container name="listing_top">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="template" xsi:type="string">ui/grid/toolbar</item>
+                <item name="stickyTmpl" xsi:type="string">ui/grid/sticky/toolbar</item>
+            </item>
+        </argument>
+        <component name="columns_controls">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsData" xsi:type="array">
+                        <item name="provider" xsi:type="string">adminlog_listing.adminlog_listing.adminlog_columns</item>
+                    </item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
+                    <item name="displayArea" xsi:type="string">dataGridActions</item>
+                </item>
+            </argument>
+        </component>
+
+        <massaction name="listing_massaction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">adminlog_listing.adminlog_listing.adminlog_columns.ids</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/tree-massactions</item>
+                    <item name="indexField" xsi:type="string">log_id</item>
+                </item>
+            </argument>
+            <action name="delete">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">delete</item>
+                        <item name="label" xsi:type="string" translate="true">Delete</item>
+                        <item name="url" xsi:type="url" path="adminlog/Log/massDelete"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Delete</item>
+                            <item name="message" xsi:type="string" translate="true">Do you want to delete selected row record?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
+        <paging name="listing_paging">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">adminlog_listing.adminlog_listing.listing_top.bookmarks</item>
+                        <item name="namespace" xsi:type="string">current.paging</item>
+                    </item>
+                    <item name="selectProvider" xsi:type="string">adminlog_listing.adminlog_listing.adminlog_columns.ids</item>
+                </item>
+            </argument>
+        </paging>
+    </container>
+    <columns name="adminlog_columns">
+
+        <selectionsColumn name="ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">log_id</item>
+                </item>
+            </argument>
+        </selectionsColumn>
+        <column name="ip" class="Riki\AdminLog\Ui\Component\Log\Listing\Grid\Column\Ip">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="resizeDefaultWidth" xsi:type="string">107</item>
+                    <item name="indexField" xsi:type="string">ip</item>
+                    <item name="label" xsi:type="string" translate="true">Ip Address</item>
+                </item>
+            </argument>
+        </column>
+        <column name="user">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="sorting" xsi:type="string">desc</item>
+                    <item name="label" xsi:type="string" translate="true">Username</item>
+                </item>
+            </argument>
+        </column>
+        <column name="time">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="sorting" xsi:type="string">desc</item>
+                    <item name="label" xsi:type="string" translate="true">Time</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Riki\AdminLog\Model\Config\Source\StatusOption</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Status</item>
+                </item>
+
+            </argument>
+        </column>
+        <column name="error_message">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="sorting" xsi:type="string">desc</item>
+                    <item name="label" xsi:type="string" translate="true">Reason</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="fullaction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="sorting" xsi:type="string">desc</item>
+                    <item name="label" xsi:type="string" translate="true">Full Action Name</item>
+                </item>
+            </argument>
+        </column>
+
+        <actionsColumn name="actions" class="Riki\AdminLog\Ui\Component\Log\Listing\Grid\Column\Action">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="resizeEnabled" xsi:type="boolean">false</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">107</item>
+                    <item name="indexField" xsi:type="string">log_id</item>
+                </item>
+            </argument>
+        </actionsColumn>
+
+    </columns>
+</listing>

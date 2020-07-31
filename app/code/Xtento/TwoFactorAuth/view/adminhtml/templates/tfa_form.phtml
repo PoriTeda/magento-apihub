@@ -1,0 +1,14 @@
+<div class="admin__field field-tfa">
+    <label for="code" class="admin__field-label"><span><?php echo __('Security Code') ?></span></label>
+    <div class="admin__field-control">
+        <input
+            id="code"
+            class="admin__control-text"
+            type="text"
+            name="token"
+            maxlength="6"
+            autocomplete="off"
+            data-validate="{required:false}"
+            value="" placeholder="<?php echo __('code') ?>" />
+    </div>
+</div>

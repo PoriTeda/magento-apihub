@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @package Amasty_Promo
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="adminhtml_block_salesrule_actions_prepareform">
+        <observer name="amasty_promo_handle_form_creation" instance="Amasty\Promo\Observer\Admin\FormCreationObserver" />
+    </event>
+    <event name="controller_action_postdispatch_sales_rule_promo_quote_save">
+        <observer name="amasty_promo_update_rule_data" instance="Amasty\Promo\Observer\Admin\UpdateRuleDataObserver" />
+    </event>
+</config>

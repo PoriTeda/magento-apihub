@@ -1,0 +1,249 @@
+<?php
+/* @var $block Riki\Subscription\Block\Frontend\Profile\ConfirmEditHanpukai */
+$profileModelData = $block->loadProfileModel();
+$arrProductCartStandardValue = $block->getProductCartStandardValue();
+$timeSlotObj = $block->getSlotObject($arrProductCartStandardValue['delivery_time_slot']);
+$arrListProductByAddressIdAndDeliveryType
+    = $block->getListProductByAddressIdAndDeliveryType($block->getProfileId());
+$objectDataSimulate
+    = $block->makeObjectDataForSimulate($block->getProfileId());
+$totalDeliveryType = 0;
+/* @var $orderSimulate \Magento\Sales\Model\Order */
+$orderSimulate = $block->simulator($objectDataSimulate);
+$paidServices = 0;
+$totalAmount = 0;
+$shippingFee = 0;
+$tentativePoints = 0;
+$paymentMethodTitle = '';
+$discountAmount = 0;
+$paymentFee = 0;
+$paymentMethodChange = $block->getDataRegistry(
+    Riki\Subscription\Model\Constant::REGISTRY_EDIT_HANPUKAI_DATA_SUBSCRIPTION_PAYMENT_METHOD);
+$subTotalAmountInlTax = 0;
+if ($orderSimulate !== null && $orderSimulate !== false) {
+    $tentativePoints = $orderSimulate->getData('bonus_point_amount');
+    $totalAmount = $orderSimulate->getGrandTotal();
+    $shippingFee = $block->getShippingFeeIncludeTax($orderSimulate->getShippingInclTax());
+    $paidServices = $orderSimulate->getData('gw_price_incl_tax');
+    $paymentMethodTitle = $orderSimulate->getPayment()->getMethodInstance()->getTitle();
+    $paymentMethodCode = $orderSimulate->getPayment()->getMethodInstance()->getCode();
+    $paymentFee = $orderSimulate->getFee();
+    $discountAmount = $orderSimulate->getData('discount_amount');
+    $subTotalAmountInlTax = $orderSimulate->getSubTotalInclTax();
+}
+$arrProductCart = ['product'=>[]];
+
+/* @var \Riki\SalesRule\Helper\CouponHelper $couponHelper */
+$couponHelper = $this->helper('Riki\SalesRule\Helper\CouponHelper');
+$listCouponApplied = $couponHelper->checkCouponRealIdsWhenProcessSimulator($orderSimulate->getAppliedRuleIds(),$orderSimulate->getCouponCode());
+
+
+?>
+    <fieldset class="fieldset panel" xmlns="http://www.w3.org/1999/html">
+        <div class="label">
+            <h4><?php echo __("Payment method");  ?></h4>
+        </div>
+        <div class="payment-method-block-text">
+            <?php if ($paymentMethodCode != 'paygent'){ ?>
+                <?php echo __(trim($paymentMethodTitle));  ?>
+            <?php } else {
+                if ($paymentMethodChange == 'new_paygent'){
+                    echo __($block->getSystemConfig('payment/paygent/title'));
+                } else {
+                    echo __($block->getSystemConfig('payment/paygent/title'));
+                    echo __('(used before)');
+                }
+            } ?>
+        </div>
+    </fieldset>
+    <fieldset class="fieldset panel">
+        <div class="label">
+            <h4><?php echo __('Subscription Course Name') ?></h4>
+        </div>
+        <div class="payment-method-block-text">
+            <span><?php echo $profileModelData->getData('course_name'); ?></span>
+        </div>
+    </fieldset>
+    <fieldset class="fieldset panel table">
+        <div class="table-wrapper">
+            <?php $countDeliveryType = 0 ?>
+            <!-- loop through shipping_address_id and delivery type -->
+            <?php if (count($arrListProductByAddressIdAndDeliveryType) > 0){ ?>
+                <?php foreach ($arrListProductByAddressIdAndDeliveryType as $shippingAddressId => $arrDeliveryTypeKeyArrProductValue) {
+                    $arrAddressDetail = $block->getAddressDetail($shippingAddressId);
+                    $totalDeliveryType = count($arrDeliveryTypeKeyArrProductValue);
+                    ?>
+                    <div class="table table list">
+                        <?php foreach ($arrDeliveryTypeKeyArrProductValue as $deliveryType => $arrProductWithDelivery) { ?>
+                            <!-- Header Info -->
+                            <?php $countDeliveryType ++; ?>
+                            <?php
+                            $arrProduct = isset($arrProductWithDelivery['product'])?$arrProductWithDelivery['product']:[];
+                            foreach ($arrProduct as $productCart) {
+                                $productCart['profile']->setData('instance',$productCart['details']);
+                                $productCart['profile']->setData('id',$productCart['profile']->getData('cart_id'));
+                                $arrProductCart['product'][] = $productCart['profile']->getData();
+                            }
+                            $arrProductCart['delivery_date'] = $arrProductWithDelivery['delivery_date'];
+                            ?>
+                            <div class="label">
+                                <h4><?php echo __("Address") ?>：<?php echo $arrAddressDetail['lastname'].$arrAddressDetail['firstname']; ?></h4>
+                            </div>
+                            <div class="current-shipping-address">
+                                <div class="wrapper">
+                                    <table>
+                                        <tr class="header">
+                                            <td><strong><?php echo __('Name'); ?></strong></td>
+                                            <td><strong><?php echo __('Address'); ?></strong></td>
+                                            <td><strong><?php echo __('Phone number'); ?></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td data-th="<?php echo __('Name'); ?>"><?php echo $arrAddressDetail['lastname'].$arrAddressDetail['firstname']; ?></td>
+                                            <td data-th="<?php echo __('Address'); ?>"><?php echo $block->getCustomerAddressByText($shippingAddressId); ?></td>
+                                            <td data-th="<?php echo __('Phone number'); ?>"><?php echo $arrAddressDetail['telephone']; ?></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--Show edit delivery date for change payment method-->
+                            <?php
+                            // Show delivery date
+                            echo $this->getLayout()->createBlock("\Magento\Framework\View\Element\Template")->setData([
+                                'arrProduct' => $arrProductCart,
+                                'addressId' => $shippingAddressId,
+                                'parentBlock' => $block,
+                                'deliveryType' => $deliveryType,
+                                'store_id' => $profileModelData->getData('store_id'),
+                                'frequency_unit' => $profileModelData->getData('frequency_unit'),
+                                'frequency_interval' => $profileModelData->getData('frequency_interval'),
+                                'next_delivery_date' => $profileModelData->getData('next_delivery_date')
+                            ])
+                                ->setData('area', 'frontend')
+                                ->setTemplate("Riki_Subscription::profile/payment/method/_render_delivery_date.phtml")->toHtml();
+                            ?>
+                            <!--End show edit delivery date for change payment method-->
+                            <!-- End Header Info -->
+                            <!-- Show address + delivery type -->
+
+                            <div class="label">
+                                <h4><?php echo __("お届け予定商品") ?></h4>
+                            </div>
+                            <div class="table block">
+                                <table class="list-product">
+                                    <thead>
+                                    <tr>
+                                        <th class="product-image"><?php echo __('Product Image'); ?></th>
+                                        <th class="product-name">&nbsp;</th>
+                                        <th class="qty"><?php echo __("Qty") ?></th>
+                                        <th class="price"><?php echo __("Sub Total") ?></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php if (count($arrProduct) > 0): $i = 0; ?>
+                                        <?php foreach ($arrProduct as $arrInfo): ?>
+                                            <tr class="tr-product item-has-seasonal-skip <?php if($i % 2 == 0) { echo 'even'; } else {echo 'odd';} ?>">
+                                                <td class="img-thumbnail-wrapper product-image" data-th="<?php echo __("商品名称") ?>">
+                                                    <img class="product-image-photo"
+                                                         src="<?php echo $block->getImageUrl($arrInfo['details'])->getUrl(); ?>" alt="" />
+                                                </td>
+                                                <td class="product-name text-left"><span><?php echo $arrInfo['details']->getName(); ?></span></td>
+                                                <td class="qty" data-th="<?php echo __("Qty") ?>">
+                                                    <?php if('CS' == $arrInfo['profile']->getData('unit_case')) { ?>
+                                                        <!--show qty case-->
+                                                        <?php echo $arrInfo['profile']->getData('qty') / $arrInfo['profile']->getData('unit_qty'); ?>
+                                                        <span class="unit-label"><?php echo __('CS') ?></span>
+                                                    <?php } else { ?>
+                                                        <?php echo $arrInfo['profile']->getData('qty'); ?>
+                                                        <span class="unit-label"><?php echo __('EA') ?></span>
+                                                    <?php } ?>
+                                                </td>
+                                                <td class="subtotal text-right">
+                                                </td>
+                                            </tr>
+                                            <?php $i++; endforeach; ?>
+
+                                        <?php if ($totalDeliveryType == $countDeliveryType): ?>
+                                            <tr class="payable">
+                                                <td>&nbsp;</td>
+                                                <td class="text-left payable-name"><?php echo __('Total Amount Product'); ?></td>
+                                                <td colspan="5" class="payable-total text-right">
+                                                    <span class="price"><?php echo $block->formatCurrency($subTotalAmountInlTax); ?></span></td>
+                                            </tr>
+                                            <tr class="ship-fee-type">
+                                                <td>&nbsp;</td>
+                                                <td class="text-left shipment-name"><?php echo __('Shipment Fee'). ' '.__($deliveryType); ?></td>
+                                                <td class="shipping-price"><?php
+                                                    if ($shippingFee == 0) {
+                                                        echo __('free');
+                                                    }
+                                                    ?></td>
+                                                <td colspan="4" class="text-right shipping-price">
+                                                    <?php if ($shippingFee > 0) {
+                                                        echo $block->formatCurrency($shippingFee);
+                                                    } else {
+                                                        echo $block->formatCurrency(0);
+                                                    }?>
+                                                </td>
+                                            </tr>
+                                            <tr class="payable">
+                                                <td>&nbsp;</td>
+                                                <td class="text-left payable-name"><?php echo __('Wrapping Fee (Tax included)'); ?></td>
+                                                <td colspan="5" class="payable-total text-right">
+                                                    <span class="price"><?php echo $block->formatCurrency($paidServices); ?></span></td>
+                                            </tr>
+                                            <tr class="payable">
+                                                <td>&nbsp;</td>
+                                                <td class="text-left payable-name"><?php echo __('Payment Fee'); ?></td>
+                                                <td colspan="5" class="payable-total text-right">
+                                                    <?php echo $block->formatCurrency($paymentFee); ?>
+                                                </td>
+                                            </tr>
+                                            <tr class="payable">
+                                                <td>&nbsp;</td>
+                                                <td class="text-left payable-name"><?php echo __('Total Payable Amount'); ?></td>
+                                                <td colspan="5" class="payable-total text-right">
+                                                    <span><?php echo $block->formatCurrency($totalAmount); ?></span>
+                                                </td>
+                                            </tr>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        <?php  } ?>
+                    </div>
+                <?php } ?>
+            <?php } ?>
+            <!-- end loop -->
+            <div class="modification">
+                <div class="tentative_points">
+                    <span class="title"><?php echo __('Tentative points'); ?></span>
+                    <span><?php echo $tentativePoints .__('Points'); ?></span>
+                </div>
+                <div class="coupon-code">
+                    <span class="title"><?php echo __('Applied coupon code'); ?></span>
+                    <?php
+                    if($listCouponApplied)
+                    {
+                        foreach($listCouponApplied as $itemCoupon)
+                        {
+                            echo "<p><span>".$itemCoupon['code']."</span><span>".$itemCoupon['name']."</span></p><br>";
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
+    </fieldset>
+<div id="about-selectable-date" class="no-display">
+    <?php echo $block->getChildHtml('about-selectable-date-hanpukai') ?>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Riki_Subscription/js/view/confirmPage": {}
+        }
+    }
+</script>
+

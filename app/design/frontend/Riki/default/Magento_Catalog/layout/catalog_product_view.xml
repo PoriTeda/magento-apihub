@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="mage/gallery/gallery.css"/>
+    </head>
+    <update handle="catalog_product_opengraph" />
+    <update handle="page_calendar"/>
+    <body>
+        <referenceBlock name="page.product.detail.breadcrumbs" remove="true"/>
+        <referenceBlock name="breadcrumbs" remove="true"/>
+        <referenceContainer name="page.wrapper">
+            <block class="Riki\Catalog\Block\Html\Breadcrumbs"
+                   name="page.product.detail.breadcrumbs" template="html/breadcrumbs.phtml" before="main.content" />
+        </referenceContainer>
+        <referenceBlock name="minicart-merge-quote" remove="true"/>
+
+        <referenceContainer name="content">
+            <container name="wrapper.info.main.media" htmlTag="div" htmlClass="wrapper-info-main-media" before="-"/>
+            <referenceContainer name="product.info.main">
+                <container name="product.upsell.custom" htmlTag="div" htmlClass="product_upsell_custom" after="product.price.tier">
+                    <block class="Magento\Framework\View\Element\Template" name="product.info.additional.wrapper" template="Riki_Catalog::product/list/items/wrapper.phtml">
+                        <block class="Magento\Catalog\Block\Product\ProductList\Upsell" name="product.info.upsell" as="product.info.upsell" template="Magento_Catalog::product/list/items.phtml">
+                            <arguments>
+                                <argument name="type" xsi:type="string">upsell</argument>
+                            </arguments>
+                        </block>
+                        <block class="Magento\Catalog\Block\Product\ProductList\Crosssell" name="product.info.crosssell" as="product.info.crosssell" template="Magento_Catalog::product/list/items.phtml">
+                            <arguments>
+                                <argument name="type" xsi:type="string">crosssell</argument>
+                            </arguments>
+                        </block>
+                    </block>
+                </container>
+                <container name="product.related.to.parent.top" htmlTag="div" htmlClass="product_related_to_parent top" after="product.price.tier">
+                    <block class="Riki\VariationProducts\Block\Product\ProductVariation" after="-" name="product.related.top" template="Magento_Catalog::product/list/product_related_to_parent.phtml" />
+                </container>
+
+                <container name="product.related.to.parent.bottom" htmlTag="div" htmlClass="product_related_to_parent bottom" after="-">
+                    <block class="Riki\VariationProducts\Block\Product\ProductVariation" after="-" name="product.related.bottom" template="Magento_Catalog::product/list/product_related_to_parent.phtml" />
+                </container>
+
+            </referenceContainer>
+
+
+            <referenceContainer name="product.info.price">
+                <container name="product.tags" htmlTag="div" htmlClass="product-tags" before="-">
+                    <block class="Magento\Catalog\Block\Product\View\Description" name="product.custom_tags" template="Magento_Catalog::product/view/product_tags.phtml"/>
+                </container>
+            </referenceContainer>
+
+            <container name="product.attributes" htmlTag="div" htmlClass="product-attributes" before="product.supplemental">
+                <block class="Magento\Catalog\Block\Product\View\Attributes" name="product.explanation" as="product.explanation" template="product/view/attribute_explanation.phtml" />
+                <block class="Magento\Catalog\Block\Product\View\Attributes" name="product.details" as="product.details" template="product/view/attribute_details.phtml" />
+                <block class="Magento\Catalog\Block\Product\View\Attributes" name="product.supplemental" as="product.supplemental" template="product/view/attribute_supplemental.phtml" />
+            </container>
+
+        </referenceContainer>
+        <referenceContainer name="main.content">
+<!--            <container name="product.title.mobile" htmlTag="div" htmlClass="block-of-mobile" before="-">-->
+<!--                <block class="Magento\Theme\Block\Html\Title" name="page.main.title.mobile" template="html/title.phtml"/>-->
+<!--            </container>-->
+        </referenceContainer>
+        <referenceContainer name="product.info.form.content">
+            <block class="Riki\Catalog\Block\Product\View" name="product.info.addtocart" as="addtocart" template="Magento_Catalog::product/view/addtocart.phtml">
+                <arguments>
+                    <argument name="jsLayout" xsi:type="array">
+                        <item name="components" xsi:type="array">
+                            <item name="adding-spot-subscription" xsi:type="array">
+                                <item name="component" xsi:type="string">Magento_Catalog/js/view/addtocart</item>
+                                <item name="children" xsi:type="array">
+                                    <item name="profile-information" xsi:type="array">
+                                        <item name="sortOrder" xsi:type="string">10</item>
+                                        <item name="component" xsi:type="string">Magento_Catalog/js/view/profile-information</item>
+                                        <item name="displayArea" xsi:type="string">profile-information</item>
+                                        <item name="config" xsi:type="array">
+                                            <item name="template" xsi:type="string">Magento_Catalog/profile-information</item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="product.info.details" remove="true"/>
+        <referenceBlock name="catalog.product.related" remove="true" />
+        <move element="product.info.media" destination="wrapper.info.main.media" before="-"/>
+        <move element="product.info.main" destination="wrapper.info.main.media" after="product.info.media"/>
+    </body>
+</page>

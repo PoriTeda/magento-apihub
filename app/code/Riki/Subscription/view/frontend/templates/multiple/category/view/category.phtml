@@ -1,0 +1,68 @@
+<?php
+/** @var \Riki\Subscription\Block\Multiple\Category\View $parentBlock */
+$parentBlock = $block->getParentBlock();
+
+$products = $block->getProducts();
+$categoryName = $block->getCategoryName();
+$categoryId = $block->getCategoryId();
+$categoryDes = $block->getViewModel()->filterText($block->getViewModel()->getCategoryById($categoryId)->getDescription());
+?>
+
+<div class="multiple-products-block m-category-section">
+    <h2 id="section-<?php echo $categoryId ?>" class="title"><?php echo $block->escapeHtml($categoryName) ?></h2>
+    <?php if ($categoryDes != ''): ?>
+        <div class="riki-category-description"><?= $categoryDes ?></div>
+    <?php endif; ?>
+    <div class="table-container">
+        <div class="table table-multiple-products">
+
+            <div class="rk_row">
+                <?php foreach ($products as $product): ?>
+                    <div class="rk_col">
+                        <div data-id="<?php echo $product->getId(); ?>"
+                             data-product-id="<?php echo $product->getId() ?>" class="item multiple-campaign-row-item"
+                             data-category-id="<?= $categoryId ?>"
+                             data-bind="scope: 'multipleCategoryCampaignSelectedProducts'">
+                            <div class="col image"
+                                 data-mage-init='<?php echo $block->getViewModel()->getProductDetailJsData($product, $categoryId, null); ?>'>
+                                <?php $block->getChildBlock('view_product_image')->addData(['product' => $product]) ?>
+                                <?php echo $block->getChildHtml('view_product_image', false) ?>
+                                <div class="riki_qv"
+                                     data-bind="click: function(){openDetailPopup(<?php echo $product->getId() ?>)}, touchstart:function(){openDetailPopup(<?php echo $product->getId() ?>)}">
+                                    <a href="#" id="subscription-product-view" class="subscription-product-view">
+                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                             xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16"
+                                             viewBox="0 0 16 16">
+                                            <path fill="#666"
+                                                  d="M15.504 13.616l-3.79-3.223c-0.392-0.353-0.811-0.514-1.149-0.499 0.895-1.048 1.435-2.407 1.435-3.893 0-3.314-2.686-6-6-6s-6 2.686-6 6 2.686 6 6 6c1.486 0 2.845-0.54 3.893-1.435-0.016 0.338 0.146 0.757 0.499 1.149l3.223 3.79c0.552 0.613 1.453 0.665 2.003 0.115s0.498-1.452-0.115-2.003zM6 10c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zM7 3h-2v2h-2v2h2v2h2v-2h2v-2h-2z"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col name">
+                                <?php $block->getChildBlock('view_product_name')->addData(['product' => $product, 'category_id' => $categoryId]) ?>
+                                <?php echo $block->getChildHtml('view_product_name', false) ?>
+                            </div>
+                            <div class="col price" data-th="<?php echo __('Price') ?>">
+                                <?php $block->getChildBlock('view_product_price')->addData(['product' => $product]) ?>
+                                <?php echo $block->getChildHtml('view_product_price', false) ?>
+                            </div>
+                            <div class="col qty"
+                                 data-th="<?php echo __('Qty') ?>">
+                                <?php echo $block->getChildBlock('product.view.qty')
+                                    ->setProduct($product)
+                                    ->setCategoryId($categoryId)
+                                    ->setIsHanpukai(false)
+                                    ->toHtml(); ?>
+                            </div>
+                            <div class="col price subtotal hidden"
+                                 data-th="<?php echo __('Subtotal (tax incl)') ?>">0円
+                            </div>
+                            <div class="col tier-price hidden"><?php echo $parentBlock->getLayout()->getBlock('product.price.render.default')->render('tier_price', $product, []); ?></div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</div>

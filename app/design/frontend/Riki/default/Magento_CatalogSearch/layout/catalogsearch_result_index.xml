@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <attribute name="class" value="page-products"/>
+        <attribute name="class" value="catalogsearch-result"/>
+
+        <referenceBlock name="breadcrumbs" remove="true"/>
+
+        <referenceContainer name="content">
+            <block class="Magento\CatalogSearch\Block\Result" name="search.result" template="result.phtml" cacheable="false">
+                <block class="Magento\CatalogSearch\Block\SearchResult\ListProduct" name="search_result_list" template="Magento_Catalog::product/list-search.phtml" cacheable="false">
+                    <arguments>
+                        <!-- If argument's position depends on image size changeable in VDE:
+                        positions:list-secondary,grid-secondary,list-actions,grid-actions,list-primary,grid-primary
+                    -->
+                        <argument name="positioned" xsi:type="string">positions:list-secondary</argument>
+                    </arguments>
+                    <block class="Riki\Catalog\Block\Search\Toolbar" name="product_list_toolbar" template="Magento_Catalog::product/list/toolbar.phtml" cacheable="false">
+                        <block class="Riki\Catalog\Block\Search\Pager" name="product_list_toolbar_pager" cacheable="false"/>
+                    </block>
+                    <action method="setToolbarBlockName">
+                        <argument name="name" xsi:type="string">product_list_toolbar</argument>
+                    </action>
+                    <block class="Magento\Framework\View\Element\RendererList" name="category.product.type.details.renderers" as="details.renderers">
+                        <block class="Magento\Framework\View\Element\Template" as="default"/>
+                    </block>
+                </block>
+                <action method="setListOrders"/>
+                <action method="setListModes"/>
+                <action method="setListCollection"/>
+                <block class="Magento\Cms\Block\Block" name="pre-defined-message-search-no-results">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">pre-defined-message-search-no-results</argument>
+                    </arguments>
+                </block>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="page.main.title">
+            <block class="Magento\Framework\View\Element\Template" name="catalog.result.searchform" as="titleSearch" template="Magento_CatalogSearch::form.search.phtml" />
+        </referenceContainer>
+        <referenceContainer name="columns.top">
+            <container name="filter.result.page.container" htmlTag="div" htmlClass="filter-result-page" after="page.main.title">
+                <block class="Riki\Catalog\Block\Search\Navigation\Search" name="catalogsearch.leftnav" before="-" template="Magento_LayeredNavigation::layer/search.phtml">
+                    <block class="Magento\LayeredNavigation\Block\Navigation\State" name="catalogsearch.navigation.state" as="state" />
+                    <block class="Magento\LayeredNavigation\Block\Navigation\FilterRenderer" name="catalogsearch.navigation.renderer" as="renderer" template="Magento_CatalogSearch::layer/filter.phtml"/>
+                </block>
+            </container>
+        </referenceContainer>
+        <referenceContainer name="main.content">
+            <container name="commendation.product.list" htmlTag="div" htmlClass="block-additional-products" after="-">
+                <container name="content.bottom" label="Main Content Bottom"/>
+            </container>
+        </referenceContainer>
+    </body>
+</page>

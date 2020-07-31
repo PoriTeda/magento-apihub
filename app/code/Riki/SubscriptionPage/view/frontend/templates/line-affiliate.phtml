@@ -1,0 +1,17 @@
+<script type="text/javascript">
+    require(['jquery', 'mage/cookies'], function($) {
+        var referrer = document.referrer,
+            cookieOptions = {"lifetime": <?php echo $block->getCookieLifetime() ?>},
+            urlConfigs = <?php echo $block->getUrlConfigs() ?>;
+
+        if (referrer) {
+            for (var i=0; i < urlConfigs.length; i++) {
+                var config = urlConfigs[i];
+                if (referrer.indexOf(config.url) !== -1 && !$.mage.cookies.get(config.cookieName)) {
+                    $.mage.cookies.set(config.cookieName, "1", cookieOptions);
+                    break;
+                }
+            }
+        }
+    });
+</script>

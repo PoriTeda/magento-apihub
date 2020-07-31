@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="left">
+
+            <block class="Riki\Sales\Block\Adminhtml\OrderColor\Form" name="riki_sales_color_status"/>
+            <action method="addTab">
+                <argument name="name" xsi:type="string">colorstatus</argument>
+                <argument name="block" xsi:type="string">riki_sales_color_status</argument>
+            </action>
+        </referenceBlock>
+        <referenceBlock name="content">
+            <block class="Magento\Framework\View\Element\Text" name="validation.script">
+                <arguments>
+                    <argument name="text" xsi:type="string"><![CDATA[
+                        <script>require(['Riki_Sales/js/validation/rules']);</script>
+                    ]]></argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

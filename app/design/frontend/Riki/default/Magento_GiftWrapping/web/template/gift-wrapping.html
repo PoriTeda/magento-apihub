@@ -1,0 +1,24 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+ -->
+<!-- ko if: isActive() -->
+<div class="gift-wrapping">
+    <div class="gift-options-content">
+        <div class="label" data-bind="i18n: 'Gift wrapping'"></div>
+        <div>
+            <div class="select-wrapper">
+                <select class="input-new select-box" data-bind="attr: {name: 'gift_wrapping_' + itemId}, event: {change: function() {updateGiftWrapping(itemId)}}">
+                    <option value="-1" data-bind="i18n: 'None'"></option>
+                    <!--ko foreach: {data: getWrappingItems(), as: 'item'}-->
+                    <option data-bind="text: label + ' ' +$parent.formatPrice(price), attr: {value: id, selected: ($parent.isHighlight(id))}"></option>
+                    <!-- /ko -->
+                </select>
+            </div>
+            <div class="wrapping-services-link"><a target="_blank" data-bind="i18n: 'About wrapping services', attr: {href: checkoutConfig.wrappingServicesLink, title: $t('About wrapping services')}"></a></div>
+        </div>
+    </div>
+</div>
+<!-- /ko -->

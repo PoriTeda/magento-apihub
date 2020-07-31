@@ -1,0 +1,26 @@
+<?php
+$order = $block->getOrderIds();
+$flgShowLink = false;
+
+if ($order->getSize() > 0 ) {
+    $flgShowLink = true;
+} else {
+    $orderLegacy = $block->getOrdersLegacy();
+    if (!empty($orderLegacy) && $orderLegacy->getSize() > 0 ) {
+        $flgShowLink = true;
+    }
+}
+$txtTab =  __("Order History and present order information");
+?>
+<div class="title"><?php  /* @escapeNotVerified */ echo __("View or Edit Order Details")?></div>
+<ul>
+    <li>
+        <?php if ($flgShowLink) :?>
+            <a href="<?php  echo $block->getUrl('sales/order/history')  ?>">
+                <span class="link"><?php  /* @escapeNotVerified */ echo $txtTab; ?></span>
+            </a>
+        <?php else : ?>
+            <span class="link"><?php  /* @escapeNotVerified */ echo $txtTab; ?></span>
+        <?php endif ?>
+    </li>
+</ul>

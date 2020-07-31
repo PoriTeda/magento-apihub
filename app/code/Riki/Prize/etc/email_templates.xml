@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="prize_prizeoutofstock_email_template" label="Prize product out of stock email" file="prize-out-of-stock.html" type="text" module="Riki_Prize" area="frontend"/>
+</config>

@@ -1,0 +1,113 @@
+<!-- ko if: questionnairesArray.getLength() > 0 -->
+<div class="checkout-success">
+<!-- ko foreach: getRegion('messages') -->
+<!-- ko template: getTemplate() --><!-- /ko -->
+<!--/ko-->
+<div class="opc-single-sub get-survey-block">
+    <div class="step-title" data-bind="i18n: 'If you do not mind, please cooperate with the questionnaire.'" data-role="title"></div>
+    <form name="questionnaire-form" id="questionnaire-form">
+        <div class="required-note" data-bind="i18n: '* is a mandatory field'"></div>
+        <!-- ko foreach: questionnairesArray -->
+        <input type="hidden" data-bind="attr: { name: 'questionnaire['+ enquete_id +'][\'enquete_id\']', value: enquete_id }" />
+        <div class="questionnaire-wrapper">
+            <!-- ko foreach: optionQuestions -->
+            <div class="question-item" data-bind="css: is_required">
+                <span class="no-display data-type" data-bind="attr: { rel: type }"></span>
+                <div class="question-container">
+                    <!-- ko if: (type == 0) -->
+                    <h3 class="question-title"><strong data-bind="text: index"></strong> <!-- ko text: title --><!-- /ko --></h3>
+                    <!-- ko foreach: optionChoices -->
+                    <div class="wrapper">
+                        <div class="level1">
+                            <input type="radio" class="radio" data-bind="checked: $parent.selectedOption, css: {has_children: optionChoicesSecond.getLength() > 0}, attr: { name: 'questionnaire['+ $parents[1].enquete_id +'][\'questions\']['+ $parent.question_id +'][\'choice_id\']', id: 'checkbox_' + choice_id, value: choice_id }" />
+                            <label data-bind="text: label, attr: { for: 'checkbox_'  + choice_id }"></label><br />
+                        </div>
+                        <div class="level2">
+                            <!-- ko if: (optionChoicesSecond.getLength() > 0) -->
+                            <div class="arrow drop-down">⇒</div>
+                            <div class="level2-content">
+                                <div class="select-wrapper">
+                                    <select class="input-new" data-bind="
+                                       options: optionChoicesSecond,
+                                       optionsText: 'label',
+                                       optionsValue: 'choice_id',
+                                       optionsCaption: $parents[2].trans('Please select the answer'),
+                                       enable: $parent.selectedOption() == choice_id,
+                                       value: ($parent.selectedOption() != choice_id) ? '' : '',
+                                       attr: { name: 'questionnaire['+ $parents[1].enquete_id +'][\'questions\']['+ $parent.question_id +'][\'choice_id\'][\'sub\']['+ choice_id +']' }"></select>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- /ko -->
+
+                    <!-- ko if: (type == 1) -->
+                    <h3 class="question-title"><strong data-bind="text: index"></strong> <!-- ko text: title --><!-- /ko --></h3>
+                    <div class="wrapper">
+                        <div class="level1 middle">
+                            <div class="select-wrapper">
+                                <select class="input-new" data-bind="
+                                   options: optionChoices,
+                                   optionsText: 'label',
+                                   optionsValue: 'choice_id',
+                                   optionsCaption: $parents[1].trans('Please select the answer'),
+                                   value: selectedOption,
+                                   attr: { name: 'questionnaire['+ $parent.enquete_id +'][\'questions\']['+ question_id +'][\'choice_id\']' }"></select>
+                            </div>
+                        </div>
+                        <div class="level2">
+                            <!-- ko with: selectedOption -->
+                            <!-- ko foreach: $parent.optionChoices -->
+                            <!-- ko if: (choice_id == $parents[1].selectedOption()) -->
+                            <!-- ko if: (optionChoicesSecond.getLength() > 0) -->
+                            <div class="arrow drop-down">⇒</div>
+                            <div class="level2-content">
+                                <div class="select-wrapper">
+                                    <select class="input-new" data-bind="
+                                       options: optionChoicesSecond,
+                                       optionsText: 'label',
+                                       optionsValue: 'choice_id',
+                                       optionsCaption: $parents[3].trans('Please select the answer'),
+                                       attr: { name: 'questionnaire['+ $parents[2].enquete_id +'][\'questions\']['+ $parents[1].question_id +'][\'choice_id\'][\'sub\']' }"></select>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+                            <!-- /ko -->
+                            <!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                    <!-- /ko -->
+
+                    <!-- ko if: (type == 2) -->
+                    <div class="wrapper">
+                        <div class="level1">
+                            <label class="label question-title" data-bind="attr: { for: 'content_' + question_id }"><strong data-bind="text: index"></strong> <!-- ko text: title --><!-- /ko --></label>
+                            <input type="text" data-bind="attr: { name: 'questionnaire['+ $parent.enquete_id +'][\'questions\']['+ question_id +'][\'content\']', id: 'content_' + question_id }"  class="input-text" />
+                        </div>
+                        <div class="level2"></div>
+                    </div>
+                    <!-- /ko -->
+
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+    </form>
+
+
+
+</div>
+<div class="actions-toolbar" id="questionnaire-buttons-container">
+    <div class="primary">
+        <button type="submit" class="action checkout" data-bind="
+            click: submitQuestionnaire">
+            <span><!-- ko i18n: 'Submit'--><!-- /ko --></span>
+        </button>
+    </div>
+</div>
+</div>
+<!-- /ko -->

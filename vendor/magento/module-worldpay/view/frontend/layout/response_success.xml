@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <container name="root" label="Root">
+        <block class="Magento\Framework\View\Element\Template" name="response_success" template="Magento_Worldpay::redirect.phtml">
+            <arguments>
+                <argument name="redirect_type" xsi:type="string">success</argument>
+                <argument name="delay_time" xsi:type="string">0</argument>
+                <argument name="redirect_message" xsi:type="string" translate="true">Your payment has been successfully processed by our shop system.</argument>
+            </arguments>
+        </block>
+    </container>
+</layout>

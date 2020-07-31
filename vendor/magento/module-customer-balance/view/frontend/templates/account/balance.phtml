@@ -1,0 +1,19 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+?>
+<div class="block block-balance">
+    <div class="block-title">
+        <strong><?= /* @escapeNotVerified */ __('Balance') ?></strong>
+    </div>
+    <div class="block-content">
+        <p>
+            <span class="balance-price-label"><?= /* @escapeNotVerified */ __('Your balance is:') ?></span>
+            <?= /* @escapeNotVerified */ $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($block->getBalance()) ?>
+        </p>
+    </div>
+</div>

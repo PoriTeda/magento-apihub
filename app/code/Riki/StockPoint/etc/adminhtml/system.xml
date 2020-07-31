@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
+    <system>
+        <section id="subscriptioncourse" translate="label" type="text" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="0">
+            <group id="log_stockpoint" translate="label" type="text" sortOrder="420" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Log Stock Point</label>
+                <field id="is_active_discount_rate" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled Log API Discount Rate</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="is_active_register_delivery" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled Log API Register Delivery</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="is_active_update_delivery" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled Log API Update Delivery</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="is_active_confirm_bucket_order" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled Log API Confirm Bucket Order</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="is_active_stock_point_delivery_status" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled Log API Stock Point Delivery Status</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="is_active_remove_from_bucket" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled API Log Remove From Bucket</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="is_active_notify_data_show_map" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled API Log Notify Data Show Map</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="is_active_debug_show_button" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled Log Debug Show Button</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="is_active_deactivate_stockpoint" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled API Deactivate Stock Point</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="is_active_cron_send_bucket_order" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled Cron Send Bucket Order Log</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="is_active_cron_auto_assign_stock_point" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled Log Cron Auto Assign Stock Point For Sub Profile</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="stockpoint" translate="label" type="text" sortOrder="420" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="send_bucket_order_to_stock_point_cron_expression" translate="label comment" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Send Bucket Order To StockPoint Schedule Expression</label>
+                    <comment>Ex: * 0 1 * * (Cron will run at 0h on 1st of every month)</comment>
+                </field>
+                <field id="auto_assign_stock_point_for_sub_profile_schedule_expresssion" translate="label comment" type="text" sortOrder="210" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Auto Assign Stock Point For Sub Profile Schedule Expression</label>
+                    <comment>Ex: * 0 1 * * (Cron will run at 0h on 1st of every month)</comment>
+                </field>
+                <field id="stock_point_csv_file_location_on_sftp" translate="label" type="text" sortOrder="220" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Stock Point CSV File Location on SFTP</label>
+                </field>
+                <field id="limit_number_sub_profiles" translate="label" type="text" sortOrder="230" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Limit number of sub profiles</label>
+                </field>
+                <field id="google_map_api_key" translate="label" type="text" sortOrder="240" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Google Map API Key</label>
+                </field>
+            </group>
+            <group id="stockpoint_email" translate="label" type="text" sortOrder="430" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Stock Point Email</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable send mail when stock unavailability</comment>
+                </field>
+                <field id="sender" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template Auto Assign Stock Point</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+            <group id="stockpoint_proxy" translate="label" type="text" sortOrder="440" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Stock Point Proxy Setting</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Is using proxy</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="proxy_host_name" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Proxy Host Name</label>
+                    <comment>Ex: proxy.host.name</comment>
+                </field>
+                <field id="proxy_port" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Proxy Port</label>
+                    <comment>Ex: 8080</comment>
+                </field>
+                <field id="proxy_username" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Proxy Username</label>
+                </field>
+                <field id="proxy_password" translate="label" type="obscure" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Proxy Password</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,6 @@
+システム名　　　　:EC
+ジョブ名　　　　　:PrizeIncludedContinueJob
+バッチ処理名　　　：定期便プレゼント同梱
+バッチ処理日時　　：{{var year}}年{{var month}}月{{var day}}日{{var hour}}時
+エラー内容:
+顧客コード　：　{{var consumer_db_id}}商品コード　：　{{var product_sku}}が在庫切れです。

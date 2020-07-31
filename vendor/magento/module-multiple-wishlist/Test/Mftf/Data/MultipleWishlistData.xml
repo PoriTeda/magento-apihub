@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../dev/tests/acceptance/vendor/magento/magento2-functional-testing-framework/src/Magento/FunctionalTestingFramework/DataGenerator/etc/dataProfileSchema.xsd">
+    <entity name="WishlistSettingConfig" type="wishlist_config_state">
+        <requiredEntity type="active">wishlistActiveEnable</requiredEntity>
+    </entity>
+    <entity name="wishlistActiveEnable" type="active">
+        <data key="value">1</data>
+    </entity>
+    <entity name="WishlistSetting" type="wishlist_config_state">
+        <requiredEntity type="multiple_enabled">multipleWishlist</requiredEntity>
+        <requiredEntity type="multiple_wishlist_number">multipleWishlistNumber</requiredEntity>
+    </entity>
+    <entity name="multipleWishlist" type="multiple_enabled">
+        <data key="value">1</data>
+    </entity>
+    <entity name="multipleWishlistNumber" type="multiple_wishlist_number">
+        <data key="value"/>
+    </entity>
+
+    <entity name="DefaultWishlistSetting" type="wishlist_config_state">
+        <requiredEntity type="multiple_enabled">defaultMultipleWishlist</requiredEntity>
+    </entity>
+    <entity name="defaultMultipleWishlist" type="multiple_enabled">
+        <data key="value">0</data>
+    </entity>
+</entities>

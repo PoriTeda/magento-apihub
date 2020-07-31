@@ -1,0 +1,17 @@
+<?php /** @var \Nestle\Gillette\Block\Adminhtml\Sales\Order\Create\Gillette $block  */ ?>
+<script>
+    require([
+        "prototype",
+        "Nestle_Gillette/addgilletteproduct",
+        "Magento_Sales/order/create/form"
+    ], function(){
+        addGilletteproduct = new AddGilletteProduct(<?php /* @escapeNotVerified */ echo $block->getJsOrderObject() ?>);
+    });
+</script>
+<div class="admin__page-section-title">
+    <span class="title"><?php /* @escapeNotVerified */ echo $block->getHeaderText() ?></span>
+    <?php if($block->getButtonsHtml()): ?>
+        <div class="actions"><?php echo $block->getButtonsHtml() ?></div>
+    <?php endif; ?>
+</div>
+<?php echo $block->getChildHtml('', true) ?>

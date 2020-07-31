@@ -1,0 +1,120 @@
+<?php
+    /** @var $block \Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\SubscriptionRestriction */
+    $form = $block->getForm();
+    $course = $block->getCurrentCourse();
+
+    // Don't show for hanpukai subscription course
+    if (!$block->isHanpukaiSubscriptionCourse()) {
+        if ($course->getData('order_total_amount_option') == 2) {
+            $flat_amount = 'none';
+            $grid_amount = 'block';
+        } else {
+            $flat_amount = 'block';
+            $grid_amount = 'none';
+        }
+    }
+
+    // For qty restriction
+    if ($course->getData('maximum_qty_restriction_option') == 3) {
+        $flat_qty = 'none';
+        $grid_qty = 'block';
+    } else {
+        $flat_qty = 'block';
+        $grid_qty = 'none';
+    }
+?>
+<div class="fieldset-wrapper ui-sortable" id="subscription-course-custom-options-wrapper" data-block="subscription-course-custom-options">
+<fieldset class="fieldset admin__fieldset" id="cou_subscription_restriction_fieldset">
+    <legend class="admin__legend legend">
+        <span><?php /* @escapeNotVerified */ echo __('Subscription Restriction') ?></span>
+    </legend><br>
+    <div class="messages">
+    </div>
+
+    <?php if (!$block->isHanpukaiSubscriptionCourse()) : ?>
+    <div class="subscription_restriction amount_restriction">
+        <?php echo $form->getElement('order_total_amount_option')->toHtml(); ?>
+        <?php echo $form->getElement('oar_minimum_amount_threshold')->toHtml(); ?>
+        <div class="admin__field field field-oar_minimum_amount_threshold-grid" style="display:<?php echo $grid_amount;?>"
+             data-ui-id="subscription-course-edit-tab-subscription-restriction-fieldset-element-form-field-oar-minimum-amount-threshold">
+            <label class="label admin__field-label"
+                   for="cou_oar_minimum_amount_threshold"
+                   data-ui-id="subscription-course-edit-tab-subscription-restriction-fieldset-element-text-total-minimum-amount-threshold-label">
+                    <span><?php echo __('Order total minimum amount threshold');?></span>
+            </label>
+            <div class="admin__field-control control">
+                <div class ="custom_options_amount_restriction_grid">
+                    <div id="minimum_amount_custom_options">
+                        <div id="minimum_amount_options_container" class="sortable-wrapper">
+                            <div id="minimum_amount_options_container_top"></div>
+                            <?php echo $block->getOptionsBoxHtml('minimum_amount_options_box') ?>
+                        </div>
+                    </div>
+                </div>
+                <div class ="bottom_button">
+                    <?php echo $block->getChildHtml('minimum_amount_add_options_button') ?>
+                </div>
+            </div>
+        </div>
+        <?php echo $form->getElement('oar_maximum_amount_threshold')->toHtml(); ?>
+    </div>
+    <?php endif; ?>
+
+    <div class="subscription_restriction qty_restriction">
+        <?php echo $form->getElement('maximum_qty_restriction_option')->toHtml(); ?>
+        <?php echo $form->getElement('oqr_maximum_qty_restriction')->toHtml(); ?>
+        <div class="admin__field field field-oqr_maximum_qty_restriction-grid" style="display:<?php echo $grid_qty;?>"
+             data-ui-id="subscription-course-edit-tab-subscription-restriction-fieldset-element-form-field-oqr-maximum-qty-restriction">
+            <label class="label admin__field-label"
+                   for="cou_oqr_maximum_qty_restriction"
+                   data-ui-id="subscription-course-edit-tab-subscription-restriction-fieldset-element-text-maximum-qty-restriction-label">
+                <span><?php echo __('Maximum Qty Restriction');?></span>
+            </label>
+            <div class="admin__field-control control">
+                <div class ="custom_options_qty_restriction_grid">
+                    <div id="maximum_qty_custom_options">
+                        <div id="maximum_qty_options_container" class="sortable-wrapper">
+                            <div id="maximum_qty_options_container_top"></div>
+                            <?php echo $block->getOptionsBoxHtml('maximum_qty_options_box') ?>
+                        </div>
+                    </div>
+                </div>
+                <div class ="bottom_button">
+                    <?php echo $block->getChildHtml('maximum_qty_add_options_button') ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</fieldset>
+</div>
+<script>
+    require(['jquery'], function(jQuery) {
+        <?php if (!$block->isHanpukaiSubscriptionCourse()) : ?>
+            <?php if ($flat_amount == 'none') : ?>
+                jQuery('.field-oar_minimum_amount_threshold').hide();
+            <?php endif; ?>
+            jQuery('#cou_order_total_amount_option').on('change', function () {
+                if (parseInt(jQuery(this).val()) == 2) {
+                    jQuery('.field-oar_minimum_amount_threshold').hide();
+                    jQuery('.field-oar_minimum_amount_threshold-grid').show();
+                } else {
+                    jQuery('.field-oar_minimum_amount_threshold').show();
+                    jQuery('.field-oar_minimum_amount_threshold-grid').hide();
+                }
+            });
+        <?php endif; ?>
+
+        <?php if ($flat_qty == 'none') : ?>
+        jQuery('.field-oqr_maximum_qty_restriction').hide();
+        <?php endif; ?>
+        jQuery('#cou_maximum_qty_restriction_option').on('change', function () {
+            if (parseInt(jQuery(this).val()) == 3) {
+                jQuery('.field-oqr_maximum_qty_restriction').hide();
+                jQuery('.field-oqr_maximum_qty_restriction-grid').show();
+            } else {
+                jQuery('.field-oqr_maximum_qty_restriction').show();
+                jQuery('.field-oqr_maximum_qty_restriction-grid').hide();
+            }
+        });
+    });
+</script>

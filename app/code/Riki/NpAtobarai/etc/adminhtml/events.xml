@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="controller_action_predispatch_adminhtml_rma_edit">
+        <observer name="riki_npatobarai_adminhtml_get_payment_date" instance="Riki\NpAtobarai\Observer\Adminhtml\GetPaymentDate" />
+    </event>
+    <event name="controller_action_predispatch_adminhtml_rma_new">
+        <observer name="riki_npatobarai_adminhtml_get_payment_date" instance="Riki\NpAtobarai\Observer\Adminhtml\GetPaymentDate" />
+    </event>
+</config>

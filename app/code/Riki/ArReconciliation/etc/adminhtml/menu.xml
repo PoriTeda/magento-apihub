@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_ArReconciliation::import_payment_csv" title="Import Payment CSV"
+             module="Riki_ArReconciliation" sortOrder="45" parent="Magento_Backend::system" resource="Riki_ArReconciliation::import_payment_csv"/>
+
+        <add id="Riki_ArReconciliation::import_payment_csv_file" title="Import Payment CSV file"
+             module="Riki_ArReconciliation" sortOrder="1000" parent="Riki_ArReconciliation::import_payment_csv"
+             action="importpaymentcsv/import" resource="Riki_ArReconciliation::import_payment_csv_file"/>
+    </menu>
+</config>

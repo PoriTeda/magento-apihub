@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <subscriptioncourse>
+            <log_stockpoint>
+                <is_active_proudct>1</is_active_proudct>
+                <is_active_discount_rate>1</is_active_discount_rate>
+                <is_active_register_delivery>1</is_active_register_delivery>
+                <is_active_update_delivery>1</is_active_update_delivery>
+                <is_active_confirm_bucket_order>1</is_active_confirm_bucket_order>
+                <is_active_stock_point_delivery_status>1</is_active_stock_point_delivery_status>
+                <is_active_remove_from_bucket>1</is_active_remove_from_bucket>
+                <is_active_deactivate_stockpoint>1</is_active_deactivate_stockpoint>
+                <is_active_cron_send_bucket_order>1</is_active_cron_send_bucket_order>
+                <is_active_cron_auto_assign_stock_point>1</is_active_cron_auto_assign_stock_point>
+                <is_active_debug_show_button>0</is_active_debug_show_button>
+            </log_stockpoint>
+            <stockpoint>
+                <send_bucket_order_to_stock_point_cron_expression>* 0 1 * *</send_bucket_order_to_stock_point_cron_expression>
+                <auto_assign_stock_point_for_sub_profile_schedule_expresssion>* 0 1 * *</auto_assign_stock_point_for_sub_profile_schedule_expresssion>
+                <stock_point_csv_file_location_on_sftp>/Staging/import/stockpoint/remote</stock_point_csv_file_location_on_sftp>
+                <limit_number_sub_profiles>0</limit_number_sub_profiles>
+                <google_map_api_key>0</google_map_api_key>
+            </stockpoint>
+            <stockpoint_email>
+                <enable>1</enable>
+                <sender>general</sender>
+                <email_template>subscriptioncourse_stockpoint_email_email_template</email_template>
+            </stockpoint_email>
+        </subscriptioncourse>
+    </default>
+</config>

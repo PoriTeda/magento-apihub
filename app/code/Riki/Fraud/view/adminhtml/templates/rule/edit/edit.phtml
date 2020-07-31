@@ -1,0 +1,35 @@
+<?php
+/**
+ * @var $block \Riki\Fraud\Block\Adminhtml\Rule\Edit
+ */
+?>
+<script type="text/javascript">
+    require([
+            'jquery'
+        ],
+        function($) {
+            var $reject_status = '<?=$block->getRejectStatus();?>';
+            if($("#status").val() != $reject_status){
+                warning_required(false);
+            }else{
+                warning_required(true);
+            }
+            $("#status").change(function(){
+                if(this.value != $reject_status) {
+                    warning_required(false);
+                }else{
+                    warning_required(true);
+                }
+            });
+            function warning_required( validate ){
+                if( validate == true ){
+                    $('#warning_message').addClass('required-entry');
+                    $('#warning_message').parents('.admin__field').addClass('required _required');
+                }else{
+                    $('#warning_message').removeClass('required-entry');
+                    $('#warning_message').parents('.admin__field').removeClass('required _required');
+                }
+            }
+        }
+    );
+</script>

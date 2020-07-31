@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_User::import_password"
+             title="Import Dictionary" module="Riki_User" sortOrder="100"
+             parent="Magento_Backend::other_settings"
+             action="riki_user/import/index"
+             resource="Riki_User::import_password"/>
+    </menu>
+</config>

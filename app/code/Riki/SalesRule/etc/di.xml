@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- add time to the query apply rule -->
+    <preference for="Magento\SalesRule\Model\ResourceModel\Rule\Collection" type="Riki\SalesRule\Model\ResourceModel\Rule\Collection" />
+    <!-- subscription rule handle -->
+    <preference for="Magento\SalesRule\Model\ResourceModel\Rule" type="Riki\SalesRule\Model\ResourceModel\Rule" />
+    <preference for="Magento\SalesRule\Model\Validator" type="Riki\SalesRule\Model\Validator" />
+    <preference for="Magento\SalesRule\Model\Rule\Action\Discount\CartFixed" type="Riki\SalesRule\Model\Rule\Action\Discount\CartFixed" />
+    <preference for="Magento\SalesRule\Model\Utility" type="Riki\SalesRule\Model\Utility" />
+    <preference for="Magento\SalesRule\Model\Quote\Discount" type="Riki\SalesRule\Model\Quote\Discount" />
+    <preference for="Magento\SalesRule\Api\Data\RuleInterface"
+                type="Riki\SalesRule\Model\Data\Rule" />
+    <preference for="Magento\SalesRule\Model\RulesApplier" type="Riki\SalesRule\Model\RulesApplier" />
+    <type name="Magento\SalesRule\Model\Rule\Condition\Product">
+        <plugin name="riki-sales-rule-load-product-attributes" type="Riki\SalesRule\Plugin\LoadProductAttributes"/>
+    </type>
+    <type name="Magento\SalesRule\Model\ResourceModel\Rule">
+        <plugin name="riki-sales-rule-fix-rule-load-website" type="Riki\SalesRule\Plugin\LoadWebsiteIds"/>
+    </type>
+    <preference for="Magento\SalesRule\Model\Rule\Condition\Product\Found" type="Riki\SalesRule\Model\Rule\Condition\Product\Found" />
+    <preference for="Magento\SalesRule\Model\Rule\Condition\Product\Subselect" type="Riki\SalesRule\Model\Rule\Condition\Product\Subselect" />
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="PromoBeforeImportCommand" xsi:type="object">Riki\SalesRule\Command\PromoBeforeImport</item>
+                <item name="PromoImportCommand" xsi:type="object">Riki\SalesRule\Command\PromoImport</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="riki_saleRulesQuoteModelQuoteItemToOrderItem" type="Riki\SalesRule\Plugin\Quote\Model\Quote\Item\ToOrderItem"/>
+    </type>
+    <type name="Magento\ScalableOms\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="riki_order_salesrule" xsi:type="string">riki_order_salesrule</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!--logger Sales Rule -->
+    <type name="Riki\SalesRule\Logger\SalesRule">
+        <arguments>
+            <argument name="name" xsi:type="string">SalesRule</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\SalesRule\Logger\SalesRuleHandler</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\SalesRule\Model\Rule\Condition\Product\Combine">
+        <plugin name="rikiSalesRuleValidateSubscriptionSettingForItem" type="Riki\SalesRule\Plugin\ValidateSubscriptionSettingForItem" />
+    </type>
+    <type name="Magento\SalesRule\Model\Utility">
+        <plugin name="rikiSalesRuleUpdateAppliedRulesInfo" type="Riki\SalesRule\Plugin\UpdateAppliedRulesInfo" />
+    </type>
+
+    <virtualType name="Magento\SalesRule\Model\ResourceModel\Rule\AssociatedEntityMap" type="Magento\Framework\DataObject">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="website" xsi:type="array">
+                    <item name="associations_table" xsi:type="string">salesrule_website</item>
+                    <item name="rule_id_field" xsi:type="string">rule_id</item>
+                    <item name="entity_id_field" xsi:type="string">website_id</item>
+                </item>
+                <item name="customer_group" xsi:type="array">
+                    <item name="associations_table" xsi:type="string">salesrule_customer_group</item>
+                    <item name="rule_id_field" xsi:type="string">rule_id</item>
+                    <item name="entity_id_field" xsi:type="string">customer_group_id</item>
+                </item>
+                <item name="subscription_course" xsi:type="array">
+                    <item name="associations_table" xsi:type="string">salesrule_subscription_course</item>
+                    <item name="rule_id_field" xsi:type="string">rule_id</item>
+                    <item name="entity_id_field" xsi:type="string">course_id</item>
+                </item>
+                <item name="subscription_frequency" xsi:type="array">
+                    <item name="associations_table" xsi:type="string">salesrule_subscription_frequency</item>
+                    <item name="rule_id_field" xsi:type="string">rule_id</item>
+                    <item name="entity_id_field" xsi:type="string">frequency_id</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>

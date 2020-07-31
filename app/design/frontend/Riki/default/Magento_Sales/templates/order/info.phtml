@@ -1,0 +1,57 @@
+<?php
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var $block \Magento\Sales\Block\Order\Info */ ?>
+<?php
+
+$_order = $block->getOrder();
+$orderAdditionalInformation = $block->getOrderAdditionalInformation();
+
+$_billingAddress    = $_order->getBillingAddress();
+$_paymentMethod     = $_order->getPayment()->getMethodInstance()->getTitle();
+$_paymentMethodCode = $_order->getPayment()->getMethod();
+$npTransactionsPendingReasons = $block->getNpTransactionsPendingReasons();
+?>
+<div class="block block-order-details-view block-billing-order-info">
+    <?php if ($_billingAddress != null): ?>
+        <div class="billing-info">
+            <div class="title">
+                <strong><?php echo __('Payment Information'); ?></strong>
+            </div>
+            <div class="content">
+                <table class="billing-info-table">
+                    <colgroup>
+                        <col width="43%">
+                        <col width="57%">
+                    </colgroup>
+                    <thead></thead>
+                    <tbody>
+                    <?php
+                    if ($orderAdditionalInformation->getData('monthly_fee_label')):
+                        ?>
+                        <tr>
+                            <td class="label"><?= __("Monthly Fee Label"); ?></td>
+                            <td> <?= $orderAdditionalInformation->getData('monthly_fee_label') ?></td>
+                        </tr>
+                    <?php endif; ?>
+                        <tr>
+                            <td class="label"><?php echo __("Payment method"); ?></td>
+                            <td><?php echo ($_paymentMethodCode == 'free') ? __('None') : $_paymentMethod; ?></td>
+                        </tr>
+                        <?php if (!empty($npTransactionsPendingReasons)) : ?>
+                            <tr>
+                                <td class="label"><?php echo __("Pending reason"); ?></td>
+                                <td>
+                                    <?php foreach ($npTransactionsPendingReasons as $reason) : ?>
+                                        <?php /* @escapeNotVerified */ echo '<p>' . $block->escapeHtml($reason) . '</p>' ?>
+                                    <?php endforeach; ?>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <?php endif;?>
+</div>

@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link src="Wyomind_AdvancedInventory::js/sales/index.js"/>
+        <link src="Riki_Sales::js/sales/index.js"/>
+        <link src="Riki_Sales::order/view/edit.js"/>
+    </head>
+    <body>
+    <referenceBlock name="order_info">
+        <action method='setTemplate'>
+            <argument name='template' xsi:type='string'>Riki_Sales::order/view/info.phtml</argument>
+        </action>
+        <block class="Riki\Sales\Block\Adminhtml\Order\Info\Buttons\Cancel" name="popupreasoncancel" as="popupreasoncancel" template="Riki_Sales::order/view/reasoncancel.phtml"/>
+        <block class="Riki\Sales\Block\Adminhtml\Order\View\AdditionalInfo" name="additional_info" template="Riki_Sales::order/view/additional_info.phtml" />
+    </referenceBlock>
+    <referenceBlock name="order_tab_info">
+        <action method='setTemplate'>
+            <argument name='template' xsi:type='string'>Riki_Sales::order/view/tab/info.phtml</argument>
+        </action>
+        <block class="Riki\Sales\Block\Adminhtml\Order\View\DeliveryInfo" name="delivery_info" template="Riki_Sales::order/view/delivery_info.phtml" />
+        <block class="Riki\Sales\Block\Adminhtml\Order\View\StockPointInfo" name="stockpoint_info" template="Riki_Sales::order/view/stockpoint_info.phtml" />
+    </referenceBlock>
+    <referenceBlock name="order_history">
+        <action method='setTemplate'>
+            <argument name='template' xsi:type='string'>Riki_Sales::order/view/history.phtml</argument>
+        </action>
+    </referenceBlock>
+    <referenceBlock name="sales_order_tabs">
+        <action method="addTab">
+            <argument name="name" xsi:type="string">order_enquiry</argument>
+            <argument name="block" xsi:type="string">Riki\Sales\Block\Adminhtml\Order\View\Tab\Enquiry</argument>
+        </action>
+
+        <block class="Riki\ArReconciliation\Block\Adminhtml\Orders\Collected\Tab" template="Riki_ArReconciliation::orders/tab.phtml" name="riki_order_view_tab_collected">
+            <block name="riki_order_view_collected" class="Riki\ArReconciliation\Block\Adminhtml\Orders\Collected"/>
+        </block>
+
+        <block class="Riki\ArReconciliation\Block\Adminhtml\PaymentStatus\PaymentStatus\Tab" template="Riki_ArReconciliation::payment/tab.phtml" name="riki_order_view_tab_payment_status">
+            <block name="riki_order_view_payment_status" class="Riki\ArReconciliation\Block\Adminhtml\PaymentStatus\PaymentStatus"/>
+        </block>
+
+        <block class="Riki\ArReconciliation\Block\Adminhtml\Returns\Returns\Tab" template="Riki_ArReconciliation::refund/tab.phtml" name="riki_order_view_tab_return">
+            <block name="riki_order_view_return" class="Riki\ArReconciliation\Block\Adminhtml\Returns\Returns"/>
+        </block>
+
+        <action method="addTab">
+            <argument name="name" xsi:type="string">collected_section</argument>
+            <argument name="block" xsi:type="string">riki_order_view_tab_collected</argument>
+        </action>
+
+        <action method="addTab">
+            <argument name="name" xsi:type="string">return_section</argument>
+            <argument name="block" xsi:type="string">riki_order_view_tab_return</argument>
+        </action>
+
+        <action method="addTab">
+            <argument name="name" xsi:type="string">payment_status_section</argument>
+            <argument name="block" xsi:type="string">riki_order_view_tab_payment_status</argument>
+        </action>
+
+    </referenceBlock>
+    <referenceBlock name="order_items">
+        <referenceBlock name="default_order_items_renderer">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Riki_Sales::order/view/items/renderer/default.phtml</argument>
+            </action>
+        </referenceBlock>
+    </referenceBlock>
+    <referenceBlock name="tax">
+        <action method='setTemplate'>
+            <argument name='template' xsi:type='string'>Riki_Sales::order/totals/tax.phtml</argument>
+        </action>
+    </referenceBlock>
+    <referenceBlock name="order_totals">
+        <action method='setTemplate'>
+            <argument name='template' xsi:type='string'>Riki_Sales::order/totals.phtml</argument>
+        </action>
+        <block class="Magento\Sales\Block\Adminhtml\Order\Totals\Item" name="gift_wrapping_fee" template="Riki_Sales::order/totals/gift_wrapping_fee.phtml">
+            <action method="setBeforeCondition">
+                <argument name="condition" xsi:type="string">shipping</argument>
+            </action>
+        </block>
+    </referenceBlock>
+</body>
+</page>

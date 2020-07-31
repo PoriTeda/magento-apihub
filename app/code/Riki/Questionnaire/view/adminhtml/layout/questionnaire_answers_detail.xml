@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Riki\Questionnaire\Block\Adminhtml\Answers\View" name="questionnaire_answer_detail"/>
+         </referenceContainer>
+        <referenceContainer name="left">
+            <block class="Riki\Questionnaire\Block\Adminhtml\Answers\View\Tabs" name="questionnaire_answer_tabs">
+                <block class="Riki\Questionnaire\Block\Adminhtml\Answers\View\Tab\Main" name="questionnaire_answer_view_tab_main"/>
+                <block class="Riki\Questionnaire\Block\Adminhtml\Answers\View\Tab\Answer" name="questionnaire_answer_view_tab_answers"/>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">main_section</argument>
+                    <argument name="block" xsi:type="string">questionnaire_answer_view_tab_main</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">answer_section</argument>
+                    <argument name="block" xsi:type="string">questionnaire_answer_view_tab_answers</argument>
+                </action>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

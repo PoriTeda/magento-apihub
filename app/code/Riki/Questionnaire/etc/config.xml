@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <riki_questionnaire>
+            <questionnaire>
+                <questionnaire_log>0</questionnaire_log>
+            </questionnaire>
+            <questionnaire_old_answer>
+                <questionnaire_old_answer_status>1</questionnaire_old_answer_status>
+                <questionnaire_old_answer_cron_schedule>0 0 * * *</questionnaire_old_answer_cron_schedule>
+                <questionnaire_old_answer_life_time>30</questionnaire_old_answer_life_time>
+            </questionnaire_old_answer>
+        </riki_questionnaire>
+    </default>
+</config>

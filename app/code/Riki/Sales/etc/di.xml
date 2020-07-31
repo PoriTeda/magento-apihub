@@ -1,0 +1,589 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Sales\Block\Adminhtml\Order\Status\Edit\Form"
+                type="Riki\Sales\Block\Adminhtml\OrderColor\Form"/>
+    <preference for="Magento\Sales\Block\Adminhtml\Order\Status\NewStatus\Form"
+                type="Riki\Sales\Block\Adminhtml\NewOrderColor\Form"/>
+    <preference for="Magento\Sales\Block\Adminhtml\Order\Create\Customer"
+                type="Riki\Sales\Block\Adminhtml\Order\Create\Customer" />
+    <preference for="Magento\Sales\Model\AdminOrder\Create"
+                type="Riki\Sales\Model\AdminOrder\Create"/>
+    <preference for="Magento\Sales\Model\Order\Payment"
+                type="Riki\Sales\Model\Order\Payment" />
+    <preference for="Magento\Sales\Model\Order\Address" type="Riki\Sales\Model\Order\Address" />
+    <preference for="Magento\Sales\Model\ResourceModel\Order\Handler\State"
+                type="Riki\Sales\Model\ResourceModel\Order\Handler\State" />
+    <preference for="Magento\Sales\Block\Adminhtml\Order\View\Tab\Info"
+                type="Riki\Sales\Block\Adminhtml\Order\View\Tab\Info" />
+    <preference for="Magento\Shipping\Block\Adminhtml\View\Form"
+                type="Riki\Sales\Block\Adminhtml\Shipping\Form" />
+    <preference for="Magento\Sales\Block\Order\Info\Buttons"
+                type="Riki\Sales\Block\Order\Info\Buttons" />
+    <type name="Bluecom\PaymentFee\Block\Onepage">
+        <plugin name="customer-address-check-addresstype" type="Riki\Customer\Plugin\Block\Address\OnepageChange" sortOrder="0"/>
+    </type>
+
+    <!--Api -->
+    <preference for="Riki\Sales\Api\OrderManagementInterface" type="Riki\Sales\Model\Service\OrderService"/>
+    <preference for="Riki\Sales\Api\ShipmentManagementInterface" type="Riki\Sales\Model\Service\ShipmentManagement"/>
+    <preference for="Riki\Sales\Api\OrderApiItemInterface" type="Riki\Sales\Model\Service\OrderApiItem"/>
+    <preference for="Riki\Sales\Api\Data\OrderStatusInterface" type="Riki\Sales\Model\Data\OrderStatus" />
+    <preference for="Riki\Sales\Api\CaptureItemInterface" type="Riki\Sales\Model\CaptureItem" />
+    <!--END API -->
+
+    <preference for="Magento\Sales\Model\Order\Payment\State\AuthorizeCommand" type="Riki\Sales\Model\Order\Payment\State\AuthorizeCommand" />
+    <preference for="Magento\Sales\Model\Order\Payment\State\CaptureCommand" type="Riki\Sales\Model\Order\Payment\State\CaptureCommand" />
+
+    <type name="Magento\Sales\Model\Order">
+        <plugin name="format-address-order" type="Riki\Sales\Plugin\FormatAddress"/>
+    </type>
+
+    <preference for="Magento\Sales\Model\Order\Config" type="Riki\Sales\Model\Config" />
+
+    <type name="Riki\Sales\Logger\HandlerSales">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Sales\Logger\LoggerSales">
+        <arguments>
+            <argument name="name" xsi:type="string">Riki Sales</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\Sales\Logger\HandlerSales</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="riki_quote_to_order_item" type="Riki\Sales\Plugin\QuoteToOrderItem"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\Updater">
+        <plugin name="riki_updateQuoteItemData" type="Riki\Sales\Plugin\UpdateQuoteItemData" disabled="false" sortOrder="100" />
+    </type>
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="joins" xsi:type="array">
+                <item name="sales_order_payment" xsi:type="array">
+                    <item name="table" xsi:type="string">sales_order_payment</item>
+                    <item name="origin_column" xsi:type="string">entity_id</item>
+                    <item name="target_column" xsi:type="string">parent_id</item>
+                </item>
+                <item name="subscription_profile" xsi:type="array">
+                    <item name="table" xsi:type="string">subscription_profile</item>
+                    <item name="origin_column" xsi:type="string">subscription_profile_id</item>
+                    <item name="target_column" xsi:type="string">profile_id</item>
+                </item>
+                <item name="sales_order_address" xsi:type="array">
+                    <item name="table" xsi:type="string">sales_order_address</item>
+                    <item name="origin_column" xsi:type="string">billing_address_id</item>
+                    <item name="target_column" xsi:type="string">entity_id</item>
+                </item>
+                <item name="riki_preorder_order_preorder" xsi:type="array">
+                    <item name="table" xsi:type="string">riki_preorder_order_preorder</item>
+                    <item name="origin_column" xsi:type="string">entity_id</item>
+                    <item name="target_column" xsi:type="string">order_id</item>
+                </item>
+            </argument>
+            <argument name="columns" xsi:type="array">
+                <item name="order_channel" xsi:type="string">sales_order.order_channel</item>
+                <item name="created_by" xsi:type="string">sales_order.created_by</item>
+                <item name="shosha_business_code" xsi:type="string">sales_order.shosha_business_code</item>
+                <item name="free_of_charge" xsi:type="string">sales_order.free_of_charge</item>
+                <item name="payment_agent" xsi:type="string">sales_order.payment_agent</item>
+                <item name="mm_order_id" xsi:type="string">sales_order.mm_order_id</item>
+                <item name="replacement_reason" xsi:type="string">sales_order.replacement_reason</item>
+                <item name="customer_membership" xsi:type="string">sales_order.customer_membership</item>
+                <item name="payment_transaction_id" xsi:type="string">sales_order_payment.cc_trans_id</item>
+                <item name="subscription_course_id" xsi:type="string">subscription_profile.course_id</item>
+                <item name="subscription_course_name" xsi:type="string">subscription_profile.course_name</item>
+                <item name="billing_phone" xsi:type="string">sales_order_address.telephone</item>
+                <item name="payment_error_message" xsi:type="string">sales_order.payment_error_code</item>
+                <item name="original_order_id" xsi:type="string">sales_order.original_order_id</item>
+                <item name="payment_status" xsi:type="string">sales_order.payment_status</item>
+                <item name="billing_address" xsi:type="string">sales_order.billing_address</item>
+                <item name="shipping_address" xsi:type="string">sales_order.shipping_address</item>
+                <item name="is_stock_point" xsi:type="string">sales_order.is_stock_point</item>
+                <item name="riki_type" xsi:type="string">sales_order.riki_type</item>
+                <item name="is_preorder" xsi:type="string">IF(riki_preorder_order_preorder.is_preorder IS NULL, 0, riki_preorder_order_preorder.is_preorder)</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ShippingAddressAggregator" type="Magento\Framework\DB\Sql\ConcatExpression">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="postcode" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_shipping_address</item>
+                    <item name="columnName" xsi:type="string">postcode</item>
+                </item>
+                <item name="country" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_shipping_address</item>
+                    <item name="columnName" xsi:type="string">country_id</item>
+                </item>
+                <item name="region" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_shipping_address</item>
+                    <item name="columnName" xsi:type="string">region</item>
+                </item>
+                <item name="city" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_shipping_address</item>
+                    <item name="columnName" xsi:type="string">city</item>
+                </item>
+                <item name="street" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_shipping_address</item>
+                    <item name="columnName" xsi:type="string">street</item>
+                </item>
+            </argument>
+            <argument name="separator" xsi:type="string">, </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="BillingAddressAggregator" type="Magento\Framework\DB\Sql\ConcatExpression">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="postcode" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_billing_address</item>
+                    <item name="columnName" xsi:type="string">postcode</item>
+                </item>
+                <item name="country" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_shipping_address</item>
+                    <item name="columnName" xsi:type="string">country_id</item>
+                </item>
+
+                <item name="region" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_billing_address</item>
+                    <item name="columnName" xsi:type="string">region</item>
+                </item>
+                <item name="city" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_billing_address</item>
+                    <item name="columnName" xsi:type="string">city</item>
+                </item>
+                <item name="street" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_billing_address</item>
+                    <item name="columnName" xsi:type="string">street</item>
+                </item>
+            </argument>
+            <argument name="separator" xsi:type="string">, </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Tax\Block\Item\Price\Renderer">
+        <plugin name="rikiSalesTaxBlockItemPriceRenderer" type="Riki\Sales\Plugin\Tax\Block\Item\Price\Renderer" />
+    </type>
+    <type name="Magento\Weee\Block\Item\Price\Renderer">
+        <plugin name="rikiSalesWeeeBlockItemPriceRenderer" type="Riki\Sales\Plugin\Weee\Block\Item\Price\Renderer" />
+    </type>
+
+    <preference for="Magento\Sales\Block\Adminhtml\Order\Create\Search\Grid\Renderer\Qty"
+                type="Riki\Sales\Block\Adminhtml\Order\Create\Search\Grid\Renderer\Qty" />
+
+    <preference for="Magento\Sales\Block\Adminhtml\Order\Create\Search\Grid\Renderer\Price"
+                type="Riki\Sales\Block\Adminhtml\Order\Create\Search\Grid\Renderer\Price" />
+    <type name="Magento\Sales\Model\Order">
+        <plugin name="riki_salesOrder" type="Riki\Sales\Plugin\Order" />
+    </type>
+    <preference for="Magento\Ui\Model\Export\MetadataProvider" type="Riki\Sales\Model\Ui\Export\MetadataProvider"/>
+    <preference for="Magento\Sales\Model\Order" type="Riki\Sales\Model\Order"/>
+
+    <type name="Magento\Catalog\Model\ResourceModel\Product\Collection">
+        <plugin name="storeFilterFixer" type="Riki\Sales\Plugin\StoreFilterFixer" />
+    </type>
+
+    <preference for="Magento\Sales\Model\Order\Creditmemo\Total\Shipping" type="Riki\Sales\Model\Order\Creditmemo\Total\Shipping" />
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="sales_subscription_order_grid_data_source" xsi:type="string">Magento\Sales\Model\ResourceModel\Order\Grid\Collection</item>
+                <item name="sales_order_shipment_grid_data_source" xsi:type="string">Riki\Sales\Model\ResourceModel\Order\Shipment\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Riki\Sales\Model\ResourceModel\OrderColor">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Sales\Model\ResourceModel\OrderPayshipStatus">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+
+    <type name="Riki\Sales\Model\ResourceModel\Order\OrderAdditionalInformation">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Riki\Sales\Model\ResourceModel\Order\Shipment\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">sales_shipment_grid</argument>
+            <argument name="resourceModel" xsi:type="string">Magento\Sales\Model\ResourceModel\Order\Shipment</argument>
+        </arguments>
+    </virtualType>
+    <preference for="Magento\Sales\Controller\Adminhtml\Order\MassUnhold" type="Riki\Sales\Controller\Adminhtml\Order\MassUnhold"/>
+    <preference for="Magento\Sales\Controller\Adminhtml\Order\MassHold" type="Riki\Sales\Controller\Adminhtml\Order\MassHold"/>
+    <preference for="Magento\Sales\Controller\Adminhtml\Order\Pdfcreditmemos" type="Riki\Sales\Controller\Adminhtml\Order\Pdfcreditmemos"/>
+    <preference for="Magento\Sales\Controller\Adminhtml\Order\Pdfdocs" type="Riki\Sales\Controller\Adminhtml\Order\Pdfdocs"/>
+    <preference for="Magento\Sales\Controller\Adminhtml\Order\Pdfinvoices" type="Riki\Sales\Controller\Adminhtml\Order\Pdfinvoices"/>
+    <preference for="Magento\Sales\Controller\Adminhtml\Order\Pdfshipments" type="Riki\Sales\Controller\Adminhtml\Order\Pdfshipments"/>
+
+    <type name="Magento\ScalableOms\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="riki_order_status_color" xsi:type="string">riki_order_status_color</item>
+                <item name="riki_order_status" xsi:type="string">riki_order_status</item>
+                <item name="sequence_creditmemo_2" xsi:type="string">sequence_creditmemo_2</item>
+                <item name="sequence_creditmemo_3" xsi:type="string">sequence_creditmemo_3</item>
+                <item name="sequence_creditmemo_4" xsi:type="string">sequence_creditmemo_4</item>
+                <item name="sequence_creditmemo_5" xsi:type="string">sequence_creditmemo_5</item>
+                <item name="sequence_creditmemo_6" xsi:type="string">sequence_creditmemo_6</item>
+                <item name="sequence_creditmemo_7" xsi:type="string">sequence_creditmemo_7</item>
+                <item name="sequence_creditmemo_8" xsi:type="string">sequence_creditmemo_8</item>
+                <item name="sequence_creditmemo_9" xsi:type="string">sequence_creditmemo_9</item>
+                <item name="sequence_creditmemo_10" xsi:type="string">sequence_creditmemo_10</item>
+                <item name="sequence_creditmemo_11" xsi:type="string">sequence_creditmemo_11</item>
+                <item name="sequence_creditmemo_12" xsi:type="string">sequence_creditmemo_12</item>
+                <item name="sequence_creditmemo_13" xsi:type="string">sequence_creditmemo_13</item>
+                <item name="sequence_invoice_2" xsi:type="string">sequence_invoice_2</item>
+                <item name="sequence_invoice_3" xsi:type="string">sequence_invoice_3</item>
+                <item name="sequence_invoice_4" xsi:type="string">sequence_invoice_4</item>
+                <item name="sequence_invoice_5" xsi:type="string">sequence_invoice_5</item>
+                <item name="sequence_invoice_6" xsi:type="string">sequence_invoice_6</item>
+                <item name="sequence_invoice_7" xsi:type="string">sequence_invoice_7</item>
+                <item name="sequence_invoice_8" xsi:type="string">sequence_invoice_8</item>
+                <item name="sequence_invoice_9" xsi:type="string">sequence_invoice_9</item>
+                <item name="sequence_invoice_10" xsi:type="string">sequence_invoice_10</item>
+                <item name="sequence_invoice_11" xsi:type="string">sequence_invoice_11</item>
+                <item name="sequence_invoice_12" xsi:type="string">sequence_invoice_12</item>
+                <item name="sequence_invoice_13" xsi:type="string">sequence_invoice_13</item>
+                <item name="sequence_order_2" xsi:type="string">sequence_order_2</item>
+                <item name="sequence_order_3" xsi:type="string">sequence_order_3</item>
+                <item name="sequence_order_4" xsi:type="string">sequence_order_4</item>
+                <item name="sequence_order_5" xsi:type="string">sequence_order_5</item>
+                <item name="sequence_order_6" xsi:type="string">sequence_order_6</item>
+                <item name="sequence_order_7" xsi:type="string">sequence_order_7</item>
+                <item name="sequence_order_8" xsi:type="string">sequence_order_8</item>
+                <item name="sequence_order_9" xsi:type="string">sequence_order_9</item>
+                <item name="sequence_order_10" xsi:type="string">sequence_order_10</item>
+                <item name="sequence_order_11" xsi:type="string">sequence_order_11</item>
+                <item name="sequence_order_12" xsi:type="string">sequence_order_12</item>
+                <item name="sequence_order_13" xsi:type="string">sequence_order_13</item>
+                <item name="sequence_rma_item_2" xsi:type="string">sequence_rma_item_2</item>
+                <item name="sequence_rma_item_3" xsi:type="string">sequence_rma_item_3</item>
+                <item name="sequence_rma_item_4" xsi:type="string">sequence_rma_item_4</item>
+                <item name="sequence_rma_item_5" xsi:type="string">sequence_rma_item_5</item>
+                <item name="sequence_rma_item_6" xsi:type="string">sequence_rma_item_6</item>
+                <item name="sequence_rma_item_7" xsi:type="string">sequence_rma_item_7</item>
+                <item name="sequence_rma_item_8" xsi:type="string">sequence_rma_item_8</item>
+                <item name="sequence_rma_item_9" xsi:type="string">sequence_rma_item_9</item>
+                <item name="sequence_rma_item_10" xsi:type="string">sequence_rma_item_10</item>
+                <item name="sequence_rma_item_11" xsi:type="string">sequence_rma_item_11</item>
+                <item name="sequence_rma_item_12" xsi:type="string">sequence_rma_item_12</item>
+                <item name="sequence_rma_item_13" xsi:type="string">sequence_rma_item_13</item>
+                <item name="sequence_shipment_2" xsi:type="string">sequence_shipment_2</item>
+                <item name="sequence_shipment_3" xsi:type="string">sequence_shipment_3</item>
+                <item name="sequence_shipment_4" xsi:type="string">sequence_shipment_4</item>
+                <item name="sequence_shipment_5" xsi:type="string">sequence_shipment_5</item>
+                <item name="sequence_shipment_6" xsi:type="string">sequence_shipment_6</item>
+                <item name="sequence_shipment_7" xsi:type="string">sequence_shipment_7</item>
+                <item name="sequence_shipment_8" xsi:type="string">sequence_shipment_8</item>
+                <item name="sequence_shipment_9" xsi:type="string">sequence_shipment_9</item>
+                <item name="sequence_shipment_10" xsi:type="string">sequence_shipment_10</item>
+                <item name="sequence_shipment_11" xsi:type="string">sequence_shipment_11</item>
+                <item name="sequence_shipment_12" xsi:type="string">sequence_shipment_12</item>
+                <item name="sequence_shipment_13" xsi:type="string">sequence_shipment_13</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <preference for="Magento\Sales\Model\Order\Pdf\Shipment" type="Riki\Sales\Model\Order\Pdf\Shipment" />
+
+    <type name="Magento\Ui\Component\MassAction">
+        <plugin name="removeButtonCancelOnOrders" type="Riki\Sales\Ui\Component\MassAction" />
+    </type>
+    <type name="Magento\Sales\Ui\Component\Listing\Column\Status\Options">
+        <plugin name="rikiSalesMagentoSalesUiComponentListingColumnStatusOptions" type="Riki\Sales\Plugin\Sales\Ui\Component\Listing\Column\Status\Options" />
+    </type>
+    <type name="Magento\Ui\Component\ExportButton">
+        <plugin name="viewReadonlyButtonExport" type="Riki\Sales\Ui\Component\ExportButton" />
+    </type>
+    <type name="Magento\Sales\Model\Convert\Order">
+        <plugin name="rikiSalesSalesConvertOrder" type="Riki\Sales\Plugin\Sales\Convert\Order"/>
+    </type>
+
+    <preference for="Magento\Sales\Block\Adminhtml\Order\View\Tabs" type="Riki\Sales\Block\Adminhtml\Order\View\Tabs" />
+
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Invoice\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="mainTableName" xsi:type="string">sales_invoice</argument>
+            <argument name="gridTableName" xsi:type="string">sales_invoice_grid</argument>
+            <argument name="orderIdField" xsi:type="string">sales_invoice.order_id</argument>
+            <argument name="joins" xsi:type="array">
+                <item name="sales_order" xsi:type="array">
+                    <item name="table" xsi:type="string">sales_order</item>
+                    <item name="origin_column" xsi:type="string">order_id</item>
+                    <item name="target_column" xsi:type="string">entity_id</item>
+                </item>
+                <item name="sales_shipping_address" xsi:type="array">
+                    <item name="table" xsi:type="string">sales_order_address</item>
+                    <item name="origin_column" xsi:type="string">shipping_address_id</item>
+                    <item name="target_column" xsi:type="string">entity_id</item>
+                </item>
+                <item name="sales_billing_address" xsi:type="array">
+                    <item name="table" xsi:type="string">sales_order_address</item>
+                    <item name="origin_column" xsi:type="string">billing_address_id</item>
+                    <item name="target_column" xsi:type="string">entity_id</item>
+                </item>
+                <item name="sales_order_payment" xsi:type="array">
+                    <item name="table" xsi:type="string">sales_order_payment</item>
+                    <item name="origin_column" xsi:type="string">order_id</item>
+                    <item name="target_column" xsi:type="string">parent_id</item>
+                </item>
+            </argument>
+            <argument name="columns" xsi:type="array">
+                <item name="entity_id" xsi:type="string">sales_invoice.entity_id</item>
+                <item name="increment_id" xsi:type="string">sales_invoice.increment_id</item>
+                <item name="state" xsi:type="string">sales_invoice.state</item>
+                <item name="store_id" xsi:type="string">sales_invoice.store_id</item>
+                <item name="store_name" xsi:type="string">sales_order.store_name</item>
+                <item name="order_id" xsi:type="string">sales_invoice.order_id</item>
+                <item name="order_increment_id" xsi:type="string">sales_order.increment_id</item>
+                <item name="order_created_at" xsi:type="string">sales_order.created_at</item>
+                <item name="customer_name" xsi:type="object">CustomerNameAggregator</item>
+                <item name="customer_email" xsi:type="string">sales_order.customer_email</item>
+                <item name="customer_group_id" xsi:type="string">sales_order.customer_group_id</item>
+                <item name="payment_method" xsi:type="string">sales_order_payment.method</item>
+                <item name="store_currency_code" xsi:type="string">sales_invoice.store_currency_code</item>
+                <item name="order_currency_code" xsi:type="string">sales_invoice.order_currency_code</item>
+                <item name="base_currency_code" xsi:type="string">sales_invoice.base_currency_code</item>
+                <item name="global_currency_code" xsi:type="string">sales_invoice.global_currency_code</item>
+                <item name="billing_name" xsi:type="object">BillingNameAggregator</item>
+                <item name="billing_address" xsi:type="object">RikiBillingAddressAggregator</item>
+                <item name="shipping_address" xsi:type="object">RikiShippingAddressAggregator</item>
+                <item name="shipping_information" xsi:type="string">sales_order.shipping_description</item>
+                <item name="subtotal" xsi:type="string">sales_order.base_subtotal</item>
+                <item name="shipping_and_handling" xsi:type="string">sales_order.base_shipping_amount</item>
+                <item name="grand_total" xsi:type="string">sales_invoice.grand_total</item>
+                <item name="created_at" xsi:type="string">sales_invoice.created_at</item>
+                <item name="updated_at" xsi:type="string">sales_invoice.updated_at</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="CreditmemoGridAggregator" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="mainTableName" xsi:type="string">sales_creditmemo</argument>
+            <argument name="gridTableName" xsi:type="string">sales_creditmemo_grid</argument>
+            <argument name="orderIdField" xsi:type="string">sales_creditmemo.order_id</argument>
+            <argument name="joins" xsi:type="array">
+                <item name="sales_shipping_address" xsi:type="array">
+                    <item name="table" xsi:type="string">sales_order_address</item>
+                    <item name="origin_column" xsi:type="string">shipping_address_id</item>
+                    <item name="target_column" xsi:type="string">entity_id</item>
+                </item>
+                <item name="sales_billing_address" xsi:type="array">
+                    <item name="table" xsi:type="string">sales_order_address</item>
+                    <item name="origin_column" xsi:type="string">billing_address_id</item>
+                    <item name="target_column" xsi:type="string">entity_id</item>
+                </item>
+                <item name="sales_order" xsi:type="array">
+                    <item name="table" xsi:type="string">sales_order</item>
+                    <item name="origin_column" xsi:type="string">order_id</item>
+                    <item name="target_column" xsi:type="string">entity_id</item>
+                </item>
+                <item name="sales_order_payment" xsi:type="array">
+                    <item name="table" xsi:type="string">sales_order_payment</item>
+                    <item name="origin_column" xsi:type="string">order_id</item>
+                    <item name="target_column" xsi:type="string">parent_id</item>
+                </item>
+            </argument>
+            <argument name="columns" xsi:type="array">
+                <item name="entity_id" xsi:type="string">sales_creditmemo.entity_id</item>
+                <item name="increment_id" xsi:type="string">sales_creditmemo.increment_id</item>
+                <item name="created_at" xsi:type="string">sales_creditmemo.created_at</item>
+                <item name="updated_at" xsi:type="string">sales_creditmemo.updated_at</item>
+                <item name="order_id" xsi:type="string">sales_order.entity_id</item>
+                <item name="order_increment_id" xsi:type="string">sales_order.increment_id</item>
+                <item name="order_created_at" xsi:type="string">sales_order.created_at</item>
+                <item name="billing_name" xsi:type="object">BillingNameAggregator</item>
+                <item name="state" xsi:type="string">sales_creditmemo.state</item>
+                <item name="base_grand_total" xsi:type="string">sales_creditmemo.base_grand_total</item>
+                <item name="order_status" xsi:type="string">sales_order.status</item>
+                <item name="store_id" xsi:type="string">sales_creditmemo.store_id</item>
+                <item name="billing_address" xsi:type="object">RikiBillingAddressAggregator</item>
+                <item name="shipping_address" xsi:type="object">RikiShippingAddressAggregator</item>
+                <item name="customer_name" xsi:type="object">CustomerNameAggregator</item>
+                <item name="customer_email" xsi:type="string">sales_order.customer_email</item>
+                <item name="customer_group_id" xsi:type="string">sales_order.customer_group_id</item>
+                <item name="payment_method" xsi:type="string">sales_order_payment.method</item>
+                <item name="shipping_information" xsi:type="string">sales_order.shipping_description</item>
+                <item name="subtotal" xsi:type="string">sales_creditmemo.subtotal</item>
+                <item name="shipping_and_handling" xsi:type="string">sales_creditmemo.shipping_amount</item>
+                <item name="adjustment_positive" xsi:type="string">sales_creditmemo.adjustment_positive</item>
+                <item name="adjustment_negative" xsi:type="string">sales_creditmemo.adjustment_negative</item>
+                <item name="order_base_grand_total" xsi:type="string">sales_order.base_grand_total</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="RikiBillingAddressAggregator" type="Magento\Framework\DB\Sql\ConcatExpression">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="street" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_billing_address</item>
+                    <item name="columnName" xsi:type="string">street</item>
+                </item>
+                <item name="region" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_billing_address</item>
+                    <item name="columnName" xsi:type="string">region</item>
+                </item>
+                <item name="postcode" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_billing_address</item>
+                    <item name="columnName" xsi:type="string">postcode</item>
+                </item>
+            </argument>
+            <argument name="separator" xsi:type="string">, </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="RikiShippingAddressAggregator" type="Magento\Framework\DB\Sql\ConcatExpression">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="street" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_shipping_address</item>
+                    <item name="columnName" xsi:type="string">street</item>
+                </item>
+                <item name="region" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_shipping_address</item>
+                    <item name="columnName" xsi:type="string">region</item>
+                </item>
+                <item name="postcode" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_shipping_address</item>
+                    <item name="columnName" xsi:type="string">postcode</item>
+                </item>
+            </argument>
+            <argument name="separator" xsi:type="string">, </argument>
+        </arguments>
+    </virtualType>
+    <preference for="Magento\Sales\Model\Order\Address\Validator"
+                type="Riki\Sales\Model\Order\Address\Validator"/>
+
+    <type name="Riki\Sales\Helper\Email">
+        <plugin name="sendMailConfirmBeforeSendMailOrderChange" type="Riki\Sales\Plugin\BeforeSendMailOrderChange"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item">
+        <plugin name="rikiSalesQuoteItem" type="Riki\Sales\Plugin\Quote\Model\Quote\Item" />
+    </type>
+    <type name="Magento\Sales\Model\Order\Item">
+        <plugin name="riki_sale_set_value_for_entity_id_before_get" type="Riki\Sales\Plugin\Sales\Model\Order\SetValueForEntityIdOrderItemBeforeGet" />
+    </type>
+    <type name="Magento\Sales\Model\Order\Payment\Info">
+        <plugin name="riki_sale_validate_payment_additional_information_before_set" type="Riki\Sales\Plugin\Sales\Model\Order\Payment\Info\ValidatePaymentAdditionalInformationBeforeSet" />
+    </type>
+    <type name="Riki\MessageQueue\Model\Consumer\Failure">
+        <arguments>
+            <argument name="executors" xsi:type="array">
+                <item name="capture_failure" xsi:type="object">Riki\Sales\Model\CaptureOrder\Consumer\FailureOrderCapture</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- Command -->
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="riki_sales_cancel_fraud_order" xsi:type="object">Riki\Sales\Command\CancelFraudOrder</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--    -->
+    <preference for="Riki\Sales\Api\ShippingCauseRepositoryInterface" type="Riki\Sales\Model\ShippingCauseRepository" />
+    <preference for="Riki\Sales\Api\Data\ShippingCause\ShippingCauseInterface" type="Riki\Sales\Model\ShippingCause" />
+    <virtualType name="ShippingCauseGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ShippingCauseGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\Sales\Model\ResourceModel\ShippingCause\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">ShippingCauseGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Riki\Sales\Model\ResourceModel\ShippingCause\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">riki_shipping_cause</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\Sales\Model\ResourceModel\ShippingCause</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="riki_sales_shippingcause_listing_data_source" xsi:type="string">Riki\Sales\Model\ResourceModel\ShippingCause\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\Sales\Controller\Adminhtml\ShippingCause\MassDelete">
+        <arguments>
+            <argument name="successMessage" xsi:type="string" translate="true">A total of %1 record(s) have been deleted.</argument>
+            <argument name="errorMessage" xsi:type="string" translate="true">An error occurred while deleting record(s).</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Sales\Controller\Adminhtml\ShippingCause\MassDisable">
+        <arguments>
+            <argument name="successMessage" xsi:type="string" translate="true">A total of %1 shipping cause have been disabled.</argument>
+            <argument name="errorMessage" xsi:type="string" translate="true">An error occurred while disabling selected shipping cause.</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Sales\Controller\Adminhtml\ShippingCause\MassEnable">
+        <arguments>
+            <argument name="successMessage" xsi:type="string" translate="true">A total of %1 shipping cause have been enabled.</argument>
+            <argument name="errorMessage" xsi:type="string" translate="true">An error occurred while enabling shipping cause.</argument>
+        </arguments>
+    </type>
+    <!--    -->
+    <preference for="Riki\Sales\Api\ShippingReasonRepositoryInterface" type="Riki\Sales\Model\ShippingReasonRepository" />
+    <preference for="Riki\Sales\Api\Data\ShippingReason\ShippingReasonInterface" type="Riki\Sales\Model\ShippingReason" />
+    <virtualType name="ShippingReasonGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ShippingReasonGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\Sales\Model\ResourceModel\ShippingReason\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">ShippingReasonGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Riki\Sales\Model\ResourceModel\ShippingReason\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">riki_shipping_reason</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\Sales\Model\ResourceModel\ShippingReason</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="riki_sales_shippingreason_listing_data_source" xsi:type="string">Riki\Sales\Model\ResourceModel\ShippingReason\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\Sales\Controller\Adminhtml\ShippingReason\MassDelete">
+        <arguments>
+            <argument name="successMessage" xsi:type="string" translate="true">A total of %1 record(s) have been deleted.</argument>
+            <argument name="errorMessage" xsi:type="string" translate="true">An error occurred while deleting record(s).</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Sales\Controller\Adminhtml\ShippingReason\MassDisable">
+        <arguments>
+            <argument name="successMessage" xsi:type="string" translate="true">A total of %1 shipping cause have been disabled.</argument>
+            <argument name="errorMessage" xsi:type="string" translate="true">An error occurred while disabling selected shipping reason.</argument>
+        </arguments>
+    </type>
+    <type name="Riki\Sales\Controller\Adminhtml\ShippingReason\MassEnable">
+        <arguments>
+            <argument name="successMessage" xsi:type="string" translate="true">A total of %1 shipping cause have been enabled.</argument>
+            <argument name="errorMessage" xsi:type="string" translate="true">An error occurred while enabling shipping reason.</argument>
+        </arguments>
+    </type>
+</config>

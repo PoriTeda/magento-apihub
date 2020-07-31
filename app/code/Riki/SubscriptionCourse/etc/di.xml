@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Riki\SubscriptionCourse\Api\CourseRepositoryInterface"
+                type="Riki\SubscriptionCourse\Model\CourseRepository"/>
+    <virtualType name="CourseGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Riki\SubscriptionCourse\Model\ResourceModel\Course\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">CourseGirdFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="subscription_course_listing_data_source" xsi:type="string">Riki\SubscriptionCourse\Model\ResourceModel\Course\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Riki\SubscriptionCourse\Model\ResourceModel\Course\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">subscription_course</argument>
+            <argument name="resourceModel" xsi:type="string">Riki\SubscriptionCourse\Model\ResourceModel\Course</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Riki\Checkout\Controller\Index\Single">
+        <plugin name="Riki::overrideIndex" type="Riki\SubscriptionCourse\Plugin\Controller\Checkout\Index" />
+    </type>
+
+    <type name="Magento\Checkout\Controller\Cart\Add">
+        <plugin name="Riki::checkPolicyAddToCartForSubscription" sortOrder="1000" type="\Riki\SubscriptionCourse\Plugin\Controller\Cart\Add" />
+    </type>
+
+    <type name="Riki\SubscriptionCourse\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Riki\SubscriptionCourse\Logger\LoggerUpdateSubStatus">
+        <arguments>
+            <argument name="name" xsi:type="string">Update Subscription Status</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\SubscriptionCourse\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="importCommand" xsi:type="object">Riki\SubscriptionCourse\Command\Import</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\SubscriptionCourse\Model\ResourceModel\Course">
+        <arguments>
+            <argument name="connectionName" xsi:type="string">sales</argument>
+        </arguments>
+    </type>
+    <type name="Magento\ScalableOms\Console\Command\SplitSales">
+        <arguments>
+            <argument name="tables" xsi:type="array">
+                <item name="subscription_course" xsi:type="string">subscription_course</item>
+                <item name="subscription_course_product" xsi:type="string">subscription_course_product</item>
+                <item name="subscription_course_frequency" xsi:type="string">subscription_course_frequency</item>
+                <item name="subscription_course_website" xsi:type="string">subscription_course_website</item>
+                <item name="subscription_course_category" xsi:type="string">subscription_course_category</item>
+                <item name="subscription_course_membership" xsi:type="string">subscription_course_membership</item>
+                <item name="subscription_course_payment" xsi:type="string">subscription_course_payment</item>
+                <item name="subscription_course_merge_profile" xsi:type="string">subscription_course_merge_profile</item>
+                <item name="subscription_machine" xsi:type="string">subscription_machine</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\SubscriptionCourse\Model\ImportHandler\Validator">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="category" xsi:type="object">Riki\SubscriptionCourse\Model\ImportHandler\Validator\Category</item>
+                <item name="frequency" xsi:type="object">Riki\SubscriptionCourse\Model\ImportHandler\Validator\Frequency</item>
+                <item name="membership" xsi:type="object">Riki\SubscriptionCourse\Model\ImportHandler\Validator\Membership</item>
+                <item name="merge_profile" xsi:type="object">Riki\SubscriptionCourse\Model\ImportHandler\Validator\MergeProfile</item>
+                <item name="must_select_sku" xsi:type="object">Riki\SubscriptionCourse\Model\ImportHandler\Validator\MustSelectSku</item>
+                <item name="payment" xsi:type="object">Riki\SubscriptionCourse\Model\ImportHandler\Validator\Payment</item>
+                <item name="website" xsi:type="object">Riki\SubscriptionCourse\Model\ImportHandler\Validator\Website</item>
+                <item name="multiple_machine" xsi:type="object">Riki\SubscriptionCourse\Model\ImportHandler\Validator\MultipleMachine</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Riki\SubscriptionCourse\Logger\LoggerSubscriptionCourse">
+        <arguments>
+            <argument name="name" xsi:type="string">Logger Import Subscription Course</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Riki\SubscriptionCourse\Logger\HandlerLoggerSubscriptionCourse</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

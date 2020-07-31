@@ -1,0 +1,272 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Riki\Catalog\Block\Product\View */
+$_product = $block->getProduct();
+$stockHelper = $this->helper('Riki\ProductStockStatus\Helper\StockData');
+$stockMessageArr = $stockHelper->getStockStatusMessage($_product);
+$classMessage = $stockMessageArr['class'];
+$textMessage = $stockMessageArr['message'];
+$_unitdisplays = $block->getUnitDisplay();
+$unitConvert = $block->getUnitConvertPieceCase();
+$unitConvert = ($unitConvert != null && $unitConvert > 0) ? $unitConvert : 1;
+$maxSales = 0;
+?>
+<?php
+    $buttonTitle = $this->helper('Riki\Preorder\Helper\Data')->getAddToCartLabel( $block->getProduct() );
+    if(empty($buttonTitle)){
+        $buttonTitle = __('Add To Cart');
+    }
+    $buttonClass = $this->helper('Riki\Preorder\Helper\Data')->getAddToCartClass( $block->getProduct() );
+    $buttonOrder = __('Go to order procedure');
+?>
+<?php if ($_product->isSaleable()): ?>
+    <div id="adding-spot-subscription" data-bind="scope: 'adding-spot-subscription'">
+        <input type="hidden" name="gift_wrapping" id="gift_wrapping_<?= $_product->getId(); ?>" value="-1">
+        <div class="box-tocart">
+            <div class="fieldset">
+                <div class="actions-checker-submit">
+                    <label class="inner">単品購入
+                        <input type="radio" checked="checked" name="radio" class="first-option" value=1 data-bind="click: changeOption">
+                        <span class="checkmark"></span>
+                    </label>
+                    <?php if ($_product->getData('spot_allow_subscription')): ?>
+                        <label class="inner">定期便に追加する
+                            <input type="radio" name="radio" class="second-option" value=2 data-bind="click: changeOption">
+                            <span class="checkmark"></span>
+                        </label>
+                    <?php endif; ?>
+                </div>
+                <?php if ($block->shouldRenderQuantity()):
+                    $caseDisplay = is_null($_product->getCaseDisplay()) ? 0 : $_product->getCaseDisplay();
+                    $unitQty = $_product->getUnitQty();
+                ?>
+                <div class="field qty qty-case">
+                    <?php
+                    if('bundle' != $_product->getTypeId()):
+                    ?>
+                        <?php
+                        if(is_array($_unitdisplays) && count($_unitdisplays) ):
+                        ?>
+                            <label class="label" for="qty" style="display: none;"><span><?php /* @escapeNotVerified */ echo __('Unit') ?></span></label>
+                            <div class="control" style="display: none;">
+                                <select name="case_display" id="case_display">
+                                    <?php foreach ($_unitdisplays as $key_unit => $_unitdisplay){ ?>
+                                        <option value="<?php echo $key_unit;?>"><?php echo $_unitdisplay;?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        <?php endif;?>
+                    <?php endif; ?>
+                </div>
+                <div class="form-actions-qty" data-bind="scope: 'product_view_qty'">
+                    <div class="notification-qty <?php echo $classMessage;?>"><span><?php echo $textMessage;?></span></div>
+                    <div class="field qty block_quantity" data-bind="css: {hidden: $parent.selectedOption() == 2 ? true : false}">
+                        <label class="label hidden" for="qty"><span><?php /* @escapeNotVerified */ echo __('Qty') ?></span></label>
+                        <div class="control buttons_added">
+                            <span class="minus delete" id="minus-delete-pdp" data-bind="click: function(){mbChangeQty(-1)}, touchstart:function(){mbChangeQty(-1)}, css: { hidden: getProduct().qtySelected()  != 1 && getProduct().qtySelected() != 0, disabled: getCurrentQty() < getProduct().minQty}"><span>削除</span></span>
+                            <span class="minus hidden" id="minus-pdp" data-bind="click: function(){mbChangeQty(-1)}, touchstart:function(){mbChangeQty(-1)}, , css: { hidden: getProduct().qtySelected()  == 1 || getProduct().qtySelected() == 0}"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                            <input type="hidden" id="qty" name="qty" <?php if (!$_product->getIsSalable() || !$block->isAllowSpotOrder()) {echo 'disabled';} ?>>
+                            <select name="qty_select" id="qty_select" class="qty-select-pdp" data-bind="value: getProduct().qtySelected" <?php if (!$_product->getIsSalable() || !$block->isAllowSpotOrder()) {echo 'disabled';} ?>>
+                                <?php
+                                $maxSales = $_product->getExtensionAttributes()->getStockItem()->getMaxSaleQty();
+                                if($maxSales > 99) {
+                                    $maxSales = 99;
+                                }
+                                if((count($_unitdisplays) == 1 && (key($_unitdisplays) == 'cs'))){
+                                    $maxSales = $maxSales * $unitConvert;
+                                }
+                                for ($i = 0; $i <= $maxSales; $i++) :
+                                    ?>
+                                    <option <?php if (0 == $i) echo "selected='selected'"; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                <?php endfor; ?>
+                            </select>
+                            <input type="hidden" name="qty_case" id="qty_case">
+                            <span class="plus" id="plus-pdp" data-bind="click: function(){mbChangeQty(1)}, touchstart:function(){mbChangeQty(1)},css: { disabled: getCurrentQty()  >= getProduct().maxQty}"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                            <div class="control">
+                                <input type="hidden" name="unit_qty" id="unit_qty" value="<?php echo $unitConvert; ?>"/>
+                                <input type="hidden" name="is_unit_case" id="is_unit_case" value="<?php echo $block->isCaseUnit($caseDisplay); ?>" />
+                                <input type="hidden" name="qty_cs_double_check" id="qty_cs_double_check" data-bind="value: getProduct().qty" />
+                            </div>
+                        </div>
+                        <?php if('bundle' != $_product->getTypeId()): ?>
+                            <div class="block-unit">
+                                <span class="label_piece"><?php echo __('Piece'); ?></span>
+                                <span class="label_case"  style="display: none;"><?php echo __('Case'); ?></span>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="field qty block_quantity hidden" data-bind="css: {hidden: $parent.selectedOption() == 1 ? true : false}">
+                        <div class="control buttons_added">
+                            <span class="minus delete" id="minus-delete-profile"
+                                  data-bind="click: function(){$parent.toProfileQtyChange(-1)},
+                                  touchstart: function(){$parent.toProfileQtyChange(-1)},
+                                  css: { hidden: $parent.toProfileQtySelected()  != 1 && $parent.toProfileQtySelected() != 0, disabled: $parent.toProfileQtySelected() < getProduct().minQty}"><span>削除</span></span>
+                            <span class="minus hidden" id="minus-profile"
+                                  data-bind="click: function(data, event){$parent.toProfileQtyChange(data, event, -1)},
+                                  touchstart: function(){$parent.toProfileQtyChange(-1)},
+                                  css: { hidden: $parent.toProfileQtySelected()  == 1 || $parent.toProfileQtySelected() == 0}"><i class="fa fa-minus" aria-hidden="true"></i></i></span>
+                            <select name="qty_select_profile" id="qty_select_profile"
+                                    data-bind="value: $parent.toProfileQtySelected, css:{disabled: $parent.selectedOption() == 1}"
+                                    <?php if (!$_product->getIsSalable() || !$block->isAllowSpotOrder()) {echo 'disabled';} ?>>
+                                <?php
+                                $maxSales = $_product->getExtensionAttributes()->getStockItem()->getMaxSaleQty();
+                                if($maxSales > 99) {
+                                    $maxSales = 99;
+                                }
+                                if((count($_unitdisplays) == 1 && (key($_unitdisplays) == 'cs'))){
+                                    $maxSales = $maxSales * $unitConvert;
+                                }
+                                for ($i = 0; $i <= $maxSales; $i++) :
+                                    ?>
+                                    <option <?php if (0 == $i) echo "selected='selected'"; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                <?php endfor; ?>
+                            </select>
+                            <span class="plus" id="plus-profile"
+                                  data-bind="click: function(data, event){$parent.toProfileQtyChange(data, event, 1)},
+                                  css: { disabled: $parent.toProfileQtySelected()  >= getProduct().maxQty}">
+                                <i class="fa fa-plus" aria-hidden="true"></i></span>
+                        </div>
+                        <?php if('bundle' != $_product->getTypeId()): ?>
+                            <div class="block-unit">
+                                <span class="label_piece"><?php echo __('Piece'); ?></span>
+                                <span class="label_case"  style="display: none;"><?php echo __('Case'); ?></span>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <?php endif; ?>
+                <?php if($_product->getData('description_campaign') != NULL) :?>
+                <div class="campaign_details">
+                    <?php /* @escapeNotVerified */ echo $this->helper('Magento\Catalog\Helper\Output')->productAttribute($_product, $_product->getDescriptionCampaign(), 'description_campaign') ?>
+                </div>
+                <?php endif;?>
+
+                <div class="actions">
+                    <button type="submit"
+                            title="<?php /* @escapeNotVerified */ echo $buttonOrder ?>"
+                            default-title="<?php /* @escapeNotVerified */ echo $buttonOrder ?>"
+                            class="action primary tocart button-order <?php echo $buttonClass;?>"
+                            id="product-addtocart-button"
+                            >
+                        <span><?php /* @escapeNotVerified */ echo $buttonOrder ?></span>
+                    </button>
+
+                    <?php if ($_product->getData('spot_allow_subscription')): ?>
+                    <!-- ko if: customer().email -->
+                            <button type="button"
+                                    title="<?php echo __('Add spot to subscription'); ?>"
+                                    class="action primary to-subscription user-is-login hidden">
+                                <span><?php echo __('Add spot to subscription'); ?></span>
+                            </button>
+                            <!-- ko foreach:getRegion('profile-information') -->
+                            <!-- ko template: getTemplate() --><!-- /ko -->
+                            <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko ifnot: customer().email -->
+                            <button type="button"
+                                    title="<?php echo __('Add spot to subscription'); ?>"
+                                    class="action primary to-subscription user-is-guest hidden"
+                                    onclick="location.href='<?php echo $block->getLoginKssUrl() ?>'">
+                                <span><?php echo __('Add spot to subscription'); ?></span>
+                            </button>
+                        <!-- /ko -->
+                    <?php endif; ?>
+
+                    <?php echo $block->getChildHtml('', true) ?>
+                </div>
+            </div>
+        </div>
+        <script type="text/x-magento-init">
+            {
+                "*": {
+                    "Magento_Ui/js/core/app": {
+                       "components": {
+                            "product_view_qty": {
+                                "component": "Riki_SubscriptionPage/js/view/qty",
+                                "qtyData" : <?php echo $block->getProductQtyJsData(); ?>
+                            }
+                       }
+                    }
+                }
+            }
+        </script>
+    </div>
+    <?php if ($block->isRedirectToCartEnabled()) : ?>
+        <script type="text/x-magento-init">
+            {
+                "#product_addtocart_form": {
+                    "Magento_Catalog/product/view/validation": {
+                        "radioCheckboxClosest": ".nested"
+                    }
+                }
+            }
+        </script>
+    <?php endif; ?>
+    <script>
+        require([
+            'jquery',
+            'mage/mage',
+            'Magento_Catalog/product/view/validation',
+            'Magento_Catalog/js/catalog-add-to-cart'
+        ], function ($) {
+            'use strict';
+
+            if($('#case_display').length){
+                if($('#case_display').val() == 'cs'){
+                    $('#qty_case').show();
+                    $('.label_case').show();
+                    $('.label-case-piece').show();
+                    $('#qty').hide();
+                    $('.label_piece').hide();
+                    $('#qty').val($('#qty_case').val() * $('#unit_qty').val() );
+                    $('#qty_cs_double_check').val($('#qty').val());
+                }
+            }
+
+            $(document).on('change','#qty_case',function() {
+                $('#qty').val($('#qty_case').val() * $('#unit_qty').val() );
+                $('#qty_cs_double_check').val($('#qty').val());
+            });
+
+
+            $('#product_addtocart_form').mage('validation', {
+                radioCheckboxClosest: '.nested',
+                submitHandler: function (form) {
+                    var widget = $(form).catalogAddToCart({
+                        bindSubmit: false
+                    });
+
+                    widget.catalogAddToCart('submitForm', $(form));
+
+                    return false;
+                }
+            });
+        });
+    </script>
+    <script type="text/x-magento-init">
+        {
+            "#adding-spot-subscription": {
+                "Magento_Ui/js/core/app": <?php /* @escapeNotVerified */ echo $block->getJsLayout(); ?>
+            }
+        }
+    </script>
+    <script>
+        //window.subscriptionConfig= <?php ///* @escapeNotVerified */ echo $block->getProfileDataJson();?>//;
+        window.productId = '<?php echo /* @escapeNotVerified */ $_product->getId(); ?>';
+        window.productCategoryId = "";
+        window.productImageUrl = '<?php echo /* @escapeNotVerified */ $block->getImage($_product,'product_thumbnail_image')->getImageUrl(); ?>';
+        window.productName = '<?php echo /* @escapeNotVerified */ $_product->getName(); ?>';
+        window.productMaxQty = <?php echo $maxSales; ?>;
+        window.productMinQty = <?php echo $block->getMinimalQty($_product); ?>;
+        window.isSpotPage = true;
+    </script>
+<?php endif; ?>
+

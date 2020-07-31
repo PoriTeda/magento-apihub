@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="cvspayment" translate="label" type="text" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Cvs Payment Configuration</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_CvsPayment::config</resource>
+            <group id="cvspayment" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Pay at convenient Store</label>
+                <field id="cancel_days" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Cancel Automatically In Days</label>
+                    <comment>Orders which pending status over this duration will be cancel automatically</comment>
+                    <frontend_class>validate-number integer</frontend_class>
+                </field>
+                <field id="cancel_cron_setting" translate="label" type="text" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Cancel Automatically Execute</label>
+                    <comment>Example: */10 * * * * (will make cronjob which cancel order run every 10 minutes)</comment>
+                </field>
+                <field id="cancel_cron_email" translate="label" type="text" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cancel Automatically Email Notify</label>
+                    <comment>Email which will be sent notification when cancel order. Separate by , character</comment>
+                </field>
+            </group>
+            <group id="command_create_cvs_payment_order" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Command create csv payment order</label>
+                <field id="product_sku" translate="label" type="text" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product Sku</label>
+                    <comment>Each sku will be separate by ";"</comment>
+                    <validate>required-entry</validate>
+                </field>
+            </group>
+        </section>
+        <section id="payment">
+            <group id="cvspayment" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Pay at convenient Store</label>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or Disable payment method in checkout page</comment>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Sort Order</label>
+                    <frontend_class>validate-number</frontend_class>
+                    <comment>The ordering of list of payment methods in checkout page</comment>
+                </field>
+                <field id="title" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                    <comment>Payment method title which will be displayed in checkout page</comment>
+                </field>
+                <field id="allowspecific" translate="label" type="allowspecific" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Payment from Applicable Countries</label>
+                    <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                    <comment>Payment method apply for all countries or only specific</comment>
+                </field>
+                <field id="specificcountry" translate="label" type="multiselect" sortOrder="51" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Payment from Specific Countries</label>
+                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                    <can_be_empty>1</can_be_empty>
+                    <comment>Payment method for specific countries</comment>
+                </field>
+                <field id="instructions" translate="label" type="textarea" sortOrder="62" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Instructions</label>
+                    <comment>The introduction text for this payment method</comment>
+                </field>
+                <field id="model" />
+            </group>
+        </section>
+    </system>
+</config>

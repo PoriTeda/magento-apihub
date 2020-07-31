@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_Rma::tmprma" title="Temp Return" module="Riki_Rma" action="tmprma/rma" sortOrder="1100" parent="Riki::sales_operation_extend" resource="Riki_TmpRma::rma" />
+    </menu>
+</config>

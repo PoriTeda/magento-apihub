@@ -1,0 +1,76 @@
+#row_amsmtp_smtp_provider .amsmtp-buttoned-input {
+    margin-right: 95px;
+}
+
+#row_amsmtp_smtp_provider #synchronize_button {
+    float: right;
+    width: 60px;
+}
+
+#row_amsmtp_smtp_test_email #check_button {
+    margin-top: 10px;
+}
+
+#row_amsmtp_smtp_test_email #check_button.success {
+    background-color: #489C48;
+    color: white;
+}
+
+#row_amsmtp_smtp_test_email #check_button.fail {
+    background-color: #D03B3B;
+    color: white;
+}
+
+#row_amsmtp_smtp_test_email #check_button.loading:before {
+    content: '';
+    display: block;
+    background: url(../images/loader.gif) no-repeat;
+    width: 16px;
+    height: 11px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -6px -8px;
+}
+
+#row_amsmtp_smtp_test_email #check_button.loading span {
+    visibility: hidden;
+}
+
+#row_amsmtp_smtp_test_email #check_button.loading {
+    position: relative;
+}
+
+#row_amsmtp_smtp_test_email .details {
+    display: none;
+}
+
+#row_amsmtp_smtp_test_email .details.collapsed .error-message {
+    display: none;
+}
+
+#row_amsmtp_smtp_test_email .details .toggle {
+    cursor: pointer;
+    text-align: right;
+}
+
+#row_amsmtp_smtp_test_email .details .toggle:before {
+    content: '▼';
+    margin-right: 7px;
+}
+
+#row_amsmtp_smtp_test_email .details.collapsed .toggle:before {
+    content: '▶';
+}
+
+#row_amsmtp_smtp_test_email .details .error-message {
+    font-size: 10px;
+    border: 1px solid #cccbca;
+    padding: 0 3px;
+    margin-top: 3px;
+}
+
+.amsmtp-notice {
+    margin-top: 10px;
+    display: none;
+}

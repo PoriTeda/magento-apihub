@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/consumer.xsd">
+
+    <consumer name="editedSubscription" queue="sender_queue_subscription_profile_edited_order" connection="amqp"
+              consumerInstance="Riki\Subscription\Model\Profile\Order\ConsumerEditedProfile"
+              handler="Riki\Subscription\Model\Profile\WebApi\SendMail::execute"/>
+
+
+    <consumer name="aGenerateOrderSubscription" queue="a_sender_queue_subscription_profile_generate_order"
+              connection="amqp"
+              consumerInstance="Riki\Subscription\Model\Profile\Order\Consumer"
+              handler="Riki\Subscription\Model\Profile\Order\Generate::createOrderFromQueue"/>
+
+    <consumer name="bGenerateOrderSubscription" queue="b_sender_queue_subscription_profile_generate_order"
+              connection="amqp"
+              consumerInstance="Riki\Subscription\Model\Profile\Order\Consumer"
+              handler="Riki\Subscription\Model\Profile\Order\Generate::createOrderFromQueue"/>
+
+    <consumer name="cGenerateOrderSubscription" queue="c_sender_queue_subscription_profile_generate_order"
+              connection="amqp"
+              consumerInstance="Riki\Subscription\Model\Profile\Order\Consumer"
+              handler="Riki\Subscription\Model\Profile\Order\Generate::createOrderFromQueue"/>
+
+    <consumer name="dGenerateOrderSubscription" queue="d_sender_queue_subscription_profile_generate_order"
+              connection="amqp"
+              consumerInstance="Riki\Subscription\Model\Profile\Order\Consumer"
+              handler="Riki\Subscription\Model\Profile\Order\Generate::createOrderFromQueue"/>
+
+    <consumer name="eGenerateOrderSubscription" queue="e_sender_queue_subscription_profile_generate_order"
+              connection="amqp"
+              consumerInstance="Riki\Subscription\Model\Profile\Order\Consumer"
+              handler="Riki\Subscription\Model\Profile\Order\Generate::createOrderFromQueue"/>
+
+    <consumer name="fGenerateOrderSubscription" queue="f_sender_queue_subscription_profile_generate_order"
+              connection="amqp"
+              consumerInstance="Riki\Subscription\Model\Profile\Order\Consumer"
+              handler="Riki\Subscription\Model\Profile\Order\Generate::createOrderFromQueue"/>
+
+    <consumer name="gGenerateOrderSubscription" queue="g_sender_queue_subscription_profile_generate_order"
+              connection="amqp"
+              consumerInstance="Riki\Subscription\Model\Profile\Order\Consumer"
+              handler="Riki\Subscription\Model\Profile\Order\Generate::createOrderFromQueue"/>
+
+<!--    <consumer name="hGenerateOrderSubscription" queue="h_sender_queue_subscription_profile_generate_order"-->
+<!--              connection="amqp"-->
+<!--              consumerInstance="Riki\Subscription\Model\Profile\Order\Consumer"-->
+<!--              handler="Riki\Subscription\Model\Profile\Order\Generate::createOrderFromQueue" maxMessages="2"/>-->
+
+<!--    <consumer name="iGenerateOrderSubscription" queue="i_sender_queue_subscription_profile_generate_order"-->
+<!--              connection="amqp"-->
+<!--              consumerInstance="Riki\Subscription\Model\Profile\Order\Consumer"-->
+<!--              handler="Riki\Subscription\Model\Profile\Order\Generate::createOrderFromQueue" maxMessages="2"/>-->
+
+<!--    <consumer name="jGenerateOrderSubscription" queue="j_sender_queue_subscription_profile_generate_order"-->
+<!--              connection="amqp"-->
+<!--              consumerInstance="Riki\Subscription\Model\Profile\Order\Consumer"-->
+<!--              handler="Riki\Subscription\Model\Profile\Order\Generate::createOrderFromQueue" maxMessages="2"/>-->
+
+
+
+
+    <!-- Reindex Profile Subscription -->
+
+<!--    <consumer name="aReindexProfileSubscription" queue="sender_queue_subscription_profile_indexer"-->
+<!--              connection="amqp"-->
+<!--              consumerInstance="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer"-->
+<!--              handler="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex::reindexProfile"/>-->
+
+<!--    <consumer name="bReindexProfileSubscription" queue="sender_queue_subscription_profile_indexer"-->
+<!--              connection="amqp"-->
+<!--              consumerInstance="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer"-->
+<!--              handler="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex::reindexProfile"/>-->
+
+<!--    <consumer name="cReindexProfileSubscription" queue="sender_queue_subscription_profile_indexer"-->
+<!--              connection="amqp"-->
+<!--              consumerInstance="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer"-->
+<!--              handler="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex::reindexProfile"/>-->
+
+<!--    <consumer name="dReindexProfileSubscription" queue="sender_queue_subscription_profile_indexer"-->
+<!--              connection="amqp"-->
+<!--              consumerInstance="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer"-->
+<!--              handler="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex::reindexProfile"/>-->
+
+<!--    <consumer name="eReindexProfileSubscription" queue="sender_queue_subscription_profile_indexer"-->
+<!--              connection="amqp"-->
+<!--              consumerInstance="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer"-->
+<!--              handler="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex::reindexProfile"/>-->
+
+<!--    <consumer name="fReindexProfileSubscription" queue="sender_queue_subscription_profile_indexer"-->
+<!--              connection="amqp"-->
+<!--              consumerInstance="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer"-->
+<!--              handler="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex::reindexProfile"/>-->
+
+<!--    <consumer name="gReindexProfileSubscription" queue="sender_queue_subscription_profile_indexer"-->
+<!--              connection="amqp"-->
+<!--              consumerInstance="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer"-->
+<!--              handler="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex::reindexProfile"/>-->
+
+<!--    <consumer name="hReindexProfileSubscription" queue="sender_queue_subscription_profile_indexer"-->
+<!--              connection="amqp"-->
+<!--              consumerInstance="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer"-->
+<!--              handler="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex::reindexProfile"/>-->
+
+<!--    <consumer name="iReindexProfileSubscription" queue="sender_queue_subscription_profile_indexer"-->
+<!--              connection="amqp"-->
+<!--              consumerInstance="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer"-->
+<!--              handler="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex::reindexProfile"/>-->
+
+<!--    <consumer name="jReindexProfileSubscription" queue="sender_queue_subscription_profile_indexer"-->
+<!--              connection="amqp"-->
+<!--              consumerInstance="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Consumer"-->
+<!--              handler="Riki\Subscription\Model\Profile\ResourceModel\Indexer\Reindex::reindexProfile"/>-->
+</config>

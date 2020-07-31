@@ -1,0 +1,177 @@
+<?php
+/**
+ * @var $block \Riki\Subscription\Block\Adminhtml\Profile\Edit
+ */
+
+$profile_id = $block->getEntity()->getProfileId();
+$customer_id = $block->getEntity()->getCustomerId();
+
+?>
+
+
+<div id="messages"></div>
+
+<div id="form-edit" data-bind="scope:'subscription-form-edit'" data-load-add-url="<?php echo $block->getMassAddUrl() ?>">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <script type="text/x-magento-init">
+        {
+            "#form-edit": {
+                "Magento_Ui/js/core/app": <?php /* @escapeNotVerified */ echo $block->getJsLayout();?>
+            }
+        }
+    </script>
+    <script>
+        window.subscriptionConfig = <?php /* @escapeNotVerified */ echo $block->getSubscriptionConfig();?>
+    </script>
+    <script>
+        require([
+            'mage/url',
+            'Magento_Ui/js/block-loader'
+        ], function(url, blockLoader) {
+            blockLoader("<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('images/loader-1.gif'); ?>");
+            return url.setBaseUrl('<?php /* @escapeNotVerified */ echo $block->getBaseUrl();?>');
+        })
+    </script>
+    <script>
+        var FORM_KEY = FORM_KEY ||
+            '<?php /* @escapeNotVerified */ echo $this->getLayout()->createBlock("Magento\Framework\View\Element\FormKey")->getFormKey() ?>';
+        var MEDIA_URL = '<?php /* @escapeNotVerified */ echo $block->getMediaBaseUrl();?>';
+    </script>
+</div>
+
+<?php /** below coding is stupid code which I'm copied it from old guy - please do not do like me again */ ?>
+
+<div id="add-products" style="display: none">
+    <?php if($block->canAddProduct()): ?>
+        <?php echo $block->getChildHtml('grid_main') ?>
+    <?php endif; ?>
+</div>
+
+<div id="add-additional-products" style="display: none">
+    <?php if($block->canAddProduct()): ?>
+        <?php echo $block->getChildHtml('grid_additional'); ?>
+    <?php endif; ?>
+</div>
+
+<?php if(!$block->isDisengaged()): ?>
+<div id="disengage-modal-content" style="display: none;">
+    <div>
+        <span><?php echo __('To disengage the subscription, please select the reason code'); ?></span>
+    </div>
+    <form id="disengage-form" action="<?php echo $block->getUrl('spdisengagement/profile/disengage', ['id'   =>  $block->getEntity()->getProfileId()]); ?>" method="post" data-mage-init='{"validation":{}}'>
+        <input type="hidden" name="form_key" value="<?php echo $block->getFormKey(); ?>" />
+        <fieldset class="fieldset">
+            <ul>
+                <li>
+                    <span class="label"><?php echo __('Disengage Reason') ?></span>
+                    <select class="select required-entry" name="reason">
+                        <option value=""><?php echo __('Please select a reason'); ?></option>
+                        <?php foreach ($block->getDisengageReasons() as $key    =>  $title): ?>
+                            <option value="<?php echo $key; ?>"><?php echo $title; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </li>
+                <?php if ($block->getSalesValueCountMessage()) :?>
+                <li>
+                    <span><?php echo $block->getSalesValueCountMessage();?></span>
+                </li>
+                <?php endif;?>
+                <?php if ($block->getSalesQtyCountMessage()) :?>
+                    <li>
+                        <span><?php echo $block->getSalesQtyCountMessage();?></span>
+                    </li>
+                <?php endif;?>
+            </ul>
+        </fieldset>
+    </form>
+    <?php if($block->getSalesValueCount() > 0): ?>
+        <div>
+            <span><?php echo __('The customer didn\'t reach the Sales value count (must purchase %1 more amount), please apply the penalty fee %2', $block->getSalesValueCount(), (float)$block->getPenaltyFee()); ?></span>
+        </div>
+    <?php endif; ?>
+
+    <?php if($block->getSalesQtyCount() > 0): ?>
+        <div>
+            <span><?php echo __('The customer didn\'t reach the Sales qty count (must purchase %1 more qty), please apply the penalty fee %2', $block->getSalesQtyCount(), (float)$block->getPenaltyFee()); ?></span>
+        </div>
+    <?php endif; ?>
+</div>
+<?php endif; ?>
+
+<?php if($block->isDisengaged()): ?>
+<div id="penalty-fee-products" style="display: none;">
+    <?php echo $block->getChildHtml('penalty-product-list'); ?>
+</div>
+<?php endif; ?>
+<?php if($block->isDisengaged()): ?>
+    <div id="disengage-without-penalty-confirm" style="display: none;">
+        <form id="disengage-without-penalty-form" action="<?php echo $block->getUrl('spdisengagement/profile/disengageWithoutPenaltyFee', ['id' =>  $block->getEntity()->getProfileId()]); ?>" method="POST">
+            <input type="hidden" name="form_key" value="<?php echo $block->getFormKey(); ?>" />
+            <div><?php echo __('Are you sure to disengage this profile without penalty fee?') ?></div>
+            <input name="profile_id" value="<?php echo $block->getEntity()->getProfileId(); ?>" type="hidden">
+        </form>
+    </div>
+<?php endif; ?>
+
+<div class="hidden">
+    <script>
+        require(
+            [
+                'jquery',
+                'Magento_Ui/js/modal/modal'
+            ],
+            function( $, modal ) {
+
+                // check for init
+                $('.unit-case').each(function(){
+                    var productid = $(this).attr('productid');
+                    var unitqty = $(this).attr('unitqty');
+                    if($(this).val() == 'cs'){
+                        $('#qty_case_'+productid).parent().show();
+                        $('#qty_'+productid).parent().hide();
+                        $('#qty_'+productid).val($('#qty_case_'+productid).val() * unitqty);
+                    }
+                    else
+                    if($(this).val() == 'ea'){
+                        $('#qty_case_'+productid).parent().hide();
+                        $('#qty_'+productid).parent().show();
+                    }
+                });
+
+                // check for change
+                $('.unit-case').on('change',function(){
+                    var productid = $(this).attr('productid');
+                    var unitqty = $(this).attr('unitqty');
+                    if($(this).val() == 'cs'){
+                        $('#qty_case_'+productid).parent().show();
+                        $('#qty_'+productid).parent().hide();
+                        $('#qty_'+productid).val($('#qty_case_'+productid).val() * unitqty);
+                    }
+                    else
+                    if($(this).val() == 'ea'){
+                        $('#qty_case_'+productid).parent().hide();
+                        $('#qty_'+productid).parent().show();
+                    }
+                });
+
+
+                $('.qty_case').on('change',function(){
+                    var productid = $(this).attr('productid');
+                    if($('#case_display_'+productid).val() == 'cs'){
+                        var unitqty = $('#case_display_'+productid).attr('unitqty');
+                        $('#qty_'+productid).val($('#qty_case_'+productid).val() * unitqty);
+                    }
+                });
+
+            });
+    </script>
+</div>
+
+<?php if ($block->allowShowButtonStockPoint()) : ?>
+    <form id="formStockPoint" action="<?php echo $block->getStockPointUrlPost(); ?>" method="post">
+        <input class="reqdata" type="hidden" name="reqdata" value="" />
+        <noscript>
+            <input type="submit" value="continue"/>
+        </noscript>
+    </form>
+<?php endif;?>

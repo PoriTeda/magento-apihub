@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+ * Copyright © 2016 Wyomind. All rights reserved.
+ * See LICENSE.txt for license details.
+-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Wyomind_AdvancedInventory::css/stocks/index.css"/>
+        <link src="Wyomind_AdvancedInventory::js/stocks/index.js"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Wyomind\AdvancedInventory\Block\Adminhtml\Stocks" name="advancedinventory_stocks">
+                <block class="Magento\Backend\Block\Store\Switcher" name="store_switcher" as="store_switcher" template="Magento_Backend::store/switcher.phtml">
+                    <action method="setUseConfirm">
+                        <argument name="params" xsi:type="string">1</argument>
+                    </action>
+                </block>
+            </block>    
+        </referenceContainer>
+    </body>
+</page>

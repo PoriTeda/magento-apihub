@@ -1,0 +1,43 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!-- ko if: isTaxDisplayedInGrandTotal && isDisplayed() -->
+<tr class="grand totals incl">
+    <th class="mark" scope="row"></th>
+    <td colspan="2" data-bind="attr: {'data-th': inclTaxLabel}" class="amount">
+        <strong>
+            <span data-bind="i18n: '注文合計'"></span>
+            <span class="price" data-bind="text: getValue()"></span>
+            <span data-bind="i18n: '(税込)'"></span>
+        </strong>
+        <div class="shipping-mess" data-bind="i18n: '送料はご購入手続きにて表示されます。'"></div>
+    </td>
+</tr>
+<tr class="grand totals excl">
+    <th class="mark" scope="row"></th>
+    <td colspan="2" data-bind="attr: {'data-th': exclTaxLabel}" class="amount">
+        <strong>
+            <span data-bind="i18n: '注文合計'"></span>
+            <span class="price" data-bind="text: getGrandTotalExclTax()"></span>
+            <span data-bind="i18n: '(税別)'"></span>
+        </strong>
+        <div class="shipping-mess" data-bind="i18n: '送料はご購入手続きにて表示されます。'"></div>
+    </td>
+</tr>
+<!-- /ko -->
+<!-- ko if: !isTaxDisplayedInGrandTotal && isDisplayed() -->
+<tr class="grand totals">
+    <th class="mark" scope="row"></th>
+    <td colspan="2" data-bind="attr: {'data-th': title}" class="amount">
+        <strong>
+            <span data-bind="i18n: '注文合計'"></span>
+            <span class="price" data-bind="text: getValue()"></span>
+            <span data-bind="i18n: '(税込)'"></span>
+        </strong>
+        <div class="shipping-mess" data-bind="i18n: '送料はご購入手続きにて表示されます。'"></div>
+    </td>
+</tr>
+<!-- /ko -->

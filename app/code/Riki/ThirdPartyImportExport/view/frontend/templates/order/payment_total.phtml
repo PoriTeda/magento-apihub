@@ -1,0 +1,33 @@
+<div class="payment-total">
+    <div class="title">
+        <strong><?php echo __('Payment amount (tax included)');?></strong>
+    </div>
+    <table class="payment-total-table">
+        <thead></thead>
+        <tbody></tbody>
+        <tfoot>
+        <?php foreach ($block->getTotals() as $code => $total): ?>
+            <?php if ($total->getBlockName()): ?>
+                <?php echo $block->getChildHtml($total->getBlockName(), false); ?>
+            <?php else:?>
+                <tr class="<?php /* @escapeNotVerified */ echo $code?>">
+                    <td <?php /* @escapeNotVerified */ echo $block->getLabelProperties()?> scope="row">
+                        <?php if ($total->getStrong()):?>
+                            <?php echo $block->escapeHtml($total->getLabel());?>
+                        <?php else:?>
+                            <?php echo $block->escapeHtml($total->getLabel());?>
+                        <?php endif?>
+                    </td>
+                    <td <?php /* @escapeNotVerified */ echo $block->getValueProperties()?> data-th="<?php echo $block->escapeHtml($total->getLabel());?>">
+                        <?php if ($total->getStrong()):?>
+                            <?php /* @escapeNotVerified */ echo $total->getValue() ?>
+                        <?php else:?>
+                            <?php /* @escapeNotVerified */ echo $total->getValue() ?>
+                        <?php endif?>
+                    </td>
+                </tr>
+            <?php endif?>
+        <?php endforeach?>
+        </tfoot>
+    </table>
+</div>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_quote_collect_totals_before">
+        <observer name="riki_checkout_collect_totals_before" instance="Riki\Checkout\Observer\RemoveFreeMachineObserver"/>
+    </event>
+    <event name="sales_order_place_before">
+        <observer name="credit-card-only-checkout" instance="Riki\Checkout\Observer\CheckCreditCardOnly"/>
+    </event>
+    <event name="core_collection_abstract_load_after">
+        <observer name="riki_checkout_quote_item_collection_load_after" instance="Riki\Checkout\Observer\PrepareMultiShippingQty" />
+    </event>
+    <event name="sales_model_service_quote_submit_before">
+        <observer name="riki_checkout_copy_data_quote_to_order" instance="Riki\Checkout\Observer\ToOrderObserver"/>
+        <observer name="riki_checkout_set_list_multiple_shipping_address" instance="Riki\Checkout\Observer\PrepareShippingAddressList"/>
+        <observer name="riki_checkout_validate_order_total_amount_thresh_hold" instance="Riki\Checkout\Observer\ValidateOrderTotalAmountThreshold"/>
+    </event>
+</config>

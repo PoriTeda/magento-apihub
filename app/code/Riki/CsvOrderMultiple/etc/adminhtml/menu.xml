@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_CsvOrderMultiple::import_order_csv"
+             title="Create Multiple Orders"
+             module="Riki_CsvOrderMultiple"
+             sortOrder="110"
+             parent="Magento_Sales::sales_operation"
+             action="csvOrderMultiple/import/index"
+             resource="Riki_CsvOrderMultiple::import_order_csv"/>
+    </menu>
+</config>

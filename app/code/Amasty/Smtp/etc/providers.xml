@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2019 Amasty (https://www.amasty.com)
+ * @package Amasty_Smtp
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="providers.xsd">
+    <provider>
+        <title>- Other -</title>
+        <server></server>
+        <port></port>
+        <encryption></encryption>
+        <auth></auth>
+    </provider>
+    <provider>
+        <title>AOL Mail</title>
+        <server>smtp.de.aol.com</server>
+        <port>587</port>
+        <encryption></encryption>
+        <auth>login</auth>
+    </provider>
+    <provider>
+        <title>Gmail</title>
+        <server>smtp.gmail.com</server>
+        <port>465</port>
+        <encryption>ssl</encryption>
+        <auth>login</auth>
+    </provider>
+    <provider>
+        <title>Outlook</title>
+        <server>smtp-mail.outlook.com</server>
+        <port>587</port>
+        <encryption>tls</encryption>
+        <auth>login</auth>
+    </provider>
+    <provider>
+        <title>GMX</title>
+        <server>mail.gmx.net</server>
+        <port>587</port>
+        <encryption>tls</encryption>
+        <auth>login</auth>
+    </provider>
+    <provider>
+        <title>Yahoo!</title>
+        <server>smtp.mail.yahoo.de</server>
+        <port>465</port>
+        <encryption>ssl</encryption>
+        <auth>login</auth>
+    </provider>
+    <provider>
+        <title>Zoho</title>
+        <server>smtp.zoho.com</server>
+        <port>465</port>
+        <encryption>ssl</encryption>
+        <auth>login</auth>
+    </provider>
+    <provider>
+        <title>Mail.com</title>
+        <server>smtp.mail.com</server>
+        <port>465</port>
+        <encryption>ssl</encryption>
+        <auth>login</auth>
+    </provider>
+    <provider>
+        <title>Office365</title>
+        <server>smtp.office365.com</server>
+        <port>587</port>
+        <encryption>tls</encryption>
+        <auth>login</auth>
+    </provider>
+    <provider>
+        <title>O2 Mail</title>
+        <server>smtp.o2.ie</server>
+        <port>25</port>
+        <encryption></encryption>
+        <auth>login</auth>
+    </provider>
+    <provider>
+        <title>Orange</title>
+        <server>smtp.orange.net</server>
+        <port>25</port>
+        <encryption></encryption>
+        <auth>login</auth>
+    </provider>
+    <provider>
+        <title>Hotmail</title>
+        <server>smtp.live.com</server>
+        <port>465</port>
+        <encryption>ssl</encryption>
+        <auth>login</auth>
+    </provider>
+    <provider>
+        <title>Comcast</title>
+        <server>smtp.comcast.net</server>
+        <port>587</port>
+        <encryption></encryption>
+        <auth>login</auth>
+    </provider>
+</config>

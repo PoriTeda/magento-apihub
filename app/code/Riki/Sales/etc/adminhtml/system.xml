@@ -1,0 +1,185 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="riki_order" translate="label" type="text" sortOrder="245" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
+            <label>Order Configuration</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_Sales::config_order</resource>
+            <group id="order" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Order Configuration</label>
+                <field id="order_visibility" translate="label comment" type="text" sortOrder="60" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Order Visibility (Months)</label>
+                    <validate>validate-number validate-greater-than-zero validate-digits</validate>
+                    <comment>Entering the integer number of months</comment>
+                </field>
+            </group>
+            <group id="order_customer" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Order Customer Configuration</label>
+                <field id="order_random_email_domain" translate="label comment" type="text" sortOrder="60"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Order Random Email Domain</label>
+                </field>
+            </group>
+            <group id="replacement_order" translate="label" type="text" sortOrder="20" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label>Free of charge - Replacement Order Configuration</label>
+                <field id="reason" translate="label" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Reason</label>
+                    <frontend_model>Riki\Sales\Block\Adminhtml\System\Config\Order\ReplacementReason</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+            </group>
+            <group id="free_payment_shipment_fee_email" translate="label" type="text" sortOrder="30" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label>Order Free Payment-Shipment Fee Notify Email Configuration</label>
+                <field id="identity" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Order Free Payment-Shipment Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="template" translate="label comment" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Order Free Payment-Shipment Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="email_receiver" translate="label comment" type="text" sortOrder="4" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Email receiver</label>
+                    <comment>The email admin receiver when order created using free payment or shipment fee. Each Email
+                        separated by a comma ","
+                    </comment>
+                </field>
+            </group>
+            <group id="cancellation" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Order Cancellation</label>
+                <field id="reason" translate="label" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Reason</label>
+                    <frontend_model>Riki\Sales\Block\Adminhtml\System\Config\Order\CancelReason</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+            </group>
+        </section>
+        <section id="riki_email" translate="label" type="text" sortOrder="250" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
+            <label>Setting Email Cancel Order</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_Sales::config_order_email</resource>
+            <group id="order_cancel" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Order Cancel Email Configuration</label>
+                <field id="enable_send_mail" translate="label" type="select" sortOrder="0" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Allow send mail cancel</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="identity" translate="label" type="select" sortOrder="1" showInDefault="2" showInWebsite="1"
+                       showInStore="1">
+                    <label>Order Cancel Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="template" translate="label comment" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Order Cancel Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="cvs_template" translate="label comment" type="select" sortOrder="3" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Order Cancel (CVS) To Admin Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="admin_mail_csv_payment" translate="label comment" type="text" sortOrder="4" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Email admin receiver</label>
+                    <comment>The email admin receiver when order cancel use Pay at convenient store Payment method. Each
+                        Email separated by a comma ","
+                    </comment>
+                </field>
+            </group>
+        </section>
+        <section id="cataloginventory">
+            <group id="order_options" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Order Options</label>
+                <field id="allow_create_order_out_of_stock" translate="label" type="select" sortOrder="1"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow to create order with out of stock item (only SPOT order from Admin panel)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+        <section id="paygent_config">
+            <group id="capture" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Capture Configuration</label>
+                <field id="publish_cron_exp" translate="label" type="text" sortOrder="1" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Publish Queue Cron Expression</label>
+                </field>
+                <field id="trigger_capture_consumer_cron_exp" translate="label" type="text" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Trigger Capture Order Consumer Cron Expression</label>
+                </field>
+                <!--<field id="capture_consumer_number" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Capture Consumer Total Number</label>
+                    <comment>Number of capture consumer those will be triggered</comment>
+                </field>
+                <field id="max_capture_consumer_message_number" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Maximum Capture Consumer Message</label>
+                    <comment>Maximum number of capture consumer message</comment>
+                </field>-->
+            </group>
+        </section>
+        <section id="riki_email_notifications" translate="label" type="text" sortOrder="245" showInDefault="1"
+                 showInWebsite="1" showInStore="0">
+            <label>Email Notifications</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_EmailMarketing::config_emailmarketing</resource>
+            <group id="cancel_order_fraud_logic" translate="label" type="text" sortOrder="2" showInDefault="1"
+                   showInWebsite="1" showInStore="0">
+                <label>Cancel order which blocked by Fraud-Logic</label>
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="email_sender" translate="label" type="select" sortOrder="20" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="template" translate="label" type="select" sortOrder="22" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+            <group id="cancel_order_fraud_segment" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Cancel order which blocked by Fraud-Segment</label>
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="email_sender" translate="label" type="select" sortOrder="20" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="template" translate="label" type="select" sortOrder="22" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

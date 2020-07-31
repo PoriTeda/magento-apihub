@@ -1,0 +1,96 @@
+.thirdpartyimportexport-order-history{
+  .table-wrapper{
+    .data.table{
+      thead{
+        th{
+          padding:4px 8px;
+          &.total{
+            text-align:right;
+            padding:4px 8px;
+          }
+        }
+      }
+      tbody{
+        tr{
+          td{
+            &.subscription-status{
+              width:25%;
+              @media only screen and (max-width: (@screen__m - 1)) {
+                width:100%;
+              }
+              > span{
+                @media only screen and (max-width: (@screen__m - 1)) {
+                  display: inline-block;
+                  width: 120px;
+                }
+              }
+              .order-status{
+                background:#f69;
+                border:0;
+                color:#fff;
+                margin:0;
+                line-height:1.25;
+                font-size:11px;
+                display: block;
+                width: 70%;
+                text-align: center;
+                margin: 0 auto;
+                @media only screen and (max-width: (@screen__m - 1)) {
+                  width:auto;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.thirdpartyimportexport-order-view{
+  .payment-total{
+    .payment-total-table{
+      .grand_total{
+        color: #e84935;
+        font-weight: 700;
+      }
+    }
+
+  }
+  .table-wrapper{
+    .data.table{
+      thead{
+        th{
+          white-space:nowrap;
+          &.col.name{
+            text-align:left;
+          }
+        }
+      }
+      tbody{
+        tr{
+          td{
+            &.name{
+              width:45%;
+              text-align:left;
+              @media only screen and (max-width: (@screen__m - 1)) {
+                width:100%;
+              }
+            }
+            @media only screen and (max-width: (@screen__m - 1)) {
+              span{
+                display:inline-block;
+                width:40%;
+                &.price{
+                  display: inline;
+                }
+              }
+            }
+            .price{
+              white-space: nowrap;
+            }
+          }
+        }
+      }
+    }
+  }
+}

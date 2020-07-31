@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="CustomerAccountSection">
+        <element name="stores" type="button" selector="#menu-magento-backend-stores"/>
+        <element name="customerAddress" type="button" selector="//span[text()='Customer Address']"/>
+        <element name="newAttribute" type="button" selector="#add"/>
+        <element name="label" type="input" selector="#attribute_label"/>
+        <element name="code" type="input" selector="#attribute_code"/>
+        <element name="inputType" type="dropdown" selector="#frontend_input"/>
+        <element name="sortOrder" type="input" selector="#sort_order"/>
+        <element name="formToUse" type="multiselect" selector="//select[@id='used_in_forms']/option[text()='{{args}}']" parameterized="true"/>
+        <element name="showInSF" type="select" selector="#is_visible"/>
+        <element name="showInSFValue" type="select" selector="//select[@id='is_visible']/option[text()='{{arg1}}']" parameterized="true"/>
+        <element name="valuesRequired" type="select" selector="#is_required"/>
+        <element name="value" type="select" selector="//select[@id='is_required']/option[text()='{{arg2}}']" parameterized="true"/>
+        <element name="save" type="button" selector="#save"/>
+        <element name="attribute" type="text" selector="//td[contains(text(), '{{arg3}}')]" parameterized="true"/>
+        <element name="delete" type="button" selector="#delete"/>
+        <element name="confirm" type="button" selector=".action-primary.action-accept"/>
+        <element name="defaultLabel" type="input" selector="#customerAddressAttributeGrid_filter_frontend_label"/>
+        <element name="search" type="button" selector="//div[@class='admin__filter-actions']//span[text()='Search']"/>
+        <element name="reset" type="button" selector="//span[text()='Reset Filter']"/>
+        <element name="createAccount" type="button" selector="input.action.primary"/>
+        <element name="customerAttribute" type="input" selector="//input[contains(@name,'custom_attributes')]"/>
+    </section>
+
+    <section name="AdminCustomerAddressAttributeSection">
+        <element name="firstAttribute" type="text" selector="//*[@id='customerAddressAttributeGrid_table']/tbody/tr[1]/td[contains(@class,'col-attr-code')]"/>
+        <element name="options" type="button" selector="//a[contains(@class,'ui-tabs-anchor')]/span[contains(text(),'Options')]"/>
+        <element name="addOptionsButton" type="button" selector="#add_new_option_button"/>
+        <element name="addOptionsField" type="button" selector="//input[@name='option[value][option_{{arg1}}][0]']" parameterized="true"/>
+        <element name="pageHeader" type="button" selector=".page-header.row"/>
+    </section>
+
+    <section name="StorefrontCustomerAddressAttributeSection">
+        <element name="customAttributeJS" type="text" selector="document.querySelectorAll('[name=\'custom_attributes[{{arg1}}]\']')[{{arg2}}]" parameterized="true"/>
+        <element name="dropdownField" type="dropdown" selector="[name='custom_attributes[{{arg1}}]']" parameterized="true"/>
+        <element name="multiselectField" type="multiselect" selector="option[data-title='{{arg2}}']" parameterized="true"/>
+    </section>
+
+    <section name="AdminCustomerAttributeSection">
+        <element name="manageLabel" type="button" selector="#customer_attribute_tabs_options"/>
+        <element name="searchDefaultLabel" type="input" selector="#customerAttributeGrid_filter_frontend_label"/>
+        <element name="firstAttribute" type="button" selector="//*[@id='customerAttributeGrid_table']/tbody/tr[1]/td[contains(@class,'col-attr-code')]"/>
+    </section>
+</sections>

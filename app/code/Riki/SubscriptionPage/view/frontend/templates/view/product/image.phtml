@@ -1,0 +1,3 @@
+<div class="product-item-photo" data-bind="click: function(){openDetailPopup(<?php echo $product->getId() ?>)}, touchstart:function(){openDetailPopup(<?php echo $product->getId() ?>)}">
+    <?php echo $block->getImage($product, 'product_thumbnail_image')->toHtml(); ?>
+</div>

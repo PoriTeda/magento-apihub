@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">subscription_multiple_category_campaign_grid.subscription_multiple_category_campaign_grid_data_source</item>
+            <item name="deps" xsi:type="string">subscription_multiple_category_campaign_grid.subscription_multiple_category_campaign_grid_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">subscription_multiple_category_campaign_columns</item>
+        <!-- Button to add new item -->
+        <item name="buttons" xsi:type="array">
+            <item name="add" xsi:type="array">
+                <item name="name" xsi:type="string">add</item>
+                <item name="label" xsi:type="string" translate="true">Add New Multiple Category Campaign</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/new</item>
+            </item>
+        </item>
+    </argument>
+    <dataSource name="subscription_multiple_category_campaign_grid_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">PostGridDataProvider</argument>
+            <argument name="name" xsi:type="string">subscription_multiple_category_campaign_grid_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">campaign_id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="indexField" xsi:type="string">campaign_id</item>
+                    </item>
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                </item>
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+    <container name="listing_top">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="template" xsi:type="string">ui/grid/toolbar</item>
+                <item name="stickyTmpl" xsi:type="string">ui/grid/sticky/toolbar</item>
+            </item>
+        </argument>
+        <bookmark name="bookmarks">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="namespace" xsi:type="string">subscription_multiple_category_campaign_grid</item>
+                    </item>
+                </item>
+            </argument>
+        </bookmark>
+        <component name="columns_controls">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsData" xsi:type="array">
+                        <item name="provider" xsi:type="string">subscription_multiple_category_campaign_grid.subscription_multiple_category_campaign_grid_data_source.subscription_multiple_category_campaign_columns</item>
+                    </item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
+                    <item name="displayArea" xsi:type="string">dataGridActions</item>
+                </item>
+            </argument>
+        </component>
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsProvider" xsi:type="string">subscription_multiple_category_campaign_grid.subscription_multiple_category_campaign_grid.subscription_multiple_category_campaign_columns</item>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">subscription_multiple_category_campaign_grid.subscription_multiple_category_campaign_grid.listing_top.bookmarks</item>
+                        <item name="namespace" xsi:type="string">current.filters</item>
+                    </item>
+                    <item name="templates" xsi:type="array">
+                        <item name="filters" xsi:type="array">
+                            <item name="select" xsi:type="array">
+                                <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
+                                <item name="template" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+                            </item>
+                        </item>
+                    </item>
+                    <item name="childDefaults" xsi:type="array">
+                        <item name="provider" xsi:type="string">subscription_multiple_category_campaign_grid.subscription_multiple_category_campaign_grid_data_source.listing_top.listing_filters</item>
+                        <item name="imports" xsi:type="array">
+                            <item name="visible" xsi:type="string">subscription_multiple_category_campaign_grid.subscription_multiple_category_campaign_grid.subscription_multiple_category_campaign_columns.${ $.index }:visible</item>
+                        </item>
+                    </item>
+                </item>
+                <item name="observers" xsi:type="array">
+                    <item name="column" xsi:type="string">column</item>
+                </item>
+            </argument>
+        </filters>
+        <massaction name="listing_massaction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">subscription_multiple_category_campaign_grid.subscription_multiple_category_campaign_grid.subscription_multiple_category_campaign_columns.ids</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/tree-massactions</item>
+                    <item name="indexField" xsi:type="string">campaign_id</item>
+                </item>
+            </argument>
+            <action name="delete">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">delete</item>
+                        <item name="label" xsi:type="string" translate="true">Delete</item>
+                        <item name="url" xsi:type="url" path="subscription/multiple_category_campaign/massDelete"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Delete</item>
+                            <item name="message" xsi:type="string" translate="true">Do you want to delete selected row record?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
+        <paging name="listing_paging">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">subscription_multiple_category_campaign_grid.subscription_multiple_category_campaign_grid.listing_top.bookmarks</item>
+                        <item name="namespace" xsi:type="string">current.paging</item>
+                    </item>
+                    <item name="selectProvider" xsi:type="string">subscription_multiple_category_campaign_grid.subscription_multiple_category_campaign_grid.subscription_multiple_category_campaign_columns.ids</item>
+                </item>
+            </argument>
+        </paging>
+    </container>
+    <columns name="subscription_multiple_category_campaign_columns">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="storageConfig" xsi:type="array">
+                    <item name="provider" xsi:type="string">subscription_multiple_category_campaign_grid.subscription_multiple_category_campaign_grid.listing_top.bookmarks</item>
+                    <item name="namespace" xsi:type="string">current</item>
+                </item>
+                <item name="childDefaults" xsi:type="array">
+                    <item name="fieldAction" xsi:type="array">
+                        <item name="provider" xsi:type="string">subscription_multiple_category_campaign_grid.subscription_multiple_category_campaign_grid.subscription_multiple_category_campaign_columns.actions</item>
+                        <item name="target" xsi:type="string">applyAction</item>
+                        <item name="params" xsi:type="array">
+                            <item name="0" xsi:type="string">view</item>
+                            <item name="1" xsi:type="string">${ $.$data.rowIndex }</item>
+                        </item>
+                    </item>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">subscription_multiple_category_campaign_grid.subscription_multiple_category_campaign_grid.listing_top.bookmarks</item>
+                        <item name="root" xsi:type="string">columns.${ $.index }</item>
+                        <item name="namespace" xsi:type="string">current.${ $.storageConfig.root }</item>
+                    </item>
+                </item>
+            </item>
+        </argument>
+        <selectionsColumn name="ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">campaign_id</item>
+                    <item name="sortOrder" xsi:type="number">1</item>
+                </item>
+            </argument>
+        </selectionsColumn>
+        <column name="campaign_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="sorting" xsi:type="string">asc</item>
+                    <item name="label" xsi:type="string" translate="true">ID</item>
+                </item>
+            </argument>
+        </column>
+        <column name="name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Campaign Name</item>
+                    <item name="sortOrder" xsi:type="number">3</item>
+                </item>
+            </argument>
+        </column>
+        <column name="category_ids" class="Riki\Subscription\Ui\Component\Listing\Column\Multiple\Category\Campaign\Categories">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Categories</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="sortOrder" xsi:type="number">4</item>
+                </item>
+            </argument>
+        </column>
+        <column name="course_ids" class="Riki\Subscription\Ui\Component\Listing\Column\Multiple\Category\Campaign\Courses">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Riki\Subscription\Model\Config\Source\Course\Options</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Excluded Subscription Courses</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="sortOrder" xsi:type="number">6</item>
+                </item>
+            </argument>
+        </column>
+        <actionsColumn name="actions" class="Riki\Subscription\Ui\Component\Listing\Column\Multiple\Category\Campaign\PostAction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">campaign_id</item>
+                    <item name="sortOrder" xsi:type="number">7</item>
+                </item>
+            </argument>
+        </actionsColumn>
+    </columns>
+</listing>

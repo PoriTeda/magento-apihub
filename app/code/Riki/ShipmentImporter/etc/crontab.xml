@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <!--cron group for 1501-->
+    <group id="shipmentimporter1501">
+        <job name="shipment_import_150101" instance="Riki\ShipmentImporter\Cron\ShipmentShippedOut" method="import1501">
+            <config_path>shipmentimporter/expression/express1501_01</config_path>
+        </job>
+        <job name="shipment_import_150102" instance="Riki\ShipmentImporter\Cron\ShipmentShippedOut" method="import1501">
+            <config_path>shipmentimporter/expression/express1501_02</config_path>
+        </job>
+        <job name="shipment_import_150103" instance="Riki\ShipmentImporter\Cron\ShipmentShippedOut" method="import1501">
+            <config_path>shipmentimporter/expression/express1501_03</config_path>
+        </job>
+    </group>
+    <group id="shipmentimporter1601">
+        <job name="shipment_import_160101" instance="Riki\ShipmentImporter\Cron\ShipmentShippedOut" method="import1601">
+            <config_path>shipmentimporter/expression/express1601_01</config_path>
+        </job>
+        <job name="shipment_import_160102" instance="Riki\ShipmentImporter\Cron\ShipmentShippedOut" method="import1601">
+            <config_path>shipmentimporter/expression/express1601_02</config_path>
+        </job>
+    </group>
+    <group id="shipmentimporter1701">
+        <job name="shipment_import_170101" instance="Riki\ShipmentImporter\Cron\ShipmentShippedOut" method="import1701">
+            <config_path>shipmentimporter/expression/express1701_01</config_path>
+        </job>
+    </group>
+    <group id="shipmentimporter1801">
+        <job name="shipment_import_180101" instance="Riki\ShipmentImporter\Cron\ShipmentShippedOut" method="import1801">
+            <config_path>shipmentimporter/expression/express1801_01</config_path>
+        </job>
+    </group>
+    <group id="shipmentimporter1901">
+        <job name="shipment_import_190101" instance="Riki\ShipmentImporter\Cron\ShipmentShippedOut" method="import1901">
+            <config_path>shipmentimporter/expression/express1901_01</config_path>
+        </job>
+    </group>
+
+    <!--cron group for 1502-->
+    <group id="shipmentimporter1502">
+        <job name="shipment_import_150201" instance="Riki\ShipmentImporter\Cron\ShipmentComplete" method="import1502">
+            <config_path>shipmentimporter/expression/express1502_01</config_path>
+        </job>
+    </group>
+    <group id="shipmentimporter1602">
+        <job name="shipment_import_160201" instance="Riki\ShipmentImporter\Cron\ShipmentComplete" method="import1602">
+            <config_path>shipmentimporter/expression/express1602_01</config_path>
+        </job>
+        <job name="shipment_import_160202" instance="Riki\ShipmentImporter\Cron\ShipmentComplete" method="import1602">
+            <config_path>shipmentimporter/expression/express1602_02</config_path>
+        </job>
+    </group>
+    <group id="shipmentimporter1702">
+        <job name="shipment_import_170201" instance="Riki\ShipmentImporter\Cron\ShipmentComplete" method="import1702">
+            <config_path>shipmentimporter/expression/express1702_01</config_path>
+        </job>
+    </group>
+    <group id="shipmentimporter1802">
+        <job name="shipment_import_180201" instance="Riki\ShipmentImporter\Cron\ShipmentComplete" method="import1802">
+            <config_path>shipmentimporter/expression/express1802_01</config_path>
+        </job>
+    </group>
+    <group id="shipmentimporter1902">
+        <job name="shipment_import_190201" instance="Riki\ShipmentImporter\Cron\ShipmentComplete" method="import1902">
+            <config_path>shipmentimporter/expression/express1902_01</config_path>
+        </job>
+    </group>
+
+    <!--cron group for 1504-->
+    <group id="shipmentimporter1504">
+        <job name="shipment_import_150401" instance="Riki\ShipmentImporter\Cron\CodMoneyCollection1504" method="import1504">
+            <config_path>shipmentimporter/expression/express1504_01</config_path>
+        </job>
+    </group>
+    <group id="shipmentimporter1604">
+        <job name="shipment_import_160401" instance="Riki\ShipmentImporter\Cron\CodMoneyCollection1504" method="import1604">
+            <config_path>shipmentimporter/expression/express1604_01</config_path>
+        </job>
+    </group>
+    <group id="shipmentimporter1704">
+        <job name="shipment_import_170401" instance="Riki\ShipmentImporter\Cron\CodMoneyCollection1504" method="import1704">
+            <config_path>shipmentimporter/expression/express1704_01</config_path>
+        </job>
+    </group>
+    <group id="shipmentimporter1804">
+        <job name="shipment_import_180401" instance="Riki\ShipmentImporter\Cron\CodMoneyCollection1504" method="import1804">
+            <config_path>shipmentimporter/expression/express1804_01</config_path>
+        </job>
+    </group>
+    <group id="shipmentimporter1904">
+        <job name="shipment_import_190401" instance="Riki\ShipmentImporter\Cron\CodMoneyCollection1504" method="import1904">
+            <config_path>shipmentimporter/expression/express1904_01</config_path>
+        </job>
+    </group>
+
+    <!--cron group for 1507-->
+    <group id="shipmentimporter1507">
+        <job name="shipment_import_150701" instance="Riki\ShipmentImporter\Cron\ShipmentImporter1507" method="execute">
+            <config_path>shipmentimporter/expression/express1507_01</config_path>
+        </job>
+    </group>
+</config>

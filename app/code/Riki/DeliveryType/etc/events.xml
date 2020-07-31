@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="checkout_submit_all_after">
+        <observer name="riki_delivery_date" instance="Riki\DeliveryType\Observer\SaveDeliveryDate"/>
+    </event>
+    <event name="sales_quote_add_item">
+        <observer name="quote_item_delivery_type_set_after_add" instance="Riki\DeliveryType\Observer\QuoteItemSetDeliveryType"/>
+    </event>
+    <event name="sales_quote_remove_item">
+        <observer name="quote_item_delivery_type_update_after_remove" instance="Riki\DeliveryType\Observer\QuoteItemSetDeliveryType"/>
+    </event>
+    <event name="sales_quote_item_save_before">
+        <observer name="quote_item_delivery_type_update_after_save" instance="Riki\DeliveryType\Observer\QuoteItemUpdateDeliveryTypeAfterSave"/>
+    </event>
+</config>

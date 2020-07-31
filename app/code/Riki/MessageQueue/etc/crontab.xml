@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="trigger_failure_update_consumer" instance="Riki\MessageQueue\Cron\StartFailureUpdateConsumer" method="execute">
+            <config_path>riki_message_queue/failure_queue/trigger_consumer_cron_exp</config_path>
+        </job>
+    </group>
+</config>

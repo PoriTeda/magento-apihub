@@ -1,0 +1,131 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+/** @var $block \Riki\Sales\Block\Adminhtml\Shipping\Form */
+?>
+<?php  $_order = $block->getShipment()->getOrder() ?>
+<?php echo $block->getChildHtml('order_info') ?>
+<section class="admin__page-section order-shipment-billing-shipping">
+    <div class="admin__page-section-title">
+        <span class="title"><?php /* @escapeNotVerified */ echo __('Payment &amp; Shipping Method') ?></span>
+    </div>
+    <div class="admin__page-section-content">
+
+        <?php /* Billing Address */ ?>
+        <div class="admin__page-section-item order-payment-method">
+            <div class="admin__page-section-item-title">
+                <span class="title"><?php /* @escapeNotVerified */ echo __('Payment Information') ?></span>
+            </div>
+            <div class="admin__page-section-item-content">
+                <div><?php echo $block->getChildHtml('order_payment') ?></div>
+                <div class="order-payment-currency"><?php echo $block->getIVRMessage($_order); ?></div>
+            </div>
+        </div>
+
+        <?php /* Shipping Address */ ?>
+        <div class="admin__page-section-item order-shipping-address">
+            <div class="admin__page-section-item-title">
+                <span class="title"><?php /* @escapeNotVerified */ echo __('Shipping and Tracking Information') ?></span>
+            </div>
+            <div class="admin__page-section-item-content">
+
+                <?php echo $block->getChildHtml('shipment_date_info') ?>
+
+
+                <div class="shipping-description-wrapper">
+                    <div class="shipping-description-title">
+                        <?php echo $block->escapeHtml($_order->getShippingDescription()) ?>
+                    </div>
+
+                    <?php /* @escapeNotVerified */ echo __('Total Shipping Charges'); ?>:
+
+                    <?php if ($this->helper('Magento\Tax\Helper\Data')->displayShippingPriceIncludingTax()): ?>
+                        <?php $_excl = $block->displayShippingPriceInclTax($_order); ?>
+                    <?php else: ?>
+                        <?php $_excl = $block->displayPriceAttribute('shipping_amount', false, ' '); ?>
+                    <?php endif; ?>
+                    <?php $_incl = $block->displayShippingPriceInclTax($_order); ?>
+
+                    <?php /* @escapeNotVerified */ echo $_excl; ?>
+                    <?php if ($this->helper('Magento\Tax\Helper\Data')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                        (<?php /* @escapeNotVerified */ echo __('Incl. Tax'); ?> <?php /* @escapeNotVerified */ echo $_incl; ?>)
+                    <?php endif; ?>
+                </div>
+                <?php if ($block->canCreateShippingLabel()): ?>
+                    <p>
+                        <?php /* @escapeNotVerified */ echo $block->getCreateLabelButton()?>
+                        <?php if ($block->getShipment()->getShippingLabel()): ?>
+                            <?php /* @escapeNotVerified */ echo $block->getPrintLabelButton() ?>
+                        <?php endif ?>
+                        <?php if ($block->getShipment()->getPackages()): ?>
+                            <?php /* @escapeNotVerified */ echo $block->getShowPackagesButton() ?>
+                        <?php endif ?>
+                    </p>
+                <?php endif ?>
+                <?php echo $block->getChildHtml('shipment_tracking') ?>
+
+                <?php echo $block->getChildHtml('shipment_packaging') ?>
+                <script>
+                    require([
+                        'prototype'
+                    ], function () {
+
+                        setTimeout(function () {
+                            packaging.setConfirmPackagingCallback(function () {
+                                packaging.sendCreateLabelRequest();
+                            });
+                            packaging.setLabelCreatedCallback(function (response) {
+                                setLocation("<?php /* @escapeNotVerified */ echo $block->getUrl(
+'adminhtml/order_shipment/view',
+['shipment_id' => $block->getShipment()->getId()]
+); ?>");
+                            });
+                        }, 500);
+
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?php /* @escapeNotVerified */ echo __('Items Shipped') ?></span>
+    </div>
+    <?php echo $block->getChildHtml('shipment_items') ?>
+</section>
+
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?php /* @escapeNotVerified */ echo __('Shipping and Received Information') ?></span>
+    </div>
+    <?php echo $block->getChildHtml('shipment_received') ?>
+</section>
+
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?php /* @escapeNotVerified */ echo __('Shipment Total') ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <?php echo $block->getChildHtml('shipment_packed') ?>
+
+        <div class="admin__page-section-item order-comments-history">
+            <div class="admin__page-section-item-title">
+                <span class="title"><?php /* @escapeNotVerified */ echo __('Shipment History') ?></span>
+            </div>
+            <div class="admin__page-section-item-content"><?php echo $block->getChildHtml('order_comments') ?></div>
+        </div>
+
+        <div class="admin__page-section-item order-totals">
+            <div class="admin__page-section-item-title">
+                <span class="title"><?php /* @escapeNotVerified */ echo __('Shipment Total') ?></span>
+            </div>
+            <?php echo $block->getChildHtml('shipment_total') ?>
+        </div>
+    </div>
+</section>

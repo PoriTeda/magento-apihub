@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../vendor/magento/mtf/etc/variations.xsd">
+    <testCase name="Magento\CustomerCustomAttributes\Test\TestCase\CustomerAddressAttributeVisibilityTest"
+              summary="Customer address attribute visibility in customer account on frontend"
+              ticketId="MAGETWO-70064">
+        <variation name="CustomerAddressAttributeVisibilityTestVariation1">
+            <data name="customer/dataset" xsi:type="string">default</data>
+            <data name="customAttribute/dataset" xsi:type="string">text_field_require</data>
+            <constraint name="Magento\CustomerCustomAttributes\Test\Constraint\AssertCustomerAddressAttributeOnAddressEditPage"/>
+        </variation>
+        <variation name="CustomerAddressAttributeVisibilityTestVariation2">
+            <data name="customer/dataset" xsi:type="string">default</data>
+            <data name="customAttribute/dataset" xsi:type="string">text_field_not_visible</data>
+            <constraint name="Magento\CustomerCustomAttributes\Test\Constraint\AssertCustomerAddressAttributeNotOnAddressEditPage"/>
+        </variation>
+    </testCase>
+</config>

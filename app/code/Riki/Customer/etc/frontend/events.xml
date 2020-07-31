@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="customer_customer_authenticated">
+        <observer name="riki_customer_customer_authenticated" instance="Riki\Customer\Observer\CustomerAuthenticatedObserver" />
+        <observer name="riki_customer_log_in_customer_multiple_website" instance="Riki\Customer\Observer\LoginCustomerMultipleWebsite" />
+    </event>
+    <event name="controller_action_predispatch_customer_account_login">
+        <observer name="riki_customer_login_redirect_kss" instance="Riki\Customer\Observer\RedirectCustomerToSso" />
+    </event>
+    <event name="controller_action_predispatch_customer_account_logout">
+        <observer name="riki_customer_login_redirect_kss" instance="Riki\Customer\Observer\RedirectCustomerToSso" />
+    </event>
+    <event name="controller_action_predispatch_customer_account_create">
+        <observer name="riki_customer_redirect_kss" instance="Riki\Customer\Observer\RedirectCustomerToSso" />
+    </event>
+    <event name="customer_data_object_login">
+        <observer name="riki_customer_set_after_auth_url" instance="Riki\Customer\Observer\SetAfterAuthUrl" />
+    </event>
+    <event name="customer_logout">
+        <observer name="riki_customer_empty_cart" instance="Riki\Customer\Observer\DeleteCustomerCartAfterLogOut" />
+        <observer name="riki_customer_empty_http_context" instance="Riki\Customer\Observer\EmptyHttpContextAfterLogout" />
+    </event>
+    <event name="riki_customer_sso_redirect">
+        <observer name="riki_customer_before_sso_logout_redirect" instance="Riki\Customer\Observer\BeforeSsoLogoutRedirect" />
+    </event>
+    <event name="controller_action_predispatch">
+        <observer name="riki_customer_website_restriction" instance="Riki\Customer\Observer\RestrictWebsite" />
+    </event>
+    <event name="riki_customer_validate_session">
+        <observer name="riki_customer_check_website_restriction_on_validate_session" instance="Riki\Customer\Observer\CheckRestrictWebsiteOnValidateSession" />
+    </event>
+    <event name="controller_front_send_response_before">
+        <observer name="riki_customer_delete_no_cache_cookie" instance="Riki\Customer\Observer\DeleteNoCacheCookie" />
+    </event>
+</config>

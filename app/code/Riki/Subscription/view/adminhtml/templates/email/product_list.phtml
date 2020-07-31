@@ -1,0 +1,8 @@
+<?php $productList = $block->getProduct() ?>
+<?php foreach ($productList as $product): ?>
+    <?php if(isset($product['id'])) : ?>
+        <?php echo "Product #".$product['id']." does not exist"." \n"; ?>
+    <?php else: ?>
+        <?php echo $product['name'].('SKU: '.$product['sku'])." \n"; ?>
+    <?php endif; ?>
+<?php endforeach; ?>

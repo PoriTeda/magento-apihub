@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+    <entity name="customerSegmentForGuests" type="catalogRule">
+        <data key="name" unique="suffix">Customer Segment Name</data>
+        <data key="description">Customer Segment Description</data>
+        <data key="is_active">1</data>
+        <array key="website_ids">
+            <item>1</item>
+        </array>
+        <data key="apply_to">2</data>
+    </entity>
+</entities>

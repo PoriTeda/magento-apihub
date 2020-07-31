@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="ApplyStoreCreditDuringCheckoutTest">
+        <annotations>
+            <features value="CustomerBalance"/>
+            <stories value="Apply Store Credit"/>
+            <title value="Apply Store Credit during Checkout that covers all amount"/>
+            <description value="Apply Store Credit during Checkout that covers all amount"/>
+            <severity value="CRITICAL"/>
+            <testCaseId value="MAGETWO-42694"/>
+            <group value="customerBalance"/>
+            <group value="create"/>
+        </annotations>
+        <before>
+            <actionGroup ref="LoginActionGroup" stepKey="login"/>
+            <amOnPage url="{{AdminConfigCustomerStoreCreditTabPage.url}}" stepKey="openStoreCreditOptionTab"/>
+            <waitForPageLoad stepKey="waitConfigCustomerStoreCreditTab"/>
+            <selectOption userInput="Yes" selector="{{AdminConfigCustomerStoreCreditSection.enableStoreCredit}}" stepKey="enableStoreCreditFunctionality"/>
+
+            <createData entity="VirtualProduct" stepKey="createVirtualProduct">
+                <field key="price">40.00</field>
+            </createData>
+            <createData entity="Simple_US_Customer" stepKey="createSimpleUsCustomer">
+                <field key="group_id">1</field>
+            </createData>
+            <actionGroup ref="OpenEditCustomerFromAdminActionGroup" stepKey="openCustomerEdit">
+                <argument name="customer" value="$$createSimpleUsCustomer$$" />
+            </actionGroup>
+            <actionGroup ref="UpdateCustomerStoreCreditBalanceAdminActionGroup" stepKey="updateStoreCreditFromAdmin">
+                <argument name="storeCredit" value="50" />
+            </actionGroup>
+        </before>
+
+        <after>
+            <amOnPage url="admin/admin/auth/logout/" stepKey="amOnLogoutPage"/>
+            <deleteData createDataKey="createSimpleUsCustomer" stepKey="deleteCustomer"/>
+            <deleteData createDataKey="createVirtualProduct" stepKey="deleteVirtualProduct"/>
+        </after>
+        <!--Log in to Storefront as Customer-->
+        <actionGroup ref="LoginToStorefrontActionGroup" stepKey="signUpNewUser">
+            <argument name="Customer" value="$$createSimpleUsCustomer$$"/>
+        </actionGroup>
+
+        <!--Go to product page-->
+        <amOnPage url="$$createVirtualProduct.sku$$.html" stepKey="navigateToVirtualProductPage"/>
+        <waitForPageLoad stepKey="waitForCatalogPageLoad"/>
+
+        <!--Add Product to Shopping Cart-->
+        <actionGroup ref="addToCartFromStorefrontProductPage" stepKey="addToCartFromStorefrontProductPage">
+            <argument name="productName" value="$$createVirtualProduct.name$$"/>
+        </actionGroup>
+
+        <!--Go to Checkout-->
+        <actionGroup ref="GoToCheckoutFromMinicartActionGroup" stepKey="goToCheckoutFromMinicart"/>
+        <waitForElement selector="{{CheckoutPaymentSection.paymentSectionTitle}}" time="30" stepKey="waitForPaymentSectionLoaded"/>
+        <see userInput="Store credit" selector="#customerbalance-placer .payment-option-title span" stepKey="seeLabelCredit"/>
+        <see userInput="$50.00 Store credit available" selector="#customerbalance-placer .payment-option-inner" stepKey="seeLabelStoreCreditBalance"/>
+        <seeElement selector="{{CheckoutStoreCreditSection.useStoreCredit}}" stepKey="seeElement"/>
+
+        <!--Click Use Store Credit button-->
+        <actionGroup ref="StorefrontCheckoutUseStoreCreditActionGroup" stepKey="useStoreCredit">
+            <argument name="storeCredit" value="40" />
+        </actionGroup>
+        <see userInput="No Payment Information Required" selector="{{CheckoutPaymentSection.paymentMethodTitle}}" stepKey="seePaymentMethod"/>
+
+        <!--Click Place Order button-->
+        <click selector="{{CheckoutPaymentSection.placeOrder}}" stepKey="clickPlaceOrder"/>
+        <waitForElement selector="{{CheckoutSuccessMainSection.success}}" time="30" stepKey="waitForLoadSuccessPage"/>
+        <grabTextFrom selector="{{CheckoutSuccessMainSection.orderLink}}" stepKey="grabOrderNumber"/>
+
+        <actionGroup ref="CheckOrderStoreCreditFromStoreFrontActionGroup" stepKey="checkOrderInfStoreCreditFromStoreFront">
+            <argument name="storeCreditUsed" value="40"/>
+        </actionGroup>
+
+        <actionGroup ref="CheckCustomerStoreCreditFromStoreFrontActionGroup" stepKey="checkCustomerInfStoreCreditFromStoreFront">
+            <argument name="storeCreditUsed" value="40"/>
+            <argument name="storeCreditLeft" value="10"/>
+        </actionGroup>
+
+        <actionGroup ref="CheckOrderStoreCreditFromAdminActionGroup" stepKey="checkOrderInfStoreCreditFromAdmin">
+            <argument name="storeCreditUsed" value="40"/>
+            <argument name="orderNumber" value="$grabOrderNumber"/>
+        </actionGroup>
+
+        <actionGroup ref="OpenEditCustomerFromAdminActionGroup" stepKey="openEditCustomerOne">
+            <argument name="customer" value="$$createSimpleUsCustomer$$" />
+        </actionGroup>
+
+        <actionGroup ref="CheckCustomerStoreCreditFromAdminActionGroup" stepKey="checkCustomerInfStoreCreditFromAdmin">
+            <argument name="storeCreditUsed" value="40"/>
+            <argument name="storeCreditLeft" value="10"/>
+            <argument name="orderNumber" value="$grabOrderNumber"/>
+        </actionGroup>
+
+        <!--Logout from customer account-->
+        <amOnPage url="customer/account/logout/" stepKey="logoutCustomerOne"/>
+        <waitForPageLoad stepKey="waitLogoutCustomerOne"/>
+    </test>
+
+    <test name="ApplyStoreCreditDuringCheckoutForVirtualProductTest">
+    <annotations>
+        <features value="CustomerBalance"/>
+        <stories value="Apply Store Credit"/>
+        <title value="Apply Store Credit during Checkout for Virtual Product"/>
+        <description value="Apply Store Credit during Checkout for Virtual Product"/>
+        <severity value="CRITICAL"/>
+        <testCaseId value="MAGETWO-42693"/>
+        <group value="customerBalance"/>
+        <group value="create"/>
+    </annotations>
+    <before>
+        <actionGroup ref="LoginActionGroup" stepKey="login"/>
+        <amOnPage url="{{AdminConfigCustomerStoreCreditTabPage.url}}" stepKey="openStoreCreditOptionTab"/>
+        <waitForPageLoad stepKey="waitConfigCustomerStoreCreditTab"/>
+        <selectOption userInput="Yes" selector="{{AdminConfigCustomerStoreCreditSection.enableStoreCredit}}" stepKey="enableStoreCreditFunctionality"/>
+
+        <createData entity="VirtualProduct" stepKey="createVirtualProduct">
+            <field key="price">40.00</field>
+        </createData>
+        <createData entity="Simple_US_Customer" stepKey="createSecondSimpleUsCustomer">
+            <field key="group_id">1</field>
+        </createData>
+        <actionGroup ref="OpenEditCustomerFromAdminActionGroup" stepKey="openSecondCustomerEdit">
+            <argument name="customer" value="$$createSecondSimpleUsCustomer$$" />
+        </actionGroup>
+        <actionGroup ref="UpdateCustomerStoreCreditBalanceAdminActionGroup" stepKey="updateStoreCreditSecondCustomerFromAdmin">
+            <argument name="storeCredit" value="5" />
+        </actionGroup>
+    </before>
+
+    <after>
+        <amOnPage url="admin/admin/auth/logout/" stepKey="amOnLogoutPage"/>
+        <deleteData createDataKey="createSecondSimpleUsCustomer" stepKey="deleteCustomer"/>
+        <deleteData createDataKey="createVirtualProduct" stepKey="deleteVirtualProduct"/>
+    </after>
+
+        <!--Log in to Storefront as Customer-->
+        <actionGroup ref="LoginToStorefrontActionGroup" stepKey="signSecondSimpleUsCustomer">
+            <argument name="Customer" value="$$createSecondSimpleUsCustomer$$"/>
+        </actionGroup>
+
+        <!--Go to product page-->
+        <amOnPage url="$$createVirtualProduct.sku$$.html" stepKey="navigateToVirtualProductPageTest2"/>
+        <waitForPageLoad stepKey="waitForProductPageLoad2Test2"/>
+
+        <!--Add Product to Shopping Cart-->
+        <actionGroup ref="addToCartFromStorefrontProductPage" stepKey="addToCartFromStorefrontProduct2Page">
+            <argument name="productName" value="$$createVirtualProduct.name$$"/>
+        </actionGroup>
+
+        <!--Go to Checkout-->
+        <actionGroup ref="GoToCheckoutFromMinicartActionGroup" stepKey="goToCheckoutFromMinicart2"/>
+        <waitForElement selector="{{CheckoutPaymentSection.paymentSectionTitle}}" time="30" stepKey="waitForPaymentSectionLoadedTest2"/>
+        <see userInput="Store credit" selector="#customerbalance-placer .payment-option-title span" stepKey="seeLabelCreditTest2"/>
+        <see userInput="$5.00 Store credit available" selector="#customerbalance-placer .payment-option-inner" stepKey="seeLabelStoreCreditBalanceTest2"/>
+        <seeElement selector="{{CheckoutStoreCreditSection.useStoreCredit}}" stepKey="seeElementTest2"/>
+
+        <actionGroup ref="StorefrontCheckoutUseStoreCreditActionGroup" stepKey="useStoreCreditTest2">
+            <argument name="storeCredit" value="5" />
+        </actionGroup>
+
+        <!--Click Place Order button-->
+        <click selector="{{CheckoutPaymentSection.placeOrder}}" stepKey="clickPlaceOrderTest2"/>
+        <waitForElement selector="{{CheckoutSuccessMainSection.success}}" time="30" stepKey="waitForLoadSuccessPageTest2"/>
+        <grabTextFrom selector="{{CheckoutSuccessMainSection.orderLink}}" stepKey="grabOrderNumberTest2"/>
+
+        <actionGroup ref="CheckOrderStoreCreditFromStoreFrontActionGroup" stepKey="checkOrderInfStoreCreditFromStoreFrontTest2">
+            <argument name="storeCreditUsed" value="5"/>
+        </actionGroup>
+
+        <actionGroup ref="CheckCustomerStoreCreditFromStoreFrontActionGroup" stepKey="checkCustomerInfStoreCreditFromStoreFrontTest2">
+            <argument name="storeCreditUsed" value="5"/>
+            <argument name="storeCreditLeft" value="0"/>
+        </actionGroup>
+
+        <actionGroup ref="CheckOrderStoreCreditFromAdminActionGroup" stepKey="checkOrderInfStoreCreditFromAdminTest2">
+            <argument name="storeCreditUsed" value="5"/>
+            <argument name="orderNumber" value="$grabOrderNumberTest2"/>
+        </actionGroup>
+
+        <actionGroup ref="OpenEditCustomerFromAdminActionGroup" stepKey="openEditSecondCastomer">
+            <argument name="customer" value="$$createSecondSimpleUsCustomer$$" />
+        </actionGroup>
+
+        <actionGroup ref="CheckCustomerStoreCreditFromAdminActionGroup" stepKey="checkCustomerInfStoreCreditFromAdminTest2">
+            <argument name="storeCreditUsed" value="5"/>
+            <argument name="storeCreditLeft" value="0"/>
+            <argument name="orderNumber" value="$grabOrderNumberTest2"/>
+        </actionGroup>
+
+        <!--Logout from customer account-->
+        <amOnPage url="customer/account/logout/" stepKey="logoutCustomerTwo"/>
+        <waitForPageLoad stepKey="waitLogoutCustomerTwo"/>
+    </test>
+
+    <test name="ApplyStoreCreditDuringCheckoutForPhysicalProductTest">
+    <annotations>
+        <features value="CustomerBalance"/>
+        <stories value="Apply Store Credit"/>
+        <title value="Apply Store Credit during Checkout for physical product"/>
+        <description value="Apply Store Credit during Checkout for physical product"/>
+        <severity value="CRITICAL"/>
+        <testCaseId value="MAGETWO-42692"/>
+        <group value="CustomerBalance"/>
+        <group value="create"/>
+    </annotations>
+    <before>
+        <actionGroup ref="LoginActionGroup" stepKey="login"/>
+        <amOnPage url="{{AdminConfigCustomerStoreCreditTabPage.url}}" stepKey="openStoreCreditOptionTab"/>
+        <waitForPageLoad stepKey="waitConfigCustomerStoreCreditTab"/>
+        <selectOption userInput="Yes" selector="{{AdminConfigCustomerStoreCreditSection.enableStoreCredit}}" stepKey="enableStoreCreditFunctionality"/>
+
+        <createData entity="SimpleTwo" stepKey="createSimpleProduct">
+            <field key="price">40.00</field>
+        </createData>
+        <createData entity="Simple_US_Customer" stepKey="createThirdSimpleUsCustomer">
+            <field key="group_id">1</field>
+        </createData>
+        <actionGroup ref="OpenEditCustomerFromAdminActionGroup" stepKey="openThirdCustomerEdit">
+            <argument name="customer" value="$$createThirdSimpleUsCustomer$$" />
+        </actionGroup>
+        <actionGroup ref="UpdateCustomerStoreCreditBalanceAdminActionGroup" stepKey="updateStoreCreditThirdCustomerFromAdmin">
+            <argument name="storeCredit" value="5" />
+        </actionGroup>
+    </before>
+
+    <after>
+        <amOnPage url="admin/admin/auth/logout/" stepKey="amOnLogoutPage"/>
+        <deleteData createDataKey="createThirdSimpleUsCustomer" stepKey="deleteCustomer"/>
+        <deleteData createDataKey="createSimpleProduct" stepKey="deleteSimpleProduct"/>
+    </after>
+
+        <actionGroup ref="LoginToStorefrontActionGroup" stepKey="signThirdSimpleUsCustomer">
+            <argument name="Customer" value="$$createThirdSimpleUsCustomer$$"/>
+        </actionGroup>
+
+        <!--Go to product page-->
+        <amOnPage url="$$createSimpleProduct.custom_attributes[url_key]$$.html" stepKey="navigateToSimpleProductPageTest3"/>
+        <waitForPageLoad stepKey="waitForProductPageLoad2"/>
+
+        <!--Add Product to Shopping Cart-->
+        <actionGroup ref="addToCartFromStorefrontProductPage" stepKey="addToCartFromStorefrontProduct3Page">
+            <argument name="productName" value="$$createSimpleProduct.name$$"/>
+        </actionGroup>
+
+        <!--Go to Checkout-->
+        <actionGroup ref="GoToCheckoutFromMinicartActionGroup" stepKey="goToCheckoutFromMinicartTest3"/>
+        <click selector="{{CheckoutShippingMethodsSection.firstShippingMethod}}" stepKey="selectFirstShippingMethod"/>
+        <waitForLoadingMaskToDisappear stepKey="waitForLoadingMask2"/>
+        <waitForElement selector="{{CheckoutShippingMethodsSection.next}}" time="30" stepKey="waitForNextButton"/>
+        <click selector="{{CheckoutShippingMethodsSection.next}}" stepKey="clickNext"/>
+        <waitForElement selector="{{CheckoutPaymentSection.paymentSectionTitle}}" time="30" stepKey="waitForPaymentSectionLoadedTest3"/>
+        <see userInput="Store credit" selector="#customerbalance-placer .payment-option-title span" stepKey="seeLabelCreditTest3"/>
+        <see userInput="$5.00 Store credit available" selector="#customerbalance-placer .payment-option-inner" stepKey="seeLabelStoreCreditBalanceTest3"/>
+        <seeElement selector="{{CheckoutStoreCreditSection.useStoreCredit}}" stepKey="seeElementTest3"/>
+
+        <actionGroup ref="StorefrontCheckoutUseStoreCreditActionGroup" stepKey="useStoreCreditTest3">
+            <argument name="storeCredit" value="5" />
+        </actionGroup>
+
+        <!--Click Place Order button-->
+        <click selector="{{CheckoutPaymentSection.placeOrder}}" stepKey="clickPlaceOrderTest3"/>
+        <waitForElement selector="{{CheckoutSuccessMainSection.success}}" time="30" stepKey="waitForLoadSuccessPageTest3"/>
+        <grabTextFrom selector="{{CheckoutSuccessMainSection.orderLink}}" stepKey="grabOrderNumberTest3"/>
+
+        <actionGroup ref="CheckOrderStoreCreditFromStoreFrontActionGroup" stepKey="checkOrderInfStoreCreditFromStoreFrontTest3">
+            <argument name="storeCreditUsed" value="5"/>
+        </actionGroup>
+
+        <actionGroup ref="CheckCustomerStoreCreditFromStoreFrontActionGroup" stepKey="checkCustomerInfStoreCreditFromStoreFrontTest3">
+            <argument name="storeCreditUsed" value="5"/>
+            <argument name="storeCreditLeft" value="0"/>
+        </actionGroup>
+
+        <actionGroup ref="CheckOrderStoreCreditFromAdminActionGroup" stepKey="checkOrderInfStoreCreditFromAdminTest3">
+            <argument name="storeCreditUsed" value="5"/>
+            <argument name="orderNumber" value="$grabOrderNumberTest3"/>
+        </actionGroup>
+
+        <actionGroup ref="OpenEditCustomerFromAdminActionGroup" stepKey="openEditCustomerFromAdminTest3">
+            <argument name="customer" value="$$createThirdSimpleUsCustomer$$" />
+        </actionGroup>
+
+        <actionGroup ref="CheckCustomerStoreCreditFromAdminActionGroup" stepKey="checkCustomerInfStoreCreditFromAdminTest3">
+            <argument name="storeCreditUsed" value="5"/>
+            <argument name="storeCreditLeft" value="0"/>
+            <argument name="orderNumber" value="$grabOrderNumberTest3"/>
+        </actionGroup>
+
+        <!--Logout from customer account-->
+        <amOnPage url="customer/account/logout/" stepKey="logoutCustomerThree"/>
+        <waitForPageLoad stepKey="waitLogoutCustomerThree"/>
+    </test>
+</tests>

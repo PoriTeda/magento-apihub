@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+ * Copyright © 2016 Wyomind. All rights reserved.
+ * See LICENSE.txt for license details.
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Catalog::catalog" title="Products" sortOrder="30">
+                    <resource id="Magento_Catalog::catalog_inventory" title="Inventory" sortOrder="10">
+                        <resource id="Magento_Catalog::products" title="Catalog" sortOrder="10" >
+                            <resource id="Wyomind_AdvancedInventory::main" title="Advanced Inventory" sortOrder="200">
+                                <resource id="Wyomind_AdvancedInventory::config" title="Manage module configuration" sortOrder="10" />
+                                <resource id="Wyomind_AdvancedInventory::stocks" title="Manage stocks" sortOrder="20" />
+                                <resource id="Wyomind_AdvancedInventory::product" title="Manage stocks in product page" sortOrder="30" />
+                                <resource id="Wyomind_AdvancedInventory::permissions" title="Manage user permissions" sortOrder="40" />
+                                <resource id="Wyomind_AdvancedInventory::journal" title="Manage log journal" sortOrder="50" />
+                            </resource>
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

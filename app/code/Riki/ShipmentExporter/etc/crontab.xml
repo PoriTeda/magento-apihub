@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="riki_shipmentexport">
+        <job name="riki_shipmentexporter1" instance="Riki\ShipmentExporter\Cron\ShipmentExporter" method="exportShipmentFirst">
+            <config_path>shipmentexporter/seexp/shipmentexport_cron_expression1</config_path>
+        </job>
+    </group>
+    <group id="riki_shipmentexport">
+        <job name="riki_shipmentexporter2" instance="Riki\ShipmentExporter\Cron\ShipmentExporter" method="exportShipmentSecond">
+            <config_path>shipmentexporter/seexp/shipmentexport_cron_expression2</config_path>
+        </job>
+    </group>
+    <group id="riki_shipmentexport">
+        <job name="riki_shipmentexporter3" instance="Riki\ShipmentExporter\Cron\ShipmentExporter" method="exportShipmentThird">
+            <config_path>shipmentexporter/seexp/shipmentexport_cron_expression3</config_path>
+        </job>
+    </group>
+</config>

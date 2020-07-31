@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <cybersource>
+                <active>0</active>
+                <code>cybersource</code>
+                <cctypes>AE,VI,MC,DI,DN,JCB,MD,MI</cctypes>
+                <debug>0</debug>
+                <model>CybersourceFacade</model>
+                <order_status>processing</order_status>
+                <payment_action>authorize</payment_action>
+                <sandbox_flag>1</sandbox_flag>
+                <title>Credit Card (Cybersource)</title>
+                <access_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <profile_id backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <secret_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <merchant_id backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <transaction_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <allowspecific>0</allowspecific>
+                <currency>USD</currency>
+                <date_delim>-</date_delim>
+                <cc_year_length>4</cc_year_length>
+                <ccfields>card_cvn,card_expiry_date,card_number</ccfields>
+                <cgi_url_test_mode>https://testsecureacceptance.cybersource.com/silent/embedded/token/create</cgi_url_test_mode>
+                <cgi_url>https://secureacceptance.cybersource.com/silent/token/create</cgi_url>
+                <transaction_url_test_mode>https://testsecureacceptance.cybersource.com/silent/pay</transaction_url_test_mode>
+                <transaction_url>https://secureacceptance.cybersource.com/silent/pay</transaction_url>
+                <wsdl_test_mode>https://ics2wstest.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.109.wsdl</wsdl_test_mode>
+                <wsdl>https://ics2ws.ic3.com/commerce/1.x/transactionProcessor/CyberSourceTransaction_1.109.wsdl</wsdl>
+                <place_order_url>cybersource/SilentOrder/TokenRequest</place_order_url>
+                <payment_method>card</payment_method>
+                <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
+                <can_refund>1</can_refund>
+                <can_void>1</can_void>
+                <can_use_internal>1</can_use_internal>
+                <can_use_checkout>1</can_use_checkout>
+                <can_capture_partial>1</can_capture_partial>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <can_review_payment>1</can_review_payment>
+                <can_deny_payment>1</can_deny_payment>
+                <is_gateway>1</is_gateway>
+                <can_silent_order_post>1</can_silent_order_post>
+                <debugReplaceKeys>access_key,profile_id,req_access_key,req_profile_id</debugReplaceKeys>
+                <paymentInfoKeys>auth_avs_code,auth_cv_result,card_number,card_expiry_date,card_type,decision,transaction_id,reference_number,risk_score,risk_factors</paymentInfoKeys>
+                <privateInfoKeys>auth_avs_code,auth_cv_result,card_number,card_expiry_date,card_type,decision,transaction_id,reference_number,risk_score,risk_factors</privateInfoKeys>
+                <avs_ems_adapter>Magento\Cybersource\Model\AvsEmsCodeMapper</avs_ems_adapter>
+                <cvv_ems_adapter>Magento\Cybersource\Model\CvvEmsCodeMapper</cvv_ems_adapter>
+                <cctypes_mapper><![CDATA[{"001":"VI","002":"MC","003":"AE","004":"DI","005":"DN","006":"DN","007":"JCB","024":"MI","042":"MD"}]]></cctypes_mapper>
+            </cybersource>
+        </payment>
+    </default>
+</config>

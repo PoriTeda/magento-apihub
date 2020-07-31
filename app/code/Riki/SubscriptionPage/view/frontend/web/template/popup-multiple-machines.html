@@ -1,0 +1,48 @@
+<div class="popup_machine">
+    <div class="machine_button">
+        <button class="btn_machine machine_required" data-bind="click: switchOption(false), css: {active: !machineNotRequired()}" type="button" title="machine"><span data-bind="i18n:'Machine required'"></span></button>
+        <button class="btn_machine machine_not_required" data-bind="click: switchOption(true), css: {active: machineNotRequired()}" type="button" title="machine"><span data-bind="i18n:'No Machine required'"></span></button>
+    </div>
+    <!-- Loop Categories Here -->
+    <!-- ko foreach: {data: getCategories() ,as: 'cat'}-->
+    <div class='machine_content' data-bind="css: {active: cat.available && !$parents[0].machineNotRequired()}">
+        <h1 class="machine_name-item" data-bind="text: cat.type_name"></h1>
+        <div class="machine_messenger-error">
+            <!-- ko if : !cat.available -->
+            <span data-bind="text: cat.error_message,
+                              style: {
+                                   'color': 'red'
+                              }"></span>
+            <!-- /ko -->
+        </div>
+        <!-- ko foreach: {data:cat.products(), as: 'product'} -->
+        <div class="machine_content-item" data-bind="attr:{'id': 'selected_category_' + cat.id + '_' + product.entity_id,
+                                             'data-category': 'category_' +  cat.id,
+                                             'name': 'machines[' + cat.id + ']',
+                                             'value': product.entity_id},
+                                             style:{opacity: cat.available && product.quantity_and_stock_status.is_in_stock ? 1 : 0.5},
+                                       click: $parents[1].handleChange(cat.id, product.entity_id, cat.available, product.quantity_and_stock_status.is_in_stock)">
+            <a href="#" class="product-item-photo">
+                    <span class="product-image-container">
+                        <img class="product-image-photo" width="80px" height="80px" data-bind="attr:{
+                                'src': product.src,
+                                'alt': product.name
+                            }">
+                    </span>
+            </a>
+            <div class="product-item-details">
+                <strong class="product-item-name" data-bind="text: product.name">
+                    <a href="#"></a>
+                </strong>
+            </div>
+        </div>
+        <!-- /ko -->
+        <input type="hidden" class="machine-selected" data-bind="attr:{'data-category': 'category_' +  cat.id,
+                                        'name': 'machines[' + cat.id + ']',
+                                        'disabled': cat.available ? false : true}"/>
+    </div>
+    <!-- /ko -->
+    <input type="hidden" data-bind="value: machineNotRequired()" name="skip_machine">
+    <div class="machine_content-checkout"><button class="btn_checkout" type="button" title="checkout" data-bind="click: submitMachine, i18n: 'Proceed to order process'" disabled><span></span></button></div>
+</div>
+

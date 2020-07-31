@@ -1,0 +1,317 @@
+<?php
+/**
+ * @var \Riki\Subscription\Block\Frontend\Profile\ConfirmSpotProduct $block
+ * @var \Riki\Subscription\Model\Profile\Profile $profile
+ */
+$profile = $block->getProfile();
+$frequencyName = $block->formatFrequency($profile->getFrequencyInterval(), $profile->getFrequencyUnit());
+$address = $block->getFirstAddress();
+$items = $block->getCartItems();
+$productAdd = $block->getProductAdd();
+$shippingFee = 0;
+$paidServices = 0;
+$wrappingFee = 0;
+$totalAmount = 0;
+$paymentFee = 0;
+$paymentMethodTitle = '';
+$discountAmount = 0;
+
+// Get address information of stock point
+$isShowAddressStockPoint = $block->isShowAddressStockPoint($profile);
+if ($isShowAddressStockPoint) {
+    $addressStockPoint = $block->getDataAddressStockPoint($profile);
+}
+
+/* @var $orderSimulate \Magento\Sales\Model\Order */
+$orderSimulate = $block->simulator();
+if ($orderSimulate) {
+    $shippingFee = $block->getShippingFeeIncludeTax($orderSimulate->getShippingInclTax());
+    $wrappingFee = $orderSimulate->getData('gw_items_base_price_incl_tax');
+    $paidServices = $orderSimulate->getData('gw_price_incl_tax');
+    $totalAmount = $orderSimulate->getGrandTotal();
+    $paymentFee = $orderSimulate->getFee();
+    $paymentMethodTitle = $orderSimulate->getPayment()->getMethodInstance()->getTitle();
+    $discountAmount = $orderSimulate->getData('discount_amount');
+}
+
+/* @var \Riki\SalesRule\Helper\CouponHelper $couponHelper */
+$couponHelper =  $this->helper('Riki\SalesRule\Helper\CouponHelper');
+$listCouponApplied = $couponHelper->checkCouponRealIdsWhenProcessSimulator($orderSimulate->getAppliedRuleIds(),$orderSimulate->getCouponCode());
+?>
+
+<div class="page-title-wrapper">
+    <h1 class="page-title">
+        <span class="base" data-ui-id="page-title-wrapper">
+            <?php echo sprintf(__('%s %s th delivery order confirm'),$profile->getCourseName(), $profile->getOrderTimes() + 1) ?>
+        </span>
+    </h1>
+</div>
+
+<form id="form-submit-profile"
+    action="<?php /* @escapeNotVerified */ echo $block->getUrl('*/*/saveSpotProduct'); ?>"
+    method="post">
+    <?php echo $block->getBlockHtml('formkey')?>
+    <fieldset class="fieldset panel table">
+        <div class="table-wrapper">
+            <div class="table table list"> <!-- Header Info -->
+                <div class="label"><h4><?php echo __('Subscription Name') ?></h4></div>
+                <div class="current-shipping-address">
+                    <div class="wrapper"><?php echo $profile->getCourseName() ?>
+                        &nbsp;(<?php echo $frequencyName ?>)</div>
+                </div>
+                <div class="label"><h4><?php echo __('Address') ?></h4></div>
+                <div class="current-shipping-address">
+                    <div class="wrapper">
+                        <table>
+                            <tbody>
+                            <tr class="header">
+                                <td><strong><?php echo __('Name') ?></strong></td>
+                                <td><strong><?php echo __('Address') ?></strong></td>
+                                <td><strong><?php echo __('Phone number') ?></strong></td>
+                            </tr>
+                            <tr>
+                                <?php if ($isShowAddressStockPoint && !empty($addressStockPoint)): ?>
+                                    <td><?php echo $addressStockPoint['lastName'] . $addressStockPoint['firstName']; ?></td>
+                                    <td><?php echo $addressStockPoint['addressFull']; ?></td>
+                                    <td><?php echo $addressStockPoint['telephone']; ?></td>
+                                <?php else: ?>
+                                    <td><?php echo $address->getLastname() . $address->getFirstname() ?></td>
+                                    <td><?php echo __('Shipping Postcode') . ' ' . $block->getAddressData() ?></td>
+                                    <td><?php echo $address->getTelephone() ?></td>
+                                <?php endif; ?>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="label no-border"><h4><?php echo __('Delivery schedule date and time') ?></h4></div>
+                <div class="current-shipping-address">
+                    <?php if ($isShowAddressStockPoint && !empty($addressStockPoint)): ?>
+                        <div class="wrapper stock-point-delivery-info">
+                            <?php echo $addressStockPoint['deliveryInformation']; ?>
+                        </div>
+                    <?php else: ?>
+                        <div class="wrapper">
+                            <?php if ($profile->getData('next_delivery_date')) : ?>
+                                <span>
+                                    <?php echo $block->getProfileHelper()->formatDate($profile->getData('next_delivery_date')) ?>
+                                    (<?php echo __($block->getProfileHelper()->formatDate($profile->getData('next_delivery_date'), 'D')) ?>)
+                                </span>
+                            <?php endif; ?>
+                            <?php if ($block->getTimeSlot()) : ?>
+                                <span><?php echo $block->getTimeSlot() ?></span>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="label"><h4><?php echo __('Products already in Subscription Course') ?></h4></div>
+                <div class="table block">
+                    <table class="list-product">
+                        <thead>
+                            <tr>
+                                <th class="product-image"><?php echo __("Name of Product") ?></th>
+                                <th class="product-name">&nbsp;</th>
+                                <th class="price-sub"><?php echo __("Product Price") ?></th>
+                                <th class="product-type"><?php echo __("Product Type") ?></th>
+                                <th class="qty"><?php echo __("Qty") ?></th>
+                                <th class="price"><?php echo __("Subtotal ck") ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($items as $itemData) :
+                                if (isset($itemData['cart_item']) && isset($itemData['product'])) :
+                                    $item = $itemData['cart_item'];
+                                    $product = $itemData['product'];
+                                    $allowSkipSeasonalProduct = $product->getData('allow_seasonal_skip');
+                                    $seasonalSkipOptional = $product->getData('seasonal_skip_optional');
+                                    $productCartModel = $item;
+                                    $isSkipSeasonal = $productCartModel->getData('is_skip_seasonal');
+                                    $deliveryDate = $productCartModel->getData('delivery_date');
+                                    if($allowSkipSeasonalProduct){
+                                        if($seasonalSkipOptional){
+                                            if($isSkipSeasonal){
+                                                if(strtotime($productCartModel->getData('skip_from')) <= strtotime($deliveryDate) and strtotime($deliveryDate) <= strtotime($productCartModel->getData('skip_to'))){
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                        else{
+                                            if(($allowSkipSeasonalProduct  and $isSkipSeasonal === null and strtotime($product->getData('allow_skip_from')) <= strtotime($deliveryDate) and strtotime($deliveryDate) <= strtotime($product->getData('allow_skip_to')))){
+                                                continue;
+                                            }
+                                        }
+                                    }
+                                    ?>
+                            <tr class="tr-product even">
+                                <td class="img-thumbnail-wrapper product-image">
+                                    <img class="product-image-photo" src="<?php echo $block->getProductImage($product)->getUrl() ?>" alt="">
+                                </td>
+                                <td class="product-name text-left" data-th="<?php echo __("Name of Product") ?>">
+                                    <span><?php echo $product->getName() ?></span>
+                                </td>
+                                <td class="price-sub" data-th="<?php echo __("Product Price") ?>">
+                                    <span><span class="price"><?php echo $product->getAmount() ?></span></span>
+                                </td>
+                                <td class="product-type" data-th="<?php echo __("Product Type") ?>">
+                                    <?php if ($item['is_spot']) : ?>
+                                        <span class="tag_spot"><span><?php echo __('Spot tag') ?></span></span>
+                                    <?php endif; ?>
+
+                                    <?php if ($product['allow_seasonal_skip']) : ?>
+                                        <?php if ($product['seasonal_skip_optional']) : ?>
+                                            <span class="tag seasonal-skip">
+                                                <span><?php echo __("Absence for a certain period of time") ?></span>
+                                            </span>
+                                        <?php else : ?>
+                                            <span class="tag seasonal-skip">
+                                                <span><?php echo __("Seasonal Limited") ?></span>
+                                            </span>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="qty" data-th="<?php echo __("Qty") ?>">
+                                    <?php echo $block->getItemUnitCase($item) ?>
+                                </td>
+                                <td class="subtotal text-right price" data-th="<?php echo __("Subtotal ck") ?>">
+                                    <strong><?php echo $product->getTotalAmount() ?></strong>
+                                </td>
+                            </tr>
+                            <?php endif; ?>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="label"><h4><?php echo __("Products added") ?></h4></div>
+                <div class="table block">
+                    <table class="list-product">
+                        <thead>
+                            <tr>
+                                <th class="product-image"><?php echo __("Name of Product") ?></th>
+                                <th class="product-name">&nbsp;</th>
+                                <th class="price-sub"><?php echo __("Product Price") ?></th>
+                                <th class="product-type"><?php echo __("Product Type") ?></th>
+                                <th class="qty"><?php echo __("Qty") ?></th>
+                                <th class="price"><?php echo __("Subtotal ck") ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="tr-product even">
+                                <td class="img-thumbnail-wrapper product-image">
+                                    <img class="product-image-photo" src="<?php echo $block->getProductImage($productAdd)->getUrl() ?>" alt="">
+                                </td>
+                                <td class="product-name text-left" data-th="<?php echo __("Name of Product") ?>">
+                                    <span><?php echo $productAdd->getName() ?></span>
+                                </td>
+                                <td class="price-sub" data-th="<?php echo __("Product Price") ?>">
+                                    <span><span class="price"><?php echo $block->getNewSpotProductAmount(); ?></span></span>
+                                </td>
+                                <td class="product-type" data-th="<?php echo __("Product Type") ?>">
+                                    <span class="tag_spot"><span><?php echo __('Spot tag') ?></span></span>
+                                </td>
+                                <td class="qty" data-th="<?php echo __("Qty") ?>">
+                                    <?php echo $block->getNewSpotProductQtyAndUnit(); ?>
+                                </td>
+                                <td class="subtotal text-right price" data-th="<?php echo __("Subtotal ck") ?>">
+                                    <strong><?php echo $block->getNewSpotProductTotalAmount(); ?></strong>
+                                </td>
+                            </tr>
+                            <tr class="shipment">
+                                <td>&nbsp;</td>
+                                <td class="text-left shipment-name">
+                                    <?php echo __('Shipment Fee').' '.__($productAdd->getDeliveryType()); ?>
+                                </td>
+                                <td class="shipping-price">
+                                    <span class="price"><?php if ($shippingFee == 0) echo __('無料'); ?></span>
+                                </td>
+                                <td colspan="3" class="text-right shipping-price price">
+                                    <strong><?php echo $block->formatCurrency($shippingFee); ?></strong>
+                                </td>
+                            </tr>
+                            <tr class="paid-services">
+                                <td>&nbsp;</td>
+                                <td class="text-left"><?php echo __('Wrapping Fee (Tax included)') ?></td>
+                                <td colspan="4" class="text-right price">
+                                    <strong><?php echo $block->formatCurrency($wrappingFee); ?></strong>
+                                </td>
+                            </tr>
+                            <tr class="payable">
+                                <td>&nbsp;</td>
+                                <td class="text-left payable-name"><?php echo __('Payment Fee'); ?></td>
+                                <td colspan="5" class="payable-total text-right">
+                                    <?php echo $block->formatCurrency($paymentFee); ?>
+                                </td>
+                            </tr>
+                            <?php if ($discountAmount != 0): ?>
+                                <tr class="payable">
+                                    <td>&nbsp;</td>
+                                    <td class="text-left payable-name"><?php echo __('Discount'); ?></td>
+                                    <td colspan="5" class="payable-total text-right">
+                                        <?php echo $block->formatCurrency($discountAmount); ?>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
+                            <tr class="payment-amount">
+                                <td>&nbsp;</td>
+                                <td class="text-left"><?php echo __('Total Payable Amount') ?></td>
+                                <td colspan="4" class="text-right price">
+                                    <strong><?php echo $block->formatCurrency($totalAmount); ?></strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="label"><h4><?php echo __('Name of Method') ?></h4></div>
+                <div class="current-shipping-address">
+                    <div class="wrapper">
+                        <?php echo __($paymentMethodTitle); ?>
+                    </div>
+                </div>
+                <div class="modification block">
+                    <div>
+                        <span class="title"><?php echo __('Apply Changes') ?></span>
+                        <span><?php echo __('Only update changed information into Next Subscription Delivery') ?></span>
+                    </div>
+                    <div class="coupon-code">
+                        <span class="title"><?php echo __('Applied coupon code'); ?></span>
+                        <?php
+                        if($listCouponApplied)
+                        {
+                            foreach($listCouponApplied as $itemCoupon)
+                            {
+                                echo "<p><span>".$itemCoupon['code']."</span><span>".$itemCoupon['name']."</span></p><br>";
+                            }
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="message-notice error message" data-ui-id="message-notice"><div><?php echo __('In above subscription order, the products with type (SPOT (コース外)) is added only for next delivery. These products are not delivered after next delivery.') ?></div></div>
+
+    <div class="actions-toolbar custom">
+        <div class="action-right">
+            <button onclick="return submitForm(this,'form-submit-profile')" class="flat-button yellow-subs"><span><?php echo __('Confirm change') ?></span></button>
+        </div>
+        <div class="action-left">
+            <a href="<?php echo $block->getBackUrl() ?>">
+                <span><?php echo __('Go back') ?></span>
+            </a>
+        </div>
+    </div>
+
+    <input type="hidden" name="profile_id" value="<?php echo $profile->getId(); ?>" />
+    <input type="hidden" name="product_id" value="<?php echo $productAdd->getId() ?>" />
+    <input type="hidden" name="qty" value="<?php echo $block->getNewSpotProductQty(); ?>"/>
+    <input type="hidden" name="product_options" value="<?php echo $productAdd->getData('product_options'); ?>"/>
+    <input type="hidden" name="unit_case" value="<?php echo $block->getCaseDisplayKey($productAdd->getData('case_display')); ?>"/>
+    <input type="hidden" name="unit_qty" value="<?php echo $block->validateQtyPieceCase($productAdd->getData('case_display'), $productAdd->getData('unit_qty')); ?>"/>
+    <input type="hidden" name="gw_id" value="<?php echo $productAdd->getData('gw_id'); ?>"/>
+    <input type="hidden" name="gift_message_id" value="<?php echo $productAdd->getData('gift_message_id'); ?>"/>
+
+</form>

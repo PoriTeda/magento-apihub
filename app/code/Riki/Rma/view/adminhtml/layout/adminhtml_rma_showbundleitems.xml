@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <referenceContainer name="root">
+        <referenceBlock name="magento_rma_bundle">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Riki_Rma::rma/edit/bundle/bundle.phtml</argument>
+            </action>
+        </referenceBlock>
+    </referenceContainer>
+</layout>

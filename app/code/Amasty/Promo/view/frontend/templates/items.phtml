@@ -1,0 +1,71 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @package Amasty_Promo
+ */
+?>
+<?php
+use Magento\Framework\App\Action\Action;
+
+$products = $block->getItems();
+$imageHelper = $block->getImageHelper();
+?>
+
+<?= $block->getChildHtml('html_calendar') ?>
+<div class="ampromo-overlay" data-role="ampromo-overlay">
+    <div class="ampromo-items">
+        <div class="close" data-role="ampromo-popup-hide"></div>
+        <h2><?=__('Free Items')?></h2>
+
+        <div class="ampromo-gallery" data-count="<?= count($products) ?>" data-role="ampromo-gallery">
+        <?php foreach ($products as $product): ?>
+            <div class="ampromo-item" data-product-id="<?= $product->getId()?>" data-product-sku="<?= $product->getSku()?>">
+                <form method="POST" action="<?= $block->getFormActionUrl()?>" class="ampromo_items_form" id="ampromo_items_form-<?= $product->getId()?>">
+                    <input type="hidden" name="<?= Action::PARAM_NAME_URL_ENCODED; ?>" value="<?= $this->getCurrentBase64Url() ?>">
+                    <div class="ampromo-item-title">
+                        <?php if ($product->getVisibility() != \Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE):?>
+                            <h4><a href="<?= $product->getProductUrl()?>"><?= $product->getName()?></a></h4>
+                        <?php else: ?>
+                            <h4><?= $product->getName()?></h4>
+                        <?php endif?>
+                    </div>
+                    <?php $imageHelper->init($product, 'cart_page_product_thumbnail')
+                        ->keepFrame(false)
+                        ->constrainOnly(true)
+                        ->resize(160, 160)
+                    ;
+                    ?>
+                    <img src="<?= $imageHelper->getUrl() ?>" class="ampromo-item-image" alt="<?= $block->stripTags($product->getName(), null, true) ?>"/>
+
+                    <input type="hidden" value="<?= $product->getId() ?>" name="product_id" />
+
+                    <div class="product-options-wrapper" id="product-options-wrapper">
+                        <fieldset class="fieldset" tabindex="0">
+                        <?php if ($optionsBlock = $block->getChildBlock($product->getTypeId() . '_prototype')): ?>
+                            <?= $optionsBlock->setProduct($product)->toHtml(); ?>
+                        <?php endif ?>
+                        <?= $block->getChildBlock('options_prototype')->setProduct($product)->toHtml(); ?>
+                        </fieldset>
+                    </div>
+
+                    <div class="ampromo-item-buttons">
+                        <button class="action tocart primary" type="submit" title="<?= __('Add to cart')?>"><span><?= __('Add to cart')?></span></button>
+                    </div>
+                </form>
+            </div>
+        <?php endforeach ?>
+        </div>
+    </div>
+</div>
+<script>
+    require([
+        'jquery',
+        'mage/mage',
+        'Magento_Catalog/product/view/validation'
+    ], function ($) {
+        'use strict';
+
+        $('.ampromo_items_form').mage('validation');
+    });
+</script>

@@ -1,0 +1,9 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <riki_ar_reconciliation>
+            <cron_import_ar_payment_csv>
+                <setting_crontab>*/50 * * * *</setting_crontab>
+            </cron_import_ar_payment_csv>
+        </riki_ar_reconciliation>
+    </default>
+</config>

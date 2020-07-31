@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_quote_item_set_product">
+        <observer name="riki_quote_init_product" instance="Riki\Quote\Observer\ItemInitProduct" />
+    </event>
+    <event name="sales_quote_product_add_after">
+        <observer name="riki_quote_product_add_after" instance="Riki\Quote\Observer\UpdateCartItem" />
+    </event>
+    <event name="sales_quote_collect_totals_after">
+        <observer name="riki_quote_collect_totals_after" instance="Riki\Quote\Observer\UpdateQuote" />
+    </event>
+    <event name="sales_convert_order_to_quote">
+        <observer name="riki_quote_sales_convert_order_to_quote" instance="Riki\Quote\Observer\ConvertOrderToQuote" />
+    </event>
+    <event name="sales_quote_delete_after">
+        <observer name="riki_after_quote_delete" instance="Riki\Quote\Observer\QuoteDelete"/>
+    </event>
+</config>

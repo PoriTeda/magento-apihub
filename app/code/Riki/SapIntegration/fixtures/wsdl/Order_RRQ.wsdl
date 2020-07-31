@@ -1,0 +1,469 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="MI_DEVWR0035542_MagentoShipment" targetNamespace="http://jp.aoa.nestle.com/cs"
+                  xmlns:p1="http://jp.aoa.nestle.com/cs" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+                  xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+    <wsdl:documentation/>
+    <wsp:UsingPolicy wsdl:required="false"/>
+    <wsp:Policy wsu:Id="OP_MI_DEVWR0035542_MagentoShipment"/>
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://jp.aoa.nestle.com/cs" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                    xmlns="http://jp.aoa.nestle.com/cs">
+            <xsd:element name="MT_MagentoShipment" type="DT_MagentoShipment"/>
+            <xsd:complexType name="DT_MagentoShipment">
+                <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/VersionID">d87d5e8e652511e6a555000000152a8f</xsd:appinfo>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element name="ShipmentBatchType">
+                        <xsd:annotation>
+                            <xsd:appinfo source="http://sap.com/xi/TextID">259b125e5a2311e690015403bc8c050e
+                            </xsd:appinfo>
+                            <xsd:documentation>Type of shipments (Orders or Returns)</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:string">
+                                <xsd:enumeration value="ORDERS"/>
+                                <xsd:enumeration value="RETURNS"/>
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="MagentoShipment" minOccurs="0" maxOccurs="unbounded">
+                        <xsd:annotation>
+                            <xsd:appinfo source="http://sap.com/xi/TextID">00f229e85a2311e692035403bc8c050e
+                            </xsd:appinfo>
+                            <xsd:documentation>List of shipments / Items</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="SapCustomerId">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226a3a55a2111e6acae5403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>SAP Customer ID</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:string">
+                                            <xsd:maxLength value="10"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:element>
+                                <xsd:element name="Warehouse">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226a3a65a2111e6c2ac5403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Warehouse number - Plant number in SAP</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:string">
+                                            <xsd:maxLength value="4"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:element>
+                                <xsd:element name="DeliveryDate">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226a3a75a2111e6b4e35403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Shipment Delivery Date, format YYYYMMDD</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:string">
+                                            <xsd:maxLength value="8"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:element>
+                                <xsd:element name="ShipmentNumber">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226a3a85a2111e6a1025403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Shipment number, aka increment ID</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:string">
+                                            <xsd:maxLength value="9"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:element>
+                                <xsd:element name="FreeOfCharge">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            cf4710315e1011e6b2195403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Free Of Charge Flag (&quot;X&quot; or Blank)
+                                        </xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:string">
+                                            <xsd:maxLength value="1"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:element>
+                                <xsd:element name="SAPReasonCode" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            cf4710325e1011e691805403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>SAP Reason Code (Mandatory for returns)</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:string">
+                                            <xsd:maxLength value="3"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:element>
+                                <xsd:element name="WrappingFee" type="xsd:decimal" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226a3a95a2111e6c0655403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Wrapping fee (Amount)</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="WrappingFeeWbs" type="xsd:string" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226a3aa5a2111e698cd5403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Wrapping Fee WBS Code</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="WrappingFeeAccountType" type="xsd:string" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226a3ab5a2111e680bc5403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Wrapping Fee Account Type</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="ShippingFee" type="xsd:decimal" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226a3ac5a2111e6c42a5403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Shipping Fee (Amount)</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="ShippingFeeDiscount" type="xsd:string" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226a3ad5a2111e6a3045403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Shipping Fee Discount (Amount)</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="ShippingFeeWbs" type="xsd:string" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226a3ae5a2111e6a9d15403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Shipping Fee WBS Code</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="ShippingFeeAccountType" type="xsd:string" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf575a2111e69e4d5403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Shipping Fee Account Type</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="PaymentFee" type="xsd:decimal" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf585a2111e6b1485403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Payment Fee (Amount)</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="PaymentFeeDiscount" type="xsd:string" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf595a2111e6c4f75403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Payment Fee Discount (Amount)</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="PaymentFeeWbs" type="xsd:string" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf5a5a2111e69b445403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Payment Fee WBS Code</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="PaymentFeeAccountType" type="xsd:string" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf5b5a2111e68b9c5403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Payment Fee Account Type</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="PointRedeem" type="xsd:integer" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf5c5a2111e6ad055403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Number of Points to redeem</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="SapTransactionId" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf5d5a2111e6a30b5403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>SAP Transaction Id (concatenation of shipment number and
+                                            order item number)
+                                        </xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="SKU">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf5e5a2111e6b46c5403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>SAP Product ID</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:string">
+                                            <xsd:maxLength value="18"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:element>
+                                <xsd:element name="Quantity" type="xsd:decimal">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf5f5a2111e684bc5403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Item Quantity</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="UnitEcom">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf605a2111e691d95403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Sales unit e-Commerce</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:string">
+                                            <xsd:maxLength value="3"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:element>
+                                <xsd:element name="GpsPrice" type="xsd:decimal">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf615a2111e697425403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Item GPS Price (initially coming from SAP)
+                                        </xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="SalesPrice" type="xsd:decimal">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf625a2111e6cb2f5403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Item Sales Price</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="DiscountAmount" type="xsd:decimal">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf635a2111e686945403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Item Discount</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="SalesOrganization">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf645a2111e6ae835403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>SAP Sales Organization</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:string">
+                                            <xsd:maxLength value="4"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:element>
+                                <xsd:element name="DistributionChannel">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf655a2111e6a0885403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>SAP Distribution Channel</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:string">
+                                            <xsd:maxLength value="2"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:element>
+                                <xsd:element name="FreeItem">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            96f9a5b6683f11e691b85403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Flag: Item free of charge</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:string">
+                                            <xsd:maxLength value="1"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:element>
+                                <xsd:element name="MaterialType" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            96f9a5b5683f11e68c4d5403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>SAP Material Type Code</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:string">
+                                            <xsd:maxLength value="4"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:element>
+                                <xsd:element name="BookingItemWbs" type="xsd:string" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf665a2111e6bc555403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Booking Item WBS Code</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="BookingItemAccount" type="xsd:string" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf675a2111e69ef65403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Booking Item Account</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="BookingItemCenter" type="xsd:string" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            ce107c07683f11e6c3785403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Booking Item Center</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="TaxAmount" type="xsd:decimal" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf685a2111e6c0e05403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Item Tax Amount</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="TaxConditionType" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf695a2111e6b8925403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Item Tax Condition Type</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:string">
+                                            <xsd:maxLength value="4"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:element>
+                                <xsd:element name="CommissionAmount" type="xsd:decimal" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf6a5a2111e6c4a55403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Item Commission Amount</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="CommissionConditionType" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf6b5a2111e692745403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Item Commission Condition Type</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                        <xsd:restriction base="xsd:string">
+                                            <xsd:maxLength value="4"/>
+                                        </xsd:restriction>
+                                    </xsd:simpleType>
+                                </xsd:element>
+                                <xsd:element name="PointAmount" type="xsd:decimal" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf6c5a2111e6cbf95403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Item Point Amount</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="BookingPointWbs" type="xsd:string" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226cf6d5a2111e6b2e95403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Item Booking Point WBS</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="BookingPointAccount" type="xsd:string" minOccurs="0">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            f226e4665a2111e6aba75403bc8c050e
+                                        </xsd:appinfo>
+                                        <xsd:documentation>Item Booking Point Account</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="MT_MagentoShipment">
+        <wsdl:documentation/>
+        <wsdl:part name="MT_MagentoShipment" element="p1:MT_MagentoShipment"/>
+    </wsdl:message>
+    <wsdl:portType name="MI_DEVWR0035542_MagentoShipment">
+        <wsdl:documentation/>
+        <wsdl:operation name="MI_DEVWR0035542_MagentoShipment">
+            <wsdl:documentation/>
+            <wsp:Policy>
+                <wsp:PolicyReference URI="#OP_MI_DEVWR0035542_MagentoShipment"/>
+            </wsp:Policy>
+            <wsdl:input message="p1:MT_MagentoShipment"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="MI_DEVWR0035542_MagentoShipmentBinding" type="p1:MI_DEVWR0035542_MagentoShipment">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"
+                      xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+        <wsdl:operation name="MI_DEVWR0035542_MagentoShipment">
+            <soap:operation soapAction="http://sap.com/xi/WebService/soap1.1"
+                            xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+            <wsdl:input>
+                <soap:body use="literal" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="MI_DEVWR0035542_MagentoShipmentService">
+        <wsdl:port name="HTTP_Port" binding="p1:MI_DEVWR0035542_MagentoShipmentBinding">
+            <soap:address
+                    location="http://rrqwebdisp.nestle.com:56701/XIAxisAdapter/MessageServlet?senderParty=&amp;senderService=AOA_JP_S_JPEMAGT001_RT_ECM&amp;receiverParty=&amp;receiverService=&amp;interface=MI_DEVWR0035542_MagentoShipment&amp;interfaceNamespace=http%3A%2F%2Fjp.aoa.nestle.com%2Fcs"
+                    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+        </wsdl:port>
+        <wsdl:port name="HTTPS_Port" binding="p1:MI_DEVWR0035542_MagentoShipmentBinding">
+            <soap:address
+                    location="https://rrqwebdisp.nestle.com:56801/XIAxisAdapter/MessageServlet?senderParty=&amp;senderService=AOA_JP_S_JPEMAGT001_RT_ECM&amp;receiverParty=&amp;receiverService=&amp;interface=MI_DEVWR0035542_MagentoShipment&amp;interfaceNamespace=http%3A%2F%2Fjp.aoa.nestle.com%2Fcs"
+                    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

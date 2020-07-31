@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_MachineApi::machine_b2c_skus"
+             title="B2C Machine SKUs"
+             module="Riki_MachineApi"
+             sortOrder="49"
+             action="machine/b2c"
+             parent="Riki_SubscriptionFrequency::subscription"
+             resource="Riki_Subscription::machine_b2c_skus"/>
+    </menu>
+</config>

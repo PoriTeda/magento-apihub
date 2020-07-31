@@ -1,0 +1,65 @@
+<li id="discount" role="presentation" class="checkout-discount">
+    <div id="checkout-step-discount"
+         class="step-content"
+         data-role="content"
+         role="tabpanel"
+         aria-hidden="false">
+
+        <form class="form form-discount" id="discount-form" data-bind="blockLoader: isLoading">
+
+            <div class="no-margin-bottom">
+                <div class="opc-single-sub">
+                    <div class="opc-sub-title">
+                        <span data-bind="i18n: 'Coupon code'"></span>
+                    </div>
+                    <fieldset class="fieldset">
+                        <div class="payment-option-inner">
+                            <div class="field">
+                                <div class="control">
+                                    <!-- ko if : !checkIsApplied() -->
+                                    <input class="input-text"
+                                           type="text"
+                                           id="discount-code-fake"
+                                           name="discount_code_fake"
+                                           data-validate="{'required-entry':true}" />
+                                    <span id="discount-msg-riki-err"></span>
+                                    <!-- /ko -->
+                                    <!-- ko if : checkIsApplied() -->
+                                    <span class="discount-code__name" data-bind="html: couponCode "></span><span id="discount-msg-riki"></span>
+                                    <!-- /ko -->
+                                    <input class="input-text"
+                                           type="hidden"
+                                           id="discount-code"
+                                           name="discount_code"
+                                           data-bind="value: couponCode " />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="actions-toolbar">
+                            <!-- ko if : !checkIsApplied() -->
+                            <div class="primary">
+                                <button class="action btn-blue action-apply" type="submit" data-bind="click: apply">
+                                    <span><!-- ko text: $t('適用する')--><!-- /ko --></span>
+                                </button>
+                            </div>
+                            <!-- /ko -->
+                            <!-- ko if : checkIsApplied() -->
+                            <div class="primary">
+                                <button class="action btn-blue action-apply" type="button" data-bind="click: cancel">
+                                    <span><!-- ko text: $t('Cancel')--><!-- /ko --></span>
+                                </button>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </form>
+    </div>
+</li>
+
+
+
+
+

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="admin.scope.col.wrap" htmlClass="admin__old" />
+        <referenceContainer name="content">
+            <block class="Riki\ThirdPartyImportExport\Block\Adminhtml\Order\View" name="thirdpartyimportexport_order_view" />
+        </referenceContainer>
+        <referenceContainer name="left">
+            <block class="Riki\ThirdPartyImportExport\Block\Adminhtml\Order\View\Tabs" name="thirdpartyimportexport_order_view_tabs">
+                <block class="Riki\ThirdPartyImportExport\Block\Adminhtml\Order\View\Tab\Info" template="order/view/tab/info.phtml" name="order_tab_info">
+                    <block class="Riki\ThirdPartyImportExport\Block\Adminhtml\Order\View\Info" name="order_info" template="order/view/info.phtml"/>
+                </block>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">order_info</argument>
+                    <argument name="block" xsi:type="string">order_tab_info</argument>
+                </action>
+            </block>
+        </referenceContainer>
+    </body>
+ </page>

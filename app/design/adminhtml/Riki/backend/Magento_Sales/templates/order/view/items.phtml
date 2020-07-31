@@ -1,0 +1,59 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/** @var \Riki\Sales\Helper\Admin $helper */
+$helper = $this->helper('Riki\Sales\Helper\Admin');
+/** @var \Riki\StockPoint\Helper\Data $stockPointHelper */
+$stockPointHelper = $this->helper('Riki\StockPoint\Helper\Data');
+?>
+<?php $_order = $block->getOrder() ?>
+<div class="admin__table-wrapper" id="edit-order-content">
+    <table class="data-table admin__table-primary edit-order-table">
+        <thead>
+        <tr class="headings">
+            <th class="col-product"><span><?php /* @escapeNotVerified */ echo __('Item / Service') ?></span></th>
+            <th class="col-price-original"><span><?php /* @escapeNotVerified */ echo __('Basic Selling Price (Incl. Tax)') ?></span></th>
+            <th class="col-price"><span><?php /* @escapeNotVerified */ echo __('Catalog Discount Amount (Incl. Tax)') ?></span></th>
+            <?php if ($stockPointHelper->isStockPointProfileOrder($_order)): ?>
+            <th class="col-price"><span><?php /* @escapeNotVerified */ echo __('Stock Point Discount Amount (Incl. Tax)') ?></span></th>
+            <?php endif; ?>
+            <th class="col-ordered-qty"><span><?php /* @escapeNotVerified */ echo __('Quantity') ?></span></th>
+            <th class="col-subtotal"><span><?php /* @escapeNotVerified */ echo __('Purchased Amount (Incl. Tax)') ?></span></th>
+            <th class="col-discont"><span><?php /* @escapeNotVerified */ echo __('Discount Amount') ?></span></th>
+            <th class="col-wrapping-fee"><span><?php /* @escapeNotVerified */ echo __('Wrapping Fee') ?></span></th>
+            <th class="col-total"><span><?php /* @escapeNotVerified */ echo __('Row Total') ?></span></th>
+            <th class="col-rw-earned <?php if(!$helper->allowToChangeShippingAddressOfOrder($_order)): ?>last<?php endif; ?>"><span><?php /* @escapeNotVerified */ echo __('Reward Points Earned') ?></span></th>
+            <?php if($helper->allowToChangeShippingAddressOfOrder($_order)): ?>
+            <th class="col-address last"><span><?php /* @escapeNotVerified */ echo __('Address') ?></span></th>
+            <?php endif; ?>
+        </tr>
+        </thead>
+        <?php $_items = $helper->sortOrderItemByAddressAndSku($block->getItemsCollection());?>
+        <?php $i = 0; foreach ($_items as $_item):?>
+            <?php if ($_item->getParentItem()) {
+                continue;
+            } else {
+                $i++;
+            }?>
+            <tbody class="<?php /* @escapeNotVerified */ echo $i%2 ? 'even' : 'odd' ?>">
+            <?php echo $block->getItemHtml($_item) ?>
+            <?php echo $block->getItemExtraInfoHtml($_item) ?>
+            </tbody>
+        <?php endforeach; ?>
+    </table>
+</div>
+
+<?php if($helper->allowToChangeShippingAddressOfOrder($_order)): ?>
+    <div class="actions">
+        <button title="<?php echo __('Update Shipping Address') ?>" type="button" class="action-default scalable save" onclick="updateShippingAddress($('edit-order-content'), '<?php echo $helper->getUpdateShippingAddressUrl($_order->getId()) ?>', $('admin__order-delivery-info'))">
+            <span><?php echo __('Update Shipping Address') ?></span>
+        </button>
+    </div>
+<?php endif; ?>

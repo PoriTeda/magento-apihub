@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="catalogrule_product" resource="default" engine="innodb" comment="CatalogRule Product">
+        <column xsi:type="int" name="course_id" padding="10" unsigned="true" nullable="true" identity="false"/>
+        <column xsi:type="int" name="frequency_id" padding="10" unsigned="true" nullable="true" identity="false"/>
+        <constraint xsi:type="unique" referenceId="UNQ_EAA51B56FF092A0DCB795D1CEF812B7B" disabled="1"/>
+        <constraint xsi:type="unique" referenceId="UNQ_EAA51B56FF092A0DCB795D1CEF812B7B_FIX">
+            <column name="rule_id"/>
+            <column name="from_time"/>
+            <column name="to_time"/>
+            <column name="website_id"/>
+            <column name="customer_group_id"/>
+            <column name="product_id"/>
+            <column name="sort_order"/>
+            <column name="course_id"/>
+            <column name="frequency_id"/>
+        </constraint>
+    </table>
+    <table name="catalogrule_product_replica" resource="default" engine="innodb" comment="CatalogRule Product">
+        <column xsi:type="int" name="course_id" padding="10" unsigned="true" nullable="true" identity="false"/>
+        <column xsi:type="int" name="frequency_id" padding="10" unsigned="true" nullable="true" identity="false"/>
+        <constraint xsi:type="unique" referenceId="UNQ_EAA51B56FF092A0DCB795D1CEF812B7B" disabled="1"/>
+        <constraint xsi:type="unique" referenceId="UNQ_EAA51B56FF092A0DCB795D1CEF812B7B_FIX">
+            <column name="rule_id"/>
+            <column name="from_time"/>
+            <column name="to_time"/>
+            <column name="website_id"/>
+            <column name="customer_group_id"/>
+            <column name="product_id"/>
+            <column name="sort_order"/>
+            <column name="course_id"/>
+            <column name="frequency_id"/>
+        </constraint>
+    </table>
+</schema>

@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route method="POST" url="/V1/rikiRma/rma/refundMethod">
+        <service class="Riki\Rma\Api\RmaRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Riki_Rma::rma_refund_actions_save_method"/>
+        </resources>
+    </route>
+    <route url="/V1/returns" method="POST">
+        <service class="Riki\Rma\Api\RmaManagementInterface" method="createRmaByApi"/>
+        <resources>
+            <resource ref="Riki_Rma::rma_return_actions_save" />
+        </resources>
+    </route>
+</routes>

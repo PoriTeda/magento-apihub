@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki_SubscriptionCourse::course"
+             title="Subscription Courses"
+             module="Riki_SubscriptionCourse"
+             sortOrder="9"
+             action="subscription/course"
+             parent="Riki_SubscriptionFrequency::subscription"
+             resource="Riki_SubscriptionCourse::course"/>
+    </menu>
+</config>

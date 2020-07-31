@@ -1,0 +1,17 @@
+<?php
+    // @codingStandardsIgnoreFile
+    /** @var $block \Magento\Sales\Block\Order\Info */
+    
+    $_order = $block->getOrder();
+    $_number_order = $_order->getRealOrderId();
+    $_orderCanceled = false;
+    if($_order->getStatus() == 'processing_canceled' || $_order->getStatus() == 'canceled') {
+        $_orderCanceled = true;
+    }
+?>
+<div class="order-title">
+    <span><?php echo __("Order number:"). $_number_order ?></span>
+    <?php if($_orderCanceled): ?>
+    <span class="ms-order-status"><?php echo __('Canceled Order') ?></span>
+    <?php endif; ?>
+</div>

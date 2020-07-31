@@ -1,0 +1,39 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <preference for="Mirasvit\FraudCheck\Api\Service\MatchServiceInterface" type="Mirasvit\FraudCheck\Service\MatchService"/>
+    <preference for="Mirasvit\FraudCheck\Api\Service\RenderServiceInterface" type="Mirasvit\FraudCheck\Service\RenderService"/>
+
+    <type name="Mirasvit\FraudCheck\Rule\Pool">
+        <arguments>
+            <argument name="rules" xsi:type="array">
+                <item name="address_address_match" xsi:type="object">Mirasvit\FraudCheck\Rule\Address\AddressMatch</item>
+                <item name="location_address_match" xsi:type="object">Mirasvit\FraudCheck\Rule\Location\AddressMatch</item>
+                <item name="order_grand_total" xsi:type="object">Mirasvit\FraudCheck\Rule\Order\GrandTotal</item>
+                <item name="weird_phone" xsi:type="object">Mirasvit\FraudCheck\Rule\Weird\Phone</item>
+                <item name="weird_email" xsi:type="object">Mirasvit\FraudCheck\Rule\Weird\Email</item>
+                <item name="history_customer" xsi:type="object">Mirasvit\FraudCheck\Rule\History\Customer</item>
+                <item name="history_ip" xsi:type="object">Mirasvit\FraudCheck\Rule\History\Ip</item>
+                <item name="location_distance" xsi:type="object">Mirasvit\FraudCheck\Rule\Location\Distance</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="fraud_score" xsi:type="string">sales_order.fraud_score</item>
+                <item name="fraud_status" xsi:type="string">sales_order.fraud_status</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="fraudCheckTestCommand" xsi:type="object">Mirasvit\FraudCheck\Console\Command\TestCommand</item>
+                <item name="fraudCheckCronCommand" xsi:type="object">Mirasvit\FraudCheck\Console\Command\CronCommand</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" layout="1column">
+    <update handle="customer_account"/>
+    <body>
+        <attribute name="class" value="amrewards-index-index"/>
+        <referenceContainer name="content">
+            <block cacheable="false" class="Riki\Loyalty\Block\Reward" name="loyalty_reward_setting_index" template="account/setting.phtml"/>
+            <block cacheable="false" class="Riki\Loyalty\Block\Reward" name="loyalty_reward_history" template="account/history.phtml"/>
+        </referenceContainer>
+        <referenceBlock name="page.main.title.sub" remove="true" />
+        <move element="page.main.title" destination="columns.top" before="-"/>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument name="title" translate="true" xsi:type="string">Point history</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

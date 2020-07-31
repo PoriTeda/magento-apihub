@@ -1,0 +1,45 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <trans_email>
+            <emailtemplate>
+                <emailfooter>
+                    ネスレ通販オンラインショップ
+                    【各種お問い合わせは以下からご確認ください】
+                    https://shop.nestle.jp/front/contents/inquiry/
+                    [発行] ネスレ日本株式会社
+                    651-0087　兵庫県神戸市中央区御幸通7-1-15
+                    @-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-
+                    （C） Nestle Group All Rights Reserved.
+                    許可なく転載することを禁じます。
+                    [@EMAIL@]@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@-@
+                </emailfooter>
+            </emailtemplate>
+        </trans_email>
+        <emailqueue>
+            <setting>
+                <unsendhours>20,21,22,23,01,02,03,04,05,06</unsendhours>
+                <scheduler>00 09 * * *</scheduler>
+            </setting>
+        </emailqueue>
+        <resend_email_queue>
+            <setting>
+                <identity>sales</identity>
+                <queue_cron>*/5 * * * *</queue_cron>
+            </setting>
+        </resend_email_queue>
+        <sales_email>
+            <general>
+                <send_order_schedule>*/1 * * * *</send_order_schedule>
+            </general>
+            <order>
+                <spot_order_change_enable>1</spot_order_change_enable>
+                <subscription_order_change_enable>1</subscription_order_change_enable>
+            </order>
+        </sales_email>
+        <system>
+            <error_cron>
+                <error_cron_email>error.cron.support.riki@mailinator.com</error_cron_email>
+            </error_cron>
+        </system>
+    </default>
+</config>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="checkout_submit_all_after">
+        <observer name="riki_checkout_checkout_submit_all_after_order_adress" instance="Riki\Checkout\Observer\MultishippingOrderAddress" />
+        <observer name="riki_sales_checkout_submit_after_frontend" instance="Riki\Sales\Observer\CheckoutSubmitAllAfterFrontEnd" />
+    </event>
+</config>

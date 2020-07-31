@@ -1,0 +1,11 @@
+<!--@subject いくつかの製品は無効か、削除されています @-->
+＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋
+
+ネスレ通販
+
+オンラインショップからのお知らせです。
+
+＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋
+{{layout handle="profile_email_product_cart" product=$product area="adminhtml"}}
+
+EMAIL-FOOTER

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="riki.minicart" remove="true"/>
+        <referenceContainer name="content">
+            <block class="Riki\Subscription\Block\Multiple\Category\Success" name="subscription_multiple_category_success" template="Riki_Subscription::multiple/category/success.phtml" cacheable="false">
+            </block>
+        </referenceContainer>
+    </body>
+</page>

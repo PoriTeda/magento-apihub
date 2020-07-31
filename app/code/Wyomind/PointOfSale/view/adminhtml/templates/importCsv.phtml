@@ -1,0 +1,22 @@
+<div id="pos-import-csv" style="display: none;" class="messages">
+
+    <?php $action = $block->getUrl('*/*/importCsv'); ?>
+    <form novalidate="novalidate" id="import-csv-file" class="admin__scope-old" action="<?php echo $action; ?>" method="post" enctype="multipart/form-data">
+
+        <fieldset class="fieldset admin__fieldset">
+            <input name="form_key" type="hidden" value="<?php echo $block->getFormKey() ?>" />
+
+            <div class="admin__field field required _required">
+                <label class="label admin__field-label" for="csv-file">
+                    <span><?php echo __("Csv File To Import"); ?></span>
+                </label>
+                <div class="admin__field-control control">
+                    <input aria-required="true" id="csv-file" name="csv-file" value="" title="<?php echo __("Csv File To Import"); ?>" class="input-text admin__control-text required-entry _required" type="file">
+                </div>
+            </div>
+
+        </fieldset>
+
+    </form>    
+
+</div>

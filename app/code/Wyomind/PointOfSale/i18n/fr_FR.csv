@@ -1,0 +1,194 @@
+
+
+"./Block/Adminhtml/Manage/Edit.php",""
+
+"Delete POS / Warehouse","Supprimer la Point de Vente / Entrepôt"
+"Save and Continue Edit","Enregistrer et continuer l'édition"
+"Save POS / Warehouse","Enregistrer le Point de Vente / Entrepôt"
+
+
+"./Block/Adminhtml/Manage/Edit/Tab/Address.php",""
+
+"Address & Contact","Adresse & Contact"
+"Address & Hours","Adresse & Heures d'ouverture"
+"Address line 1","Ligne d'adresse 1"
+"Address line 2","Ligne d'adresse 2"
+"City","Ville"
+"Country","Pays"
+"Description","Description"
+"Email","Email"
+"Hours","Heures d'ouverture"
+"Image","Image"
+"Main phone","Téléphone"
+"--Please select a state--","--Sélectionner un département--"
+"Postal code","Code postal"
+"State","Département"
+
+
+"./Block/Adminhtml/Manage/Edit/Tab/Customergroups.php",""
+
+"Customer Group","Groupe de Clients"
+"Customer Group Selection","Séléction des groupes de clients"
+"No Customer Group","Aucun groupe"
+
+
+"./Block/Adminhtml/Manage/Edit/Tab/Main.php",""
+
+"General Information","Information Générale"
+"Latitude","Latitude"
+"Longitude","Longitude"
+"Name","Nom"
+"Order of display","Priorité"
+"Type of display","Type"
+"Warehouse (not visible on the Gmap/checkout)","Entrepôt (Non visible sur la carte et le processus d'achat)"
+"Point of Sales (visible on the Gmap/checkout)","Point de Vente (Visible sur la carte et le processus d'achat)"
+"Find the coordinates with Google Map:","Trouver les coordonnées grace à Google Map:"
+
+
+"./Block/Adminhtml/Manage/Edit/Tabs.php",""
+
+"Point Of Sale","Point de Vente"
+
+
+"./Block/Adminhtml/Manage/Edit/Tab/Storeviews.php",""
+
+"No Store View","Aucun storeview"
+"Store View","Storeview"
+"Store Views Selection","Sélection des storeviews"
+
+
+"./Block/Adminhtml/Manage/Grid.php",""
+
+"Action","Action"
+"Are you sure?","Êtes vous sûr ?"
+"Customer Group selection","Groupes de clients"
+"Delete","Supprimer"
+"Id","Id"
+"Order","Priorité"
+"Status","Statut"
+"Store","Magasin"
+"Store view selection","Magasins"
+"Warehouse (hidden)","Entrepôt (caché)"
+"Point of Sales (visible)","Point de Vente (visible)"
+
+
+"./Block/Adminhtml/Manage.php",""
+
+"Create New Point Of Sale / Warehouse","Créer un nouveau point de Vente / entrepôt"
+"Export a csv File","Exporter un fichier csv"
+"Import a csv File","Importer un fichier csv"
+"Import File","Importer"
+"Points Of Sale / Warehouses","Points de Vente / Entrepôts"
+
+
+"./Block/Adminhtml/Manage/Renderer/Action.php",""
+
+"Are you sure you want to delete this pos / warehouse ?","Êtes vous sûr de vouloir supprimer le point de Vente / entrepôt ?"
+"Delete","Supprimer"
+"Edit","Modifier"
+
+
+"./Block/Adminhtml/Manage/Renderer/Customergroup.php",""
+
+"No Customer Group","Aucun groupe de clients"
+
+
+"./Block/Adminhtml/Manage/Renderer/Hours.php",""
+
+"Friday","Vendredi"
+"Monday","Lundi"
+"Saturday","Samedi"
+"Sunday","Dimanche"
+"Thursday","Jeudi"
+"Tuesday","Mardi"
+"Wednesday","Mercredi"
+
+
+"./Block/Adminhtml/Manage/Renderer/Storeview.php",""
+
+"No Store View","Aucun storeview"
+
+
+"./Block/Pointofsale.php",""
+
+"All countries","Tous les pays"
+"All our store locations","Tous nos magasin"
+"change my location","Changer ma localisation"
+"Close","Fermer"
+"Distance calculation failed","Le calcul de distance a échoué"
+"Find me","Trouvez moi"
+"From","Depuis"
+"Get Directions","Obtenir la direction"
+"No result found.","Aucun résultat trouvé."
+"No store located","Aucun magasin trouvé"
+"Print","Imprimer"
+"Searching your location","Recherche votre localisation"
+"Select a country","Sélectionner un pays"
+"Set a new location","Sélectionner une nouvelle localisation"
+"show my location","Afficher ma localisation"
+"Show on Google Map","Afficher sur Google Map"
+"The nearest store is","Le magasin le plus proche est"
+"Unable to find your location","Impossible de trouver votre localisation"
+"You are here","Vous etes ici"
+"Your directions","Votre direction"
+"Your location","Votre localisation"
+
+
+"./Controller/Adminhtml/Manage/Edit.php",""
+
+"Manage POS / WH","Gérer les Points de Vente / Entrepots"
+"Modify POS / WH : ","Modifier le Point de Vente / Entrepot : "
+"New POS /WH","Nouveau Point de Vente / Entrepot"
+"Point Of Sale","Point de Vente"
+"This point of sale / Warehouse no longer exists.","Ce Point de Vente / Entrepot n'existe plus."
+
+
+"./Controller/Adminhtml/Manage/ImportCsv.php",""
+
+"places have been imported.","places ont été importées."
+"Wrong file type (","Format de fichier invalide ("
+").<br>Choose a csv file.",").<br>Veuillez choisir un fichier csv."
+
+
+"./Controller/Adminhtml/Manage/Index.php",""
+
+"Points Of Sale / Warehouses","Points de Vente / Entrepots"
+
+
+"./Controller/Adminhtml/Manage/Save.php",""
+
+"The POS has been saved.","Le point de Vente a été enregistré."
+"Unable to save the POS.","Impossible d'enregistrer le point de Vente."
+
+
+"./view/adminhtml/templates/importCsv.phtml",""
+
+"Csv File To Import","Fichier csv à importet"
+
+
+"./view/frontend/templates/pointofsale.phtml",""
+
+"All countries","Tous les pays"
+"All our store locations","Tous nos magasins"
+"Close","Fermer"
+"Print","Imprimer"
+"Searching your location","Recherche de votre localisation"
+"Select a country :","Sélectionner un pays :"
+"Your directions","Votre direction"
+
+
+
+"System / Config / Point of Sale",""
+
+
+"License activation","Licence"
+"Extension version","Version de l'extension"
+"Activation key","Clé d'activation"
+"1- Fill this field with your activation key.","1- Renseignez ce champs avec votre clé d'activation."
+"Remote activation","Activation automatique"
+"2- Choose your activation method.\n[yes = automatic activation]\n[no = manual activation]","2- Choisissez votre méthode d'activation.<br/>[oui = Activation automatique]<br/>[non = Activation manuelle]"
+"Activation code","Code d'activation"
+"3 - Follow the instructions in the nofication.\nThen fill this field with the license code you get.","3 - Suivez les intructions dans la notification.<br/>Ensuite remplissez le champs avec la code d'activation que vous obtenez."
+"Settings","Configuration"
+"Store description template","Template de la description des magasins"
+"Html and css code are supported. Available variables : {{code}},{{name}},{{phone}},{{email}},{{address_1}},{{address_2}},{{city}},{{state}},{{country}},{{zipcode}},{{hours}},{{description}},{{image}}","Code HTML et CSS disponible. Variables disponibles : {{code}},{{name}},{{phone}},{{email}},{{address_1}},{{address_2}},{{city}},{{state}},{{country}},{{zipcode}},{{hours}},{{description}},{{image}}"

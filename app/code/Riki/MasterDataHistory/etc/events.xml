@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="catalog_product_save_after">
+        <observer name="history_data_product" instance="Riki\MasterDataHistory\Observer\Product\ProductSaveAfter" />
+    </event>
+    <event name="catalog_product_save_before">
+        <observer name="history_data_product" instance="Riki\MasterDataHistory\Observer\Product\ProductSaveBefore" />
+    </event>
+    <event name="catalog_product_delete_after">
+        <observer name="history_data_product" instance="Riki\MasterDataHistory\Observer\Product\ProductDeleteAfter" />
+    </event>
+    <event name="catalog_product_attribute_update_before">
+        <observer name="history_data_product" instance="Riki\MasterDataHistory\Observer\Product\ProductAttributeUpdateBefore" />
+    </event>
+    <!--Category -->
+    <event name="catalog_category_save_after">
+        <observer name="history_data_category" instance="Riki\MasterDataHistory\Observer\Category\CategorySaveAfter" />
+    </event>
+    <event name="catalog_category_save_before">
+        <observer name="history_data_category" instance="Riki\MasterDataHistory\Observer\Category\CategorySaveBefore" />
+    </event>
+    <event name="catalog_category_delete_after">
+        <observer name="history_data_category" instance="Riki\MasterDataHistory\Observer\Category\CategoryDeleteAfter" />
+    </event>
+    <!--Rma-->
+    <event name="rma_save_after">
+        <observer name="history_data_rma" instance="Riki\MasterDataHistory\Observer\Rma\RmaSaveAfter" />
+    </event>
+    <!--Shosha-->
+    <event name="shosha_save_after">
+        <observer name="history_data_shosha" instance="Riki\MasterDataHistory\Observer\Shosha\ShoshaSaveAfter" />
+    </event>
+    <event name="shosha_delete_after">
+        <observer name="history_data_shosha" instance="Riki\MasterDataHistory\Observer\Shosha\ShoshaDeleteAfter" />
+    </event>
+    <event name="shosha_import_after">
+        <observer name="history_data_shosha" instance="Riki\MasterDataHistory\Observer\Shosha\ShoshaImportAfter" />
+    </event>
+
+    <!-- import product -->
+    <event name="catalog_product_import_finish_before">
+        <observer name="history_data_import_product" instance="Riki\MasterDataHistory\Observer\ImportProduct\ImportProduct" />
+    </event>
+    <event name="catalog_product_import_product_ids">
+        <observer name="history_data_import_product" instance="Riki\MasterDataHistory\Observer\ImportProduct\ImportInsertUpdateProduct" />
+    </event>
+    <!-- Gift wrapping -->
+    <event name="gift_wrapping_delete_after">
+        <observer name="history_data_gift-wrapping" instance="Riki\MasterDataHistory\Observer\GiftWrapping\GiftDeleteAfter" />
+    </event>
+</config>

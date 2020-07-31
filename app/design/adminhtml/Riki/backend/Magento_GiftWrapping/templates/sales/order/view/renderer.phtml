@@ -1,0 +1,52 @@
+
+<?php
+/** @var \Magento\Sales\Model\Order\Item $_item */
+$_item = $block->getItem();
+/** @var \Riki\StockPoint\Helper\Data $stockPointHelper */
+$stockPointHelper = $this->helper('Riki\StockPoint\Helper\Data');
+?>
+<?php $unitQty = ((int)$_item->getData('unit_qty'))?(int)$_item->getData('unit_qty'):1;?>
+<tr>
+    <td><?php /* @escapeNotVerified */ echo __('Gift Wrapping'); ?> </td>
+    <td class="a-right">
+        <?php if ($this->helper('Magento\GiftWrapping\Helper\Data')->displaySalesWrappingBothPrices() || $this->helper('Magento\GiftWrapping\Helper\Data')->displaySalesWrappingExcludeTaxPrice()): ?>
+            <span class="price-excl-tax">
+                <?php if ($this->helper('Magento\GiftWrapping\Helper\Data')->displaySalesWrappingBothPrices()): ?>
+                    <span class="label"><?php /* @escapeNotVerified */ echo __('Excl. Tax'); ?>:</span>
+                <?php endif; ?>
+                <?php /* @escapeNotVerified */ echo $block->displayPrices($_item->getGwBasePrice(), $_item->getGwPrice()); ?>
+            </span>
+        <?php endif; ?>
+        <?php if ($this->helper('Magento\GiftWrapping\Helper\Data')->displaySalesWrappingBothPrices() || $this->helper('Magento\GiftWrapping\Helper\Data')->displaySalesWrappingIncludeTaxPrice()): ?>
+            <br />
+            <span class="price-incl-tax">
+                <?php if ($this->helper('Magento\GiftWrapping\Helper\Data')->displaySalesWrappingBothPrices()): ?>
+                    <span class="label"><?php /* @escapeNotVerified */ echo __('Incl. Tax'); ?>:</span>
+                <?php endif; ?>
+                <?php $_incl = $_item->getGwPrice() + $_item->getGwTaxAmount(); ?>
+                <?php $_baseIncl = $_item->getGwBasePrice() + $_item->getGwBaseTaxAmount(); ?>
+                <?php /* @escapeNotVerified */ echo $block->displayPrices($_baseIncl, $_incl) ?>
+            </span>
+        <?php endif; ?>
+    </td>
+    <td></td>
+    <?php if ($stockPointHelper->isStockPointProfileOrder($_item->getOrder())): ?>
+        <td></td>
+    <?php endif; ?>
+    <?php if(\Riki\CreateProductAttributes\Model\Product\CaseDisplay::PROFILE_UNIT_CASE == $_item->getData('unit_case')) {?>
+        <td class="a-right"><?php /* @escapeNotVerified */ echo $_item->getQtyOrdered()*1/$unitQty; ?>(<?php echo __('CS').' ('.$unitQty.' '.__('EA').')';?>)</td>
+    <?php  } elseif(\Riki\CreateProductAttributes\Model\Product\CaseDisplay::PROFILE_UNIT_PIECE == $_item->getData('unit_case')) {?>
+        <td class="a-right"><?php /* @escapeNotVerified */ echo $_item->getQtyOrdered()*1; ?>(<?php echo __('EA');?>)</td>
+    <?php  } else {?>
+        <td class="a-right"><?php /* @escapeNotVerified */ echo $_item->getQtyOrdered()*1 ?></td>
+    <?php  }?>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td class="a-right">
+        <?php $_incl = $_item->getGwPrice() + $_item->getGwTaxAmount(); ?>
+        <?php $_baseIncl = $_item->getGwBasePrice() + $_item->getGwBaseTaxAmount(); ?>
+        <?php /* @escapeNotVerified */ echo $block->displayPrices($_baseIncl  * $_item->getQtyOrdered()/$unitQty, $_incl * $_item->getQtyOrdered()/$unitQty);?>
+    </td>
+    <td class="last"></td>
+</tr>

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <eway>
+                <model>Magento\Eway\Model\Method\Adapter</model>
+                <active>0</active>
+                <title>Credit Card (eWAY)</title>
+                <sandbox_flag>1</sandbox_flag>
+                <debug>1</debug>
+                <cctypes>AE,VI,MC,JCB,DN</cctypes>
+                <date_delim>-</date_delim>
+                <cc_year_length>4</cc_year_length>
+                <ccfields>card_cvn,card_expiry_date,card_number</ccfields>
+                <allowspecific>0</allowspecific>
+                <live_gateway>https://api.ewaypayments.com</live_gateway>
+                <sandbox_gateway>https://api.sandbox.ewaypayments.com</sandbox_gateway>
+                <live_api_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <live_api_password backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <live_encryption_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <sandbox_api_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <sandbox_api_password backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <sandbox_encryption_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <payment_action>authorize</payment_action>
+                <connection_type>direct</connection_type>
+                <can_initialize>1</can_initialize>
+                <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
+                <can_capture_partial>1</can_capture_partial>
+                <can_void>1</can_void>
+                <can_refund>1</can_refund>
+                <can_refund_partial_per_invoice>1</can_refund_partial_per_invoice>
+                <can_use_internal>1</can_use_internal>
+                <can_use_checkout>1</can_use_checkout>
+                <is_gateway>1</is_gateway>
+                <crypt_script>https://secure.ewaypayments.com/scripts/eCrypt.js</crypt_script>
+                <debugReplaceKeys>api_password,api_key,encryption_key</debugReplaceKeys>
+                <paymentInfoKeys>cc_type,transaction_type,transaction_id,beagle_score,cvv_validation,address_verification,email_verification,mobile_verification,phone_verification,card_number,card_expiry_date,response_code,fraud_messages,approve_messages</paymentInfoKeys>
+                <privateInfoKeys>transaction_type,transaction_id,beagle_score,cvv_validation,address_verification,email_verification,mobile_verification,phone_verification,response_code,fraud_messages,approve_messages</privateInfoKeys>
+            </eway>
+        </payment>
+    </default>
+</config>

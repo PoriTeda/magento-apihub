@@ -1,0 +1,29 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**  @var $block \Magento\Checkout\Block\Cart */
+?>
+<?php
+$urlTopPage = $block->getUrlTopPage();
+?>
+<div class="cart-empty">
+    <?php echo $block->getChildHtml('checkout_cart_empty_widget'); ?>
+    <div class="cart-empty-content">
+        <div class="left">
+            <img src="<?php echo $block->getViewFileUrl('Magento_Checkout::images/u4459.png'); ?>" alt=""/>
+        </div>
+        <div class="right">
+            <h3><?php /* @escapeNotVerified */ echo __('You have no items in your shopping cart.') ?></h3>
+            <p><?php /* @escapeNotVerified */ echo __('Click here to continue shopping.') ?></p>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <a class="action primary continue" href="<?php echo $block->escapeUrl($urlTopPage) ?>"><span><?php /* @escapeNotVerified */ echo __('Back To TOP') ?></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php echo $block->getChildHtml('shopping.cart.table.after'); ?>
+</div>

@@ -1,0 +1,32 @@
+.admin__fieldset {
+  .mixin-legend();
+}
+
+.mixin-legend() {
+  legend {
+    display: block;
+    line-height: 1.4rem;
+    margin-bottom: 0.86rem;
+    margin-top: -0.14rem;
+    text-align: left;
+    width: auto;
+    font-weight: 600;
+    position: relative;
+    padding-left: 15px;
+
+    &.required {
+      &:after {
+        color: #e22626;
+        content: '*';
+        display: inline-block;
+        font-size: 1.6rem;
+        font-weight: 500;
+        line-height: 1;
+        margin-top: .2rem;
+        position: absolute;
+        z-index: 1;
+        left: 0;
+      }
+    }
+  }
+}

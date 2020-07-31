@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="scheduler_schedules_listing_data_source" xsi:type="string">Bluecom\Scheduler\Model\ResourceModel\Schedules\Grid\Collection</item>
+                <item name="scheduler_jobs_listing_data_source" xsi:type="string">Bluecom\Scheduler\Model\ResourceModel\Jobs\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Bluecom\Scheduler\Model\ResourceModel\Schedules\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">cron_schedule</argument>
+            <argument name="eventPrefix" xsi:type="string">scheduler_schedules_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">scheduler_schedules_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Bluecom\Scheduler\Model\ResourceModel\Schedules</argument>
+        </arguments>
+    </type>
+    <type name="Bluecom\Scheduler\Model\ResourceModel\Jobs\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">mast_scheduler_jobs</argument>
+            <argument name="eventPrefix" xsi:type="string">scheduler_jobs_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">scheduler_jobs_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Bluecom\Scheduler\Model\ResourceModel\Jobs</argument>
+        </arguments>
+    </type>
+    <virtualType name="SchedulesGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Bluecom\Scheduler\Model\ResourceModel\Schedules\Grid\Collection</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="JobsGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Bluecom\Scheduler\Model\ResourceModel\Jobs\Grid\Collection</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- orverride area -->
+    <preference for="Magento\Cron\Model\Schedule" type="Bluecom\Scheduler\Model\Override\Schedule"/>
+
+</config>

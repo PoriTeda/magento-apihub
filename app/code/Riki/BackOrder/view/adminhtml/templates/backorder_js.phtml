@@ -1,0 +1,41 @@
+<?php
+/**
+ * @var $block \Riki\Preorder\Block\Adminhtml\Product\Edit\Tab\Inventory\PreOrderJs
+ */
+?>
+<script type="text/javascript">
+    require([
+            'jquery'
+        ],
+        function($) {
+
+            InventoryManager = {
+                updateConfig: function (elt) {
+                    $(elt).parent().parent().parent().prev().prev().prev().find("select").prop('disabled', $(elt).prop('checked'));
+                    $(elt).parent().parent().parent().prev().prev().find("[name*=\\]\\[backorder_limit\\]]").prop('disabled', $(elt).prop('checked'));
+                    $(elt).parent().parent().parent().prev().find("[name*=\\]\\[backorder_expire\\]]").prop('disabled', $(elt).prop('checked'));
+
+                    var elt_check = $(elt).prop('checked');
+                    if(elt_check){
+                        $(elt).parent().parent().parent().prev().prev().addClass('_disabled');
+                        $(elt).parent().parent().parent().prev().addClass('_disabled');
+                    }else{
+                        $(elt).parent().parent().parent().prev().prev().removeClass('_disabled');
+                        $(elt).parent().parent().parent().prev().removeClass('_disabled');
+                    }
+                    
+                    $(elt).val($(elt).prop('checked') ? '1' : '0');
+                }
+            };
+
+            // initialize display
+            $("div[data-index=wyomind_advanced_inventory] [name*=\\]\\[use_config_setting_for_backorders\\]]").each(function () {
+                InventoryManager.updateConfig($(this));
+            });
+            // checkbox use config ?
+            $("div[data-index=wyomind_advanced_inventory] [name*=\\]\\[use_config_setting_for_backorders\\]]").on('change', function () {
+                InventoryManager.updateConfig($(this));
+            });
+        }
+    );
+</script>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" layout="1column">
+    <head>
+        <title>Add to next scheduled delivery</title>
+    </head>
+    <body>
+        <referenceBlock name="page.main.title" remove="true"/>
+        <referenceContainer name="content">
+            <block class="Riki\Subscription\Block\Profiles\Select" template="Riki_Subscription::profiles/select.phtml" name="subscription_profiles_select"/>
+        </referenceContainer>
+    </body>
+</page>

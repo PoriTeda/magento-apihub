@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="customer" translate="label">
+            <group id="magento_customersegment" translate="label" showInDefault="1" showInWebsite="0" showInStore="0" sortOrder="100">
+                <label>Customer Segments</label>
+                <field id="is_enabled" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Customer Segment Functionality</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Cache</backend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,14 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$scopeConfig = $objectManager->create('Magento\Framework\App\Config\ScopeConfigInterface');
+$isMinify = $scopeConfig->getValue('dev/js/minify_files', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+?>
+<script>
+    var BASE_URL = '<?php /* @escapeNotVerified */ echo $block->getUrl('*') ?>';
+    var FORM_KEY = '<?php /* @escapeNotVerified */ echo $block->getFormKey() ?>';
+    var ADMIN_BASE_URL = '<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('/') ?>';
+    var IS_MINIFY = '<?php /* @escapeNotVerified */ echo $isMinify ?>';
+    var require = {
+        "baseUrl": "<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('/') ?>"
+    };
+</script>

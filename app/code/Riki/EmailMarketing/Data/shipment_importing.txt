@@ -1,0 +1,10 @@
+Shipment importing have just run at :
+
+{{config path="web/unsecure/base_url"}}
+
+The importing results:
+
+{{var logContent}}
+
+
+

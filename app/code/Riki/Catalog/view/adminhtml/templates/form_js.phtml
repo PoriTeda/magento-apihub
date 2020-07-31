@@ -1,0 +1,215 @@
+<?php
+    $AuthAddGpsPrice = $block->getAuthAddPrice();
+    $AuthEditGpsPrice = $block->getAuthEditPrice();
+    $AuthDeleteGpsPrice = $block->getAuthDeletePrice();
+    $is_new_product = true;
+    $gps_price = '';
+    $gps_price_future = '';
+    $configArray = $block->getConfigMinMaxPrice();
+    $product = $block->getProduct();
+    if($product->getId()){
+        $is_new_product = false;
+        $gps_price = $product->getData('gps_price');
+        $gps_price_future = $product->getData('future_gps_price');
+    }
+?>
+<script type="text/javascript">
+    var configMinPrice = <?php if(isset($configArray['min_price'])) : echo $configArray['min_price'];  else : echo '""'; endif; ?>;
+    var configMaxPrice = <?php if(isset($configArray['max_price'])) : echo $configArray['max_price'];  else : echo '""'; endif; ?>;
+    var is_product_new = <?php if($is_new_product) echo $is_new_product;  else  echo '""'; ?>;
+    var gps_price = <?php if($gps_price) : echo $gps_price;  else : echo '""'; endif; ?>;
+    var gps_price_future = <?php if($gps_price_future) : echo $gps_price_future;  else : echo '""'; endif; ?>;
+    var authGpsPrice = <?php if($AuthAddGpsPrice) : echo 1;  else : echo 0; endif; ?>;
+    var authEditGpsPrice = <?php if($AuthEditGpsPrice) : echo 1;  else : echo 0; endif; ?>;
+    var authDeleteGpsPrice = <?php if($AuthDeleteGpsPrice) : echo 1;  else : echo 0; endif; ?>;
+    require([
+        'jquery', // jquery Library
+        'jquery/ui', // Jquery UI Library
+        'jquery/validate', // Jquery Validation Library
+        'mage/translate' // Magento text translate (Validation message translte as per language)
+    ], function($){
+        $.extend(true, $, {
+            // @TODO: Move methods 'isEmpty', 'isEmptyNoTrim', 'parseNumber', 'stripHtml' in file with utility functions
+            mage: {
+                /*
+                 * Parse price string
+                 * @param {string} value
+                 */
+                parseNumberRiki: function (value) {
+                    if (typeof value !== 'string') {
+                        return parseFloat(value);
+                    }
+                    var isDot = value.indexOf('.');
+                    var isComa = value.indexOf(',');
+                    if (isDot !== -1 && isComa !== -1) {
+                        if (isComa > isDot) {
+                            value = value.replace('.', '').replace(',', '.');
+                        } else {
+                            value = value.replace(',', '');
+                        }
+                    } else if (isComa !== -1) {
+                        value = value.replace(',', '');
+                    }
+                    return parseFloat(value);
+                },
+
+            }
+        });
+        $(document).ready(function () {
+            // min Price
+            if(configMinPrice){
+                $('input[name="product[price]"]').addClass('riki-validate-min-price-config')
+                $('input[name="product[future_price]"]').addClass('riki-validate-min-price-config')
+                $('input[name="product[special_price]"]').addClass('riki-validate-min-price-config')
+                $('input[name="product[cost]"]').addClass('riki-validate-min-price-config')
+            }
+            //Max Price
+            if(configMaxPrice){
+                $('input[name="product[price]"]').addClass('riki-validate-max-price-config')
+                $('input[name="product[future_price]"]').addClass('riki-validate-max-price-config')
+                $('input[name="product[special_price]"]').addClass('riki-validate-max-price-config')
+                $('input[name="product[cost]"]').addClass('riki-validate-max-price-config');
+            }
+            $('#gps_price').addClass('riki_validate-not-add-gps-price-new_product');
+            $('#gps_price').addClass('riki_validate-not-edit-gps-price-new_product');
+            $('#future_gps_price').addClass('riki_validate-not-add-future-gps-price-new_product');
+            $('#future_gps_price').addClass('riki_validate-not-edit-future-gps-price-new_product');
+            $('#gps_price').addClass('riki_validate-not-delete-gps-price-product');
+            $('#future_gps_price').addClass('riki_validate-not-delete-gps-future-price-product');
+
+        })
+        $.validator.addMethod(
+            'riki-validate-min-price-config', function (value) {
+                value = $.mage.parseNumberRiki(value);
+                if(value && configMinPrice){
+                    if(value < configMinPrice){
+                        return false;
+                    }
+                }
+                return true;
+            },
+            $.mage.__('The value is greater than ' + configMinPrice )
+        );
+        $.validator.addMethod(
+            'riki-validate-max-price-config', function (value) {
+                value = $.mage.parseNumberRiki(value);
+
+                if(value && configMaxPrice){
+                    if(value > configMaxPrice){
+                        return false;
+                    }
+                }
+                return true;
+            },
+            $.mage.__('The value is smaller than ' + configMaxPrice )
+        );
+
+        $.validator.addMethod(
+            'riki_validate_tier_price_max_config', function (value) {
+                value = $.mage.parseNumberRiki(value);
+                if(value && configMaxPrice){
+                    if(value > configMaxPrice){
+                        return false;
+                    }
+                }
+                return true;
+            },
+            $.mage.__('The value is smaller than ' + configMaxPrice )
+        );
+        /**
+         * add gps price product
+         */
+        $.validator.addMethod(
+            'riki_validate-not-add-gps-price-new_product', function (value) {
+                if(!authGpsPrice){
+                    if(!gps_price){
+                        if(value){
+                            return false;
+                        }
+                    }
+                }
+                return true
+            },
+            $.mage.__('You have not permisstion add gps price' )
+        );
+        $.validator.addMethod(
+            'riki_validate-not-add-future-gps-price-new_product', function (value) {
+                if(!authGpsPrice){
+                    if(!gps_price_future){
+                        if(value){
+                            return false;
+                        }
+                    }
+                }
+                return true
+            },
+            $.mage.__('You have not permisstion add future gps price' )
+        );
+        /**
+         * edit gps price
+         */
+        $.validator.addMethod(
+            'riki_validate-not-edit-gps-price-new_product', function (value) {
+                if(!authEditGpsPrice){
+                    if(value){
+                        value = $.mage.parseNumberRiki(value);
+                    }
+                    if(gps_price){
+                        if(value != gps_price){
+                            return false;
+                        }
+                    }
+                }
+                return true
+            },
+            $.mage.__('You have not permisstion edit gps price' )
+        );
+        $.validator.addMethod(
+            'riki_validate-not-edit-future-gps-price-new_product', function (value) {
+                if(!authEditGpsPrice){
+                    if(value){
+                        value = $.mage.parseNumberRiki(value);
+                    }
+                    if(gps_price_future){
+                        if(value != gps_price_future){
+                            return false;
+                        }
+                    }
+                }
+                return true
+            },
+            $.mage.__('You have not permisstion edit future gps price' )
+        );
+        //delete gps price
+        $.validator.addMethod(
+            'riki_validate-not-delete-gps-price-product', function (value) {
+                if(!authDeleteGpsPrice){
+                    if(!is_product_new){
+                        if(gps_price){
+                            if(!value){
+                                return false;
+                            }
+                        }
+                    }
+                }
+                return true
+            },
+            $.mage.__('You have not permisstion delete gps price' )
+        );
+        $.validator.addMethod(
+            'riki_validate-not-delete-gps-future-price-product', function (value) {
+                if(!authDeleteGpsPrice){
+                    if(!is_product_new){
+                        if(gps_price_future){
+                            if(!value){
+                                return false;
+                            }
+                        }
+                    }
+                }
+                return true
+            },
+            $.mage.__('You have not permisstion delete gps price' )
+        );
+    });
+</script>

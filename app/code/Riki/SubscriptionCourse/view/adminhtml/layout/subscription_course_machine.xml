@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link src="Riki_SubscriptionCourse::js/edit_subscription_course.js"/>
+    </head>
+    <body>
+        <referenceContainer name="left">
+            <referenceBlock name="subscription_course_edit_tabs">
+                <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\Category" name="subscription_course_edit_tab_category"/>
+                <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\AdditionalCategory" name="subscription_course_edit_tab_additional_category"/>
+                <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\PointForTrial" name="subscription_course_edit_tab_point_for_trial"/>
+                <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\MergeProfile" name="subscription_course_edit_tab_merge_profile_to"/>
+                <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\MultiMachine" name="subscription_course_edit_tab_multi_machine"/>
+                <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\DisengagementSetting" name="subscription_course_edit_tab_disengagement_setting"/>
+                <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\SubscriptionRestriction" name="subscription_course_edit_tab_subscription_restriction"/>
+                <block class="Riki\SubscriptionCourse\Block\Adminhtml\Course\Edit\Tab\ApplicationRestriction" name="subscription_course_edit_tab_application_restriction"/>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">category_section</argument>
+                    <argument name="block" xsi:type="string">subscription_course_edit_tab_category</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">additional_category_section</argument>
+                    <argument name="block" xsi:type="string">subscription_course_edit_tab_additional_category</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">point_for_trial_section</argument>
+                    <argument name="block" xsi:type="string">subscription_course_edit_tab_point_for_trial</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">merge_profile_to_section</argument>
+                    <argument name="block" xsi:type="string">subscription_course_edit_tab_merge_profile_to</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">multi_machine_section</argument>
+                    <argument name="block" xsi:type="string">subscription_course_edit_tab_multi_machine</argument>
+                </action>
+                <action method="removeTab">
+                    <argument name="name" xsi:type="string">machine_section</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">disengagement_setting</argument>
+                    <argument name="block" xsi:type="string">subscription_course_edit_tab_disengagement_setting</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">subscription_restriction_section</argument>
+                    <argument name="block" xsi:type="string">subscription_course_edit_tab_subscription_restriction</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">application_restriction_section</argument>
+                    <argument name="block" xsi:type="string">subscription_course_edit_tab_application_restriction</argument>
+                </action>
+            </referenceBlock>
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,15 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <subscriptioncourse>
+            <cutoffdate>
+                <enable>1</enable>
+                <email_template>
+                    subscriptioncourse_cutoffdate_email_template
+                </email_template>
+                <x_days_before_cut_off_date>7</x_days_before_cut_off_date>
+                <y_days_before_cut_off_date>2</y_days_before_cut_off_date>
+                <expression>0 12 * * *</expression>
+            </cutoffdate>
+        </subscriptioncourse>
+    </default>
+</config>

@@ -1,0 +1,30 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2019 Amasty (https://www.amasty.com)
+ * @package Amasty_Smtp
+ */
+?>
+<?php /** @var Amasty\Smtp\Block\Config $block */ ?>
+<script>
+require([
+    'jquery',
+    'Amasty_Smtp/js/config'
+], function($){
+    $('#amsmtp_smtp').amsmtpConfig({
+        selectors: {
+            provider: '#amsmtp_smtp_provider',
+            server: '#amsmtp_smtp_server',
+            port: '#amsmtp_smtp_port',
+            auth: '#amsmtp_smtp_auth',
+            encryption: '#amsmtp_smtp_sec',
+
+            login: '#amsmtp_smtp_login',
+            password: '#amsmtp_smtp_passw',
+            test_email: '#amsmtp_smtp_test_email'
+        },
+        providers: <?= json_encode($block->getProviders(), true) ?>,
+        check_url: "<?= $this->getUrl('amasty_smtp/config/check', $block->getParams()) ?>",
+    });
+});
+</script>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Rma\Controller\Adminhtml\Rma\NewAction" type="Riki\Rma\Controller\Adminhtml\Rma\NewAction" />
+    <preference for="Magento\Rma\Controller\Adminhtml\Rma\Edit" type="Riki\Rma\Controller\Adminhtml\Rma\Edit" />
+    <preference for="Magento\Rma\Controller\Adminhtml\Rma\AddTrack" type="Riki\Rma\Controller\Adminhtml\Rma\AddTrack" />
+    <preference for="Magento\Rma\Controller\Adminhtml\Rma\RemoveTrack" type="Riki\Rma\Controller\Adminhtml\Rma\RemoveTrack" />
+    <preference for="Magento\Sales\Model\Order\CreditmemoFactory"
+                type="Riki\Sales\Model\Order\CreditmemoFactory" />
+    <preference for="Magento\Sales\Model\Order\Creditmemo\Total\Subtotal"
+                type="Riki\Sales\Model\Order\Creditmemo\Total\Subtotal" />
+    <type name="Magento\Rma\Block\Adminhtml\Rma">
+        <plugin name="rikiRmaPluginRmaBlockAdminhtmlRma" type="Riki\Rma\Plugin\Rma\Block\Adminhtml\Rma" />
+    </type>
+    <type name="Magento\Rma\Model\Rma">
+        <plugin name="riki_rma_set_use_post_data_flag" type="Riki\Rma\Plugin\Rma\SetUsePostDataFlag" />
+        <plugin name="riki_rma_validate_final_return_refund_amount" type="Riki\Rma\Plugin\Rma\ValidateFinalReturnRefundAmount" />
+    </type>
+</config>

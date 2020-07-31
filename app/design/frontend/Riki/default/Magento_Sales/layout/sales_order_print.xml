@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="sales_order_print_renderers" />
+    <update handle="sales_order_item_price"/>
+    <update handle="print" />
+    <body>
+        <attribute name="class" value="account"/>
+        <referenceBlock name="page.main.title" remove="true"/>
+        <referenceBlock name="logo" remove="true"/>
+        <referenceContainer name="content">
+            <container htmlTag="div" htmlClass="order-detail-info">
+                <!--billing and shipping-->
+                <block class="Magento\Sales\Block\Order\Info" as="info" name="sales.order.info.print" before="-" template="Magento_Sales::order/info-print.phtml"/>
+                <block class="Riki\Sales\Block\Order\PrintOrder\Shipment" name="riki_shipment_order_detail"
+                       template="Magento_Sales::order/shipment_info_print.phtml" before="sales.order.print"/>
+            </container>
+            <block class="Magento\Sales\Block\Order\Info" as="sales.order.print.info" name="sales.order.print.info" template="Magento_Sales::order/info.phtml"/>
+        </referenceContainer>
+        <block class="Magento\Framework\View\Element\Template" name="additional.product.info" template="Magento_Theme::template.phtml"/>
+    </body>
+</page>

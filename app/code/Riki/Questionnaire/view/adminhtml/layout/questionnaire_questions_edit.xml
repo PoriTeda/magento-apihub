@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link src="Riki_Questionnaire::js/depend-fields.js"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Riki\Questionnaire\Block\Adminhtml\Questions\Edit" name="questionnaire_question_edit"/>
+         </referenceContainer>
+        <referenceContainer name="left">
+            <block class="Riki\Questionnaire\Block\Adminhtml\Questions\Edit\Tabs" name="questionnaire_question_tabs">
+                <block class="Riki\Questionnaire\Block\Adminhtml\Questions\Edit\Tab\Main" name="questionnaire_question_edit_tab_main"/>
+                <block class="Riki\Questionnaire\Block\Adminhtml\Questions\Edit\Tab\Question" name="questionnaire_question_edit_tab_question"/>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">main_section</argument>
+                    <argument name="block" xsi:type="string">questionnaire_question_edit_tab_main</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">question_section</argument>
+                    <argument name="block" xsi:type="string">questionnaire_question_edit_tab_question</argument>
+                </action>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

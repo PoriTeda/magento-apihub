@@ -1,0 +1,36 @@
+<?php /** @var $block \Riki\Sales\Block\Adminhtml\Order\Create\Shipping\FreeFlag */ ?>
+
+<div class="admin__fieldset">
+    <div class="admin__field admin__field-option">
+        <input id="p_method_set_free_shipping"
+               value="1"
+               class="admin__control-checkbox"
+               name="set_free_shipping"
+               type="checkbox"
+               title="<?php /* @escapeNotVerified */
+               echo __('Free Shipping') ?>"
+               onchange="order.setFreeShipping(this)"
+               <?php if($block->isSelectedFree()): ?>checked="checked" <?php endif; ?>
+        />
+        <label class="admin__field-label" for="p_method_set_free_shipping">
+            <?php /* @escapeNotVerified */
+            echo __('Free Shipping') ?></label>
+    </div>
+
+    <div class="admin__field field field-wbs-delivery  required _required" <?php if (!$block->isRequiredWbs()): ?>style="display: none;" <?php endif; ?>>
+        <label class="label admin__field-label" for="order-free-shipping-fee-wbs"><span><?php echo __('WBS') ?></span></label>
+        <div class="admin__field-control control">
+            <input id="order-free-shipping-fee-wbs"
+                   name="order[free_shipping_fee_wbs]"
+                   value="<?php echo $block->getCurrentWbs() ?>"
+                   class="required-entry input-text admin__control-text required-entry _required input-wbs validate-wbs-code"
+                   type="text"
+                   <?php if (!$block->isRequiredWbs()): ?>
+                       disabled="disabled"
+                   <?php endif; ?>
+            />
+        </div>
+    </div>
+</div>
+
+

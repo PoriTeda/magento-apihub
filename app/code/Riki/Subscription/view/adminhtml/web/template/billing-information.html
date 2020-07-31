@@ -1,0 +1,58 @@
+<div class="table-wrapper">
+    <div class="table table list admin__scope-old">
+        <div class="fieldset-wrapper customer-information">
+            <h2>
+                <strong data-bind="i18n: 'Billing address'">
+                </strong>
+            </h2>
+            <table data-bind="if: getHasBillingInformation()" class="admin__table-secondary">
+                <tbody>
+                <tr>
+                    <th data-bind="i18n: 'Customer ID:'"></th>
+                    <td data-bind="text: billingAddressData.customerId"></td>
+                </tr>
+                <tr>
+                    <th data-bind="i18n: 'Last name (Kanji):'"></th>
+                    <td data-bind="text: billingAddressData.lastname"></td>
+                </tr>
+                <tr>
+                    <th data-bind="i18n: 'First name (Kanji):'"></th>
+                    <td data-bind="text: billingAddressData.firstname"></td>
+                </tr>
+                <tr>
+                    <th data-bind="i18n: 'Person in charge:'"></th>
+                    <td data-bind="text: billingAddressData.personInCharge"></td>
+                </tr>
+                </tbody>
+            </table>
+            <address data-bind="if: getHasBillingInformation()">
+
+                <table>
+                    <tr>
+                        <td data-bind="i18n: 'Email:'"></td>
+                        <td data-bind="text: billingAddressData.email"></td>
+                    </tr>
+                    <tr>
+                        <td data-bind="i18n: 'Postcode:'"></td>
+                        <td data-bind="text: billingAddressData.postcode"></td>
+                    </tr>
+                    <tr>
+                        <td data-bind="i18n: 'Prefecture:'"></td>
+                        <td data-bind="text: billingAddressData.region"></td>
+                    </tr>
+                    <tr>
+                        <td data-bind="i18n: 'Street Address:'"></td>
+                        <td data-bind="text: billingAddressData.street_full"></td>
+                    </tr>
+                    <tr>
+                        <td data-bind="i18n: 'Telephone:'"></td>
+                        <td data-bind="text: billingAddressData.telephone"></td>
+                    </tr>
+                </table>
+            </address>
+            <p data-bind="if: !getHasBillingInformation()">
+                <span data-bind="i18n: 'There is no billing address'"></span>
+            </p>
+        </div>
+    </div>
+</div>

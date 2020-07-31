@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:DataObject/etc/fieldset.xsd">
+    <scope id="global">
+        <fieldset id="sales_copy_order">
+            <field name="subscription_order_time">
+                <aspect name="to_edit" targetField="n_delivery" />
+            </field>
+        </fieldset>
+    </scope>
+</config>

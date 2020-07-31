@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group	id="default">
+        <job name="update_product_future_price" instance="Riki\Catalog\Cron\FuturePrice" method="execute">
+            <config_path>catalog/future_price_cron/cron_config</config_path>
+        </job>
+        <job name="product_backorder_expire" instance="Riki\Catalog\Cron\BackOrderExpire" method="execute">
+            <config_path>catalog/backorder_expire_cron/cron_config</config_path>
+        </job>
+    </group>
+</config>

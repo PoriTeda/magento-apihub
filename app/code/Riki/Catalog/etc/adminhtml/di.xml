@@ -1,0 +1,29 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <preference for="Magento\Catalog\Controller\Adminhtml\Product\MassDelete" type="Riki\Catalog\Controller\Adminhtml\Product\MassDelete" />
+    <preference for="Magento\Catalog\Controller\Adminhtml\Product\MassStatus" type="Riki\Catalog\Controller\Adminhtml\Product\MassStatus" />
+    <preference for="Magento\CatalogUrlRewrite\Model\ProductUrlRewriteGenerator" type="Riki\Catalog\Model\CatalogUrlRewrite\ProductUrlRewriteGenerator" />
+    <type name="\Magento\CatalogInventory\Ui\DataProvider\Product\AddQuantityFieldToCollection">
+        <plugin name="riki-catalog-modify-addquantityfieldtocollection" type="Riki\Catalog\Plugin\AddQuantityFieldToCollection" />
+    </type>
+    <type name="\Magento\Ui\Component\ExportButton">
+        <plugin name="riki-ui-component-exportbutton" type="Riki\Catalog\Plugin\RemoveExportExcelProduct" />
+    </type>
+    <type name="\Magento\Catalog\Controller\Adminhtml\Product\Initialization\Helper">
+        <plugin name="riki-catalog-initialization-product" type="Riki\Catalog\Plugin\InitializationProductThresholdStock" />
+    </type>
+    <type name="Magento\Catalog\Controller\Adminhtml\Product\Validate">
+        <plugin name="riki-controller-validate-product" type="Riki\Catalog\Plugin\Controller\Adminhtml\Product\Validate" />
+    </type>
+    <type name="Magento\Customer\Model\Attribute">
+        <plugin name="riki-filter-grid-multiselect-customer" type="Riki\Catalog\Plugin\FilterInGridMultiSelectCustomer" />
+    </type>
+    <type name="Magento\Catalog\Block\Adminhtml\Product\Edit">
+        <plugin name="rikiCatalogBlockAdminhtmlProductEdit" type="Riki\Catalog\Plugin\Catalog\Block\Adminhtml\Product\Edit" />
+    </type>
+    <type name="Magento\Catalog\Block\Adminhtml\Product\Edit\Tab\Attributes">
+        <plugin name="product_form_wbs_validate_class_plugin" type="Riki\Catalog\Plugin\Catalog\Block\Adminhtml\Product\Edit\Tab\Attributes"/>
+    </type>
+    <preference for="Magento\Bundle\Controller\Adminhtml\Bundle\Selection\Grid" type="Riki\Catalog\Controller\Adminhtml\Bundle\Selection\Grid" />
+    <preference for="Magento\Catalog\Block\Adminhtml\Product\Helper\Form\Category" type="Riki\Catalog\Block\Adminhtml\Product\Helper\Form\Category" />
+</config>

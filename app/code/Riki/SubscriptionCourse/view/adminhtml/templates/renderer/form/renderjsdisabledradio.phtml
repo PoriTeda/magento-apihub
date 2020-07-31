@@ -1,0 +1,17 @@
+<?php
+    $isDisabled = 0;
+    if ($block->isDisabledRadio()) {
+        $isDisabled = 1;
+    }
+
+?>
+<script type="text/javascript">
+    require([
+        'jquery'
+    ], function($){
+        var isDisabled = '<?php echo $isDisabled ?>';
+        if (isDisabled == 1) {
+            $('#cou_setting_fieldset input[name="allow_skip_next_delivery"], #cou_setting_fieldset input[name="allow_change_qty"], #cou_setting_fieldset input[name="allow_change_product"]').attr('disabled', 'disabled').css('opacity', '0');
+        }
+    });
+</script>

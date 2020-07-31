@@ -1,0 +1,40 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+?>
+<script>
+    var updateCartBtn = $$('#multiship-addresses-table .button');
+    updateCartBtn.each(function(element) {
+        element.observe('click', function(event) {
+            <?php
+            $i = 0;
+            foreach ($block->getListBlock()->getItems() as $item) {
+                ?>
+                var newVal = $$('#multiship-addresses-table .qty:nth(<?= /* @escapeNotVerified */ $i ?>)').first().value;
+                if (<?= /* @escapeNotVerified */ $item->getQty() ?> != newVal && newVal != 0) {
+                    var newQty = newVal - <?= /* @escapeNotVerified */ $item->getQty() ?>;
+                    dataLayer.push({
+                        'ecommerce': {
+                            'event': 'addToCart',
+                            'add': {
+                                'products': [{
+                                    'id': "<?= $block->escapeJs($item->getSku()) ?>",
+                                    'name': "<?= $block->escapeJs($item->getProduct()->getName()) ?>",
+                                    'price': "<?= $block->escapeJs($item->getProduct()->getPrice()) ?>",
+                                    'quantity': newQty
+                                }]
+                            }
+                        }
+                    });
+                }
+                <?php
+                $i++;
+            }
+            ?>
+        });
+    });
+</script>

@@ -1,0 +1,117 @@
+<?php
+/**
+ * @var Riki\Subscription\Block\Disengage\Profile\ProfileList $block
+ */
+$topIntroduceTextBlock = $block->getChildHtml('profile_list_disengagement_info');
+$listProfiles = $block->getNextThreeDeliveries();
+?>
+<div class="fieldset-wrapper customer-subscription-profile">
+    <!-- disengagement header form -->
+    <div class="disengage-header-information">
+        <?php echo $block->getChildHtml('disengagement_navigation');?>
+        <div class="disengage-form-title">
+            <span><?php echo __('Regular flights currently under contract');?></span>
+        </div>
+    </div>
+    <?php if ($topIntroduceTextBlock != ''): ?>
+        <div class="customer-subscription-profile-introduce">
+            <?php echo $topIntroduceTextBlock; ?>
+        </div>
+    <?php endif; ?>
+    <!-- list subscription profile -->
+    <form action="<?php echo $block->getListValidationUrl();?>"
+          id="form-validate"
+          method="post" >
+    <?php if ($listProfiles) :?>
+        <div class="customer-subscription-profile">
+            <table class="data table-list-profile">
+                <thead>
+                <tr>
+                    <th class="course-name"><?php echo __('Subscription course name');?></th>
+                    <th class="deliver-to"><?php echo __('Profile next delivery date');?></th>
+                    <th class="next-delivery-date"><?php echo __('Profile next of next delivery date');?></th>
+                    <th class="action"><?php echo __('Cancellation Conditions');?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($listProfiles as $profile) : ?>
+                        <tr class="<?php if ($profile->getIsDisabled()) :?>disengagement-row-disabled<?php endif;?><?php if ($block->isElementChecked($profile->getProfileId())) :?> selected<?php endif;?>">
+                            <td class="course-name" data-th="<?php echo __('Subscription course name');?>">
+                                <div class="data">
+                                    <input type="radio"
+                                           class="radio radio-validation required"
+                                           name="profile_id"
+                                           <?php if ($block->isElementChecked($profile->getProfileId())) :?>
+                                           checked="checked"
+                                            <?php endif;?>
+                                           id="profile_<?php echo $profile->getProfileId();?>"
+                                           value="<?php echo $profile->getProfileId();?>"
+                                           <?php if ($profile->getIsDisabled()) :?>disabled="disabled" <?php endif;?>
+                                    />
+                                    <label for="profile_<?=$profile->getProfileId();?>">
+                                        <span><?php echo $profile->getCourseName();?></span>
+                                    </label>
+                                    <span class="show-mb"><?php echo $profile->getCourseName();?></span>
+                                </div>
+                            </td>
+                            <td class="deliver-date" data-th="<?php echo __('Profile next delivery date');?>">
+                                <div class="data">
+                                    <p><?php echo $profile->getData('next_delivery1');?></p>
+                                    <p><?php echo $profile->getNextDeliveryDateMessage();?></p>
+                                </div>
+                            </td>
+                            <td class="next-delivery-date" data-th="<?php echo __('Profile next of next delivery date');?>">
+                                <div class="data">
+                                    <p><?php echo $profile->getData('next_delivery2');?></p>
+                                    <p><?php echo $profile->getNextNextDeliveryDateMessage();?></p>
+                                </div>
+                            </td>
+                            <td class="action" data-th="<?php echo __('Cancellation Conditions');?>">
+                                <div class="data">
+                                    <?php echo $profile->getCancellationConditions();?>
+                                </div>
+                            </td>
+                        </tr>
+                <?php endforeach;?>
+                </tbody>
+            </table>
+        </div>
+        <?php if ($block->getPagerHtml()) : ?>
+            <div class="toolbar toolbar-products bottom"><?php echo $block->getPagerHtml(); ?></div>
+        <?php endif ?>
+
+        <div class="actions-toolbar-disengagement">
+            <button type="submit" id="disengage-action-button" class="action submit primary" <?php if(!$block->hasCheckedElement($listProfiles)):?>disabled="disabled"<?php endif;?> title="<?php echo __('Next Step') ?>">
+                <span><?php echo __('Next Step') ?></span>
+            </button>
+        </div>
+        <?php echo $block->getBlockHtml('formkey');?>
+    </form>
+    <?php else: ?>
+        <div class="message info empty">
+            <span><?php /* @escapeNotVerified */ echo __('You have no subscription.'); ?></span>
+        </div>
+    <?php endif;?>
+</div>
+<script>
+    var dataLayer = dataLayer || [];
+    dataLayer.push({
+        'event' : 'UAEvent',
+        'EventCategory' : 'Cancellation',
+        'EventAction' : 'Cancellation - Step1',
+        'EventLabel' : '<?php echo $block->getConsumerDbId();?>'
+    });
+</script>
+<script>
+    require([
+        "jquery",
+        'mage/translate'
+    ], function($)
+    {
+        $('.radio-validation').click(function(){
+            $('.table-list-profile').find('tr').removeClass('selected');
+            $(this).closest( "tr" ).addClass('selected');
+            $('#disengage-action-button').removeAttr('disabled');
+        });
+    });
+</script>

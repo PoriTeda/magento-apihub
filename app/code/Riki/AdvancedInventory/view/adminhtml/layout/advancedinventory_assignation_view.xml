@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+ Copyright © 2016 Wyomind. All rights reserved.
+ See LICENSE.txt for license details.
+-->
+<!-- Layout of the error report (from the grid)  -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    
+    <body>
+        <referenceContainer name="root">
+            <block template="Riki_AdvancedInventory::assignation/view.phtml" class="Wyomind\AdvancedInventory\Block\Adminhtml\Assignation\View" name="assignation_view"/>
+        </referenceContainer>
+    </body>
+</page>

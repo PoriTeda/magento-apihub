@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="CreateBannerActionGroup">
+        <arguments>
+            <argument name="Banner" />
+        </arguments>
+        <amOnPage url="/admin/admin/banner/new/" stepKey="goToNewBannerPage" />
+        <waitForPageLoad stepKey="waitForPageLoad" />
+        <click selector="{{AdminBannerBasicActionSection.Name}}" stepKey="focusOnField"/>
+        <fillField selector="{{AdminBannerBasicActionSection.Name}}" userInput="{{Banner.Name}}" stepKey="fillBannerName" />
+        <conditionalClick selector="{{AdminBannerBasicActionSection.ContentTab}}" dependentSelector="{{BannerContentSection.checkIfContentTabOpen}}" stepKey="clickIfContentTabCloses" visible="true"/>
+        <waitForElementVisible selector="{{TinyMCESection.TinyMCE4}}" stepKey="waitForTinyMCE" />
+        <executeJS function="tinyMCE.get('banner_form_store_contents').setContent('Hello World from banner!');" stepKey="executeJSFillContent"/>
+        <click selector="{{BannerContentSection.ShowHideBtn}}" stepKey="clickShowHideBtn" />
+        <waitForPageLoad stepKey="waitForPageLoad2" />
+        <click selector="{{AdminBannerBasicActionSection.Save}}" stepKey="clickSaveBanner" />
+    </actionGroup>
+    <actionGroup name="DeleteBannerActionGroup">
+        <arguments>
+            <argument name="bannerName" />
+        </arguments>
+        <amOnPage url="{{AdminBannerGridPage.url}}" stepKey="navigateToDynamicBlocksGrid" />
+        <waitForPageLoad stepKey="waitForPageLoad" />
+        <click selector="{{AdminBannerGridSection.title(bannerName)}}" stepKey="navigateToBanner" />
+        <waitForPageLoad stepKey="waitForDynamicBlockEditPageToLoad" />
+        <click selector="{{AdminBannerBasicActionSection.Delete}}" stepKey="clickDeleteDynamicBlockButton" />
+        <waitForElementVisible selector="{{AdminConfirmationModalSection.ok}}" stepKey="waitForAdminConfirmationModalToBeVisible" />
+        <click selector="{{AdminConfirmationModalSection.ok}}" stepKey="confirmDeleteDynamicBlock" />
+        <waitForPageLoad stepKey="waitForDynamicBlockDeletionPageLoad" />
+        <see userInput="You deleted the dynamic block." stepKey="seeSuccessMessage"/>
+    </actionGroup>
+</actionGroups>

@@ -1,0 +1,603 @@
+<?php
+     /** @var Riki\Sales\Block\Order\PrintOrder\Shipment $block */
+    $order = $block->getOrder();
+    $shipDateHelper   = $this->helper('Riki\Shipment\Helper\ShipmentHistory');
+    /** @var  \Magento\Catalog\Helper\Image $imageHelper */
+    $imageHelper = $this->helper('\Magento\Catalog\Helper\Image');
+    $_shippingAddress = $order->getShippingAddress();
+    if($_shippingAddress->getData('riki_nickname') != NULL){
+        $nickName =  $_shippingAddress->getData('riki_nickname');
+    } else{
+        $nickName = '';
+    }
+    $isStockPointOrder = $order->getData('stock_point_delivery_bucket_id');
+    if ($isStockPointOrder) {
+        $deliveryInfo = $block->getStockPointDeliveryOrderInfo($order->getIncrementId());
+    }
+    //subscription order type
+    $isSubscriptionOrder = $block->isSubscriptionOrder($order);
+
+    /*flag to check this order is subscription order which type is hanpukai*/
+    $isSubscriptionHanpukai = false;
+
+    /*flag to count nth order of the subscription course*/
+    $nthOrder = 1;
+
+    /*message to show for subscription row*/
+    $subscriptionRowMsg = '';
+    $subscriptionCourseName = '';
+
+    if ($isSubscriptionOrder) {
+
+        $nthOrder = $shipDateHelper->calculateNthOrder($order);
+
+        $subscriptionCourseName = $block->getSubscriptionCourseName($order);
+
+        $isSubscriptionHanpukai = $block->isHanpukaiOrder($order, $isSubscriptionOrder);
+
+        if ($isSubscriptionHanpukai) {
+            /*hanpukai message*/
+            $subscriptionRowMsg = $subscriptionCourseName.' '.__('%1 order of the Hanpukai course', $nthOrder);
+        } else {
+            /*subscription message*/
+            $subscriptionRowMsg = $subscriptionCourseName.' '.__('%1 order of the subscription course', $nthOrder);
+        }
+    }
+
+    //sale rules
+    $listItemRules = $block->hasAppliedPromotionAndCoupon($order);
+?>
+<?php if (!$block->getObjectData($order, 'is_virtual')) : ?>
+    <?php
+        $_shipmentCollection = $block->getShipmentsCollection();
+        if ($_shipmentCollection && $_shipmentCollection->count() >0 ):
+        $arrDeliveryType         = $block->getDeliveryTypeByShipment($order);
+        foreach ($_shipmentCollection as $_shipment):
+            $orderItems   = $block->getListProductOnShipment($_shipment);
+            $exportedDate         = $block->getShipmentStatus($_shipment,Riki\Shipment\Model\ResourceModel\Status\Options\Shipment::SHIPMENT_STATUS_EXPORTED);
+            $shippedOutDate       = $block->getShipmentStatus($_shipment,Riki\Shipment\Model\ResourceModel\Status\Options\Shipment::SHIPMENT_STATUS_SHIPPED_OUT);
+            $deliveryCompleteDate = $block->getShipmentStatus($_shipment,Riki\Shipment\Model\ResourceModel\Status\Options\Shipment::SHIPMENT_STATUS_DELIVERY_COMPLETED);
+            $shippingAddressItem  = $block->getShipmentAddressItem($_shipment);
+            $typeShipment         = $block->getTypeShipment($_shipment,$shippingAddressItem,$arrDeliveryType);
+            $shippingInfo   = ($shippingAddressItem) ? $shippingAddressItem->getLastName()." ".$shippingAddressItem->getFirstName(). ' ' . __('Sama') : '';
+            $shippingName   = ($shippingAddressItem) ? $shippingAddressItem->getLastName()." ".$shippingAddressItem->getFirstName() : '';
+            $shippingPhone  = ($shippingAddressItem) ? $shippingAddressItem->getTelephone() : '';
+
+    ?>
+
+        <?php
+            /**
+             * Hide block shipping address if the orders created by command on ticket 2524
+             */
+            if (!$block->isOrderCvsCreateByCommand($order)) :
+        ?>
+        <!-- shipping-info -->
+        <div class="block block-order-details-view">
+            <div class="shipping-info">
+                <div class="title">
+                    <strong><?php echo __("Address:");?> <?php echo $shippingInfo ;?></strong>
+                </div>
+                <div class="content">
+                    <table class="shipping-info-table">
+                        <colgroup>
+                            <col width="43%">
+                            <col width="57%">
+                        </colgroup>
+                        <thead></thead>
+                        <tbody>
+                            <tr>
+                                <td class="label"><?php echo __("Name"); ?></td>
+                                <td><?php echo $shippingName; ?> </td>
+                            </tr>
+                            <tr>
+                                <td class="label"><?php echo __("Street address"); ?></td>
+                                <td><?php echo $block->getStreetName($shippingAddressItem); ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label"><?php echo __("Phone number"); ?></td>
+                                <td><?php echo $shippingPhone; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label"><?php echo __("Shipment fee"); ?></td>
+                                <td><?php echo $block->getFormatPrice($_shipment->getShipmentFee()); ?></td>
+                            </tr>
+                            <?php if ($order->getAllowChooseDeliveryDate() && !$isStockPointOrder): ?>
+                            <tr>
+                                <td class="label"><?php echo __('Delivery date / time desired (planned)'); ?></td>
+                                <td><?php echo $block->getShipmentDeliveryDate($_shipment); ?></td>
+                            </tr>
+                            <?php endif; ?>
+                            <tr>
+                                <td class="label"><?php echo __("Shipment number"); ?></td>
+                                <td><?php echo $_shipment->getIncrementId(); ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label"><?php echo __("Shipment date"); ?></td>
+                                <td><?php echo $shippedOutDate; ?></td>
+                            </tr>
+                            <tr>
+                                <?php if ($isStockPointOrder) :?>
+                                <td class="label"><?php echo __('Delivery Complete Date Stock Point'); ?></td>
+                                <?php else : ?>
+                                    <?php if (!$isSubscriptionHanpukai) { ?>
+                                    <td class="label"><?php echo __("Delivery completion date"); ?></td>
+                                    <?php } else { ?>
+                                        <td class="label"><?php echo __("Desired delivery date (planned)"); ?></td>
+                                    <?php } ?>
+                                <?php endif; ?>
+                                <td><?php echo $deliveryCompleteDate; ?></td>
+                            </tr>
+                            <?php if ($isStockPointOrder) :?>
+                                <?php if (isset($deliveryInfo['data']['errorCode'])) :?>
+                                <tr>
+                                    <td class="label"><?php echo __('Stock Point Prepared Date'); ?></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="label"><?php echo __('Stock Point Delivery Date'); ?></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="label"><?php echo __('Delivery Comment'); ?></td>
+                                    <td><?php if (isset($deliveryInfo['data']['message'])) {
+                                            echo $order->getData('stock_point_delivery_information');
+                                        }?></td>
+                                </tr>
+                                <?php else :?>
+                                    <tr>
+                                        <td class="label"><?php echo __('Stock Point Prepared Date'); ?></td>
+                                        <td><?php if (isset($deliveryInfo['data']['stockpoint_prepared_date'])) {
+                                                echo $deliveryInfo['data']['stockpoint_prepared_date'];
+                                            }?></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label"><?php echo __('Stock Point Delivery Date'); ?></td>
+                                        <td><?php if (isset($deliveryInfo['data']['stockpoint_delivered_date'])) {
+                                            echo $deliveryInfo['data']['stockpoint_delivered_date'];
+                                            }?></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label"><?php echo __('Delivery Comment'); ?></td>
+                                        <td><?php echo $order->getData('stock_point_delivery_information'); ?></td>
+                                    </tr>
+                                <?php endif;?>
+                                <!-- add a form link to stock point -->
+                                <tr>
+                                    <td>
+                                        <?php $reqData = $block->getRequestDataValueForDeliveryStatus($order->getIncrementId());?>
+                                        <form id="updateDeliveryStatus" method="post" action="<?php echo $block->getStockPointDeliveryStatusApiUrl();?>">
+                                            <input type="hidden" name="reqdata" value="{{<?php echo $reqData ;?>}}"/>
+                                            <?php if($reqData):?>
+                                                <a id="updateDeliveryStatusButton" href="#"><?php echo __('Update Delivery status');?></a>
+                                            <?php else:?>
+                                                <span><?php echo __('Update Delivery status');?></span>
+                                            <?php endif;?>
+                                        </form>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            <?php endif;?>
+                            <tr>
+                                <td class="label"><?php echo __("Tracking number"); ?></td>
+                                <td>
+                                    <?php
+                                    echo $block->getTrackingId($_shipment);
+                                        //show message
+                                        echo '<p>'.$block->getMessageCarrier($_shipment).'</p>';
+                                        $link = $block->getTrackingUrl($_shipment);
+                                        if($link !=null){
+                                            echo "<a href='$link' target='_blank'>$link</a>";
+                                        }
+                                    ?>
+                                </td>
+                            </tr>
+                            <?php
+                                /*only show this data for subscription order*/
+                                if ($isSubscriptionOrder):
+                            ?>
+                                <tr>
+                                    <td class="label"><?php echo __("Subscription / Hanpukai"); ?></td>
+                                    <td> <?php echo $subscriptionRowMsg; ?></td>
+                                </tr>
+                            <?php endif;?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <?php  endif; ?>
+
+        <?php if(is_array($orderItems) && count($orderItems)>0):?>
+
+            <!-- list product item -->
+            <div class="order-details-items ordered">
+                <div class="order-title">
+                    <strong><?php /* @escapeNotVerified */ echo __('Delivery commodity') ?></strong>
+                </div>
+                <div class="table-wrapper order-items">
+                    <table class="data table table-order-items" id="my-orders-table" summary="<?php /* @escapeNotVerified */ echo __('Items Ordered') ?>">
+                        <caption class="table-caption"><?php /* @escapeNotVerified */ echo __('Items Ordered') ?></caption>
+                        <thead>
+                        <tr>
+                            <th class="col name"><?php /* @escapeNotVerified */ echo __('Product name') ?></th>
+                            <?php if (!$isSubscriptionHanpukai): ?>
+                            <th class="col price"><?php /* @escapeNotVerified */ echo __('Price') ?></th>
+                            <?php endif; ?>
+                            <th class="col paid-services"><?php /* @escapeNotVerified */ echo __('Paid services') ?></th>
+                            <th class="col qty"><?php /* @escapeNotVerified */ echo __('Qty') ?></th>
+                            <?php if (!$isSubscriptionHanpukai): ?>
+                            <th class="col subtotal"><?php /* @escapeNotVerified */ echo __('Subtotal(tax included)') ?></th>
+                            <?php endif; ?>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <?php $arrFreeProduct = array(); ?>
+                            <?php foreach ($orderItems as $_item): ?>
+                                <?php if ($_item->getVisibleUserAccount()) :?>
+                                    <?php
+
+                                    if(($_item->getPrice()<=0 || $_item->getFreeOfCharge()==1) && !$_item->getParentId() ) {
+                                        $arrFreeProduct[] = $_item;
+                                    }else{
+                                        $productItem = $_item->getOrderItem()->getProduct();
+                                        $thumbnail = $productItem ? $productItem->getThumbnail() : null;
+                                        $thumbnailUrl = $imageHelper->init($productItem, 'product_page_image_small')->setImageFile($thumbnail)->resize('50','50')->getUrl();
+                                        if ($block->checkProductBundledNotShowOnList($productItem)):
+                                    ?>
+                                            <tr data-item-id="<?php echo $_item->getSku();?>" id="order-item-row-<?php /* @escapeNotVerified */ echo $_item->getProductId() ?>" class="item-parent">
+                                                <td class="col name" data-th="<?php echo $block->escapeHtml(__('Product Name')); ?>">
+                                                    <?php if($isSubscriptionOrder): ?>
+                                                        <p class="img-product">
+                                                            <img class="product-image-photo" src="<?php echo $thumbnailUrl; ?>" alt="">
+                                                        </p>
+                                                        <strong class="product name product-item-name"><?php echo $block->escapeHtml($_item->getName()) ?></strong>
+                                                    <?php else: ?>
+                                                        <a class="img-product" layer-item-id="<?php echo $_item->getProductId();?>" href="<?php echo $block->getProductSku($_item); ?>">
+                                                            <img class="product-image-photo" src="<?php echo $thumbnailUrl; ?>" alt="">
+                                                        </a>
+                                                        <a layer-item-id="<?php echo $_item->getProductId();?>" href="<?php echo $block->getProductSku($_item); ?>">
+                                                            <strong class="product name product-item-name"><?php echo $block->escapeHtml($_item->getName()) ?></strong>
+                                                        </a>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <?php if (!$isSubscriptionHanpukai): ?>
+                                                <td class="col price" data-th="<?php /* @escapeNotVerified */ echo __('Price') ?>">
+                                                    <span class="price-including-tax" data-label="Incl. Tax">
+                                                        <span class="cart-price">
+                                                            <span class="price">
+                                                                <?php
+                                                                    $price = $block->getPriceFromShipmentItem($_item);
+                                                                    echo $block->getFormatPrice($price);
+                                                                ?>
+                                                            </span>
+                                                        </span>
+                                                    </span>
+                                                </td>
+                                                <?php endif; ?>
+                                                <td data-th="<?php /* @escapeNotVerified */ echo __('Paid services') ?>">
+                                                    <?php echo $block->getPadServices($order,$_item->getOrderItemId());?>
+                                                </td>
+                                                <td data-th="<?php /* @escapeNotVerified */ echo __('Qty') ?>">
+                                                    <?php echo $block->getQtyShipmentItem($_item); ?> <?php echo $block->getDisplayCase($_item->getUnitCase()); ?>
+                                                </td>
+                                                <?php if (!$isSubscriptionHanpukai): ?>
+                                                <td class="col subtotal" data-th="<?php /* @escapeNotVerified */ echo __('Subtotal(tax included)') ?>">
+                                                    <span class="price-including-tax" data-label="Incl. Tax">
+                                                        <span class="cart-price">
+                                                            <span class="price"><?php echo $block->getFormatPrice($block->getSubTotal($_item)); ?></span>
+                                                        </span>
+                                                    </span>
+                                                </td>
+                                                <?php endif; ?>
+                                            </tr>
+                                            <?php endif; ?>
+                                    <?php } ?>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Free product-->
+            <?php if(count($arrFreeProduct)>0): ?>
+            <div class="free-product free-coupon order-details-items ordered">
+                <span class="title"><?php /* @escapeNotVerified */ echo __('Free product') ?></span>
+                <div class="table-free-product table-wrapper order-items">
+                    <table class="data table table-order-items table-free-product" id="my-free-products">
+                        <thead>
+                            <tr>
+                                <th class="col name"><?php /* @escapeNotVerified */ echo __('Product Name') ?></th>
+                                <th class="col qty"><?php /* @escapeNotVerified */ echo __('Qty') ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($arrFreeProduct as $_itemProductFree): ?>
+                            <?php  $productItem = $_itemProductFree->getProduct();
+                                $thumbnail = $productItem ? $productItem->getThumbnail() : null;
+                                $thumbnailUrl = $imageHelper->init($productItem, 'product_page_image_small')->setImageFile($thumbnail)->resize('50','50')->getUrl();
+                                ?>
+                            <tr>
+                                <td class="col name" data-th="<?php /* @escapeNotVerified */ echo __('Product Name') ?>">
+                                    <p class="img-product">
+                                        <img class="product-image-photo" src="<?php echo $thumbnailUrl; ?>" alt="">
+                                    </p>
+                                    <strong class="product name product-item-name"><?php echo $block->escapeHtml($_itemProductFree->getName()) ?></strong>
+                                </td>
+                                <td class="col qty" data-th="<?php /* @escapeNotVerified */ echo __('Qty') ?>">
+                                    <?php echo $block->getQtyShipmentItem($_itemProductFree); ?> <?php echo $block->getDisplayCase($_itemProductFree->getUnitCase()); ?>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <?php endif; ?>
+
+        <?php endif; ?>
+
+        <?php endforeach;// end foreach shipment ?>
+
+        <?php
+            //show product if it has not shipment item
+            else:
+                $arrFreeProduct = array();
+                $addressGroups = $block->getAddressGroup();
+
+        ?>
+            <?php if ( is_array($addressGroups) && count($addressGroups)>0 ): foreach ($addressGroups as $addressId => $addressGroup): ?>
+                <?php
+                    if ($addressId==0){
+                        $shippingAddress = $order->getShippingAddress();
+                    }else{
+                        $shippingAddress = $block->getShippingAddressById($addressId);
+                    }
+                    $shippingInfo    = ($shippingAddress) ? $shippingAddress->getLastName()." ".$shippingAddress->getFirstName(). ' ' . __('Sama') : '';
+                    $shippingName    = ($shippingAddress) ? $shippingAddress->getLastName()." ".$shippingAddress->getFirstName() : '';
+                    $shippingPhone   = ($shippingAddress) ? $shippingAddress->getTelephone() : '';
+
+                ?>
+                <?php foreach($addressGroup['delivery'] as  $deliveryType   =>  $deliveryInfo):  ?>
+
+                    <?php
+                        /**
+                         * Hide block shipping address if the orders created by command on ticket 2524
+                         */
+                        if (!$block->isOrderCvsCreateByCommand($order)) :
+                    ?>
+                    <!-- start shipping info  -->
+                    <div class="block block-order-details-view">
+                        <div class="shipping-info">
+                            <div class="title">
+                                <?php $typeShipment = ($deliveryInfo['delivery_type'] !=null) ? '( ' .__($deliveryInfo['delivery_type']) .' )' : ''; ?>
+                                <strong><?php echo __("Address:");?> <?php echo $shippingInfo ;?></strong>
+                            </div>
+                            <div class="content">
+                                <table class="shipping-info-table">
+                                    <colgroup>
+                                        <col width="43%">
+                                        <col width="57%">
+                                    </colgroup>
+                                    <thead></thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="label"><?php echo __("Name"); ?></td>
+                                            <td><?php echo $shippingName; ?> </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label"><?php echo __("Street address"); ?></td>
+                                            <td><?php echo $block->getStreetName($shippingAddress); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label"><?php echo __("Phone number"); ?></td>
+                                            <td><?php echo $shippingPhone; ?></td>
+                                        </tr>
+                                        <?php  if ($isSubscriptionOrder):?>
+                                        <?php /*only show this data for subscription order*/ ?>
+                                        <tr>
+                                            <td class="label"><?php echo __("Subscription / Hanpukai"); ?></td>
+                                            <td> <?php echo $subscriptionRowMsg; ?></td>
+                                        </tr>
+                                        <?php endif;?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end shipping info  -->
+                <?php endif; ?>
+
+
+                <!-- list items -->
+                <div class="order-details-items ordered">
+                    <div class="order-title">
+                        <strong><?php /* @escapeNotVerified */ echo __('Delivery commodity') ?></strong>
+                    </div>
+                    <div class="table-wrapper order-items">
+                        <table class="data table table-order-items" id="my-orders-table" summary="<?php /* @escapeNotVerified */ echo __('Items Ordered') ?>">
+                            <caption class="table-caption"><?php /* @escapeNotVerified */ echo __('Items Ordered') ?></caption>
+                            <thead>
+                                <tr>
+                                    <th class="col name"><?php /* @escapeNotVerified */ echo __('Product name') ?></th>
+                                    <?php if (!$isSubscriptionHanpukai): ?>
+                                        <th class="col price"><?php /* @escapeNotVerified */ echo __('Price') ?></th>
+                                    <?php endif; ?>
+                                    <th class="col paid-services"><?php /* @escapeNotVerified */ echo __('Paid services') ?></th>
+                                    <th class="col qty"><?php /* @escapeNotVerified */ echo __('Qty') ?></th>
+                                    <?php if (!$isSubscriptionHanpukai): ?>
+                                        <th class="col subtotal"><?php /* @escapeNotVerified */ echo __('Subtotal(tax included)') ?></th>
+                                    <?php endif; ?>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <?php if (isset($deliveryInfo['items']) && count ($deliveryInfo['items']) >0 ): foreach ($deliveryInfo['item_ids_object'] as $_item): ?>
+                                    <?php if ($_item->getVisibleUserAccount()) :?>
+                                    <?php
+                                        if(($_item->getPrice()<=0 || $_item->getFreeOfCharge()==1) && !$_item->getParentId() ) {
+                                            $arrFreeProduct[] = $_item;
+                                        }else{
+                                            $productItem = $_item->getProduct();
+                                            $thumbnail = $productItem ? $productItem->getThumbnail() : null;
+                                            $thumbnailUrl = $imageHelper->init($productItem, 'product_page_image_small')->setImageFile($thumbnail)->resize('50','50')->getUrl();
+                                    ?>
+
+                                    <!-- start item -->
+                                    <tr id="order-item-row-317" class="item-parent" data-item-id="<?php echo $productItem->getSku();?>">
+                                        <td class="col name" data-th="<?php echo $block->escapeHtml(__('Product Name')); ?>">
+                                            <?php if($isSubscriptionOrder): ?>
+                                                <p class="img-product">
+                                                    <img class="product-image-photo" src="<?php echo $thumbnailUrl; ?>" alt="">
+                                                </p>
+                                                <strong class="product name product-item-name"><?php echo $block->escapeHtml($_item->getName()) ?></strong>
+                                            <?php else: ?>
+                                                <a class="img-product" layer-item-id="<?php echo $_item->getProductId();?>" href="<?php echo $block->getProductSkuNotShipment($_item); ?>">
+                                                    <img class="product-image-photo" src="<?php echo $thumbnailUrl; ?>" alt="">
+                                                </a>
+                                                <a layer-item-id="<?php echo $_item->getProductId();?>" href="<?php echo $block->getProductSkuNotShipment($_item); ?>">
+                                                    <strong class="product name product-item-name"><?php echo $block->escapeHtml($_item->getName()) ?></strong>
+                                                </a>
+                                            <?php endif; ?>
+                                        </td>
+
+                                        <?php if (!$isSubscriptionHanpukai): ?>
+                                            <td class="col price" data-th="<?php /* @escapeNotVerified */ echo __('Price') ?>">
+                                                <span class="price-including-tax" data-label="Incl. Tax">
+                                                    <span class="cart-price">
+                                                    <span class="price"><?php echo $block->getFormatPrice($_item->getPriceInclTax()*$block->getItemUnitQty($_item)); ?></span></span>
+                                                </span>
+                                            </td>
+                                        <?php endif; ?>
+
+                                        <td data-th="<?php /* @escapeNotVerified */ echo __('Paid services') ?>">
+                                            <?php
+                                                $priceGift = $block->getGiftWarp($_item);
+                                                echo $block->getFormatPrice($priceGift);
+                                            ?>
+                                        </td>
+
+                                        <td data-th="<?php /* @escapeNotVerified */ echo __('Qty') ?>">
+                                            <?php
+                                                $qty = $block->getQtyOrderItem($_item);
+                                                echo $qty; ?>
+                                            <?php echo $block->getDisplayCase($_item->getUnitCase()); ?>
+                                        </td>
+
+                                        <?php if (!$isSubscriptionHanpukai): ?>
+                                            <td class="col subtotal" data-th="<?php /* @escapeNotVerified */ echo __('Subtotal(tax included)') ?>">
+                                                <span class="price-including-tax" data-label="Incl. Tax">
+                                                    <span class="cart-price">
+                                                        <span class="price"><?php echo $block->getFormatPrice($_item->getRowTotalInclTax() + ($priceGift * $qty)); ?></span>
+                                                    </span>
+                                                </span>
+                                            </td>
+                                        <?php endif; ?>
+                                    </tr>
+                                    <!-- end item -->
+
+                                    <?php  } ?>
+
+                                    <?php endif; ?>
+
+                                <?php endforeach;endif; ?>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- end list item -->
+                <?php endforeach; ?>
+
+
+
+            <?php endforeach;endif; ?>
+
+                <!-- start free product-->
+                <?php if(count($arrFreeProduct)>0): ?>
+                <div class="free-product free-coupon order-details-items ordered">
+                    <span class="title"><?php /* @escapeNotVerified */ echo __('Free product') ?></span>
+                    <div class="table-free-product table-wrapper order-items">
+                        <table class="data table table-order-items table-free-product" id="my-free-products">
+                            <thead>
+                            <tr>
+                                <th class="col name"><?php /* @escapeNotVerified */ echo __('Product Name') ?></th>
+                                <th class="col qty"><?php /* @escapeNotVerified */ echo __('Qty') ?></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($arrFreeProduct as $_itemProductFree): ?>
+                            <?php
+                                $productItem = $_itemProductFree->getProduct();
+                                $thumbnail = $productItem ? $productItem->getThumbnail() : null;
+                                $thumbnailUrl = $imageHelper->init($productItem, 'product_page_image_small')->setImageFile($thumbnail)->resize('50','50')->getUrl()
+                                ?>
+                                <tr>
+                                    <td class="col name" data-th="<?php /* @escapeNotVerified */ echo __('Product Name') ?>">
+                                        <p class="img-product">
+                                            <img class="product-image-photo" src="<?php echo $thumbnailUrl; ?>" alt="">
+                                        </p>
+                                        <strong class="product name product-item-name"><?php echo $block->escapeHtml($_itemProductFree->getName()) ?></strong>
+                                    </td>
+                                    <td class="col qty" data-th="<?php /* @escapeNotVerified */ echo __('Qty') ?>">
+                                        <?php echo $block->getQtyOrderItem($_itemProductFree); ?> <?php echo $block->getDisplayCase($_itemProductFree->getUnitCase()); ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            <?php endif; ?>
+                <!-- end free product -->
+
+
+
+    <?php endif; //endif count item shipment ?>
+<?php endif; //endif check virtual ?>
+
+<?php if( $listItemRules != null ): ?>
+<div class="coupon-promotion free-coupon order-details-items ordered">
+    <span class="title"><?php /* @escapeNotVerified */ echo __('Coupon / Campaign') ?></span>
+    <div class="table-coupon-promotion table-wrapper order-items">
+        <table class="data table table-free-product" id="my-coupon-code">
+            <thead>
+                <tr>
+                    <th class="col name"><?php /* @escapeNotVerified */ echo __('Coupon / Campaign Name') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                /**
+                 * @var Magento\SalesRule\Model\Data\Rule $rule
+                 */
+                if( is_array($listItemRules) && count ($listItemRules)>0 ) : foreach( $listItemRules as $rule ) :
+                    $label = $block->getLabelCartPriceRules($rule);
+                ?>
+
+                    <?php if ($label !=null): ?>
+                    <tr>
+                        <td class="col name">
+                            <?php  echo $label;?>
+                        </td>
+                    </tr>
+                    <?php endif; ?>
+
+                <?php endforeach ;endif; ?>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<?php endif; ?>
+<script type="text/javascript">
+    require([
+        'jquery',
+    ], function ($) {
+        'use strict';
+        $('#updateDeliveryStatusButton').click(function(){
+            $('#updateDeliveryStatus').submit();
+            return false;
+        });
+    });
+</script>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/queue.xsd">
+    <broker topic="shipment.creator" type="amqp" exchange="magento">
+        <queue name="sender_queue_shipment_creator" consumer="generateOrderShipments"
+               consumerInstance="Riki\Shipment\Model\Order\Consumer"
+               handler="Riki\Shipment\Model\Order\ShipmentBuilder\Creator::createShipmentFromQueue" maxMessages="2"/>
+    </broker>
+</config>
+

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Riki_Questionnaire::config_questionnaire" title="Questionnaire" sortOrder="10" />
+                        </resource>
+                    </resource>
+                </resource>
+
+                <resource id="Riki_Questionnaire::questionnaire" title="Questionnaire" sortOrder="9">
+                    <resource id="Riki_Questionnaire::new" title="New Questionnaire" sortOrder="10"/>
+                    <resource id="Riki_Questionnaire::save" title="Save Questionnaire" sortOrder="20"/>
+                    <resource id="Riki_Questionnaire::delete" title="Delete Questionnaire" sortOrder="30"/>
+                </resource>
+
+                <resource id="Riki_Questionnaire::answers" title="Answers" sortOrder="40">
+                    <resource id="Riki_Questionnaire::answers_view" title="View" sortOrder="41"/>
+                    <resource id="Riki_Questionnaire::answersdelete" title="Delete Answers" sortOrder="42"/>
+                </resource>
+                <resource id="Riki_Questionnaire::importQuestionaire" title="Import Questionnaire" sortOrder="42" />
+
+            </resource>
+        </resources>
+    </acl>
+</config>

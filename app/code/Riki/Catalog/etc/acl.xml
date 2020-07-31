@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Catalog::catalog" title="Products" sortOrder="30">
+                    <resource id="Magento_Catalog::category" title="Category Actions" sortOrder="1">
+                        <resource id="Magento_Catalog::category_view" title="Category View" sortOrder="10" />
+                        <resource id="Magento_Catalog::category_create" title="Category Create" sortOrder="11" />
+                        <resource id="Magento_Catalog::category_edit" title="Category Edit" sortOrder="12" />
+                        <resource id="Magento_Catalog::category_delete" title="Category Detete" sortOrder="13" />
+                    </resource>
+                    <resource id="Magento_Catalog::actions" title="Product Actions" sortOrder="5">
+                        <resource id="Magento_Catalog::actions_view" title="Product View" sortOrder="10" />
+                        <resource id="Magento_Catalog::actions_create" title="Product Create" sortOrder="11" />
+                        <resource id="Magento_Catalog::actions_edit" title="Product Edit" sortOrder="12" />
+                        <resource id="Magento_Catalog::actions_delete" title="Product Detete" sortOrder="13" />
+                        <resource id="Magento_Catalog::actions_export" title="Product Export" sortOrder="13" />
+                    </resource>
+                    <resource id="Magento_Catalog::catalog_inventory" title="Inventory" sortOrder="10">
+                        <resource id="Magento_Sales::add_gps_price" title="Add gps price" sortOrder="160" />
+                        <resource id="Magento_Sales::edit_gps_price" title="Edit gps price" sortOrder="160" />
+                        <resource id="Magento_Sales::delete_gps_price" title="Delete gps price" sortOrder="160" />
+                    </resource>
+                </resource>
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Riki_Catalog::recommendation_product_in_shopping_cart" title="Recommendation Product In Shopping Cart" sortOrder="150" />
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

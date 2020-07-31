@@ -1,0 +1,32 @@
+<?php
+namespace Mirasvit\FraudCheck\Indicator\IP;
+
+use Mirasvit\FraudCheck\Indicator\AbstractIndicator;
+
+class OpenProxy extends AbstractIndicator
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function getLabel()
+    {
+        return __('Is Open or Anonymous Proxy');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFraudScore()
+    {
+        $ip = $this->context->getIp();
+        $url = "http://check.getipintel.net/check.php?ip=$ip&format=json&contact=json@gmail.com";
+
+        $response = $this->helper->requestUrl($url);
+
+        if ($response->getData('status') == 'success') {
+            return $this->normalize($response->getData('result'), 0, 1);
+        }
+
+        return false;
+    }
+}

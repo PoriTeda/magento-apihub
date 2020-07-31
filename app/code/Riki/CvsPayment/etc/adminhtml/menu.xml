@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Riki::sales_operation_extend" title="Operations Extended" module="Riki_CvsPayment" resource="Magento_Sales::sales" parent="Magento_Sales::sales" sortOrder="1000"/>
+        <add id="Riki_CvsPayment::cvs_order" title="Orders (CVS order pending for 30 days)" module="Riki_CvsPayment" resource="Riki_CvsPayment::cvs_order" parent="Riki::sales_operation_extend" action="cvspayment/order" sortOrder="15" />
+    </menu>
+</config>

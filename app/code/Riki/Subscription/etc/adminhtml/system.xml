@@ -1,0 +1,394 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
+    <system>
+        <section id="subscriptioncourse" translate="label" type="text" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Subscription</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_Subscription::config_subscription</resource>
+            <group id="createorder" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Subscription Order</label>
+                <field id="expressioncreate" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Subscription Profile Create Order</label>
+                    <comment>Expression time setting for cron job schedule</comment>
+                </field>
+                <field id="startconsumer" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>The time cron schedule run Consumer</label>
+                    <comment>This cron for trigger running consumer</comment>
+                </field>
+                <!--<field id="number_consumer_createorder" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Number Consumer for creating order</label>
+                    <comment>Number of process for creating order</comment>
+                </field>
+                <field id="number_message_per_consumer" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Number message handled by Consumer</label>
+                </field>-->
+                <field id="expressioncollectlog" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Subscription Profile Create Order Collects Logs</label>
+                    <comment>Expression time setting for cron job schedule</comment>
+                </field>
+                <field id="delete_incomplete_generate_profile_order_schedule" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Delete Incomplete Generate Profile Order Scheduler Expression</label>
+                    <comment>Ex: */10 * * * * (Cron will run every 10 minutes)</comment>
+                </field>
+            </group>
+            <group id="indexer" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Subscription Indexer</label>
+                <field id="crontab" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>The time cron schedule run Consumer</label>
+                    <comment>This cron for trigger running consumer</comment>
+                </field>
+                <!--<field id="number_consumer_indexer" translate="label" type="text" sortOrder="41" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Number Consumer for Reindex</label>
+                    <comment>Number of process for Reindex</comment>
+                </field>
+                <field id="number_message_per_consumer" translate="label" type="text" sortOrder="42" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Number message handled by Consumer</label>
+                </field>-->
+            </group>
+            <group id="categories_recommend" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Category Recommend</label>
+                <field id="category_recommend" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>List category recommend default</label>
+                    <comment>Example: category_id_1,category_id_2</comment>
+                </field>
+            </group>
+            <group id="subprofilesession" translate="label" type="text" sortOrder="405" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Lifetime of Subcription Profile Cache</label>
+                <field id="lifetime_sub_session" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Timestamp</label>
+                    <comment>Entering the integer number of X minute. Default 10 minutes</comment>
+                </field>
+            </group>
+            <group id="merge_profile" translate="label" type="text" sortOrder="410" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Subscription profile merge</label>
+                <field id="expression" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Schedule Expression</label>
+                    <comment>Expression time setting for cron job schedule</comment>
+                </field>
+                <field id="xdays" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>X days prior the delivery date</label>
+                    <comment>Next delivery date is later than system date + X days</comment>
+                </field>
+            </group>
+            <group id="stockpoint" translate="label" type="text" sortOrder="420" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Stock Point</label>
+                <field id="is_active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="lifetime_stock_point_session" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Lifetime of stock point Session</label>
+                    <comment>Entering the integer number of X minute. Default 20 minutes</comment>
+                </field>
+                <field id="post_url" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Stock Point System Post URL</label>
+                </field>
+                <field id="key_authorization_api" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Key Authorization Api</label>
+                </field>
+                <field id="url_api_register_delivery" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Url register delivery</label>
+                </field>
+                <field id="url_api_update_delivery" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Url update delivery</label>
+                </field>
+                <field id="url_api_get_discount_rate" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Url api get discount rate</label>
+                </field>
+                <field id="url_api_confirm_bucket_order" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Url api confirm bucket order</label>
+                </field>
+                <field id="url_api_get_stock_point_delivery_status" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Url api get stock point delivery status</label>
+                </field>
+                <field id="url_api_remove_bucket_id" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Url api remove bucket id </label>
+                </field>
+                <field id="url_api_deactivate_stock_point" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Url api deactivate stock point </label>
+                </field>
+                <field id="url_api_delivery_status_stock_point" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Url api delivery status</label>
+                </field>
+                <field id="url_api_stop_stock_point" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Url Api stop Stock Point</label>
+                </field>
+            </group>
+        </section>
+        <section id="subcreateorder" translate="label" type="text" sortOrder="260" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Subscription Generate Order Notification</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_Subscription::config_subscription</resource>
+            <group id="outofstock" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Subscription order stock unavailability</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable send mail when stock unavailability</comment>
+                </field>
+                <field id="sender" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+            <group id="outofstockadmin" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Subscription order stock unavailability (Send to admin)</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable send mail when stock unavailability</comment>
+                </field>
+                <field id="sender" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="receiver" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Receiver</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                    <comment>Email address which will receive the notifications and separated by a semicolon ";"</comment>
+                </field>
+                <field id="email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+            <group id="disabledorremoved" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Subscription order product disabled or removed</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable send mail when product disabled or removed</comment>
+                </field>
+                <field id="sender" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="receiver" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Receiver</label>
+                    <comment>Email address which will receive the notifications and separated by a semicolon ";"</comment>
+                </field>
+                <field id="email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+            <group id="authorizationfailed" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Notify cancelling order when authorized fail after X times</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable send mail when checkout authorized fail after X times</comment>
+                </field>
+                <field id="sender" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="receiver" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Receiver</label>
+                    <comment>Email address which will receive the notifications and separated by a semicolon ";"</comment>
+                </field>
+                <field id="email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+            <group id="payment_method_error" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Subscription profile payment method error</label>
+                <field id="sender" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="receiver" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Receiver</label>
+                    <comment>Email address which will receive the notifications and separated by a semicolon ";"</comment>
+                </field>
+                <field id="email_template_business" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template (Business)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template (Customer)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+        </section>
+        <section id="subscriptionprofiledit" translate="label" type="text" sortOrder="1600" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Subscription Profile Edit</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_Subscription::config_subscription</resource>
+            <group id="subscription_profile_edit_customer_address" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Subscription Profile Edit Customer Address</label>
+                <field id="subscription_profile_edit_address_home_no_company_name" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Subscription profile edit customer address home (who DON'T have company name on customer profile)</label>
+                </field>
+                <field id="subscription_profile_edit_address_home_have_company_name" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Subscription profile edit customer address home (who have company name on customer profile)</label>
+                </field>
+                <field id="subscription_profile_edit_address_ambassador_company" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Subscription profile edit customer address ambassador</label>
+                </field>
+                <field id="subscription_profile_edit_customer_password" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Change customer password</label>
+                </field>
+            </group>
+        </section>
+        <section id="customerksslink" translate="label" type="text" sortOrder="1700" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>KSS Link Edit Customer</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_Customer::config_customer_kss_link_edit</resource>
+            <group id="kss_link_edit_customer" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>KSS Link Edit Customer</label>
+                <field id="kss_about_my_page" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>KSS about my page</label>
+                </field>
+                <field id="kss_subscription_page" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>KSS subscription page</label>
+                </field>
+                <field id="kss_nescafe_amb" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>KSS Nescafe AMB</label>
+                </field>
+                <field id="kss_wellness_amb" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>KSS Wellness AMB</label>
+                </field>
+                <field id="kss_customer_edit" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>KSS Customer Edit</label>
+                </field>
+                <field id="kss_office_customer_edit" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>KSS Customer Office Edit</label>
+                </field>
+                <field id="kss_company_edit" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>KSS View or Edit Company Information</label>
+                </field>
+                <field id="kss_customer_change_password" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>KSS Customer Change Password</label>
+                </field>
+                <field id="kss_auto_point" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>KSS Auto Point</label>
+                </field>
+                <field id="kss_about_nsp" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>KSS About NSP</label>
+                </field>
+                <field id="kss_machine_register" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>KSS Machine Register</label>
+                </field>
+            </group>
+        </section>
+        <section id="thank_you_page_link_to_top_page" translate="label" type="text" sortOrder="1800" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Thank you page link to TOP page</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_Customer::config_thank_you_page_link_to_top_page</resource>
+            <group id="link_to_top_page" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Thank you page link to TOP page</label>
+                <field id="link_to_top_page_ec" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Normal EC</label>
+                </field>
+                <field id="link_to_top_page_amb" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>AMB</label>
+                </field>
+                <field id="link_to_top_page_milan" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Milano</label>
+                </field>
+                <field id="link_to_top_page_alegria" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Alegria</label>
+                </field>
+                <field id="link_to_top_page_wellness_amb" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Wellness AMB</label>
+                </field>
+                <field id="link_to_top_page_cnc" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>CNC</label>
+                </field>
+                <field id="link_to_top_page_cis" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>CIS</label>
+                </field>
+                <field id="link_to_top_page_employee" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Employee</label>
+                </field>
+            </group>
+        </section>
+        <section id="loggersetting" translate="label" type="text" sortOrder="163000" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Logger Setting</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_Subscription::config_subscription</resource>
+            <group id="subscriptionlogger" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Subscription</label>
+                <field id="logger_order_active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable logger info when generating order from subscription profile</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>File name: subscription_create_order.log</comment>
+                </field>
+                <field id="logger_publish_queue_active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable logger info when publishing profile to queue</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>File name: subscription_profile_publish_queue.log</comment>
+                </field>
+                <field id="logger_free_machine_active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable logger info when adding free machine to subscription order</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>File name: subscription_add_free_machine.log</comment>
+                </field>
+                <field id="logger_simulate_active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable logger info when simulating order from subscription profile</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>File name: subscription_simulator.log</comment>
+                </field>
+                <field id="logger_edit_profile_active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable logger info when updating profile</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>File name: subscription.log</comment>
+                </field>
+                <field id="logger_state_profile_active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable logger info for tracking state of profile</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>File name: subscription_state_profile.log</comment>
+                </field>
+                <field id="logger_delete_subscription_profile" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable logger info for tracking delete of profile</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>File name: subscription_delete_profile.log</comment>
+                </field>
+                <field id="logger_replace_product_active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable logger info when replacing product of profile</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>File name: replace_product.log</comment>
+                </field>
+                <field id="logger_merge_profile_active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable logger info when merge profile</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>File name: subscription_merge_profile.log</comment>
+                </field>
+                <field id="logger_bi_export_subscription_active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable logger info when exporting BI next delivery</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>File name: bi_export_subscription_profile.log,
+                        bi_export_subscription_profile_product_cart.log,
+                        bi_export_subscription_profile_product_cart.log,
+                        bi_export_subscription_shipment_profile_product_cart.log
+                    </comment>
+                </field>
+                <field id="logger_cancel_incomplete_generate_profile_order" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable logger info when delete incomplete generate profile order</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>File name: cancel_incomplete_generate_profile_order.log</comment>
+                </field>
+                <field id="delay_payment" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable logger info when capture delay payment order</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>File name: delay_payment_order.log</comment>
+                </field>
+                <field id="logger_add_product_to_profile" translate="label" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable logger info when adding product to profile</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>File name: subscription_add_product_to_profile.log</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

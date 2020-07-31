@@ -1,0 +1,11 @@
+---------------------------------------------
+システム名　　　　: Magento Track2
+ジョブ名　　　　　: Creditcard capturing
+バッチ処理名　　　：クレジットカード　売上送信処理
+バッチ処理日時　　：{{var year}}年{{var month}}月{{var day}}日{{var hour}}時
+エラー内容:
+受注番号/取引ID：{{var order_increment_id}}　決済ID:{{var transaction_id}}
+
+出荷番号：{{var shipment_id}}
+ 
+---------------------------------------------

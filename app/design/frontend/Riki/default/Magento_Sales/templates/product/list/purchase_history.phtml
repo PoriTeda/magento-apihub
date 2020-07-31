@@ -1,0 +1,37 @@
+<?php
+$listProducts= $block->getListProductPurchaseHistory();
+$customerName = $block->getName();
+?>
+<?php if($listProducts && is_array($listProducts) && count($listProducts)>0): ?>
+<div class="section">
+<div class="product_related_to_parent">
+    <div class="wrapper">
+        <div class="label">
+            <p><?php echo $customerName . __('such as'); ?></p>
+            <p><?php  echo __('Recommended items'); ?></p>
+        </div>
+        <div class="products" >
+            <div data-bind="scope: 'purchaseHistory'" >
+                <div id="data-purchaseHistory" data-page="1" >
+                    <?php foreach($listProducts as $item): ?>
+                        <div class="item" data-item-id="<?php echo $item['sku'];?>">
+                            <a layer-item-id="<?php echo $item['id'];?>" href="<?php echo $item['url'] ?>" class="productClick">
+                                <img src="<?php echo $item['imageUrl'] ?>" alt="<?php echo $item['name'] ?>">
+                                <?php if (!$item['stock_status'] != ''): ?>
+                                    <div class="stock unavailable">
+                                        <span><?php echo $item['stock_status']; ?></span>
+                                    </div>
+                                <?php endif; ?>
+                            </a>
+                            <div class="product-name">
+                                <?php echo $item['name'] ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<?php endif; ?>

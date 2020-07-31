@@ -1,0 +1,318 @@
+<?php
+/* @var $block Riki\Subscription\Block\Frontend\Profile\ConfirmEditHanpukai */
+$profileModelData = $block->loadProfileModel();
+$arrProductCartStandardValue = $block->getProductCartStandardValue();
+$timeSlotObj = $block->getSlotObject($arrProductCartStandardValue['delivery_time_slot']);
+$arrListProductByAddressIdAndDeliveryType
+    = $block->getListProductByAddressIdAndDeliveryType($block->getProfileId());
+$objectDataSimulate
+    = $block->makeObjectDataForSimulate($block->getProfileId());
+$totalDeliveryType = 0;
+/* @var $orderSimulate \Magento\Sales\Model\Order */
+$orderSimulate = $block->simulator($objectDataSimulate);
+$paidServices = 0;
+$totalAmount = 0;
+$shippingFee = 0;
+$tentativePoints = 0;
+$paymentMethodTitle = '';
+$discountAmount = 0;
+$paymentFee = 0;
+$paymentMethodCode = $objectDataSimulate->getData('payment_method');
+$paymentMethodTitle = $block->getPaymentTitle($paymentMethodCode);
+$paymentMethodChange = $block->getDataRegistry(
+    Riki\Subscription\Model\Constant::REGISTRY_EDIT_HANPUKAI_DATA_SUBSCRIPTION_PAYMENT_METHOD);
+$subTotalAmountInlTax = 0;
+$listCouponApplied = null;
+if ($orderSimulate !== null && $orderSimulate !== false) {
+    $tentativePoints = $orderSimulate->getData('bonus_point_amount');
+    $totalAmount = $orderSimulate->getGrandTotal();
+    $shippingFee = $block->getShippingFeeIncludeTax($orderSimulate->getShippingInclTax());
+    $paidServices = $orderSimulate->getData('gw_price_incl_tax');
+    $paymentFee = $orderSimulate->getFee();
+    $discountAmount = $orderSimulate->getData('discount_amount');
+    $subTotalAmountInlTax = $orderSimulate->getSubTotalInclTax();
+    $listCouponApplied = $block->getListRulIdsAppliedHanpukai($orderSimulate,$block->getCouponCode());
+    $subTotalAmountAndDiscount = $subTotalAmountInlTax + $discountAmount;
+}
+
+/** @var \Riki\Subscription\Helper\Profile\DeliveryDateGenerateHelper $deliveryDateGenerateHelper */
+$deliveryDateGenerateHelper = $this->helper('\Riki\Subscription\Helper\Profile\DeliveryDateGenerateHelper');
+
+?>
+<form
+    action="<?php /* @escapeNotVerified */ echo $block->getUrl('*/*/saveHanpukaiProfile'); ?>"
+    method="post"
+    id="form-submit-profile"
+    class="form form-giftregistry-edit validation"
+    data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>"
+    data-mage-init='{"validation":{}}'>
+    <?php echo $block->getBlockHtml('formkey')?>
+
+    <fieldset class="fieldset panel" xmlns="http://www.w3.org/1999/html">
+        <div class="label">
+            <h4><?php echo __("Payment method");  ?></h4>
+        </div>
+        <div class="payment-method-block-text">
+            <?php if ($paymentMethodCode != 'paygent'){ ?>
+            <?php echo __(trim($paymentMethodTitle));  ?>
+            <?php } else {
+                    if ($paymentMethodChange == 'new_paygent'){
+                        echo __($block->getSystemConfig('payment/paygent/title'));
+                    } else {
+                        echo __($block->getSystemConfig('payment/paygent/title'));
+                        echo __('(used before)');
+                    }
+            } ?>
+        </div>
+    </fieldset>
+    <fieldset class="fieldset panel">
+        <div class="label">
+            <h4><?php echo __('Hanpukai course name') ?></h4>
+        </div>
+        <div class="payment-method-block-text">
+            <span><?php echo $profileModelData->getData('course_name'); ?></span>
+        </div>
+    </fieldset>
+    <fieldset class="fieldset panel table">
+        <div class="table-wrapper">
+            <?php $countDeliveryType = 0 ?>
+            <!-- loop through shipping_address_id and delivery type -->
+            <?php if (count($arrListProductByAddressIdAndDeliveryType) > 0){ ?>
+                <?php foreach ($arrListProductByAddressIdAndDeliveryType as $shippingAddressId => $arrDeliveryTypeKeyArrProductValue) {
+                    $arrAddressDetail = $block->getAddressDetail($shippingAddressId);
+                    $totalDeliveryType = count($arrDeliveryTypeKeyArrProductValue);
+                    ?>
+                <div class="table table list">
+                    <?php foreach ($arrDeliveryTypeKeyArrProductValue as $deliveryType => $arrProductWithDelivery) { ?>
+                        <!-- Header Info -->
+                        <?php $arrProduct = isset($arrProductWithDelivery['product'])?$arrProductWithDelivery['product']:[]; ?>
+                        <?php $countDeliveryType ++; ?>
+                        <div class="label">
+                            <h4><?php echo __("Address") ?>：<?php echo $arrAddressDetail['lastname'].$arrAddressDetail['firstname']; ?></h4>
+                        </div>
+                        <div class="current-shipping-address">
+                            <div class="wrapper">
+                                <table>
+                                    <tr class="header">
+                                        <td><strong><?php echo __('Name'); ?></strong></td>
+                                        <td><strong><?php echo __('Address'); ?></strong></td>
+                                        <td><strong><?php echo __('Phone number'); ?></strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td data-th="<?php echo __('Name'); ?>"><?php echo $arrAddressDetail['lastname'].$arrAddressDetail['firstname']; ?></td>
+                                        <td data-th="<?php echo __('Address'); ?>"><?php echo $block->getCustomerAddressByText($shippingAddressId); ?></td>
+                                        <td data-th="<?php echo __('Phone number'); ?>"><?php echo $arrAddressDetail['telephone']; ?></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="label no-border">
+                            <h4><?php echo __("Delivery schedule date and time") ?></h4>
+                        </div>
+                        <div class="current-shipping-address">
+                            <div class="wrapper">
+                                <span><span><?php echo $profileModelData->getData('next_delivery_date').' ('. __($block->getDay($profileModelData->getData('next_delivery_date'))).')'; ?></span></span>
+                                <?php
+                                    if ($timeSlotObj) {
+                                        echo "<span>";
+                                        echo $timeSlotObj->getSlotName();
+                                        echo "</span>";
+                                    }
+                                ?>
+
+                                <?php if ($block->isShowDeliveryMessage()):
+                                    if ($profileModelData->getData('day_of_week') != null
+                                        && $profileModelData->getData('nth_weekday_of_month') != null
+                                    ) {
+                                        $dayOfWeek = $profileModelData->getData('day_of_week');
+                                        $nthWeekdayOfMonth = $profileModelData->getData('nth_weekday_of_month');
+                                    } else {
+                                        $dayOfWeek = date('l', strtotime($profileModelData->getData('next_delivery_date')));
+                                        $nthWeekdayOfMonth = $deliveryDateGenerateHelper->calculateNthWeekdayOfMonth($profileModelData->getData('next_delivery_date'));
+                                    }
+                                ?>
+                                <span class="delivery-message">
+                                    <?php if ($block->getLocaleCode() == 'ja_JP'): ?>
+                                        <?php echo __($block->getValueOfNthWeekdayOfMonth($nthWeekdayOfMonth)) . __($dayOfWeek) . __('every'); ?>
+                                    <?php else: ?>
+                                        <?php echo __('every') . ' ' . __($block->getValueOfNthWeekdayOfMonth($nthWeekdayOfMonth)) . ' ' . __($dayOfWeek); ?>
+                                    <?php endif; ?>
+                                </span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <!-- End Header Info -->
+                        <!-- Show address + delivery type -->
+
+                        <div class="label">
+                            <h4><?php echo __("お届け予定商品") ?></h4>
+                        </div>
+                        <div class="table block">
+                            <table class="list-product">
+                                <thead>
+                                <tr>
+                                    <th class="product-image"><?php echo __('Product Image'); ?></th>
+                                    <th class="product-name">&nbsp;</th>
+                                    <th class="qty"><?php echo __("Qty") ?></th>
+                                    <th class="price"><?php echo __("Sub Total") ?></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php if (count($arrProduct) > 0): $i = 0; ?>
+                                    <?php foreach ($arrProduct as $arrInfo): ?>
+                                        <tr class="tr-product item-has-seasonal-skip <?php if($i % 2 == 0) { echo 'even'; } else {echo 'odd';} ?>">
+                                            <td class="img-thumbnail-wrapper product-image" data-th="<?php echo __("商品名称") ?>">
+                                                <img class="product-image-photo"
+                                                     src="<?php echo $block->getImageUrl($arrInfo['details'])->getUrl(); ?>" alt="" />
+                                            </td>
+                                            <td class="product-name text-left"><span><?php echo $arrInfo['details']->getName(); ?></span></td>
+                                            <td class="qty" data-th="<?php echo __("Qty") ?>">
+                                                <?php if('CS' == $arrInfo['profile']->getData('unit_case')) { ?>
+                                                    <!--show qty case-->
+                                                    <?php echo $arrInfo['profile']->getData('qty') / $arrInfo['profile']->getData('unit_qty'); ?>
+                                                    <span class="unit-label"><?php echo __('CS') ?></span>
+                                                <?php } else { ?>
+                                                    <?php echo $arrInfo['profile']->getData('qty'); ?>
+                                                    <span class="unit-label"><?php echo __('EA') ?></span>
+                                                <?php } ?>
+                                            </td>
+                                            <td class="subtotal text-right">
+                                            </td>
+                                        </tr>
+                                    <?php $i++; endforeach; ?>
+
+                                    <?php if ($totalDeliveryType == $countDeliveryType): ?>
+                                        <tr class="payable">
+                                            <td>&nbsp;</td>
+                                            <td class="text-left payable-name"><?php echo __('Total Amount Product'); ?></td>
+                                            <td colspan="5" class="payable-total text-right">
+                                                <span class="price"><?php echo $block->formatCurrency($subTotalAmountAndDiscount); ?></span>
+                                            </td>
+                                        </tr>
+                                        <tr class="ship-fee-type">
+                                            <td>&nbsp;</td>
+                                            <td class="text-left shipment-name"><?php echo __('Shipment Fee'). ' '.__($deliveryType); ?></td>
+                                            <td class="shipping-price"><?php
+                                                if ($shippingFee == 0) {
+                                                    echo __('free');
+                                                }
+                                                ?></td>
+                                            <td colspan="4" class="text-right shipping-price">
+                                                <?php if ($shippingFee > 0) {
+                                                    echo $block->formatCurrency($shippingFee);
+                                                } else {
+                                                    echo $block->formatCurrency(0);
+                                                }?>
+                                            </td>
+                                        </tr>
+                                        <tr class="payable">
+                                            <td>&nbsp;</td>
+                                            <td class="text-left payable-name"><?php echo __('Wrapping Fee (Tax included)'); ?></td>
+                                            <td colspan="5" class="payable-total text-right">
+                                                <span class="price"><?php echo $block->formatCurrency($paidServices); ?></span></td>
+                                        </tr>
+                                        <tr class="payable">
+                                            <td>&nbsp;</td>
+                                            <td class="text-left payable-name"><?php echo __('Payment Fee'); ?></td>
+                                            <td colspan="5" class="payable-total text-right">
+                                                <?php echo $block->formatCurrency($paymentFee); ?>
+                                            </td>
+                                        </tr>
+
+                                        <tr class="payable">
+                                            <td>&nbsp;</td>
+                                            <td class="text-left payable-name"><?php echo __('Apply point'); ?></td>
+                                            <td colspan="5" class="payable-total text-right">
+                                                <?php echo __('0'); ?> <?php echo __('Point'); ?>
+                                            </td>
+                                        </tr>
+                                        <tr class="payable">
+                                            <td>&nbsp;</td>
+                                            <td class="text-left payable-name"><?php echo __('Total Payable Amount'); ?></td>
+                                            <td colspan="5" class="payable-total text-right">
+                                                <span><?php echo $block->formatCurrency($totalAmount); ?></span>
+                                            </td>
+                                        </tr>
+                                <?php endif; ?>
+                                <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    <?php  } ?>
+                </div>
+                <?php } ?>
+            <?php } ?>
+            <!-- end loop -->
+            <div class="modification">
+                <div class="tentative_points">
+                    <span class="title"><?php echo __('Tentative points'); ?></span>
+                    <span><?php echo $tentativePoints .__('Points'); ?></span>
+                </div>
+                <div class="coupon-code txt-right">
+                    <span class="title"><?php echo __('Planned use coupon'); ?></span>
+                    <?php
+                    if($listCouponApplied)
+                    {
+                        foreach($listCouponApplied as $itemCoupon)
+                        {
+                            echo "<p><span>".$itemCoupon['code']."</span><span>".$itemCoupon['name']."</span></p><br>";
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
+    </fieldset>
+
+    <div class="actions-toolbar">
+        <!-- data post -->
+        <input type="hidden" name="coupon_code" value="<?php echo $block->escapeHtml($block->showCouponCode($orderSimulate)); ?>" />
+        <input type="hidden" name="profile_id" value="<?php echo $block->escapeHtml($block->getProfileId()); ?>" />
+        <input type="hidden" name="payment_method"
+               value="<?php echo $block->getDataRegistry(
+                   Riki\Subscription\Model\Constant::REGISTRY_EDIT_HANPUKAI_DATA_SUBSCRIPTION_PAYMENT_METHOD) ?>" />
+        <input type="hidden" name="profile_type"
+               value="<?php echo $block->getDataRegistry(
+                   Riki\Subscription\Model\Constant::REGISTRY_EDIT_HANPUKAI_DATA_SUBSCRIPTION_CHANGE_TYPE
+               ); ?>"/>
+        <input type="hidden" name="preferred_payment_method" value="<?php echo $block->getDataRegistry(
+            \Riki\Subscription\Model\Constant::REGISTRY_EDIT_HANPUKAI_DATA_SUBSCRIPTION_Preferred_Payment_Method); ?>">
+        <!-- end data post -->
+        <?php $buttonText = ($paymentMethodCode == 'paygent' && $paymentMethodChange == 'new_paygent') ? __('Proceed with credit card payment') : __('Confirm Changes') ?>
+        <div class="check-offset"></div>
+        <div class="actions-toolbar-floating confirm">
+            <div class="action-left">
+                <a class="tracking_floating_button" data-action-event="Edit Subscription Profile Pages - Floating Buttons" data-title="<?php echo __('前に戻る | Go Back to Previous Page') ?>" href="#" onclick="window.history.go(-1); return false;"><span><?php echo __('Go back page') ?></span></a>
+            </div>
+            <div class="action-right">
+                <button onclick="return submitForm(this , 'form-submit-profile');" value="update" class="flat-button yellow-subs">
+                    <span><?php echo $buttonText ?></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    require(['jquery'], function($) {
+        $('ul.opc-progress-bar').each(function() {
+            var _this = $(this);
+            _this.find('li:eq(0)').addClass('_complete').removeClass('_active');
+            _this.find('li:eq(0) > span').on('click', function() {
+                $('button#go-back').trigger('click');
+                return false;
+            });
+            _this.find('li:eq(1)').addClass('_active');
+        });
+        <?php if($paymentMethodCode == 'paygent' && $paymentMethodChange == 'new_paygent'): ?>
+        $('.purchase-process-bar.has-no-new-paygent').hide();
+        $('.purchase-process-bar.has-new-paygent').show();
+        <?php endif; ?>
+    })
+</script>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Catalog/js/unsticky-cart": {}
+        }
+    }
+</script>

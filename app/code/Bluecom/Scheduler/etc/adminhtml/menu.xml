@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Bluecom_Scheduler::scheduler" title="Cron Scheduler"
+             module="Bluecom_Scheduler" sortOrder="45" parent="Magento_Backend::system" resource="Bluecom_Scheduler::scheduler"/>
+        <add id="Bluecom_Scheduler::schedules" title="Jobs view"
+             module="Bluecom_Scheduler" sortOrder="10" parent="Bluecom_Scheduler::scheduler"
+             action="scheduler/schedules" resource="Bluecom_Scheduler::schedules"/>
+        <add id="Bluecom_Scheduler::jobs" title="Jobs configuration"
+             module="Bluecom_Scheduler" sortOrder="10" parent="Bluecom_Scheduler::scheduler"
+             action="scheduler/jobs" resource="Bluecom_Scheduler::jobs"/>
+    </menu>
+</config>

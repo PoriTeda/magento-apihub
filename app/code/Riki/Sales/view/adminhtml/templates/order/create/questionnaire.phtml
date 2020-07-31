@@ -1,0 +1,162 @@
+<?php /** @var $block \Riki\Sales\Block\Adminhtml\Order\Create\Questionnaire */ ?>
+
+<?php $questionnairesArr = $block->getQuestionnaires(); ?>
+
+<?php if (count($questionnairesArr['questionnaire'])): ?>
+    <div id="questionnaireOnBackend">
+        <div class="admin__page-section-title">
+            <strong class="title"><?php echo __('Questionnaire') ?></strong>
+        </div>
+        <div data-bind="scope: 'questionnaireOnBackend'">
+            <div class="field choice admin__field admin__field-option field-show-questionnaire">
+                <input id="show_questionnaire_admin"
+                       class="admin__control-checkbox"
+                       name="questionnaire_show_in_admin"
+                       value="1"
+                       type="checkbox" />
+                <label for="show_questionnaire_admin" class="admin__field-label">
+                    <span><?php echo __('Show questionnaire'); ?></span>
+                </label>
+            </div>
+            <?php foreach ($questionnairesArr['questionnaire'] as $k => $questionnairesItem): ?>
+                <input type="hidden" name="questionnaire[<?php echo $questionnairesItem['enquete_id'] ?>][enquete_id]" value="<?php echo $questionnairesItem['enquete_id'] ?>" />
+                <div class="questionnaire-wrapper no-display">
+                    <h2 class="questionnaire-title"><?php echo $questionnairesItem['name']; ?></h2>
+                    <?php $questionIndex = 0; ?>
+                    <?php foreach($questionnairesItem['optionQuestions'] as $k1 => $questionItem): $questionIndex++; ?>
+                        <div class="question-item<?php echo ($questionItem['is_required'] == '1') ? ' required' : '' ?>">
+                            <span class="no-display data-type" rel="<?php echo $questionItem['type'] ?>"></span>
+                            <div class="question-container">
+                                <?php if($questionItem['type'] == '0'): ?>
+                                    <div class="admin__field">
+                                        <label class="admin__field-label"><?php echo __('Question:') ?> <?php echo $questionItem['title'] ?></label>
+                                        <?php foreach($questionItem['optionChoices'] as $optionChoiceItem): ?>
+                                            <?php if($optionChoiceItem['parent_choice_id'] == '0'): ?>
+                                                <?php
+                                                $optionChoicesSecond = array();
+                                                foreach($questionItem['optionChoices'] as $optionChoiceTmp) {
+                                                    if($optionChoiceTmp['parent_choice_id'] == $optionChoiceItem['choice_id'])
+                                                        $optionChoicesSecond[] = $optionChoiceTmp;
+                                                }
+                                                ?>
+                                                <div class="wrapper">
+                                                    <div class="level1">
+                                                        <div class="admin__field admin__field-option">
+                                                            <input type="radio" class="admin__control-radio<?php echo (count($optionChoicesSecond) > 0) ? ' has_children' : '' ?>" name="questionnaire[<?php echo $questionnairesItem['enquete_id']; ?>][questions][<?php echo $questionItem['question_id'] ?>][choice_id][id]" id="checkbox_<?php echo $optionChoiceItem['choice_id']; ?>" value="<?php echo $optionChoiceItem['choice_id']; ?>" />
+                                                            <label class="admin__field-label" for="checkbox_<?php echo $optionChoiceItem['choice_id']; ?>"><?php echo $optionChoiceItem['label'] ?></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="level2">
+                                                        <?php if(count($optionChoicesSecond) > 0): ?>
+                                                            <div class="arrow drop-down">⇒</div>
+                                                            <div class="level2-content">
+                                                                <div class="admin__field-control">
+                                                                    <select class="admin__control-select" disabled="disabled" name="questionnaire[<?php echo $questionnairesItem['enquete_id']; ?>][questions][<?php echo $questionItem['question_id'] ?>][choice_id][sub][<?php echo $optionChoiceItem['choice_id']; ?>]">
+                                                                        <option value=""><?php echo __('Please select the answer'); ?></option>
+                                                                        <?php foreach($optionChoicesSecond as $optionChoicesSecondItem): ?>
+                                                                            <option value="<?php echo $optionChoicesSecondItem['choice_id'] ?>"><?php echo $optionChoicesSecondItem['label'] ?></option>
+                                                                        <?php endforeach; ?>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                </div>
+                                            <?php endif; ?>
+                                        <?php endforeach ?>
+                                    </div>
+                                <?php elseif ($questionItem['type'] == '1'): ?>
+                                    <div class="wrapper">
+                                        <div class="admin__field">
+                                            <label class="admin__field-label"><?php echo __('Question:') ?> <?php echo $questionItem['title'] ?></label>
+                                        </div>
+                                        <div class="level1 middle">
+                                            <div class="admin__field-control">
+                                                <select rel="window.questionnaires['questionnaire'][<?php echo $k ?>]['optionQuestions'][<?php echo $k1 ?>]" class="admin__control-select" name="questionnaire[<?php echo $questionnairesItem['enquete_id']; ?>][questions][<?php echo $questionItem['question_id'] ?>][choice_id][id]">
+                                                    <option value=""><?php echo __('Please select the answer') ?></option>
+                                                    <?php foreach($questionItem['optionChoices'] as $optionChoiceItem): ?>
+                                                        <?php if($optionChoiceItem['parent_choice_id'] == '0'): ?>
+                                                            <option value="<?php echo $optionChoiceItem['choice_id'] ?>"><?php echo $optionChoiceItem['label'] ?></option>
+                                                        <?php endif; ?>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="level2"></div>
+                                    </div>
+                                <?php elseif ($questionItem['type'] == '2'): ?>
+                                    <div class="wrapper">
+                                        <div class="level1">
+                                            <div class="admin__field field field-city">
+                                                <label class="label admin__field-label" for="content_<?php echo $questionItem['question_id'] ?>"><?php echo __('Question:') ?> <?php echo $questionItem['title'] ?></label>
+                                            </div>
+                                            <div class="admin__field-control control">
+                                                <input type="text" name="questionnaire[<?php echo $questionnairesItem['enquete_id']; ?>][questions][<?php echo $questionItem['question_id'] ?>][content]" id="content_<?php echo $questionItem['question_id'] ?>" class="input-text admin__control-text" />
+                                            </div>
+                                        </div>
+                                        <div class="level2"></div>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <script type="text/javascript">
+            window.questionnaires = <?php /* @escapeNotVerified */ echo \Zend_Json::encode($questionnairesArr); ?>;
+            require([
+                "jquery"
+            ], function($){
+                $('input[name="questionnaire_show_in_admin"]').on('change', function() {
+                    if( $('input[name="questionnaire_show_in_admin"]:checked').val() == '1')
+                        $('.questionnaire-wrapper').fadeIn();
+                    else
+                        $('.questionnaire-wrapper').fadeOut();
+                })
+
+                $('.question-container .level1 input[type="radio"]').on('change', function() {
+                    var checkboxName = $(this).attr('name'),
+                        checkboxSubElement = $('select[name="'+ checkboxName.replace(/\[id\]/g,'') +'[sub]['+ $(this).val() +']"]');
+                    $(this).parent().parent().parent().parent().find('.level2 select').attr('disabled', 'disabled');
+                    $(this).parent().parent().parent().parent().find('.level2 select').find('option:eq(0)').prop('selected', true);
+                    checkboxSubElement.removeAttr('disabled');
+                });
+                $('.question-container .level1 select').on('change', function() {
+                    var rel = $(this).attr('rel'),
+                        parentChoice = $(this).val(),
+                        level2 = $(this).parent().parent().parent().find('.level2'),
+                        selectBoxLevel1Name = $(this).attr('name').replace(/\[id\]/g,'');
+                    level2.html('');
+                    if(parentChoice != '') {
+                        var obj = eval(rel),
+                            choiceSecond = [];
+                        if(obj != 'undefined') {
+                            for(var i = 0; i < obj.optionChoices.length; i++){
+                                if(obj.optionChoices[i].parent_choice_id == parentChoice)
+                                    choiceSecond.push(obj.optionChoices[i]);
+                            }
+                            if(choiceSecond.length){
+                                var level2HTML = '';
+                                level2HTML+= '<div class="arrow drop-down">⇒</div>';
+                                level2HTML+= '<div class="level2-content">';
+                                level2HTML+= '<div class="admin__field-control">';
+                                level2HTML+= '<select class="admin__control-select" name="'+ selectBoxLevel1Name +'[sub]['+ parentChoice +']">';
+                                level2HTML+= '<option value="">Please select the answer</option>';
+                                for(var j = 0; j < choiceSecond.length; j++){
+                                    level2HTML+= '<option value="'+ choiceSecond[j].choice_id +'">'+ choiceSecond[j].label +'</option>';
+                                }
+                                level2HTML+= '</select>'
+                                level2HTML+= '</div>'
+                                level2HTML+= '</div>';
+
+                                level2.html(level2HTML);
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
+    </div>
+
+<?php endif; ?>

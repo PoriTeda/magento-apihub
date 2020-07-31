@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+
+    <columns name="sales_order_shipment_columns">
+        <column name="amount_total" class="Magento\Sales\Ui\Component\Listing\Column\Price">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Purchased Amount (Incl. Tax)</item>
+                </item>
+            </argument>
+        </column>
+        <column name="shipping_name_kana">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Ship-to Name Kana</item>
+                </item>
+            </argument>
+        </column>
+        <column name="shipment_status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Riki\Shipment\Model\ResourceModel\Status\Options\Shipment</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Shipment Status</item>
+                </item>
+            </argument>
+        </column>
+        <column name="payment_status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Riki\Shipment\Model\ResourceModel\Status\Options\Payment</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Payment Status</item>
+                </item>
+            </argument>
+        </column>
+        <column name="payment_date" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Collection Date</item>
+                </item>
+            </argument>
+        </column>
+        <column name="shipped_out_date" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Shipped Out Date</item>
+                </item>
+            </argument>
+        </column>
+        <column name="delivery_complete_date" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Delivery Complete Date</item>
+                </item>
+            </argument>
+        </column>
+        <column name="warehouse">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Delivered Warehouse</item>
+                </item>
+            </argument>
+        </column>
+        <column name="delivery_type">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Riki\Shipment\Model\ResourceModel\Status\Options\DeliveryType</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Delivery Type</item>
+                </item>
+            </argument>
+        </column>
+        <column name="total_qty"  class="Riki\Theme\Component\Listing\Columns\Quantity">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="label" xsi:type="string" translate="true">Total Quantity</item>
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <column name="total_case_qty"  class="Riki\Theme\Component\Listing\Columns\Quantity">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="label" xsi:type="string" translate="true">Total Quantity</item>
+                </item>
+            </argument>
+        </column>
+        <column name="shipment_fee" class="Magento\Sales\Ui\Component\Listing\Column\Price">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Shipping Information</item>
+                </item>
+            </argument>
+        </column>
+        <column name="stock_point_delivery_bucket_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="label" xsi:type="string" translate="true">Stock Point ID</item>
+                </item>
+            </argument>
+        </column>
+    </columns>
+</listing>

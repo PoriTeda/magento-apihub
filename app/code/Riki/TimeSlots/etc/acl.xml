@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Riki_SubscriptionFrequency::subscription" title="Subscription" sortOrder="45">
+                    <resource id="Riki_TimeSlots::manage_time_slots" title="Manage Time Slots" sortOrder="30" >
+                        <resource id="Riki_TimeSlots::manage_time_slots_save" title="Save" sortOrder="32" />
+                        <resource id="Riki_TimeSlots::manage_time_slots_delete" title="Delete" sortOrder="33" />
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

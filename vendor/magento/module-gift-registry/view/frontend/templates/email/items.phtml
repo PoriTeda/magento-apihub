@@ -1,0 +1,31 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<table class="email-items" summary="<?= /* @escapeNotVerified */  __('Gift Registry Items Updated') ?>">
+    <thead>
+        <tr>
+            <th><?= /* @escapeNotVerified */  __('Product Name') ?></th>
+            <th><?= /* @escapeNotVerified */  __('Requested Quantity') ?></th>
+            <th><?= /* @escapeNotVerified */  __('Fulfilled Quantity') ?></th>
+            <th><?= /* @escapeNotVerified */  __('Total Fulfilled Quantity') ?></th>
+            <th><?= /* @escapeNotVerified */  __('Remaining Quantity') ?></th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php $i = 0; foreach ($block->getItems() as $item): ?>
+    <tr<?= $i%2 ? ' ' : '' ?>>
+        <td><strong><?= /* @escapeNotVerified */  $item->getProductName() ?></strong></td>
+        <td><?= /* @escapeNotVerified */  $block->getQty($item) ?></td>
+        <td><?= /* @escapeNotVerified */  $block->getQtyOrdered($item) ?></td>
+        <td><?= /* @escapeNotVerified */  $block->getQtyFulfilled($item) ?></td>
+        <td><?= /* @escapeNotVerified */  $block->getRemainedQty($item) ?></td>
+    </tr>
+    <?php $i++; endforeach; ?>
+    </tbody>
+</table>

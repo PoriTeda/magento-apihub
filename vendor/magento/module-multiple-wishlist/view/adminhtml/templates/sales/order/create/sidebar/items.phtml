@@ -1,0 +1,157 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/* @var $block \Magento\Sales\Block\Adminhtml\Order\Create\Sidebar\AbstractSidebar */
+?>
+<div class="create-order-sidebar-block" id="sidebar_data_<?= /* @escapeNotVerified */ $block->getDataId() ?>">
+    <div class="head sidebar-title-block">
+        <a href="#" class="action-refresh"
+           title="<?= $block->escapeHtml(__('Refresh')) ?>"
+           onclick="order.loadArea('sidebar_<?= /* @escapeNotVerified */ $block->getDataId() ?>', 'sidebar_data_<?= /* @escapeNotVerified */ $block->getDataId() ?>');return false;">
+            <span><?= /* @escapeNotVerified */ __('Refresh') ?></span>
+        </a>
+        <h5 class="create-order-sidebar-label">
+            <?= /* @escapeNotVerified */ $block->getHeaderText() ?>
+            <span class="normal">(<?= /* @escapeNotVerified */ $block->getItemCount() ?>)</span>
+        </h5>
+        <select class="sidebar-selector admin__control-select">
+            <option value="all"><?= /* @escapeNotVerified */ __('All Wish Lists') ?></option>
+            <?php foreach ($block->getWishlists() as $id => $name) :?>
+                <option value="<?= /* @escapeNotVerified */ $id ?>"><?= $block->escapeHtml($name) ?></option>
+            <?php endforeach;?>
+        </select>
+    </div>
+    <div class="content">
+        <div class="auto-scroll">
+            <?php if ($block->getItemCount()): ?>
+            <table class="data-table admin__table-primary">
+                <thead>
+                    <tr>
+                        <th class="col-item"><?= /* @escapeNotVerified */ __('Item') ?></th>
+
+                        <?php if ($block->canDisplayItemQty()): ?>
+                            <th class="col-qty"><?= /* @escapeNotVerified */ __('Qty') ?></th>
+                        <?php endif; ?>
+
+                        <?php if ($block->canDisplayPrice()): ?>
+                            <th class="col-price"><?= /* @escapeNotVerified */ __('Price') ?></th>
+                        <?php endif; ?>
+
+                        <?php if ($block->canRemoveItems()): ?>
+                            <th class="col-remove">
+                                <span title="<?= $block->escapeHtml(__('Remove')) ?>"
+                                      class="icon icon-remove">
+                                    <span><?= /* @escapeNotVerified */ __('Remove') ?></span>
+                                </span>
+                            </th>
+                        <?php endif; ?>
+
+                        <th class="col-add">
+                            <span title="<?= $block->escapeHtml(__('Add To Order')) ?>"
+                                  class="icon icon-add">
+                                <span><?= /* @escapeNotVerified */ __('Add To Order') ?></span>
+                            </span>
+                        </th>
+                    </tr>
+                </thead>
+                <?php foreach ($block->getItems() as $_item): ?>
+                <tbody>
+                    <tr class="row wishlist-<?= /* @escapeNotVerified */ $_item->getWishlistId() ?>">
+                        <td class="col-item"><?= $block->escapeHtml($_item->getName()) ?></td>
+
+                        <?php if ($block->canDisplayItemQty()): ?>
+                            <td class="col-qty">
+                                <?= /* @escapeNotVerified */ $block->getItemQty($_item) ?>
+                            </td>
+                        <?php endif; ?>
+
+                        <?php if ($block->canDisplayPrice()): ?>
+                            <td class="col-price"><?= /* @escapeNotVerified */ $block->convertPrice($_item->getPrice()) ?></td>
+                        <?php endif; ?>
+
+                        <?php if ($block->canRemoveItems()): ?>
+                            <td class="col-remove">
+                                <input id="sidebar-remove-<?= /* @escapeNotVerified */ $block->getSidebarStorageAction() ?>-<?= /* @escapeNotVerified */ $block->getItemId($_item) ?>"
+                                       type="checkbox"
+                                       name="sidebar[remove][<?= /* @escapeNotVerified */ $block->getItemId($_item) ?>]"
+                                       class="admin__control-checkbox"
+                                       value="<?= /* @escapeNotVerified */ $block->getDataId() ?>"
+                                       title="<?= $block->escapeHtml(__('Remove')) ?>"/>
+                                <label class="admin__field-label"
+                                       for="sidebar-remove-<?= /* @escapeNotVerified */ $block->getSidebarStorageAction() ?>-<?= /* @escapeNotVerified */ $block->getItemId($_item) ?>">
+                                </label>
+                            </td>
+                        <?php endif; ?>
+
+                        <td class="col-add">
+                            <?php if ($block->isConfigurationRequired($_item->getTypeId()) && $block->getDataId() == 'wishlist'): ?>
+                                <a href="#"
+                                   class="icon icon-configure"
+                                   title="<?= $block->escapeHtml(__('Configure and Add to Order')) ?>"
+                                   onclick="order.sidebarConfigureProduct('<?= 'sidebar_wishlist' ?>', <?= /* @escapeNotVerified */ $block->getProductId($_item) ?>, <?= /* @escapeNotVerified */ $block->getItemId($_item) ?>); return false;">
+                                    <span><?= /* @escapeNotVerified */ __('Configure and Add to Order') ?></span>
+                                </a>
+                            <?php elseif ($block->isConfigurationRequired($_item->getTypeId())): ?>
+                                <a href="#"
+                                   class="icon icon-configure"
+                                   title="<?= $block->escapeHtml(__('Configure and Add to Order')) ?>"
+                                   onclick="order.sidebarConfigureProduct('<?= 'sidebar' ?>', <?= /* @escapeNotVerified */ $block->getProductId($_item) ?>); return false;">
+                                    <span><?= /* @escapeNotVerified */ __('Configure and Add to Order') ?></span>
+                                </a>
+                            <?php else: ?>
+                                <input id="sidebar-<?= /* @escapeNotVerified */ $block->getSidebarStorageAction() ?>-<?= /* @escapeNotVerified */ $block->getIdentifierId($_item) ?>"
+                                       type="checkbox"
+                                       name="sidebar[<?= /* @escapeNotVerified */ $block->getSidebarStorageAction() ?>][<?= /* @escapeNotVerified */ $block->getIdentifierId($_item) ?>]"
+                                       value="<?= /* @escapeNotVerified */ $block->canDisplayItemQty() ? $_item->getQty()*1 : 1 ?>"
+                                       class="admin__control-checkbox"
+                                       title="<?= $block->escapeHtml(__('Add To Order')) ?>"/>
+                                <label class="admin__field-label"
+                                       for="sidebar-<?= /* @escapeNotVerified */ $block->getSidebarStorageAction() ?>-<?= /* @escapeNotVerified */ $block->getIdentifierId($_item) ?>">
+                                </label>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                </tbody>
+                <?php endforeach; ?>
+            </table>
+            <?php else: ?>
+                <span class="no-items"><?= /* @escapeNotVerified */ __('No items') ?></span>
+            <?php endif ?>
+        </div>
+        <?php if ($block->getItemCount() && $block->canRemoveItems()): ?>
+        <?= $block->getChildHtml('empty_customer_cart_button') ?>
+        <?php endif; ?>
+    </div>
+</div>
+<script>
+require(['prototype'], function(){
+
+//<![CDATA[
+    wishlistBlockId = 'sidebar_data_<?= $block->escapeJs($block->getDataId()) ?>';
+    wishlistBlock = {
+        table : $(wishlistBlockId).down('.content table'),
+        selector : $(wishlistBlockId).down('.head select'),
+        init : function() {
+            Event.observe(this.selector, 'change', this.filter.bind(this))
+        },
+        filter : function() {
+            if (this.selector.value) {
+                $(this.table).select('tr.row').each((function(row) {
+                    var wishlistId = $(row).className.split('-')[1];
+                    $(row).setStyle({
+                        'display': (this.selector.value == 'all' || wishlistId == this.selector.value) ? '' : 'none'
+                    });
+                }).bind(this));
+            }
+        }
+    };
+    wishlistBlock.init();
+//]]>
+
+});
+</script>

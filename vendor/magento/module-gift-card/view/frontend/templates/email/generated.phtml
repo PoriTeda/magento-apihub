@@ -1,0 +1,24 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+/** @var \Magento\GiftCard\Block\Generated $block */
+?>
+<?php $_codes = $block->getCodes(); ?>
+<?php $_isRedeemable = $block->getIsRedeemable(); ?>
+
+<?php foreach ($_codes as $_code): ?>
+    <?php if (!$_code): ?>
+        <?php continue; ?>
+    <?php endif; ?>
+
+    <?php if ($_isRedeemable): ?>
+        <a href="<?= /* @escapeNotVerified */  $block->getUrl('magento_giftcardaccount/customer', ['giftcard' => $_code, '_nosid' => true]) ?>"><?= /* @escapeNotVerified */  $_code ?></a>
+    <?php else: ?>
+        <?= /* @escapeNotVerified */  $_code ?>
+    <?php endif; ?>
+    <br />
+<?php endforeach; ?>

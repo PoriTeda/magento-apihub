@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="tax" translate="label" sortOrder="303" showInDefault="1" showInWebsite="1" showInStore="1">
+            <resource>Magento_Tax::config_tax</resource>
+            <group id="classes" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="payment_tax_class" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Tax Class for Payment</label>
+                    <source_model>Magento\Tax\Model\TaxClass\Source\Product</source_model>
+                </field>
+            </group>
+            <group id="calculation">
+                <field id="round" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Tax Rounding Method</label>
+                    <source_model>Riki\Tax\Model\Config\Source\Round</source_model>
+                </field>
+            </group>
+            <group id="tax_change" translate="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Tax Change date</label>
+                <field id="change_date" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Tax Change Date</label>
+                    <validate>validate-date</validate>
+                </field>
+                <field id="compare_tax" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Compare tax percent(%)</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

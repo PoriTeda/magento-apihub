@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:DataObject/etc/fieldset.xsd">
+    <scope id="global">
+        <fieldset id="customer_account">
+            <field name="consumer_db_id">
+                <aspect name="to_quote" targetField="customer_consumer_db_id" />
+            </field>
+            <field name="customer_company_name">
+                <aspect name="to_quote" targetField="customer_company_name" />
+            </field>
+            <field name="offline_customer">
+                <aspect name="to_quote" targetField="customer_offline_customer" />
+            </field>
+            <field name="key_work_ph_num">
+                <aspect name="to_quote" targetField="customer_key_work_ph_num" />
+            </field>
+            <field name="amb_type">
+                <aspect name="to_quote" targetField="customer_amb_type" />
+            </field>
+        </fieldset>
+    </scope>
+</config>

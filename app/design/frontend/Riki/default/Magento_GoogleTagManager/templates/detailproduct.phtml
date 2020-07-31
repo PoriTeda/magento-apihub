@@ -1,0 +1,21 @@
+<?php
+/** @var \Riki\GoogleTagManager\Block\ListJson $block */
+$product = $block->getCurrentProduct();
+$price = $block->getProductPrice($product);
+$dimension40 = intval($price) ? 'NO' : 'YES';
+$dimension41 = intval($price) ? 'NO' : 'YES';
+$dimension24 = 'SPOT Product Purchase'; // always spot in product detail
+?>
+<script>
+    dataLayer.push({
+        'event': 'detailView',
+        'currencyCode': 'JPY',
+        'ecommerce': {
+            'detail': {
+                'actionField': {
+                },
+                'products': [<?php echo $block->getJsonData();?>]
+            }
+        }
+    });
+</script>

@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="importcsvpayment_import_container">
+            <block class="Magento\Backend\Block\Widget\Grid" name="importing.grid" as="grid">
+                <arguments>
+                    <argument name="id" xsi:type="string">importGrid</argument>
+                    <argument name="dataSource" xsi:type="object">Riki\ArReconciliation\Model\ResourceModel\Import\Collection</argument>
+                    <argument name="default_sort" xsi:type="string">id</argument>
+                    <argument name="default_dir" xsi:type="string">desc</argument>
+                    <argument name="save_parameters_in_session" xsi:type="string">true</argument>
+                </arguments>
+
+                <block class="Magento\Backend\Block\Widget\Grid\ColumnSet" as="grid.columnSet" name="import.grid.columnSet">
+                    <!--<arguments>-->
+                        <!--<argument name="rowUrl" xsi:type="array">-->
+                            <!--&lt;!&ndash;<item name="path" xsi:type="string">cannedresponse/*/edit</item>&ndash;&gt;-->
+                            <!--<item name="path" xsi:type="string">false</item>-->
+                            <!--<item name="extraParamsTemplate" xsi:type="array">-->
+                                <!--<item name="id" xsi:type="string">getId</item>-->
+                            <!--</item>-->
+                        <!--</argument>-->
+                    <!--</arguments>-->
+
+                    <block class="Magento\Backend\Block\Widget\Grid\Column" as="id">
+                        <arguments>
+                            <argument name="header" xsi:type="string" translate="true">ID</argument>
+                            <argument name="type" xsi:type="string">text</argument>
+                            <argument name="index" xsi:type="string">id</argument>
+                            <argument name="id" xsi:type="string">id</argument>
+                        </arguments>
+                    </block>
+
+                    <block class="Magento\Backend\Block\Widget\Grid\Column" as="transaction_id">
+                        <arguments>
+                            <argument name="header" xsi:type="string" translate="true">TransactionID</argument>
+                            <argument name="type" xsi:type="string">text</argument>
+                            <argument name="index" xsi:type="string">transaction_id</argument>
+                            <argument name="id" xsi:type="string">transaction_id</argument>
+                        </arguments>
+                    </block>
+
+                    <block class="Magento\Backend\Block\Widget\Grid\Column" as="amount">
+                        <arguments>
+                            <argument name="header" xsi:type="string" translate="true">Amount</argument>
+                            <argument name="type" xsi:type="string">text</argument>
+                            <argument name="index" xsi:type="string">amount</argument>
+                            <argument name="id" xsi:type="string">amount</argument>
+                        </arguments>
+                    </block>
+
+                    <block class="Magento\Backend\Block\Widget\Grid\Column" as="payment_date">
+                        <arguments>
+                            <argument name="header" xsi:type="string" translate="true">Payment Date</argument>
+                            <argument name="type" xsi:type="string">date</argument>
+                            <argument name="index" xsi:type="string">payment_date</argument>
+                            <argument name="id" xsi:type="string">payment_date</argument>
+                        </arguments>
+                    </block>
+
+                    <block class="Magento\Backend\Block\Widget\Grid\Column" as="status_code">
+                        <arguments>
+                            <argument name="header" xsi:type="string" translate="true">Status Code</argument>
+                            <argument name="type" xsi:type="string">text</argument>
+                            <argument name="index" xsi:type="string">status_code</argument>
+                            <argument name="id" xsi:type="string">status_code</argument>
+                        </arguments>
+                    </block>
+                    <block class="Magento\Backend\Block\Widget\Grid\Column" as="payment_from">
+                        <arguments>
+                            <argument name="header" xsi:type="string" translate="true">Payment From</argument>
+                            <argument name="type" xsi:type="string">text</argument>
+                            <argument name="index" xsi:type="string">payment_from</argument>
+                            <argument name="id" xsi:type="string">payment_from</argument>
+                        </arguments>
+                    </block>
+                </block>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <!-- Subscription Product PriceBox -->
+    <route url="/V1/subscription-page/priceBox" method="POST">
+        <service class="Riki\SubscriptionPage\Api\PriceBoxInterface" method="getList"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/subscription-page/getPriceItem" method="POST">
+        <service class="Riki\SubscriptionPage\Api\PriceBoxInterface" method="getPriceItem"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!-- Subscription Product PriceBox -->
+    <route url="/V1/subscription-page/getListMachines" method="POST">
+        <service class="Riki\SubscriptionPage\Api\PriceBoxInterface" method="getListMachines"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!-- Subscription Product PriceBox -->
+    <route url="/V1/subscription-page/changeHanpukaiQty" method="POST">
+        <service class="Riki\SubscriptionPage\Api\PriceBoxInterface" method="changeHanpukaiQty"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!-- Subscription Product validateAddtionalCat -->
+    <route url="/V1/subscription-page/validateAdditionalCat" method="POST">
+        <service class="Riki\SubscriptionPage\Api\PriceBoxInterface" method="validateAdditionalCat"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!-- Subscription Machine -->
+    <route url="/V1/subscription-page/automaticallyMachine" method="POST">
+        <service class="Riki\SubscriptionPage\Api\CartRepositoryInterface" method="automaticallyMachine"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!-- Subscription load more Machine -->
+    <route url="/V1/subscription-page/load-more-machine" method="POST">
+        <service class="Riki\SubscriptionPage\Api\CartRepositoryInterface" method="loadMoreMachine"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/subscription-page/cart/emulate" method="POST">
+        <service class="Riki\SubscriptionPage\Api\CartRepositoryInterface" method="emulate"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+</routes>

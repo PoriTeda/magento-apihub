@@ -1,0 +1,120 @@
+<?php
+
+/** @var \Riki\Loyalty\Block\Reward $block */
+$_pointHistory = $block->getPointsHistory();
+$_tentativeHistory = $block->getTentativeHistory();
+$_orderIds = $block->orderNoInPairs();
+/** @var  \Riki\Loyalty\Helper\Data $_helper */
+$_helper = $this->helper('Riki\Loyalty\Helper\Data');
+/** @var  \Riki\Loyalty\Helper\Api $_apiHelper */
+$_apiHelper = $this->helper('Riki\Loyalty\Helper\Api');
+$_descriptionUrl = $block->getSystemConfig('riki_loyalty/about_point_guide_group/about_point_guide_input');
+$list = $block->fetchListArray();
+?>
+<?php echo $block->getChildHtml('setting');?>
+<div class="points-history points info detailed">
+    <div class="points data items">
+        <div class="data item title first active" aria-labeledby="tab-label-point-history-title" data-role="collapsible"
+             id="tab-label-point-history">
+            <span class="data switch" tabindex="-1" data-toggle="switch"
+               id="tab-label-point-history-title">
+                <?php echo __("Show all point history") ?>
+            </span>
+        </div>
+        <div class="data item content" data-role="content" id="point-history">
+            <p class="detail">
+                <a href="#" <?php if ($_descriptionUrl) : ?> data-mage-init='{"popupWindow": {"windowURL":"<?php echo $_descriptionUrl;?>","windowName":"trackorder","width":800,"height":600,"left":0,"top":0,"resizable":1,"scrollbars":1}}' <?php endif;?>
+                ><?php echo __("Detail info about points stored") ?>
+                </a>
+            </p>
+            <?php if (sizeof($_pointHistory) || sizeof($_tentativeHistory)): ?>
+            <table class="data table">
+                <thead>
+                <tr>
+                    <th scope="col" class="col date tleft"><?php /* @escapeNotVerified */
+                        echo __('Date of issue') ?></th>
+                    <th scope="col" class="col point type"><?php /* @escapeNotVerified */
+                        echo __('Point issue type') ?></th><!--edit-->
+                    <th scope="col" class="col status"><?php /* @escapeNotVerified */
+                        echo __('Point status') ?></th><!--edit-->
+                    <th scope="col" class="col point"><?php /* @escapeNotVerified */
+                        echo __('Points') ?></th>
+                    <th scope="col" class="col exp-date"><?php /* @escapeNotVerified */
+                        echo __('Expiration Date') ?></th><!--edit-->
+                    <th scope="col" class="col order number"><?php /* @escapeNotVerified */
+                        echo __('Order number') ?></th> <!--edit-->
+
+                </tr>
+                </thead>
+                <tbody>
+                    <?php $timezone = new \DateTimeZone('UTC');?>
+                    <?php foreach ($list as $item): ?>
+                        <tr>
+                            <td data-th="<?php echo $block->escapeHtml(__('Date of issue')) ?>" class="col date tleft">
+                                    <span><?php /* @escapeNotVerified */
+                                        echo $block->formatDate($item['action_date'], \IntlDateFormatter::MEDIUM, false, $timezone); ?></span>
+                            </td>
+                            <td data-th="<?php echo $block->escapeHtml(__('Point issue type')) ?>"
+                                class="col point type">
+                                <span> <?php echo $item['point_issue_type'] ?> </span>
+                            </td>
+                            <td class="col" data-th="<?php echo $block->escapeHtml(__('Point status')) ?>" class="col status">
+                                <span> <?php echo $item['point_status']; ?> </span>
+                            </td>
+                            <td class="col point <?php echo (($item['point_used_datetime']) ? 'minus' : ''); ?>"
+                                data-th="<?php echo $block->escapeHtml(__('Points')) ?>"
+                            >
+                                    <span><?php /* @escapeNotVerified */
+                                        echo $item['issued_point'] ?> </span>
+                            </td>
+                            <td class="col" data-th="<?php echo $block->escapeHtml(__('Expiration date')) ?>" class="col exp-date">
+                                <?php if($item['expiration'] != '-' && isset($item['expiration'])) { ?>
+                                    <?php
+                                    echo $block->formatDate($item['expiration'], \IntlDateFormatter::MEDIUM);
+                                    ?>
+                                <?php }else { ?>
+                                    <?php echo $item['expiration']; ?>
+                                <?php } ?>
+                            </td>
+                            <td class="col" data-th="<?php echo $block->escapeHtml(__('Order number')) ?>" class="col order number">
+                                    <span>
+                                        <?php if(isset($item['order_id'])) { ?>
+                                            <?php $_url = isset($item['order_id']) ? $block->getUrl('sales/order/view', ['order_id' => $item['order_id']]) : '#';?>
+                                            <a href="<?php echo $_url;?>"><?php echo $item['increment_id'];?></a>
+                                        <?php }else { ?>
+                                            -
+                                        <?php } ?>
+                                    </span>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php if ($block->getPagerHtml()): ?>
+                <div class="order-products-toolbar toolbar bottom"><?php echo $block->getPagerHtml(); ?></div>
+            <?php endif ?>
+            <?php else: ?>
+                <div class="message info empty"><span><?php /* @escapeNotVerified */ echo __('You have no rewards.'); ?></span></div>
+            <?php endif ?>
+        </div>
+
+
+        <div class="data item title last" aria-labeledby="tab-label-point-plan-title" data-role="collapsible"
+             id="tab-label-point-plan">
+            <a class="data switch"
+               tabindex="-1"
+               data-toggle="switch"
+               href="<?php echo $this->getUrl('loyalty/reward/expired');?>"
+               id="tab-label-point-plan-title">
+                <?php echo __("Revocation plan"); ?>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="actions-toolbar bottom">
+    <div class="secondary">
+        <a class="action back"
+           href="<?php echo $block->escapeUrl($block->getBackUrl()) ?>"><span><?php /* @escapeNotVerified */
+                echo __('Go back') ?></span></a>
+    </div>
+</div>

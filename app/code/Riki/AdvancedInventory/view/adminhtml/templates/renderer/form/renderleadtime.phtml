@@ -1,0 +1,32 @@
+<?php $allShipLeadTime = $block->getAllLeadTime(); ?>
+<div class="admin__data-grid-wrap admin__data-grid-wrap-static">
+    <table class="data-grid" role="grid">
+        <thead>
+        <tr>
+            <th class="data-grid-th"><?php echo __('Warehouse'); ?></th>
+            <th class="data-grid-th"><?php echo __('Shipping method/Delivery type'); ?></th>
+            <th class="data-grid-th"><?php echo __('Prefecture'); ?></th>
+            <th class="data-grid-th"><?php echo __('Lead time (day)'); ?></th>
+            <th class="data-grid-th"><?php echo __('Priority per Prefecture'); ?></th>
+            <th class="data-grid-th"><?php echo __('Action'); ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if(count($allShipLeadTime) > 0) { ?>
+        <?php foreach($allShipLeadTime as $shipLeadTimeItem){ ?>
+        <tr class="data-row">
+            <td><?php echo $block->getWareHouseNameById($shipLeadTimeItem->getWarehouseId()); ?></td>
+            <td><?php echo $block->getDeliveryTypeNameByCode($shipLeadTimeItem->getDeliveryTypeCode()); ?></td>
+            <td><?php echo $block->getPrefectureNameById($shipLeadTimeItem->getPrefId()); ?></td>
+            <td><?php echo $shipLeadTimeItem->getShippingLeadTime(); ?></td>
+            <td><?php echo $shipLeadTimeItem->getPriority(); ?></td>
+            <td><a href="<?php echo $block->getShipLeadTimeLink($shipLeadTimeItem->getId()); ?>">Edit</a></td>
+        </tr>
+        <?php } } else { ?>
+            <tr class="data-grid-tr-no-data">
+                <td  colspan="14">We couldn't find any records.</td>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,13 @@
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "mage/cookies": {
+                "expires": null,
+                "path": "<?php /* @escapeNotVerified */ echo $block->getPath()?>",
+                "domain": "<?php /* @escapeNotVerified */ echo $block->getDomain()?>",
+                "secure": <?php /* @escapeNotVerified */ echo $block->getSecure() ? 'true' : 'false' ?>,
+                "lifetime": "<?php /* @escapeNotVerified */ echo $block->getLifetime()?>"
+            }
+        }
+    }
+</script>

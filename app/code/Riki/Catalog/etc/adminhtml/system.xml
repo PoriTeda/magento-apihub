@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="catalog" translate="label" sortOrder="200">
+            <label>Catalog</label>
+        </tab>
+        <section id="catalog" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Catalog</label>
+            <tab>catalog</tab>
+            <resource>Magento_Catalog::config_catalog</resource>
+            <group id="selling_price" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Selling Price</label>
+                <field id="minimum_price" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Minimum Allowed Price</label>
+                    <validate>validate-number validate-greater-than-zero</validate>
+                </field>
+                <field id="maximun_price" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Maximum Allowed Price</label>
+                    <validate>validate-number validate-greater-than-zero</validate>
+                </field>
+            </group>
+
+            <group id="future_price_cron" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Future Price Cron Config</label>
+                <field id="cron_config" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Update product future_price config</label>
+                </field>
+            </group>
+
+            <group id="backorder_expire_cron" translate="label" type="text" sortOrder="101" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Back Order Cron Config</label>
+                <field id="cron_config" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Update product backorder_expire config</label>
+                </field>
+                <field id="cron_last_time" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Lastime to run cron job</label>
+                    <frontend_model>Riki\ThirdPartyImportExport\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+        </section>
+        <section id="cartrecomendationtemporarily" translate="label" type="text" sortOrder="2000" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Recommendation Product In Shopping Cart</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_Catalog::recommendation_product_in_shopping_cart</resource>
+            <group id="recommendation_product_setting" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Recommendation Product In Shopping Cart</label>
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or Disable to show recommendation product in shopping cart</comment>
+                </field>
+            </group>
+        </section>
+        <section id="wrapping_services_link" translate="label" type="text" sortOrder="2100" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Wrapping Services Link</label>
+            <tab>bluecom_cronjob</tab>
+            <resource>Riki_Catalog::wrapping_services_link</resource>
+            <group id="wrapping_services_group" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Wrapping Services Link</label>
+                <field id="wrapping_services_input" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Wrapping Services Link</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
